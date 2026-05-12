@@ -1,0 +1,10 @@
+{
+  "name": "k6-ts-docker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'bundler not configured yet'",
+    "docker:build": "echo 'docker build not configured yet'",
+    "test:smoke": "echo 'smoke test not configured yet'"
+  }
+}
