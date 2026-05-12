@@ -7,6 +7,9 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('https://test.k6.io');
-  check(res, { 'status is 200': (r) => r.status === 200 });
+  const res = http.get('http://api:3000/health');
+  check(res, {
+    'status is 200': (r) => r.status === 200,
+    'body has status ok': (r) => typeof r.body === 'string' && r.body.includes('"status":"ok"'),
+  });
 }

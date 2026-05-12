@@ -36,11 +36,13 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     ├── package.json           # TypeScript + bundler deps only
     ├── tsconfig.json
     ├── src/
+    │   ├── api/              # minimal local Node HTTP service that k6 targets
     │   └── tests/             # one file per scenario (e.g. smoke.ts)
     ├── dist/                  # bundled k6-ready JS (gitignored)
     ├── reports/               # k6 output (gitignored)
     ├── docker/
-    │   └── Dockerfile         # builds image that runs the bundle
+    │   ├── api.Dockerfile     # builds the local API service image
+    │   └── k6.Dockerfile      # builds image that runs the bundle
     └── .github/
         └── workflows/
             └── k6.yml         # CI entrypoint
