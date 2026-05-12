@@ -1,0 +1,78 @@
+# k6-ts-docker
+
+A small, maintainable proof-of-concept for running k6 performance tests written
+in TypeScript, packaged in Docker, and executed via GitHub Actions.
+
+## Purpose
+
+Demonstrate a clean, end-to-end pipeline for performance testing that is easy
+for both humans and AI coding assistants to read, extend, and reason about.
+
+## Execution chain
+
+The project follows a single, linear pipeline. Every change should preserve it:
+
+    TypeScript source  →  bundle (single JS file)  →  Docker image  →
+    k6 execution       →  reports (JSON / summary)
+
+If a proposed change does not fit this chain, stop and discuss before adding it.
+
+## Tech stack
+
+- **k6** — load testing runtime (executes the bundled JS).
+- **TypeScript** — author tests with types and editor support.
+- **Bundler** — produces a single ES module consumable by k6 (k6 does not run
+  Node modules directly). Tool choice TBD; prefer the smallest config that works.
+- **Docker** — reproducible execution environment based on the official
+  `grafana/k6` image.
+- **GitHub Actions** — runs the Docker image on push / PR / manual dispatch and
+  uploads reports as artifacts.
+
+## Intended project structure
+
+    .
+    ├── CLAUDE.md              # this file — rules for humans and AI
+    ├── README.md              # quickstart for humans
+    ├── package.json           # TypeScript + bundler deps only
+    ├── tsconfig.json
+    ├── src/
+    │   └── tests/             # one file per scenario (e.g. smoke.ts)
+    ├── dist/                  # bundled k6-ready JS (gitignored)
+    ├── reports/               # k6 output (gitignored)
+    ├── docker/
+    │   └── Dockerfile         # builds image that runs the bundle
+    └── .github/
+        └── workflows/
+            └── k6.yml         # CI entrypoint
+
+Anything not listed here needs justification before being added.
+
+## Rules
+
+1. **Small, reviewable steps.** Each change should be understandable in one
+   sitting. Prefer multiple small PRs over one large one.
+2. **No unnecessary dependencies.** Every dependency must earn its place. If
+   the standard library or a few lines of code suffice, use those.
+3. **No premature abstraction.** Three similar lines are better than a clever
+   helper. Wait for the third real use case before extracting.
+4. **Preserve the execution chain.** Source → bundle → image → run → report.
+   Don't shortcut or branch it.
+5. **AI-friendly.** File names, directory layout, and scripts should be
+   self-describing. Avoid hidden conventions.
+6. **Don't implement ahead of the plan.** Follow the agreed step list; flag
+   anything that requires going beyond it.
+
+## Common commands (to be filled in as the project grows)
+
+- `npm run build` — bundle TypeScript to `dist/`.
+- `npm run docker:build` — build the k6 Docker image.
+- `npm run test:smoke` — run the smoke test locally via Docker.
+
+## For AI assistants
+
+- Read this file first.
+- Before adding files, dependencies, or abstractions, confirm they fit the
+  execution chain and the structure above.
+- Propose changes in small, reviewable steps. Do not implement a full feature
+  in one pass unless explicitly asked.
+- When in doubt, ask.
