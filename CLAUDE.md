@@ -8,6 +8,10 @@ in TypeScript, packaged in Docker, and executed via GitHub Actions.
 Demonstrate a clean, end-to-end pipeline for performance testing that is easy
 for both humans and AI coding assistants to read, extend, and reason about.
 
+Long-term goal: evolve into a reusable GitHub Actions-based performance gate
+that other service teams can consume without owning the pipeline internals. See
+`docs/roadmap-track-a-performance-gate.md` for the planned evolution path.
+
 ## Execution chain
 
 The project follows a single, linear pipeline. Every change should preserve it:
@@ -21,8 +25,9 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
 
 - **k6** — load testing runtime (executes the bundled JS).
 - **TypeScript** — author tests with types and editor support.
-- **Bundler** — produces a single ES module consumable by k6 (k6 does not run
-  Node modules directly). Tool choice TBD; prefer the smallest config that works.
+- **esbuild** — bundles TypeScript to a single ES module consumable by k6 (k6
+  does not run Node modules directly). Runs inside the Docker build stage; not
+  required on the host.
 - **Docker** — reproducible execution environment based on the official
   `grafana/k6` image.
 - **GitHub Actions** — runs the Docker image on push / PR / manual dispatch and
