@@ -1,0 +1,8 @@
+services:
+  k6:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./reports:/reports
+    command: ["run", "--out", "json=/reports/smoke.json", "/scripts/smoke.js"]
