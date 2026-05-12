@@ -38,8 +38,6 @@ If a change doesn't fit this flow, discuss it first.
 
 ## Next steps
 
-- Add more test scenarios in `src/tests/`
-- Set up GitHub Actions workflow to run on push/PR
-- Configure output reports (JSON export, live summaries)
+See [`docs/roadmap-track-a-performance-gate.md`](docs/roadmap-track-a-performance-gate.md) for the planned evolution toward a service-owned performance gate.
 
 See `CLAUDE.md` for contribution rules.
