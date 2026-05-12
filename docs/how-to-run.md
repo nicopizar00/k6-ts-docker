@@ -6,23 +6,31 @@
 
 ## Local execution
 
-### 1. Build the image
+### 1. Build the images
 
 ```bash
-docker compose build
+./bin/build
 ```
 
 This runs a two-stage Docker build:
 1. **Builder stage** — installs Node dependencies and runs esbuild inside a `node:lts-alpine` container, producing `dist/smoke.js`.
 2. **Runner stage** — copies the bundle into the `grafana/k6` image. No Node in the final image.
 
-### 2. Run the test
+### 2. Run the smoke test
 
 ```bash
-docker compose run --rm k6
+./bin/test-smoke
 ```
 
-k6 runs inside the container. Results are written to `reports/smoke.json` via the mounted volume.
+Builds images if needed, starts the API, waits for it to be healthy, then runs k6. Results are written to `reports/smoke.json` via the mounted volume. The script exits with k6's exit code.
+
+### 3. Clean up
+
+```bash
+./bin/clean
+```
+
+Stops containers and removes locally-built images. Run this before a clean rebuild.
 
 ## Adding a new test
 
@@ -33,5 +41,5 @@ k6 runs inside the container. Results are written to `reports/smoke.json` via th
 ## Troubleshooting
 
 - **Docker build fails** — Check that `src/tests/smoke.ts` and `tsconfig.json` are present. The builder stage runs `npm run build` internally.
-- **Test fails** — The container runs the bundled JS. Rebuild the image after any source change (`docker compose build`).
+- **Test fails** — The container runs the bundled JS. Rebuild after any source change with `./bin/build`, or just re-run `./bin/test-smoke` (it rebuilds automatically).
 - **reports/ is empty** — Ensure the `reports/` directory exists on the host (it is gitignored but created automatically by Docker volume mount on first run).

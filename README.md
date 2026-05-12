@@ -11,8 +11,9 @@ Demonstrate a maintainable, end-to-end performance testing pipeline that is easy
 Requires only Docker — no Node, no k6 on the host.
 
 ```bash
-docker compose build          # Build image (bundles TypeScript internally)
-docker compose run --rm k6    # Run smoke test; results appear in reports/
+./bin/build        # Build images (bundles TypeScript internally)
+./bin/test-smoke   # Run smoke test; results appear in reports/
+./bin/clean        # Tear down containers and locally-built images
 ```
 
 ## Execution chain

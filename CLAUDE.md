@@ -68,10 +68,11 @@ Anything not listed here needs justification before being added.
 7. **Don't implement ahead of the plan.** Follow the agreed step list; flag
    anything that requires going beyond it.
 
-## Common commands (to be filled in as the project grows)
+## Common commands
 
-- `docker compose build` — build the k6 Docker image (bundles TypeScript internally).
-- `docker compose run --rm k6` — run the smoke test; results appear in `reports/`.
+- `./bin/build` — build images (bundles TypeScript internally).
+- `./bin/test-smoke` — build if needed, start the API, run the smoke test; results appear in `reports/`.
+- `./bin/clean` — tear down containers and remove locally-built images.
 
 ## For AI assistants
 
