@@ -3,4 +3,4 @@ set -euo pipefail
 
 mkdir -p reports
 docker compose build
-docker compose run --rm k6 run /scripts/smoke.js
+docker compose run --rm k6 run /scripts/catalog-gate.js

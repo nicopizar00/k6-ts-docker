@@ -2,44 +2,66 @@
 
 ## Prerequisites
 
-- Docker only. No Node, no k6 on the host.
+Docker only. No Node, no k6 on the host.
 
 ## Local execution
 
-### 1. Build the images
+### 1. Build all images
 
 ```bash
 ./bin/build
 ```
 
-This runs a two-stage Docker build:
-1. **Builder stage** — installs Node dependencies and runs esbuild inside a `node:lts-alpine` container, producing `dist/smoke.js`.
-2. **Runner stage** — copies the bundle into the `grafana/k6` image. No Node in the final image.
+Builds four Docker images:
+- **k6** — two-stage build: Node/esbuild bundles TypeScript, then `grafana/k6` copies the output.
+- **gateway-api**, **catalog-api**, **orders-api** — Node.js services for the reference application.
 
-### 2. Run the smoke test
+Postgres is pulled from the public registry; no build step needed.
+
+### 2. Run a single test
 
 ```bash
-./bin/test-smoke
+./bin/test-smoke     # Health smoke — checks all three services are reachable
+./bin/test-gate      # Catalog performance gate — p95, error rate, check pass rate thresholds
+./bin/test-journey   # Order create-read journey — POST /orders → GET /orders/:id → validate
 ```
 
-Builds images if needed, starts the API, waits for it to be healthy, then runs k6. Results are written to `reports/smoke.json` via the mounted volume. The script exits with k6's exit code.
+Each script builds images if needed, starts the full reference app (postgres → orders-api → catalog-api → gateway-api), waits for healthchecks, then runs the specified k6 test. After the test, app services remain running for fast re-runs. Call `./bin/clean` to tear down.
 
-### 3. Clean up
+### 3. Run the full suite
+
+```bash
+./bin/test-suite
+```
+
+Builds images, starts the app once, runs all three tests in sequence, collects Docker logs to `reports/logs/`, then tears down. Results appear in `reports/`.
+
+### 4. Clean up
 
 ```bash
 ./bin/clean
 ```
 
-Stops containers and removes locally-built images. Run this before a clean rebuild.
+Stops containers and removes locally-built images. Run this before a clean rebuild, or after a failed test to ensure a clean state.
 
-## Adding a new test
+## Report output
 
-1. Create `src/tests/mytest.ts` following k6 patterns (see `smoke.ts`).
-2. Add a build script entry to `package.json` for the new file.
-3. Update the Dockerfile `COPY` and `docker-compose.yml` `command:` for the new script, or create a separate compose service.
+After any test run, `reports/` contains:
+
+| File | Contents |
+|---|---|
+| `smoke-report.html` | HTML report — service health smoke |
+| `smoke.json` | Compact JSON summary |
+| `catalog-gate-report.html` | HTML report — catalog read gate |
+| `catalog-gate.json` | Compact JSON summary |
+| `order-journey-report.html` | HTML report — order create-read journey |
+| `order-journey.json` | Compact JSON summary |
+| `state/test-context.json` | Machine-readable journey metadata |
+| `logs/*.log` | Docker service logs (test-suite only) |
 
 ## Troubleshooting
 
-- **Docker build fails** — Check that `src/tests/smoke.ts` and `tsconfig.json` are present. The builder stage runs `npm run build` internally.
-- **Test fails** — The container runs the bundled JS. Rebuild after any source change with `./bin/build`, or just re-run `./bin/test-smoke` (it rebuilds automatically).
-- **reports/ is empty** — Ensure the `reports/` directory exists on the host (it is gitignored but created automatically by Docker volume mount on first run).
+- **Build fails** — Ensure `src/tests/*.ts` and `tsconfig.json` are present. The k6 builder stage runs `npm run build` internally.
+- **Services don't start** — Run `docker compose ps` to see health status. Postgres must become healthy before orders-api starts; orders-api and catalog-api must become healthy before gateway-api starts.
+- **reports/ is empty** — Check that the `reports/` directory exists and is writable. The container mounts `./reports:/reports`.
+- **Orphan container warning** — Run `./bin/clean` or `docker compose down --remove-orphans`.

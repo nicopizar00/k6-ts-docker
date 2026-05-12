@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p reports/state reports/logs
+docker compose build
+docker compose up -d --wait gateway-api
+
+docker compose run --rm k6 run /scripts/smoke.js
+docker compose run --rm k6 run /scripts/catalog-gate.js
+docker compose run --rm k6 run /scripts/order-journey.js
+
+docker compose logs gateway-api > reports/logs/gateway-api.log 2>&1 || true
+docker compose logs catalog-api > reports/logs/catalog-api.log 2>&1 || true
+docker compose logs orders-api  > reports/logs/orders-api.log  2>&1 || true
+docker compose logs postgres    > reports/logs/postgres.log    2>&1 || true
+
+docker compose down --volumes --remove-orphans
