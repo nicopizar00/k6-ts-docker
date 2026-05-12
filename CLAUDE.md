@@ -49,24 +49,27 @@ Anything not listed here needs justification before being added.
 
 ## Rules
 
-1. **Small, reviewable steps.** Each change should be understandable in one
+1. **Docker First.** Docker is the primary interface for building, running, and
+   validating the project. The host requires only Docker — no Node, no k6, no
+   other runtimes. `npm`/bundler invocations happen inside the Docker build
+   stage and are implementation details, not user-facing commands.
+2. **Small, reviewable steps.** Each change should be understandable in one
    sitting. Prefer multiple small PRs over one large one.
-2. **No unnecessary dependencies.** Every dependency must earn its place. If
+3. **No unnecessary dependencies.** Every dependency must earn its place. If
    the standard library or a few lines of code suffice, use those.
-3. **No premature abstraction.** Three similar lines are better than a clever
+4. **No premature abstraction.** Three similar lines are better than a clever
    helper. Wait for the third real use case before extracting.
-4. **Preserve the execution chain.** Source → bundle → image → run → report.
+5. **Preserve the execution chain.** Source → bundle → image → run → report.
    Don't shortcut or branch it.
-5. **AI-friendly.** File names, directory layout, and scripts should be
+6. **AI-friendly.** File names, directory layout, and scripts should be
    self-describing. Avoid hidden conventions.
-6. **Don't implement ahead of the plan.** Follow the agreed step list; flag
+7. **Don't implement ahead of the plan.** Follow the agreed step list; flag
    anything that requires going beyond it.
 
 ## Common commands (to be filled in as the project grows)
 
-- `npm run build` — bundle TypeScript to `dist/`.
-- `npm run docker:build` — build the k6 Docker image.
-- `npm run test:smoke` — run the smoke test locally via Docker.
+- `docker compose build` — build the k6 Docker image (bundles TypeScript internally).
+- `docker compose run --rm k6` — run the smoke test; results appear in `reports/`.
 
 ## For AI assistants
 

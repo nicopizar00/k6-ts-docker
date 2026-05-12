@@ -2,56 +2,36 @@
 
 ## Prerequisites
 
-- Node.js (v18+)
-- Docker (for the actual k6 run)
+- Docker only. No Node, no k6 on the host.
 
 ## Local execution
 
-### 1. Install dependencies
+### 1. Build the image
+
 ```bash
-npm install
+docker compose build
 ```
 
-### 2. Build the bundle
+This runs a two-stage Docker build:
+1. **Builder stage** — installs Node dependencies and runs esbuild inside a `node:lts-alpine` container, producing `dist/smoke.js`.
+2. **Runner stage** — copies the bundle into the `grafana/k6` image. No Node in the final image.
+
+### 2. Run the test
+
 ```bash
-npm run build
+docker compose run --rm k6
 ```
 
-This runs esbuild and outputs `dist/smoke.js`. esbuild:
-- Bundles TypeScript to a single ES module
-- Marks k6 packages (`k6`, `k6/*`) as external so they're provided by the k6 runtime
-- Outputs ES2015 format compatible with k6
-
-### 3. Build the Docker image
-```bash
-npm run docker:build
-```
-
-This builds the image using `docker compose`. The Dockerfile:
-- Starts from `grafana/k6:latest`
-- Copies the bundled script into the container
-- Sets k6 as the entrypoint with the script as the command
-
-### 4. Run the test
-```bash
-npm run test:smoke
-```
-
-This uses `docker compose run` to execute the container, which runs k6 on the bundled script.
-
-Output appears on stdout/stderr. k6 can be configured to export reports via environment variables or CLI flags (future step).
+k6 runs inside the container. Results are written to `reports/smoke.json` via the mounted volume.
 
 ## Adding a new test
 
 1. Create `src/tests/mytest.ts` following k6 patterns (see `smoke.ts`).
-2. Add a build script to `package.json`:
-   ```json
-   "build:mytest": "esbuild src/tests/mytest.ts --bundle --platform=browser --target=es2015 --format=esm --external:k6 --external:'k6/*' --outfile=dist/mytest.js"
-   ```
-3. Update the Dockerfile `COPY` and `CMD` or create a separate docker-compose service for it.
+2. Add a build script entry to `package.json` for the new file.
+3. Update the Dockerfile `COPY` and `docker-compose.yml` `command:` for the new script, or create a separate compose service.
 
 ## Troubleshooting
 
-- **Build fails** — Check `tsconfig.json` and that esbuild is installed (`npm ls esbuild`).
-- **Docker build fails** — Ensure `dist/smoke.js` exists (`npm run build` first).
-- **Test fails in Docker but works locally** — Docker runs the bundled JS, not TypeScript. Rebuild after changes.
+- **Docker build fails** — Check that `src/tests/smoke.ts` and `tsconfig.json` are present. The builder stage runs `npm run build` internally.
+- **Test fails** — The container runs the bundled JS. Rebuild the image after any source change (`docker compose build`).
+- **reports/ is empty** — Ensure the `reports/` directory exists on the host (it is gitignored but created automatically by Docker volume mount on first run).

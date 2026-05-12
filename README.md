@@ -8,14 +8,12 @@ Demonstrate a maintainable, end-to-end performance testing pipeline that is easy
 
 ## Quick start
 
-```bash
-npm install
-npm run build          # TypeScript → bundled JS
-npm run docker:build   # Build k6 Docker image
-npm run test:smoke     # Run smoke test via Docker
-```
+Requires only Docker — no Node, no k6 on the host.
 
-Results appear in `reports/` (after k6 outputs them).
+```bash
+docker compose build          # Build image (bundles TypeScript internally)
+docker compose run --rm k6    # Run smoke test; results appear in reports/
+```
 
 ## Execution chain
 
