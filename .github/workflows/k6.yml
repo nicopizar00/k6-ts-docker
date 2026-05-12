@@ -52,7 +52,7 @@ jobs:
           | API deployed | completed |
           | API health | passed |
           | k6 smoke test | passed |
-          | Reports artifact | k6-smoke-reports |
+          | Reports artifact | k6-smoke-reports (smoke-report.html + smoke.json) |
           EOF
 
       - name: Tear down
