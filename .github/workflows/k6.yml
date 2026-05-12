@@ -27,6 +27,11 @@ jobs:
       - name: Show API status
         run: docker compose ps api
 
+      - name: Prepare reports directory
+        run: |
+          mkdir -p reports
+          chmod 777 reports
+
       - name: Run k6 smoke test
         run: docker compose run --rm k6
 
