@@ -1,5 +1,5 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY src/api/server.js ./server.js
-EXPOSE 3000
+COPY src/services/catalog/server.js ./server.js
+EXPOSE 3001
 CMD ["node", "server.js"]

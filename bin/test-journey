@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p reports/state
+docker compose build
+docker compose run --rm k6 run /scripts/order-journey.js
