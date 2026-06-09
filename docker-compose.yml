@@ -1,22 +1,75 @@
 services:
-  api:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: gateway
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    volumes:
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d gateway"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+      start_period: 5s
+
+  catalog-api:
     build:
       context: .
-      dockerfile: docker/api.Dockerfile
+      dockerfile: docker/catalog.Dockerfile
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+      start_period: 1s
+
+  orders-api:
+    build:
+      context: .
+      dockerfile: docker/orders.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: gateway
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3002/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+      start_period: 5s
+
+  gateway-api:
+    build:
+      context: .
+      dockerfile: docker/gateway.Dockerfile
+    depends_on:
+      catalog-api:
+        condition: service_healthy
+      orders-api:
+        condition: service_healthy
+    environment:
+      CATALOG_URL: http://catalog-api:3001
+      ORDERS_URL: http://orders-api:3002
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
       interval: 2s
       timeout: 2s
       retries: 10
-      start_period: 1s
+      start_period: 2s
 
   k6:
     build:
       context: .
       dockerfile: docker/k6.Dockerfile
     depends_on:
-      api:
+      gateway-api:
         condition: service_healthy
     volumes:
       - ./reports:/reports
-    command: ["run", "--out", "json=/reports/smoke.json", "/scripts/smoke.js"]
+    command: ["run", "/scripts/smoke.js"]

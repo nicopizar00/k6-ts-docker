@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/tests/smoke.ts --bundle --platform=browser --target=es2015 --format=esm --external:k6 --external:'k6/*' --outfile=dist/smoke.js",
+    "build": "esbuild src/tests/smoke.ts src/tests/catalog-gate.ts src/tests/order-journey.ts --bundle --platform=browser --target=es2015 --format=esm --external:k6 --external:'k6/*' --outdir=dist/",
     "docker:build": "docker compose build",
     "test:smoke": "docker compose run --rm k6"
   },

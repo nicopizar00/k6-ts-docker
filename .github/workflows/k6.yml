@@ -1,4 +1,4 @@
-name: k6 Smoke Test
+name: Performance Gate Playground
 
 on:
   workflow_dispatch:
@@ -8,53 +8,121 @@ on:
     branches: [main]
 
 jobs:
-  smoke-test:
+  test-suite:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show Docker Compose topology
-        run: docker compose config --services
-
       - name: Build images
         run: docker compose build
 
-      - name: Start API
-        run: docker compose up -d --wait api
+      - name: Start reference app
+        run: docker compose up -d --wait gateway-api
 
-      - name: Show API status
-        run: docker compose ps api
+      - name: Show service status
+        run: docker compose ps
 
-      - name: Prepare reports directory
+      - name: Prepare report directories
         run: |
-          mkdir -p reports
-          chmod 777 reports
+          mkdir -p reports/state reports/logs
+          chmod -R 777 reports
 
-      - name: Run k6 smoke test
-        run: docker compose run --rm k6
+      - name: Run smoke test
+        run: docker compose run --rm k6 run /scripts/smoke.js
 
-      - name: Upload reports
+      - name: Run catalog performance gate
+        run: docker compose run --rm k6 run /scripts/catalog-gate.js
+
+      - name: Run order create-read journey
+        run: docker compose run --rm k6 run /scripts/order-journey.js
+
+      - name: Collect Docker logs
+        if: always()
+        run: |
+          for svc in gateway-api catalog-api orders-api postgres; do
+            docker compose logs "$svc" > "reports/logs/${svc}.log" 2>&1 || true
+          done
+
+      - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: k6-smoke-reports
+          name: performance-suite-reports
           path: reports/
 
       - name: Write job summary
+        if: always()
         run: |
           cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
-          ## Smoke Test Pipeline
+          ## Performance Gate Playground — Suite Results
 
-          | Stage | Status |
+          | Test | Reports |
           |---|---|
-          | Build images | completed |
-          | API deployed | completed |
-          | API health | passed |
-          | k6 smoke test | passed |
-          | Reports artifact | k6-smoke-reports (smoke-report.html + smoke.json) |
+          | Smoke | smoke-report.html · smoke.json |
+          | Catalog gate | catalog-gate-report.html · catalog-gate.json |
+          | Order journey | order-journey-report.html · order-journey.json · state/test-context.json |
+          | Docker logs | logs/gateway-api.log · catalog-api.log · orders-api.log · postgres.log |
+
+          Artifact: **performance-suite-reports**
           EOF
 
       - name: Tear down
         if: always()
         run: docker compose down --volumes --remove-orphans
+
+  validate-artifacts:
+    runs-on: ubuntu-latest
+    needs: test-suite
+    if: always()
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: performance-suite-reports
+          path: reports/
+
+      - name: Validate expected files
+        run: |
+          missing=0
+          for f in \
+            reports/smoke-report.html \
+            reports/smoke.json \
+            reports/catalog-gate-report.html \
+            reports/catalog-gate.json \
+            reports/order-journey-report.html \
+            reports/order-journey.json \
+            reports/state/test-context.json \
+            reports/logs/gateway-api.log \
+            reports/logs/catalog-api.log \
+            reports/logs/orders-api.log \
+            reports/logs/postgres.log; do
+            if [ -f "$f" ]; then
+              echo "OK: $f"
+            else
+              echo "MISSING: $f"
+              missing=$((missing + 1))
+            fi
+          done
+          exit "$missing"
+
+      - name: Write artifact summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          ## Artifact Transfer Validation
+
+          This job ran independently of live containers.
+          It downloaded the artifact from the `test-suite` job and validated that every expected file was present.
+
+          | File | Purpose |
+          |---|---|
+          | smoke-report.html | HTML report — health smoke across all services |
+          | catalog-gate-report.html | HTML report — catalog read performance gate |
+          | order-journey-report.html | HTML report — order create-read journey |
+          | smoke.json / catalog-gate.json / order-journey.json | Raw k6 metrics (line-delimited) |
+          | state/test-context.json | Serialized journey metadata for automation |
+          | logs/*.log | Docker service logs for debugging |
+          EOF
