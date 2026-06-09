@@ -8,16 +8,21 @@ Demonstrate a maintainable, end-to-end performance testing pipeline — from a m
 
 ## Quick start
 
-Requires only Docker. No Node, no k6, no other runtimes on the host.
+Requires only Docker and a stdlib Python 3 runtime (≥ 3.10). No Node, no k6,
+no pip packages on the host.
 
 ```bash
-./bin/build          # Build all images (bundles TypeScript internally)
-./bin/test-smoke     # Health smoke across all services
-./bin/test-gate      # Catalog read performance gate
-./bin/test-journey   # Order create-read journey (writes state/test-context.json)
-./bin/test-suite     # All three tests in sequence + log collection + teardown
-./bin/clean          # Stop containers and remove locally-built images
+./bin/punch doctor                  # Check host prerequisites
+./bin/punch run smoke               # Health smoke across all services
+./bin/punch run gate                # Catalog read performance gate
+./bin/punch run journey             # Order create-read journey
+./bin/punch run all --collect-logs  # Full suite + service logs
+./bin/punch clean                   # Tear down containers and volumes
 ```
+
+The legacy bash scripts (`./bin/test-smoke`, `./bin/test-gate`,
+`./bin/test-journey`, `./bin/test-suite`, `./bin/build`, `./bin/clean`)
+still work and remain supported until the Python CLI reaches full parity.
 
 ## Reference application
 
@@ -68,6 +73,19 @@ reports/
 ```
 
 GitHub Actions uploads all of these as the `performance-suite-reports` artifact. A second CI job downloads the artifact and validates that every expected file is present — demonstrating serialized state transfer between jobs without live containers.
+
+## AI-assisted operating model
+
+This repo uses a six-phase lifecycle for AI-assisted changes: **Understand →
+Shape → Build → Verify → Review → Ship**. Each phase has a dedicated prompt
+under [`.github/prompts/`](.github/prompts) and three behavioral skills
+under [`.github/skills/`](.github/skills).
+
+- Lifecycle protocol: [`docs/ai/operating-protocol.md`](docs/ai/operating-protocol.md)
+- Mode mapping: [`docs/ai/copilot-mode-mapping.md`](docs/ai/copilot-mode-mapping.md)
+- Skill registry: [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md)
+- Prompt registry: [`docs/ai/prompt-registry.md`](docs/ai/prompt-registry.md)
+- Validation contract: [`docs/workflows/validation.md`](docs/workflows/validation.md)
 
 ## Next steps
 
