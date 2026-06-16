@@ -1,0 +1,38 @@
+name: Bug report
+about: Create a report to help maintainers reproduce and fix a bug
+title: 'Bug: '
+labels: bug
+assignees: ''
+
+body:
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Describe the steps to reproduce the bug (include exact command and environment)
+      placeholder: ./bin/punch run smoke
+      value: ''
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen
+      value: ''
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened, including logs and relevant report files from reports/
+      value: ''
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Docker version, Python version
+      value: ''
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Attachments
+      description: Paths to relevant artifacts (e.g., reports/smoke.json)
+      value: ''

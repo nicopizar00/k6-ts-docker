@@ -1,0 +1,55 @@
+// DEFERRED PLACEHOLDER — DO NOT BUILD.
+//
+// This file exists to document the *shape* a k6 Browser test would take
+// in this project. It is intentionally suffixed `.ts.example` so esbuild
+// does not pick it up and so reviewers cannot accidentally enable browser
+// execution without a Shape plan.
+//
+// See:
+//   - .github/instructions/k6-browser.instructions.md  (why deferred)
+//   - .github/skills/punch-performance-k6/SKILL.md     (when to revisit)
+//
+// To revive this test, a Shape plan must:
+//   1. Justify the cost: a real UI to validate.
+//   2. Replace `grafana/k6:0.55.0` with a browser-capable image (or run
+//      Chromium in a sidecar container).
+//   3. Add a dedicated compose service (browser tests cannot share the
+//      stateless k6 container — they need a Chromium binary).
+//   4. Add browser-specific thresholds (web vitals), not HTTP thresholds.
+//   5. Add the bundle entry to docker/k6.Dockerfile and to
+//      package.json's esbuild script.
+//
+// Until that plan exists, do not rename this file.
+
+import { browser } from 'k6/browser';
+import { check } from 'k6';
+
+const BASE_URL = __ENV.TARGET_BASE_URL || 'http://gateway-api:3000';
+
+export const options = {
+  scenarios: {
+    smoke: {
+      executor: 'shared-iterations',
+      vus: 1,
+      iterations: 1,
+      options: {
+        browser: { type: 'chromium' },
+      },
+    },
+  },
+  thresholds: {
+    checks: ['rate>0.99'],
+    browser_web_vital_lcp: ['p(95)<2500'],
+  },
+};
+
+export default async function () {
+  const page = await browser.newPage();
+  try {
+    await page.goto(`${BASE_URL}/`);
+    const title = await page.title();
+    check(title, { 'page has title': (t) => typeof t === 'string' && t.length > 0 });
+  } finally {
+    await page.close();
+  }
+}
