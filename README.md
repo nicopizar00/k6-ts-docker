@@ -76,15 +76,20 @@ GitHub Actions uploads all of these as the `performance-suite-reports` artifact.
 
 ## AI-assisted operating model
 
-This repo uses a six-phase lifecycle for AI-assisted changes: **Understand →
-Shape → Build → Verify → Review → Ship**. Each phase has a dedicated prompt
-under [`.github/prompts/`](.github/prompts) and three behavioral skills
-under [`.github/skills/`](.github/skills).
+This repo uses a seven-phase lifecycle for AI-assisted changes: **Define
+→ Spec → Plan → Build → Verify → Review → Ship**. Each non-Build phase
+has one prompt; Build has five domain-specialized prompts (orchestrator,
+compose, k6-http, k6-browser, data-harvest). Six skills and five agents
+support the lifecycle.
 
-- Lifecycle protocol: [`docs/ai/operating-protocol.md`](docs/ai/operating-protocol.md)
+- Operating model: [`docs/ai/operating-model.md`](docs/ai/operating-model.md)
+- Lifecycle walkthrough: [`docs/ai/workflow.md`](docs/ai/workflow.md)
+- Scoped-build policy: [`docs/ai/scoped-build-policy.md`](docs/ai/scoped-build-policy.md)
+- Model selection: [`docs/ai/model-selection.md`](docs/ai/model-selection.md)
 - Mode mapping: [`docs/ai/copilot-mode-mapping.md`](docs/ai/copilot-mode-mapping.md)
 - Skill registry: [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md)
 - Prompt registry: [`docs/ai/prompt-registry.md`](docs/ai/prompt-registry.md)
+- Layered architecture: [`docs/architecture/punch-boundaries.md`](docs/architecture/punch-boundaries.md)
 - Validation contract: [`docs/workflows/validation.md`](docs/workflows/validation.md)
 
 ## Next steps
@@ -93,7 +98,7 @@ under [`.github/skills/`](.github/skills).
 - Track B roadmap: [`docs/roadmap-track-b-reference-app.md`](docs/roadmap-track-b-reference-app.md)
 - Contribution rules: [`CLAUDE.md`](CLAUDE.md)
 
-Contributing
+## Contributing
 
-See CONTRIBUTING.md for contribution guidelines, local commands, and branch/PR conventions. Small, focused PRs are preferred; run `./bin/punch run smoke` to validate basic health before opening a PR.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines, local commands, and branch/PR conventions. Small, focused PRs are preferred; run `./bin/punch run smoke` to validate basic health before opening a PR.
 

@@ -11,11 +11,15 @@ Scope: `README.md`, `CLAUDE.md`, and everything under `docs/`.
 
 - **README is a doorway, not a manual.** It explains what Punch is, the
   shortest local run, and links into `docs/`. Detail goes elsewhere.
-- **`CLAUDE.md` is the project constitution.** Changes to it require a Shape
-  plan and a one-line note in `docs/ai/operating-protocol.md` if a rule moves.
+- **`CLAUDE.md` is the project constitution.** Changes to it require a Plan
+  and a one-line note in `docs/ai/operating-model.md` if a rule moves.
 - **No duplication.**
-  - Architecture lives in `docs/architecture.md` (single source).
-  - Lifecycle lives in `docs/workflows/lifecycle.md`.
+  - Architecture lives in `docs/architecture.md` (folder map + execution
+    chain) and `docs/architecture/punch-boundaries.md` (ownership layers).
+  - Lifecycle walkthrough lives in `docs/ai/workflow.md`.
+  - Operating model lives in `docs/ai/operating-model.md`.
+  - Scoped build policy lives in `docs/ai/scoped-build-policy.md`.
+  - Model selection guidance lives in `docs/ai/model-selection.md`.
   - AI mode mapping lives in `docs/ai/copilot-mode-mapping.md`.
   - Skill catalogue lives in `docs/ai/skill-registry.md`.
   - Prompt catalogue lives in `docs/ai/prompt-registry.md`.
@@ -34,3 +38,10 @@ Scope: `README.md`, `CLAUDE.md`, and everything under `docs/`.
 - Add one line to the relevant registry (skill, prompt) or to `README.md`'s
   pointer section.
 - Delete or merge the doc it is replacing in the same change.
+
+## Build prompt
+
+Doc-only changes typically use [`punch-build-data-harvest`](../prompts/punch-build-data-harvest.prompt.md)
+when they change an artifact contract, otherwise no Build prompt is
+needed — a doc edit can go straight from Plan to PR if it does not affect
+runtime behavior.

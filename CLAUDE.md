@@ -76,9 +76,15 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     │   ├── architecture.md               # existing — folder map, execution chain
     │   ├── ai-context.md                 # existing — project philosophy
     │   ├── how-to-run.md                 # existing — run commands
+    │   ├── architecture/
+    │   │   └── punch-boundaries.md       # layered ownership map
     │   ├── ai/                           # AI lifecycle docs
-    │   │   ├── operating-protocol.md
+    │   │   ├── operating-model.md
+    │   │   ├── workflow.md
+    │   │   ├── scoped-build-policy.md
+    │   │   ├── model-selection.md
     │   │   ├── copilot-mode-mapping.md
+    │   │   ├── maintenance-matrix.md
     │   │   ├── skill-registry.md
     │   │   └── prompt-registry.md
     │   ├── workflows/
@@ -89,8 +95,9 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     └── .github/
         ├── copilot-instructions.md       # always-on global Copilot rules
         ├── instructions/                 # path-specific behavior rules
-        ├── prompts/                      # one prompt per lifecycle phase
-        ├── skills/                       # three behavioral skills
+        ├── prompts/                      # one prompt per phase + 5 Build prompts
+        ├── skills/                       # six behavioral skills
+        ├── agents/                       # five agent personas
         └── workflows/
             └── k6.yml
 
@@ -105,7 +112,7 @@ Anything not listed here needs justification before being added.
    implementation details, not user-facing commands. The Python orchestrator
    is a thin façade that shells out to `docker compose`; it adds no execution
    semantics of its own.
-2. **Small, reviewable steps.** Each change should be understandable in one
+2. **Small, reviewable steps.** Each change must be understandable in one
    sitting. Prefer multiple small PRs over one large one.
 3. **No unnecessary dependencies.** Every dependency must earn its place. If
    the standard library or a few lines of code suffice, use those.
@@ -137,11 +144,15 @@ Python CLI reaches feature parity):
 
 ## For AI assistants
 
-- Read this file first, then `docs/ai/operating-protocol.md`,
-  `docs/architecture.md`, and `docs/ai-context.md`.
-- The operating model is **Understand → Shape → Build → Verify → Review →
-  Ship**. Use the matching prompt in `.github/prompts/` and stay in the
-  declared mode (Ask vs Agent).
+- Read this file first, then `docs/ai/operating-model.md`,
+  `docs/architecture.md`, `docs/architecture/punch-boundaries.md`,
+  and `docs/ai-context.md`.
+- The operating model is **Define → Spec → Plan → Build → Verify →
+  Review → Ship**. Use the matching prompt in `.github/prompts/` and
+  stay in the declared mode (Ask vs Agent). Build is split into five
+  domain-specialized prompts (orchestrator, compose, k6-http,
+  k6-browser, data-harvest) — see
+  `docs/ai/scoped-build-policy.md`.
 - Before adding files, dependencies, or abstractions, confirm they fit the
   execution chain and the structure above.
 - `src/services/` contains Node.js services for the reference application.

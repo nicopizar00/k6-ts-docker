@@ -1,146 +1,111 @@
 # GitHub Copilot — Repository Instructions (always-on)
 
-These rules apply to **every** Copilot session in this repository. They are deliberately short. Detailed guidance lives in `docs/ai/operating-protocol.md` and the path-specific files under `.github/instructions/`.
+These rules apply to **every** Copilot session in this repository. They
+are deliberately short. Detailed guidance lives in
+`docs/ai/operating-model.md` and the path-specific files under
+`.github/instructions/`.
 
-## Non-negotiables
+## Critical Rules
 
-1. **Docker First execution.** Tests, services, and bundling run inside Docker. The host needs only Docker and a stdlib Python 3 runtime.
-2. **Python orchestration façade.** The user-facing CLI is `bin/punch` (stdlib-only Python). Do not introduce host-side Node, npm, k6, or any pip-installed package.
-3. **k6 is the performance execution engine.** No other load-test tool.
-4. **Lifecycle-driven work.** Every change goes through Understand → Shape → Build → Verify → Review → Ship. Use the matching prompt in `.github/prompts/`.
-5. **Mode discipline.** Read-only requests (audits, reviews, explanations) stay in **Ask Mode**. Planning stays in **Plan Mode**. Edits happen only in **Agent Mode** within a scoped plan.
-6. **Validation evidence is mandatory.** A change is not "done" until `reports/state/punch-run.json` (or an equivalent artifact) records the verification run. See `docs/workflows/validation.md`.
-7. **Human approves Ship.** Agent Mode may stage, commit, and open a PR. Merging, releasing, or pushing tags is a human action.
-8. **No premature abstraction.** Three similar lines beats a clever helper.
-9. **No duplication of AI guidance.** New instructions, prompts, or skills must not restate content already in `docs/ai/` or `CLAUDE.md`. Link instead.
-10. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use environment variables for any external base URL.
+Violating these breaks reproducibility, safety, or trust. Stop and ask
+before bending one.
+
+1. **Docker First execution** — canonical: [`CLAUDE.md` §Rules](../CLAUDE.md#rules). Never propose host-side `npm`, `k6`, or `pip` commands.
+2. **Python orchestration façade** — `bin/punch` is stdlib-only Python (same source as #1). Do not introduce host-side Node, npm, k6, or any pip-installed package.
+3. **Validation evidence is mandatory** — see [`CLAUDE.md` §For AI assistants](../CLAUDE.md#for-ai-assistants) and [`docs/workflows/validation.md`](../docs/workflows/validation.md). A change is not "done" until `reports/state/punch-run.json` records the run.
+4. **Human approves Ship.** Agent Mode MUST stop after opening a PR. Merging, releasing, and pushing tags are human-only actions.
+   *WHY:* these actions are irreversible and visible externally. The PR boundary is where human judgment must enter.
+5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use environment variables for any external base URL.
+
+## Architecture ownership
+
+Each layer owns one decision domain; Build prompts refuse to cross
+layers without an approved Plan. The full ownership map lives in
+[`docs/architecture/punch-boundaries.md`](../docs/architecture/punch-boundaries.md).
+
+| Layer | Owns | Lives in |
+|---|---|---|
+| Bash wrapper | route shell calls to Python | `bin/punch`, `bin/*` |
+| Python orchestrator | argparse, subprocess, exit codes, evidence | `src/punch/**` |
+| Docker Compose | services, networks, env, healthchecks (runtime boundary) | `docker-compose.yml` |
+| Dockerfiles | how each service is built | `docker/*.Dockerfile` |
+| k6 tests | scenarios, thresholds, `handleSummary` | `src/tests/**` |
+| Artifacts / reports | the contract with downstream consumers | `reports/**` |
+
+CI/CD is **external** to Punch. Punch provides reusable local/CI-compatible
+container contracts; it does not own GitHub Actions workflows.
+
+## Agentic-coding rules
+
+- **Never make broad edits during Build.** Each Build prompt declares
+  allowed / read-only / forbidden paths. Edit only allowed paths.
+- **Never modify Python orchestration, Docker Compose, and k6 tests in
+  one task** unless explicitly planned as an integration task with
+  multiple per-layer Build calls.
+- **Never bypass Docker Compose** by running local `k6` or
+  `docker run` directly unless the user explicitly asks.
+- **Never introduce CI/CD ownership into Punch** unless explicitly
+  requested. `.github/workflows/` is outside Build scope by default.
+- **Never change service names, artifact paths, or public commands**
+  without updating docs and dependents (see [`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md)).
+- **Prefer small diffs.** One scoped task per Build call.
+- **Prefer explicit validation commands.** Verify uses
+  `./bin/punch doctor` and `./bin/punch run …` — not ad-hoc shell.
+- **Preserve DX**: low-noise terminal output plus complete logs and
+  artifacts under `reports/`.
+
+## Default verification
+
+- Use official Punch commands when available (`./bin/punch …`).
+- Use Docker Compose **through** Punch when possible.
+- Use unit tests only as a complement, not a replacement for runtime
+  contract validation.
+
+## Engineering Principles
+
+6. **Lifecycle-driven work.** Every change goes through Define → Spec →
+   Plan → Build → Verify → Review → Ship. Use the matching prompt in
+   `.github/prompts/`.
+7. **Mode discipline.** Read-only requests (audits, reviews,
+   explanations) stay in **Ask Mode**. Planning stays in **Ask Mode**
+   with Plan discipline. Edits happen only in **Agent Mode** within a
+   scoped Plan task. Phase→mode mapping reference:
+   [`docs/ai/copilot-mode-mapping.md`](../docs/ai/copilot-mode-mapping.md).
+8. **No duplication of AI guidance.** New instructions, prompts,
+   skills, or agents must not restate content already in `docs/ai/` or
+   `CLAUDE.md`. Link instead.
 
 ## Lifecycle entry points
 
-| Phase | Prompt | Mode |
-|---|---|---|
-| Understand | `punch-understand.prompt.md` | Ask |
-| Shape      | `punch-shape.prompt.md`      | Plan |
-| Build      | `punch-build-slice.prompt.md`| Agent |
-| Verify     | `punch-verify.prompt.md`     | Agent / Ask |
-| Review     | `punch-review.prompt.md`     | Ask |
-| Ship       | `punch-ship.prompt.md`       | Agent (mechanical only) |
+| Phase | Prompt | Mode | Agent |
+|---|---|---|---|
+| Define   | [`punch-define`](prompts/punch-define.prompt.md)               | Ask                      | `punch-architect-readonly` |
+| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask                      | `punch-architect-readonly` |
+| Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
+| Build    | one of the 5 [`punch-build-*`](prompts/) prompts                | Agent (scoped)           | `punch-builder-scoped` |
+| Verify   | [`punch-verify`](prompts/punch-verify.prompt.md)               | Agent / Ask              | `punch-verifier` |
+| Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
+| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
 
-## Maintenance Matrix (file-level change cascade)
+The Build prompts are: `punch-build-orchestrator`, `punch-build-compose`,
+`punch-build-k6-http`, `punch-build-k6-browser`, `punch-build-data-harvest`.
 
-This matrix maps a change in one area to the places reviewers and agents must check/adjust. Use it to populate PR checklists and to guide Copilot-style agents.
+## Change cascade (when X changes, update Y)
 
-1) src/tests/* (k6 TypeScript tests)
-   - When tests are added/removed/renamed:
-     - Update Docker build expectations (dist/* bundling) — ensure new test is bundled during image build.
-     - Update `.github/workflows/k6.yml` if the test should be part of CI (add run step and artifact expectations).
-     - Update `AGENTS.md` & `CONTRIBUTING.md` to reflect new test semantics if public-facing.
-     - Update `reports/` expected filenames and `validate-artifacts` job list if output names differ.
+When a change touches one area, several others usually need updating in
+lockstep. The full file-level cascade lives in
+[`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md) —
+consult it during Plan and Review.
 
-2) dist/* and build pipeline (esbuild outputs)
-   - When bundle shape or output file names change:
-     - Update Dockerfiles that copy `dist/` into k6 image build context (docker/k6.Dockerfile, docker-compose.yml if scripts path changes).
-     - Update CI workflow artifact list and validation checks in `.github/workflows/k6.yml`.
-     - Add a smoke validation in `copilot-setup-steps.yml` for local contributor verification.
+## PR description
 
-3) docker/*.Dockerfile, docker-compose.yml
-   - When images, exposed ports, or service names change:
-     - Update `.mcp.json` service entries and AGENTS.md ports.
-     - Update `.github/workflows/k6.yml` job steps (service names used in docker compose commands and log collection loop).
-     - Update CONTRIBUTING.md run examples and docs/how-to-run.md.
-
-4) src/services/* (gateway, catalog, orders)
-   - When API surface (paths, ports) or behavior changes:
-     - Update tests under src/tests/* that call those endpoints.
-     - Update report parsing assumptions in src/tests/support/report.ts if response shapes change.
-     - Update integration steps in CI workflow and any healthcheck commands.
-
-5) src/services/orders/db schema (docker/postgres/init.sql)
-   - When schema changes:
-     - Bump migration notes in AGENTS.md and CHANGELOG.md.
-     - Update seed/init SQL and ensure CI uses a fresh volume or includes a migration step.
-     - Verify order-journey test still validates created entity fields.
-
-6) bin/punch and src/punch/* (orchestration CLI)
-   - When CLI flags, subcommands, or behavior change:
-     - Update README quick-start commands, CONTRIBUTING.md, and .github/workflows/copilot-setup-steps.yml to reflect new usage.
-     - Ensure changes remain stdlib-only; flag any accidental pip/npm additions in review.
-
-7) reports/ shape and filenames
-   - When report names or content change:
-     - Update the `validate-artifacts` list in `.github/workflows/k6.yml` and the job summary table.
-     - Update AGENTS.md and docs/validation/README.md with new artifact mapping.
-
-8) package.json (root and src/services/orders)
-   - When dependencies change or new scripts are added:
-     - Update Dockerfile layers that run `npm ci` in the builder stage.
-     - Add Dependabot ignores or exceptions (if a pinned package requires manual upgrades).
-     - Update .mcp.json only if a new external service is introduced.
-
-9) .github/workflows/* and action usage
-   - When workflow triggers, job names, or upload artifact paths change:
-     - Update AGENTS.md and README documentation that reference workflow semantics.
-     - Keep CI workflow names stable — agents and dashboards look up by name.
-
-10) docs/ and README.md
-    - When documentation pages move or rename:
-      - Update cross-references in AGENTS.md, CONTRIBUTING.md, and .github/copilot-setup-steps.yml.
-
-## PR reviewer checklist (auto-apply in PR template suggestions)
-- [ ] Does the change run inside Docker locally using `./bin/punch`?
-- [ ] Are artifacts produced in `reports/` and validated by CI expectations?
-- [ ] If code changed under src/tests/, are dist bundles and CI steps updated?
-- [ ] If schema or DB changes were made, are migration/seed steps included?
-- [ ] Docs updated (README / AGENTS.md / CHANGELOG.md) when behavior or public interfaces change.
-- [ ] No host-side tool assumptions (no host npm/k6/pip required)
-
-## PR review patterns mined from history
-
-Repository PR history contains limited explicit review comments. Where history is sparse, follow the above matrix strictly and prefer small, verifiable PRs with a local `./bin/punch run smoke` validation step.
-
-If additional recurring review guidance appears in future PRs, the maintenance matrix should be updated to reflect it.
+Copy the checklist from [`PULL_REQUEST_TEMPLATE.md`](PULL_REQUEST_TEMPLATE.md)
+literally — don't paraphrase or invent extra items. If criteria change,
+update the template, not this file.
 
 ## When in doubt
 
-Refer to `docs/ai/operating-protocol.md` and the instruction fragments under `.github/instructions/`. When proposing changes that touch multiple matrix rows, document the verification plan in the PR description.
-
-=======
-1. **Docker First execution.** Tests, services, and bundling run inside Docker.
-   The host needs only Docker and a stdlib Python 3 runtime.
-2. **Python orchestration façade.** The user-facing CLI is `bin/punch`
-   (stdlib-only Python). Do not introduce host-side Node, npm, k6, or any
-   pip-installed package.
-3. **k6 is the performance execution engine.** No other load-test tool.
-4. **Lifecycle-driven work.** Every change goes through Understand → Shape →
-   Build → Verify → Review → Ship. Use the matching prompt in `.github/prompts/`.
-5. **Mode discipline.** Read-only requests (audits, reviews, explanations) stay
-   in **Ask Mode**. Planning stays in **Plan Mode**. Edits happen only in
-   **Agent Mode** within a scoped plan.
-6. **Validation evidence is mandatory.** A change is not "done" until
-   `reports/state/punch-run.json` (or an equivalent artifact) records the
-   verification run. See `docs/workflows/validation.md`.
-7. **Human approves Ship.** Agent Mode may stage, commit, and open a PR.
-   Merging, releasing, or pushing tags is a human action.
-8. **No premature abstraction.** Three similar lines beats a clever helper.
-9. **No duplication of AI guidance.** New instructions, prompts, or skills
-   must not restate content already in `docs/ai/` or `CLAUDE.md`. Link instead.
-10. **No secrets, no private URLs, no internal business context** in source,
-    docs, prompts, or test inputs. Use environment variables for any external
-    base URL.
-
-## Lifecycle entry points
-
-| Phase | Prompt | Mode |
-|---|---|---|
-| Understand | `punch-understand.prompt.md` | Ask |
-| Shape      | `punch-shape.prompt.md`      | Plan |
-| Build      | `punch-build-slice.prompt.md`| Agent |
-| Verify     | `punch-verify.prompt.md`     | Agent / Ask |
-| Review     | `punch-review.prompt.md`     | Ask |
-| Ship       | `punch-ship.prompt.md`       | Agent (mechanical only) |
-
-## When in doubt
-
-Read `CLAUDE.md`, then `docs/ai/operating-protocol.md`. Ask before editing files
-outside the scope produced in Shape.
->>>>>>> origin/main
+Refer to `docs/ai/operating-model.md`, `docs/ai/workflow.md`, and the
+instruction fragments under `.github/instructions/`. When proposing
+changes that touch multiple matrix rows, document the verification plan
+in the PR description.

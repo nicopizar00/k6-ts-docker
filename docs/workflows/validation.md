@@ -24,7 +24,7 @@ Schema (informal — produced by `src/punch/__main__.py`):
   ],
   "exitCode": 0,
   "passed": true,
-  "startedAt": "2026-06-08T12:00:00+00:00",
+  "startedAt": "<ISO-8601 UTC timestamp>",
   "durationSeconds": 78.3
 }
 ```
@@ -70,8 +70,10 @@ ls .github/prompts/*.prompt.md
 ls .github/skills/*/SKILL.md
 ```
 
-Then invoke the `punch-governance-audit` prompt. Its expected output is a
-findings list ending with "Governance is clean".
+Then invoke the Review phase (`punch-review` prompt), which activates
+the `punch-governance-review` skill when `.github/` or `docs/ai/` is
+touched. Its expected output is a findings list ending with "Governance
+is clean".
 
 ## How CI re-validates
 
