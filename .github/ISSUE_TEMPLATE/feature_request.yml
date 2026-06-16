@@ -1,0 +1,30 @@
+name: Feature request
+about: Suggest an improvement or new test scenario
+title: 'Feature: '
+labels: enhancement
+assignees: ''
+
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line summary of the feature
+      value: ''
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and use case
+      description: Why this feature is needed
+      value: ''
+  - type: textarea
+    id: success
+    attributes:
+      label: Acceptance criteria
+      description: How maintainers will validate this feature (tests, reports, thresholds)
+      value: ''
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      value: ''
