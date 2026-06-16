@@ -92,3 +92,8 @@ under [`.github/skills/`](.github/skills).
 - Track A roadmap: [`docs/roadmap-track-a-performance-gate.md`](docs/roadmap-track-a-performance-gate.md)
 - Track B roadmap: [`docs/roadmap-track-b-reference-app.md`](docs/roadmap-track-b-reference-app.md)
 - Contribution rules: [`CLAUDE.md`](CLAUDE.md)
+
+Contributing
+
+See CONTRIBUTING.md for contribution guidelines, local commands, and branch/PR conventions. Small, focused PRs are preferred; run `./bin/punch run smoke` to validate basic health before opening a PR.
+
