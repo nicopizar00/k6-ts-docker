@@ -56,7 +56,8 @@ After any test run, `reports/` contains:
 | `catalog-gate.json` | Compact JSON summary |
 | `order-journey-report.html` | HTML report — order create-read journey |
 | `order-journey.json` | Compact JSON summary |
-| `state/test-context.json` | Machine-readable journey metadata |
+| `state/punch-run.json` | Canonical run evidence — tests, exit codes, `passed` boolean (written by `bin/punch`) |
+| `state/test-context.json` | Journey-specific metadata written by `order-journey.ts` |
 | `logs/*.log` | Docker service logs (test-suite only) |
 
 ## Troubleshooting

@@ -21,7 +21,9 @@ reports/
 │   ├── punch-run.json             # canonical Punch evidence
 │   └── test-context.json          # journey metadata (POST → GET)
 └── logs/
-    ├── k6-{smoke,gate,journey}.log   # streamed k6 output (Punch only)
+    ├── k6-smoke.log                  # streamed k6 output (Punch only)
+    ├── k6-gate.log                   # streamed k6 output (Punch only)
+    ├── k6-journey.log                # streamed k6 output (Punch only)
     ├── gateway-api.log               # service log (--collect-logs only)
     ├── catalog-api.log
     ├── orders-api.log

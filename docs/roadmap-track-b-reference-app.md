@@ -35,7 +35,7 @@ A shared HTML report builder lives in `src/tests/support/report.ts`. All three t
 
 - **Catalog**: static, in-memory. Products are deterministic (`prod-001`, `prod-002`, `prod-003`).
 - **Orders**: created during the test, read back immediately. The journey validates consistency within the same VU iteration. No cross-VU state sharing is required.
-- **State file** (`reports/state/test-context.json`): written by `handleSummary` in `order-journey.ts`. Contains test run metadata, error rate, p95, and pass/fail signal. Intended for automation and artifact inspection — not for human-first consumption.
+- **Journey state file** (`reports/state/test-context.json`): written by `handleSummary` in `order-journey.ts`. Contains journey-specific metadata (created order id, error rate, p95, journey pass/fail signal). Used for journey artifact inspection — not the canonical run evidence (see `reports/state/punch-run.json` for that).
 - **Docker logs** (`reports/logs/*.log`): collected after the suite runs. Primary evidence for debugging failures.
 
 ## Compose strategy
