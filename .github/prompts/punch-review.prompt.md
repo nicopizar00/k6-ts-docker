@@ -16,7 +16,8 @@ diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
 
 Verify has passed. Before opening or merging a PR, audit the diff for
 correctness, simplicity, scope discipline, boundary compliance, and
-lifecycle hygiene.
+lifecycle hygiene. For a dedicated security pass on diffs touching
+`src/services/**`, env, or `docker/**`, invoke `@security-auditor`.
 
 ## Inputs
 

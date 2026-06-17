@@ -38,8 +38,9 @@ It does **not** own:
 This skill replaces the earlier `punch-ai-governance-audit` skill. The
 previous version enforced an absolute three-skill cap and a one-prompt-
 per-phase rule; this version enforces *boundary discipline* and *handoff
-hygiene* on a deliberately larger asset set (6 domain + N lifecycle skills,
-9 agents — 4 core personas + a 5-member builder family — and 11 prompts). The justification for lifting the cap lives in
+hygiene* on a deliberately larger asset set (6 domain + 13 lifecycle skills,
+10 agents — 4 core personas, a 5-member builder family, and the `security-auditor`
+specialist — and 11 prompts). The justification for lifting the cap lives in
 [`docs/ai/skill-registry.md`](../../../docs/ai/skill-registry.md) and
 [`docs/ai/prompt-registry.md`](../../../docs/ai/prompt-registry.md).
 

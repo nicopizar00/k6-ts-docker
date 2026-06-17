@@ -33,10 +33,13 @@ assumptions below:
   (Punch's existing convention was right); the 4 contract docs that said `mode:`
   were the drift and have been fixed. Any `mode:` recommendation elsewhere in
   these review docs is **obsolete** — read it as `agent:`.
-- Tasks G1.1–G1.4, plus the builder/Define/P4.0 work, are done in the working
-  tree (uncommitted). Phase 3 (absorb lifecycle skills) remains pending; the
-  builder agents and `punch-test` reference those skills as "activated once
-  absorbed".
+- **Committed across `492b170` → `1b4b747`.** Phase 1 (drift + governance), the
+  builder/Define/P4.0 restructure, and **all of Phase 3** (13 lifecycle skills —
+  Tier-A + the P3 set) are done and committed. **Phase 5 underway:** the
+  `security-auditor` specialist agent is added; upstream `code-reviewer` is folded
+  into `punch-reviewer` + `code-review-and-quality`; `test-engineer` and
+  `web-performance-auditor` are excluded. **Pending:** Phase 6 (fold/exclude
+  Tier-B/C) and Phase 7 (slim `AGENTS.md`, skill index, validator).
 
 ## How "Build" works for this absorption (important)
 

@@ -68,8 +68,11 @@ Available agents
 | punch-builder-data-harvest | Scope-bound builder (artifacts / reports) | Build |
 | punch-verifier           | Evidence collector     | Verify, Test |
 | punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
+| security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
 
 Definitions live in .github/agents/*.agent.md.
+
+**Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas + builder family; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
 
 Available skills
 
