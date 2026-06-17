@@ -77,11 +77,16 @@ method, not the stack rules.
 | [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-governance-review` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
 | [`code-simplification`](../../.github/skills/code-simplification/SKILL.md) | Reduce complexity without changing behavior (Chesterton's Fence) | Review simplicity axis + Build Rule 0 | `.github/skills/code-simplification/SKILL.md` |
 | [`git-workflow-and-versioning`](../../.github/skills/git-workflow-and-versioning/SKILL.md) | Atomic commits, short-lived branches, conventional messages | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md), `punch-reviewer` | `.github/skills/git-workflow-and-versioning/SKILL.md` |
+| [`documentation-and-adrs`](../../.github/skills/documentation-and-adrs/SKILL.md) | Record decisions (ADRs) + the why; keep docs/contracts current | decisions/contract changes; `documentation.instructions.md` | `.github/skills/documentation-and-adrs/SKILL.md` |
+| [`security-and-hardening`](../../.github/skills/security-and-hardening/SKILL.md) | Threat-model + harden Punch surfaces (gateway input, Postgres, secrets, supply chain) | Review security axis; future `security-auditor` | `.github/skills/security-and-hardening/SKILL.md` |
+| [`doubt-driven-development`](../../.github/skills/doubt-driven-development/SKILL.md) | Fresh-context adversarial review of non-trivial/high-stakes decisions | Plan + Build (on-demand) | `.github/skills/doubt-driven-development/SKILL.md` |
+| [`source-driven-development`](../../.github/skills/source-driven-development/SKILL.md) | Ground framework code (k6/Docker/Postgres) in official docs + cite | Build (on-demand) | `.github/skills/source-driven-development/SKILL.md` |
 
-More lifecycle skills (`documentation-and-adrs`, `security-and-hardening`,
-`doubt-driven-development`, `source-driven-development`, …) are admitted in
-[`agent-skills-absorption-plan.md`](agent-skills-absorption-plan.md) Phase 3 and
-registered in this table in the same PR that adds each one.
+Phase 3 of the [absorption plan](agent-skills-absorption-plan.md) (Tier-A + the P3
+set) is **complete** — every lifecycle skill above is absorbed and registered.
+Remaining upstream skills are Tier-B/C (`performance-optimization`,
+`observability-and-instrumentation`, `context-engineering`, …) — to be **folded into
+domain skills or excluded** in Phase 6, not added as standalone lifecycle skills.
 
 ## Why these are still deferred (not created)
 

@@ -20,6 +20,9 @@ activate (Build phase). Punch reshapes the generic loop:
   ([`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md)). Scope
   expansion → **stop, return to Plan**.
 - **Stack:** Docker-first, stdlib Python, k6 — never host `npm`/`k6`/`pip`.
+- **On demand:** [`source-driven-development`](../source-driven-development/SKILL.md)
+  when implementing against a k6/Docker/Postgres API; [`doubt-driven-development`](../doubt-driven-development/SKILL.md)
+  for non-trivial or irreversible decisions.
 
 ## Overview
 

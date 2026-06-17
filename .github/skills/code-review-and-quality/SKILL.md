@@ -14,9 +14,9 @@ This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt
 - **AI-config axis:** when the diff touches `.github/` or `docs/ai/`, defer to
   [`punch-governance-review`](../punch-governance-review/SKILL.md) (frontmatter,
   registries, boundary/handoff hygiene).
-- **Security axis:** deeper guidance lives in `security-and-hardening` (pending
-  absorption). Punch surfaces: gateway input, secrets/env, parameterized Postgres
-  queries in `orders` — there is **no web auth/XSS frontend**.
+- **Security axis:** deeper guidance in [`security-and-hardening`](../security-and-hardening/SKILL.md).
+  Punch surfaces: gateway input, secrets/env, parameterized Postgres queries in
+  `orders` — there is **no web auth/XSS frontend**.
 - **Performance axis:** for threshold/k6 semantics see
   [`punch-k6-performance`](../punch-k6-performance/SKILL.md).
 - **Boundaries:** check the diff against the ownership map
@@ -56,7 +56,7 @@ if imperfect. Don't block because it isn't how you'd have written it.
   artifacts (Critical Rule #5).
 - Postgres queries in `orders` parameterized (no string concatenation).
 - External/data sources treated as untrusted. (No web auth/XSS surface in Punch.)
-- Deeper pass: `security-and-hardening`.
+- Deeper pass: [`security-and-hardening`](../security-and-hardening/SKILL.md).
 
 ### 5. Performance
 - N+1 or unbounded queries (esp. `orders` → Postgres); missing pagination.
