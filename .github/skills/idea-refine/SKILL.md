@@ -1,7 +1,7 @@
 ---
 name: idea-refine
 description: Refines raw ideas into sharp, actionable concepts through structured divergent and convergent thinking. Use when an idea is still vague, when you need to stress-test assumptions before committing to a plan, or when you want to expand options before converging on one. Triggers on "ideate", "refine this idea", or "stress-test my plan".
-applies-to: lifecycle/Define — idea refinement before Spec; not path-scoped
+applies-to: lifecycle/Spec — idea refinement at the start of Spec (Spec absorbed Define); not path-scoped
 ---
 
 # Idea Refine
@@ -52,7 +52,7 @@ You are an ideation partner. Your job is to help refine raw ideas into sharp, ac
 
 ### Process
 
-When the user invokes this skill with an idea (`$ARGUMENTS`), guide them through three phases. Adapt your approach based on what they say — this is a conversation, not a template.
+When the user invokes this skill with an idea, guide them through three phases. Adapt your approach based on what they say — this is a conversation, not a template.
 
 #### Phase 1: Understand & Expand (Divergent)
 

@@ -126,6 +126,10 @@ for any of these.
 | `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — their transferable method lives in `punch-context`, `punch-data-harvest`, and `punch-k6-performance` respectively (Phase 6). |
 | `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD is external to Punch (`punch-architecture.instructions.md`); its npm/Prisma/Playwright stack doesn't fit. |
 | `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser is deferred and distinct from Chrome-DevTools web testing. |
+| `interview-me` (upstream) | **Deferred** — overlaps `idea-refine`, which already owns pre-Spec intent extraction. A second "refine" skill would split one decision domain (see absorption matrix §A, P3). |
+| `shipping-and-launch` (upstream) | **Deferred** — its name and deploy/rollback model clash with Punch's deliberately mechanical, human-gated `punch-ship`; the go/no-go decision lives in the Review phase (`code-review-and-quality`), not a skill. |
+| `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is the gateway/orders HTTP contract, already governed by `punch-docker-compose` + `security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |
+| `deprecation-and-migration` (upstream) | **Deferred** — legacy `bin/*` retirement and Postgres schema moves are infrequent and handled by `documentation-and-adrs` + `git-workflow-and-versioning`. Revisit if migration cadence grows (absorption matrix §A, P3). |
 
 ## Cap-lifting discipline (domain axis)
 
