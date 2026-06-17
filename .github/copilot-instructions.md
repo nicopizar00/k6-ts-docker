@@ -63,9 +63,9 @@ container contracts; it does not own GitHub Actions workflows.
 
 ## Engineering Principles
 
-6. **Lifecycle-driven work.** Every change goes through Define → Spec →
-   Plan → Build → Verify → Review → Ship. Use the matching prompt in
-   `.github/prompts/`.
+6. **Lifecycle-driven work.** Every change goes through Spec → Plan →
+   Build → Verify → Review → Ship (Spec absorbs the former Define step).
+   Use the matching prompt in `.github/prompts/`.
 7. **Mode discipline.** Read-only requests (audits, reviews,
    explanations) stay in **Ask Mode**. Planning stays in **Ask Mode**
    with Plan discipline. Edits happen only in **Agent Mode** within a
@@ -79,16 +79,18 @@ container contracts; it does not own GitHub Actions workflows.
 
 | Phase | Prompt | Mode | Agent |
 |---|---|---|---|
-| Define   | [`punch-define`](prompts/punch-define.prompt.md)               | Ask                      | `punch-architect-readonly` |
-| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask                      | `punch-architect-readonly` |
+| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect-readonly` |
 | Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
-| Build    | one of the 5 [`punch-build-*`](prompts/) prompts                | Agent (scoped)           | `punch-builder-scoped` |
-| Verify   | [`punch-verify`](prompts/punch-verify.prompt.md)               | Agent / Ask              | `punch-verifier` |
+| Build    | one of the 5 [`punch-build-*`](prompts/) prompts                | Agent (scoped)           | matching `punch-builder-*` |
+| Verify   | [`punch-verify`](prompts/punch-verify.prompt.md) / [`punch-test`](prompts/punch-test.prompt.md) | Agent / Ask | `punch-verifier` |
 | Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
 | Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
 
+Spec absorbs the former Define phase (it opens with the clarify/refine step).
 The Build prompts are: `punch-build-orchestrator`, `punch-build-compose`,
-`punch-build-k6-http`, `punch-build-k6-browser`, `punch-build-data-harvest`.
+`punch-build-k6-http`, `punch-build-k6-browser`, `punch-build-data-harvest`,
+each run by its own `punch-builder-*` agent. `punch-test` is the TDD/Prove-It
+companion to Verify.
 
 ## Change cascade (when X changes, update Y)
 

@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-builder-data-harvest
 description: Phase 4 — Build (data harvest / reporting). Implement ONE approved artifact, log, or reporting task within scope.
 ---
 
@@ -7,8 +7,8 @@ description: Phase 4 — Build (data harvest / reporting). Implement ONE approve
 
 **Lifecycle phase:** Build
 **Mode:** Agent (edits permitted, scoped to the Plan)
-**Owner skill:** [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
-**Agent:** [`punch-builder-scoped`](../agents/punch-builder-scoped.agent.md)
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) (the method) + [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
+**Agent:** [`punch-builder-data-harvest`](../agents/punch-builder-data-harvest.agent.md)
 
 ## Pre-conditions
 

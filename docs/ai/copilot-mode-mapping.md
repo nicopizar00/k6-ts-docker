@@ -19,34 +19,37 @@ Punch uses **Ask** and **Agent** as the primary modes and treats
 
 | Lifecycle phase | Copilot mode | Agent persona | Why |
 |---|---|---|---|
-| Define | Ask | `punch-architect-readonly` | Pure investigation. Edits would skip Spec. |
-| Spec   | Ask | `punch-architect-readonly` | The output is a spec doc, not edits. |
-| Plan   | Ask (Plan discipline) | `punch-planner` | The output is a plan, not edits. |
-| Build  | Agent | `punch-builder-scoped` | One scoped task with autonomous edit. |
+| Spec   | Ask | `punch-architect-readonly` | Clarify (former Define) + write the spec doc. |
+| Plan   | Ask (Plan discipline) | `punch-planner` | The output is a plan, not product edits. |
+| Build  | Agent | matching `punch-builder-*` | One scoped task with autonomous edit. |
 | Verify | Agent (run) or Ask (interpret) | `punch-verifier` | Running `./bin/punch` needs Agent; reading the result is Ask. |
 | Review | Ask | `punch-reviewer` | Read-only critique. |
 | Ship   | Agent (mechanical) | `punch-reviewer` | git + gh commands only — no logic edits. |
 
-## Prompt → mode contract
+## Prompt → agent contract
 
-Each prompt file under `.github/prompts/` declares its mode in
-frontmatter:
+Each prompt file under `.github/prompts/` declares its agent in frontmatter.
+VS Code prompt files use the **`agent:`** field (not `mode:`):
 
 ```yaml
 ---
-mode: ask     # or "edit" / "agent"
+agent: punch-architect-readonly   # or ask | agent | plan | <custom-agent-name>
 description: ...
 ---
 ```
 
-If the prompt says `mode: ask`, do not invoke it in Agent Mode.
+The bound agent's own `tools:` set is the real guarantee: read-only personas
+(`punch-architect-readonly`, `punch-planner`) carry `search` + doc-`edit` only;
+builders carry `edit`; verifier and reviewer carry `runCommands`. A read-only
+persona cannot edit product code regardless of how the prompt is invoked.
 
 ## Mode discipline rules
 
-1. **Never run a `mode: ask` prompt in Agent Mode.** It bypasses the
-   read-only guarantee.
-2. **Never run a `mode: agent` prompt without an approved Plan task.**
-   The Plan is the scope; without it, Agent edits are unbounded.
+1. **Read-only personas stay read-only.** `punch-architect-readonly`,
+   `punch-planner`, and the reviewer carry no code-`edit` tool, so they cannot
+   edit product code — preserving the phase's read-only guarantee.
+2. **Never run a builder prompt without an approved Plan task.** The Plan is
+   the scope; without it, Build edits are unbounded.
 3. **Build calls are one-task.** Each Build invocation executes **one**
    task ID from the Plan. Bundle multiple tasks only when the Plan
    explicitly authorizes the integration and the Build is one of

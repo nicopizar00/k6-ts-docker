@@ -1,6 +1,7 @@
 ---
 name: punch-reviewer
 description: Review and Ship persona. Read-only critique of the diff against the Plan, then mechanical commit/push/PR when approved. Never merges.
+tools: ['search', 'runCommands']
 user-invocable: false
 ---
 

@@ -5,7 +5,8 @@ For the **rules** about what code may look like, see `CLAUDE.md` and the
 path-specific instructions under `.github/instructions/`.
 
 (Previously `operating-protocol.md`. The rename is part of the redesigned
-lifecycle: Define → Spec → Plan → Build → Verify → Review → Ship.)
+lifecycle: Spec → Plan → Build → Verify → Review → Ship — where Spec absorbs
+the former Define clarify step.)
 
 ## Foundational principle
 
@@ -16,15 +17,14 @@ lifecycle: Define → Spec → Plan → Build → Verify → Review → Ship.)
 
 This is the single sentence the entire operating model is shaped around.
 
-## The seven phases
+## The six phases
 
 | Phase | Purpose | Mode | Edits allowed |
 |---|---|---|---|
-| Define   | Read code, trace flow, surface unknowns, name the problem | Ask | No |
-| Spec     | Translate the problem into goals, non-goals, and constraints | Ask | Only the spec doc, if requested |
+| Spec     | Clarify/refine the request (former Define), then translate it into goals, non-goals, and constraints | Ask | Only the spec doc, if requested |
 | Plan     | Produce scoped tasks with allowed / read-only / forbidden paths | Ask (Plan discipline) | Only the plan doc, if requested |
 | Build    | Implement one approved task within its declared scope | Agent (scoped) | Yes — only allowed paths |
-| Verify   | Run official Punch commands and confirm evidence | Agent / Ask | Only if patching the change |
+| Verify   | Run official Punch commands and confirm evidence (`punch-test` for RED→GREEN) | Agent / Ask | Only if patching the change |
 | Review   | Read-only critique of the diff against the plan | Ask | No |
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
@@ -41,7 +41,7 @@ interchangeable.
 |---|---|---|---|
 | **Instructions** | `.github/instructions/` (path-scoped) and `CLAUDE.md` (global) | "What rules apply when I touch this code?" | Long — change rarely. |
 | **Prompts** | `.github/prompts/` | "How do I run *this phase* of the lifecycle?" | Long — one per phase/domain. |
-| **Skills** | `.github/skills/<skill>/SKILL.md` | "What does an expert in *this domain* always do?" | Long — one per decision domain. |
+| **Skills** | `.github/skills/<skill>/SKILL.md` | "What does an expert in *this domain or method* always do?" | Long — domain skills (one per subsystem) + lifecycle skills (one per method). |
 | **Agents** | `.github/agents/` | "Which behavioral profile fits *this phase*?" | Long — one per persona. |
 
 Rule of thumb: **instructions** are passive (loaded whenever a file is
@@ -68,8 +68,7 @@ A change cannot advance until its gate is met.
 
 | Transition | Gate |
 |---|---|
-| Define → Spec | A clear, narrowed problem statement. |
-| Spec → Plan | Goals, non-goals, and acceptance criteria documented. |
+| Spec → Plan | A clear, narrowed problem statement (former Define gate), then goals, non-goals, and acceptance criteria documented. |
 | Plan → Build | Plan approved by a human; allowed paths listed. |
 | Build → Verify | A focused diff inside the plan's allowed paths. |
 | Verify → Review | `reports/state/punch-run.json` with `passed: true` (or an equivalent named artifact for non-test changes). |
@@ -82,8 +81,9 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 1. **Start with one phase.** Most teams under-do Plan and over-do Build.
    Begin by enforcing "no Build without Plan" for one sprint.
-2. **One agent per phase, not one agent per ticket.** The 5 agents in
-   `.github/agents/` are reusable across all work. Resist adding a sixth.
+2. **One persona per role, not one agent per ticket.** The agents in
+   `.github/agents/` (4 core personas + the 5-member builder family) are
+   reusable across all work. Resist adding a new core persona.
 3. **Promote prompts, not prose.** When you find yourself pasting the same
    guidance into chat, that's a missing prompt — file a small PR.
 4. **Audit before adding.** New skill / new agent / new prompt should answer:
@@ -91,21 +91,30 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 ## Avoiding agent sprawl
 
-This redesign deliberately moved from a 3-skill cap to a 6-skill / 5-agent
-setup. The new ceiling is enforced by *function*, not *count*:
+This redesign deliberately moved from a 3-skill cap to a 6-domain-skill /
+9-agent (4 core personas + a 5-member builder family) setup. The ceiling is
+enforced by *function*, not *count*:
 
-- Each **skill** must name a unique decision domain (architecture,
+- **Domain skills** must each name a unique Punch subsystem (context,
   orchestration, runtime, performance, artifacts, governance). Six is the
   full domain set; adding more should require killing one.
-- Each **agent** must name a unique behavioral persona (architect-readonly,
-  planner, scoped builder, verifier, reviewer). Five is the full persona
-  set; adding more should require killing one.
+- **Lifecycle skills** are a separate axis — engineering methods adapted from
+  the upstream `agent-skills` set (idea-refine, spec-driven-development, …).
+  Not subject to the domain cap, but each must name a unique method, avoid
+  duplicating a domain skill or path-instruction, and be registered when added.
+  A phase prompt *activates* a lifecycle skill; the phase does not become one.
+- Each **agent** is either a **core persona** (architect-readonly, planner,
+  verifier, reviewer) or a member of the **builder family** (one per Build
+  domain: orchestrator, compose, k6-http, k6-browser, data-harvest). A new
+  core persona should require killing one; the builder family tracks the five
+  Build domains, no more.
 - Each **prompt** is either a lifecycle phase or a build-domain
-  specialization. Eleven covers the matrix; new prompts must show why an
-  existing one cannot stretch.
+  specialization. New prompts must show why an existing one cannot stretch.
 
 The `punch-governance-review` skill checks new additions against this rule
-during Review.
+during Review. The skill axes and the absorption process are detailed in
+[`skill-registry.md`](skill-registry.md) and
+[`agent-skills-absorption-plan.md`](agent-skills-absorption-plan.md).
 
 ## Where this differs from a generic agent setup
 

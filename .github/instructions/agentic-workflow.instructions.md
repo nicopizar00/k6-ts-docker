@@ -13,7 +13,6 @@ Walkthrough: [`docs/ai/workflow.md`](../../docs/ai/workflow.md).
 
 | Phase | Mode | Edits | Reads |
 |---|---|---|---|
-| Define   | Ask | none | broad |
 | Spec     | Ask | spec doc only (if any) | broad |
 | Plan     | Ask (Plan discipline) | plan doc only (if any) | broad |
 | Build    | Agent (scoped) | allowed paths only | allowed + read-only |
@@ -21,10 +20,12 @@ Walkthrough: [`docs/ai/workflow.md`](../../docs/ai/workflow.md).
 | Review   | Ask | none | the diff + plan |
 | Ship     | Agent (mechanical only) | git + gh only | the diff |
 
+Spec absorbs the former Define phase (it opens with the clarify/refine step).
+
 ## Rules
 
-- **Define / Spec / Plan are read-heavy.** Their output is prose — a
-  problem statement, a spec doc, a plan. No code edits.
+- **Spec / Plan are read-heavy.** Their output is prose — Spec clarifies the
+  request (former Define) and writes the spec; Plan writes the plan. No code edits.
 - **Build is edit-limited.** Every Build prompt declares allowed /
   read-only / forbidden paths. The agent refuses to touch anything
   outside `allowed`.
@@ -46,11 +47,12 @@ Every artifact in `.github/` declares frontmatter:
 
 - **Instructions** (`*.instructions.md`): `applyTo:` glob, `description:`
   one-liner.
-- **Prompts** (`*.prompt.md`): `mode: ask|edit|agent`, `description:`
-  one-liner.
+- **Prompts** (`*.prompt.md`): `agent: ask|agent|plan|<custom-agent>`,
+  `description:` one-liner. (VS Code prompt files use `agent:`, not `mode:`.)
 - **Skills** (`SKILL.md`): `name:`, `description:`, `applies-to:`
   (free-form scope hint).
-- **Agents** (`*.agent.md`): `name:`, `description:`. `model:` optional.
+- **Agents** (`*.agent.md`): `name:`, `description:`, `tools:` (capability
+  scope). `model:` optional.
 
 The [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
 skill verifies this every time `.github/` or `docs/ai/` is touched.

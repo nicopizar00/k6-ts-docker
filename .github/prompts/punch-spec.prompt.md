@@ -1,29 +1,36 @@
 ---
 agent: punch-architect-readonly
-description: Phase 2 — Spec. Convert a Define note into goals, non-goals, constraints, and acceptance criteria.
+description: Spec — clarify and refine the request, then convert it into goals, non-goals, constraints, and acceptance criteria. Absorbs the former Define step.
 ---
 
 # Punch — Spec
 
-**Lifecycle phase:** Spec
-**Mode:** Read-only — output is a spec doc, no product edits (enforced by agent definition)
-**Owner skill:** [`punch-context`](../skills/punch-context/SKILL.md) +
-the matching domain skill (orchestration / compose / k6 / data-harvest)
+**Lifecycle phase:** Spec (the entry phase — it absorbs the former Define clarify step)
+**Mode:** Code read-only; may write the spec doc when persisted (per agent definition)
+**Owner skill:** [`spec-driven-development`](../skills/spec-driven-development/SKILL.md) (the method)
++ [`punch-context`](../skills/punch-context/SKILL.md)
++ [`idea-refine`](../skills/idea-refine/SKILL.md) (clarify step, when the idea is vague)
++ the matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)
 
 ## When to use
 
-You have a clear Define note and need to crystallize it into a spec
-before Plan begins partitioning work. Spec is the contract that Plan
-will be evaluated against.
+You have a request, issue, or symptom and need to turn it into a spec
+before Plan begins partitioning work. Spec is the entry phase: it first
+clarifies/refines the request (the former Define work), then crystallizes
+it into the contract Plan will be evaluated against.
 
 ## Inputs
 
-- The Define note (link or paste).
-- (Optional) the issue, ticket, or PR description that prompted the
-  request.
+- The request, issue, or symptom (one paragraph).
+- (Optional) a failing log, artifact path, branch name, or PR URL.
 
 ## What to do
+
+**Clarify first (the former Define step).** Trace the execution chain
+(source → bundle → image → run → reports) for the request. If the idea is
+still vague, run the [`idea-refine`](../skills/idea-refine/SKILL.md) skill to
+sharpen it into a clean problem statement. Then specify:
 
 1. Re-state the goal in one sentence — concrete, testable.
 2. Enumerate non-goals — what this work explicitly will not do.

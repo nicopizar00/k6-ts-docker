@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-builder-compose
 description: Phase 4 — Build (compose). Implement ONE approved Docker/Docker Compose task within scope.
 ---
 
@@ -7,8 +7,8 @@ description: Phase 4 — Build (compose). Implement ONE approved Docker/Docker C
 
 **Lifecycle phase:** Build
 **Mode:** Agent (edits permitted, scoped to the Plan)
-**Owner skill:** [`punch-docker-compose`](../skills/punch-docker-compose/SKILL.md)
-**Agent:** [`punch-builder-scoped`](../agents/punch-builder-scoped.agent.md)
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) (the method) + [`punch-docker-compose`](../skills/punch-docker-compose/SKILL.md)
+**Agent:** [`punch-builder-compose`](../agents/punch-builder-compose.agent.md)
 
 ## Pre-conditions
 

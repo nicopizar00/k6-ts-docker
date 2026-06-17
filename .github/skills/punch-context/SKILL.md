@@ -1,6 +1,7 @@
 ---
 name: punch-context
 description: Project-wide context primer for any AI assistant working in Punch — architecture, runtime, lifecycle, and scope discipline in one place.
+applies-to: project-wide primer; any agent, any phase; not path-scoped
 ---
 
 # Skill: punch-context
@@ -14,8 +15,8 @@ asking the wrong question.
 It owns:
 
 - A pointer-list to the canonical docs (no duplication of their content).
-- The current lifecycle (Define → Spec → Plan → Build → Verify → Review →
-  Ship) and where each phase's prompt lives.
+- The current lifecycle (Spec → Plan → Build → Verify → Review → Ship, where
+  Spec absorbs the former Define clarify step) and where each phase's prompt lives.
 - The ownership boundaries and the "scope discipline" principle.
 
 It does **not** own:

@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-builder-k6-http
 description: Phase 4 — Build (k6 HTTP). Implement ONE approved k6 HTTP performance test task within scope.
 ---
 
@@ -7,8 +7,8 @@ description: Phase 4 — Build (k6 HTTP). Implement ONE approved k6 HTTP perform
 
 **Lifecycle phase:** Build
 **Mode:** Agent (edits permitted, scoped to the Plan)
-**Owner skill:** [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
-**Agent:** [`punch-builder-scoped`](../agents/punch-builder-scoped.agent.md)
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
+**Agent:** [`punch-builder-k6-http`](../agents/punch-builder-k6-http.agent.md)
 
 ## Pre-conditions
 

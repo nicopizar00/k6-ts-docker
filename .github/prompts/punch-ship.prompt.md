@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-reviewer
 description: Phase 7 — Ship. Mechanical finalization; human approves merge.
 ---
 

@@ -49,25 +49,33 @@ Key Patterns and Conventions
 
 AI Operating Model
 
-Punch uses a seven-phase lifecycle for AI-assisted changes:
+Punch uses a six-phase lifecycle for AI-assisted changes:
 
-    Define → Spec → Plan → Build → Verify → Review → Ship
+    Spec → Plan → Build → Verify → Review → Ship
 
-Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
+Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build fans out to five domain prompts and five matching builder agents. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
 
 Available agents
 
 | Agent | Persona | Used by phases |
 |---|---|---|
-| punch-architect-readonly | Read-only investigator | Define, Spec |
+| punch-architect-readonly | Investigator (writes the spec doc) | Spec |
 | punch-planner            | Scoped-task planner    | Plan |
-| punch-builder-scoped     | Scope-bound builder    | Build (all 5 domains) |
-| punch-verifier           | Evidence collector     | Verify |
+| punch-builder-orchestrator | Scope-bound builder (Python orchestrator) | Build |
+| punch-builder-compose    | Scope-bound builder (Compose / runtime) | Build |
+| punch-builder-k6-http    | Scope-bound builder (k6 HTTP) | Build |
+| punch-builder-k6-browser | Scope-bound builder (k6 Browser — deferred) | Build |
+| punch-builder-data-harvest | Scope-bound builder (artifacts / reports) | Build |
+| punch-verifier           | Evidence collector     | Verify, Test |
 | punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
 
 Definitions live in .github/agents/*.agent.md.
 
 Available skills
+
+Skills come in two kinds: **domain skills** (one per Punch subsystem) and **lifecycle skills** (engineering methods adapted from the upstream agent-skills set; more arrive via the absorption plan in docs/ai/agent-skills-absorption-plan.md).
+
+Domain skills:
 
 | Skill | Decision domain |
 |---|---|
@@ -78,23 +86,28 @@ Available skills
 | punch-data-harvest         | Artifact paths, schemas, terminal-vs-file noise |
 | punch-governance-review    | AI configuration health |
 
-Definitions live in .github/skills/<skill>/SKILL.md.
+Lifecycle skills:
+
+| Skill | Method |
+|---|---|
+| idea-refine | Refine a raw idea before Spec (divergent → convergent) |
+
+Definitions live in .github/skills/<skill>/SKILL.md. The register is docs/ai/skill-registry.md.
 
 Lifecycle entry points
 
 | Phase | Prompt | Mode |
 |---|---|---|
-| Define | punch-define                                       | Ask |
-| Spec   | punch-spec                                         | Ask |
+| Spec   | punch-spec                                         | Ask (writes spec doc) |
 | Plan   | punch-plan                                         | Ask (Plan discipline) |
 | Build  | one of punch-build-orchestrator / -compose / -k6-http / -k6-browser / -data-harvest | Agent (scoped) |
-| Verify | punch-verify                                       | Agent / Ask |
+| Verify | punch-verify (+ punch-test, the TDD companion)     | Agent / Ask |
 | Review | punch-review                                       | Ask |
 | Ship   | punch-ship                                         | Agent (mechanical only) |
 
 Rules for AI assistants
 
-- Broad read before narrow write. Define/Spec/Plan read widely; Build edits narrowly.
+- Broad read before narrow write. Spec/Plan read widely; Build edits narrowly.
 - No Build without Plan. Every Build call must reference an approved Plan task ID with allowed/read-only/forbidden paths.
 - No scope expansion inside Build. If a Build needs to touch a file outside the task's allowed paths, stop and return to Plan.
 - Verify through Punch official commands. ./bin/punch doctor and ./bin/punch run <test> are the verification contract — not host-side docker or k6.

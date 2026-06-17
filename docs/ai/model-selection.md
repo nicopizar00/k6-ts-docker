@@ -8,15 +8,14 @@ phase* — adapt to whatever your team has access to.
 
 | Phase | Cognitive load | Suggested model class |
 |---|---|---|
-| Define   | High — reading wide, naming the real problem | Strongest reasoning model |
-| Spec     | High — translating ambiguity into constraints | Strongest reasoning model |
+| Spec     | High — clarifying the request (former Define), then translating ambiguity into constraints | Strongest reasoning model |
 | Plan     | High — partitioning work, predicting risks | Strongest reasoning model |
 | Build    | Medium — execution within a defined scope | Strong coding model |
 | Verify   | Low — running commands, reading results | Fast / cheap model is fine |
 | Review   | High — adversarial reading | Strongest reasoning model |
 | Ship     | Low — mechanical git/gh actions | Fast / cheap model is fine |
 
-## Why bias toward reasoning models in Define / Spec / Plan / Review
+## Why bias toward reasoning models in Spec / Plan / Review
 
 These phases drive every downstream decision. Cheaping out here is a false
 economy — a poorly-shaped Plan multiplies Build cost. The cost saved on a
@@ -68,9 +67,9 @@ trio as a unit. Mixing models inside a task tends to:
 
 ## Cost shape (rule of thumb)
 
-Across a complete lifecycle (Define → Ship) on a real task:
+Across a complete lifecycle (Spec → Ship) on a real task:
 
-- ~60% of *cognitive* effort sits in Define + Spec + Plan + Review.
+- ~60% of *cognitive* effort sits in Spec + Plan + Review.
 - ~30% sits in Build (often spread across multiple Build calls).
 - ~10% sits in Verify + Ship.
 
@@ -82,7 +81,7 @@ is the most common anti-pattern.
 
 For a small Python orchestrator task:
 
-- Define / Spec / Plan / Review: strong reasoning model.
+- Spec / Plan / Review: strong reasoning model.
 - Build (one `punch-build-orchestrator` call): strong coding model.
 - Verify (`./bin/punch doctor`, `./bin/punch run smoke`, read JSON):
   fast model.
@@ -91,7 +90,7 @@ For a small Python orchestrator task:
 For a multi-task integration (e.g. new test + new compose service + new
 orchestrator subcommand):
 
-- Define / Spec / Plan: strong reasoning model.
+- Spec / Plan: strong reasoning model.
 - Build O-01, Build C-01, Build K-01: strong coding model, **same model
   across all three Build calls** to avoid cross-slice drift.
 - Verify: fast model.

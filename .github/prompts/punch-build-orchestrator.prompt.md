@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-builder-orchestrator
 description: Phase 4 — Build (orchestrator). Implement ONE approved Python orchestration task within scope.
 ---
 
@@ -7,8 +7,8 @@ description: Phase 4 — Build (orchestrator). Implement ONE approved Python orc
 
 **Lifecycle phase:** Build
 **Mode:** Agent (edits permitted, scoped to the Plan)
-**Owner skill:** [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
-**Agent:** [`punch-builder-scoped`](../agents/punch-builder-scoped.agent.md)
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) (the method) + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
+**Agent:** [`punch-builder-orchestrator`](../agents/punch-builder-orchestrator.agent.md)
 
 ## Pre-conditions
 

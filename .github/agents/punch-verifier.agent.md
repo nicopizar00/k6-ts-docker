@@ -1,6 +1,7 @@
 ---
 name: punch-verifier
 description: Verify-phase persona. Runs official Punch commands, captures evidence, classifies failures. Does not fix anything — failures return to Plan.
+tools: ['search', 'runCommands']
 user-invocable: false
 ---
 
@@ -87,6 +88,7 @@ Minimal next action: <one sentence>
 ## Skill activation
 
 Always: [`punch-context`](../skills/punch-context/SKILL.md).
+Method (for `punch-test` RED→GREEN): [`test-driven-development`](../skills/test-driven-development/SKILL.md).
 Required:
 - [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
   — to interpret the orchestrator's evidence file.

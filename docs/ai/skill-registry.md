@@ -1,10 +1,17 @@
 # Skill Registry
 
-Punch supports **six** skills. Each entry below explains its
-responsibility and why it earns a separate skill. The "Deferred" section
-lists candidates that were intentionally **not** created.
+Punch skills sit on **two independent axes**:
 
-## Active skills
+- **Domain skills** — one per Punch *subsystem*. Capped at **six**; adding a
+  seventh requires killing one.
+- **Lifecycle skills** — engineering *methods* adapted from the upstream
+  `agent-skills` set. A separate axis, **not** subject to the domain cap;
+  admitted in batches by the [absorption plan](agent-skills-absorption-plan.md).
+
+Each entry below explains its responsibility and why it earns a separate skill.
+The "Deferred" section lists candidates that were intentionally **not** created.
+
+## Domain skills (six — capped)
 
 | Skill | Owns | Defined in |
 |---|---|---|
@@ -15,9 +22,9 @@ lists candidates that were intentionally **not** created.
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
 | [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-governance-review/SKILL.md` |
 
-## Why six, and what each adds
+### Why six, and what each adds
 
-Each skill names a unique **decision domain**:
+Each domain skill names a unique **decision domain**:
 
 | Skill | Decision domain |
 |---|---|
@@ -31,7 +38,7 @@ Each skill names a unique **decision domain**:
 These domains have different reviewers, different failure modes, and
 different cadences. Splitting them keeps each concern isolated.
 
-## Why the cap moved from 3 to 6
+### Why the cap moved from 3 to 6
 
 The previous registry capped skills at three (`punch-orchestration`,
 `punch-performance-k6`, `punch-ai-governance-audit`). The redesign
@@ -50,6 +57,29 @@ The skill renames (`orchestration` → `python-orchestration`,
 governance skill's remit from "cap enforcement" to "boundary discipline
 + handoff hygiene".
 
+## Lifecycle skills (method axis — not capped)
+
+Lifecycle skills encode reusable engineering *methods* adapted from the upstream
+`agent-skills` set. A phase prompt activates **one lifecycle skill** (the method)
+plus the relevant **domain skill** (the Punch specifics) — this is how
+skill-first execution coexists with Punch's phase/scope governance. Punch's
+path-instructions always win on stack specifics; the lifecycle skill supplies the
+method, not the stack rules.
+
+| Lifecycle skill | Method | Activated by | Defined in |
+|---|---|---|---|
+| [`idea-refine`](../../.github/skills/idea-refine/SKILL.md) | Refine a raw idea before Spec (divergent → convergent) | invoked within Spec (no standalone prompt) | `.github/skills/idea-refine/SKILL.md` |
+| [`spec-driven-development`](../../.github/skills/spec-driven-development/SKILL.md) | Spec before code — surface assumptions, reframe as success criteria | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | `.github/skills/spec-driven-development/SKILL.md` |
+| [`planning-and-task-breakdown`](../../.github/skills/planning-and-task-breakdown/SKILL.md) | Decompose a spec into scoped, verifiable tasks | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | `.github/skills/planning-and-task-breakdown/SKILL.md` |
+| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | the 5 `punch-build-*` prompts + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
+| [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build-k6-*` | `.github/skills/test-driven-development/SKILL.md` |
+
+More lifecycle skills (`debugging-and-error-recovery`, `code-review-and-quality`,
+`code-simplification`, `git-workflow-and-versioning`, `documentation-and-adrs`,
+`security-and-hardening`, …) are admitted in
+[`agent-skills-absorption-plan.md`](agent-skills-absorption-plan.md) Phase 3 and
+registered in this table in the same PR that adds each one.
+
 ## Why these are still deferred (not created)
 
 | Candidate | Why it does NOT exist as a skill |
@@ -57,22 +87,26 @@ governance skill's remit from "cap enforcement" to "boundary discipline
 | `punch-k6-http` and `punch-k6-browser` | Splitting `punch-k6-performance` again would fragment a single decision domain (performance semantics). HTTP and Browser live in one skill with sub-sections. |
 | `punch-monitoring` / `punch-injectables` | No real monitoring or fault-injection use case yet. Premature. The layer slot is reserved in `punch-boundaries.md`. |
 | `punch-documentation` | The `documentation.instructions.md` path file is enough. A skill would only restate it. |
-| `punch-(define|spec|plan|build|verify|review|ship)` | **Lifecycle phases are prompts and agents, not skills.** Creating them would invert the operating model. |
+| `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — we never create a `punch-<phase>` skill. A phase prompt may *activate* a lifecycle method skill (e.g. `punch-spec` → `spec-driven-development`); the phase stays a prompt+agent, the method is the skill. |
 
-## Cap-lifting discipline
+## Cap-lifting discipline (domain axis)
 
-The cap moved from 3 to 6 because the new skills each named a *unique
-decision domain* that was previously absorbed into another skill at the
-cost of clarity. To add a seventh skill, propose a Plan that:
+The domain cap moved from 3 to 6 because the new skills each named a *unique
+decision domain* that was previously absorbed into another skill at the cost of
+clarity. To add a **seventh domain** skill, propose a Plan that:
 
 1. Names the new skill and its decision domain.
-2. Lists which of the six existing skills could not absorb its
+2. Lists which of the six existing domain skills could not absorb its
    responsibility.
-3. Demonstrates a real, recurring decision the existing skills
-   mishandle.
+3. Demonstrates a real, recurring decision the existing skills mishandle.
 4. Updates this registry in the same PR.
 
 If steps 2–3 cannot be answered concretely, the answer is "don't add it".
 
+**Lifecycle skills** are governed by the absorption plan, not the domain cap, but
+each must (1) name a unique engineering method, (2) not duplicate a domain skill
+or a path-instruction, and (3) be registered in the Lifecycle-skills table in the
+same PR that adds it.
+
 The [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md)
-skill flags any new skill not in the active list during Review.
+skill flags any skill on disk without a row in either skills table during Review.

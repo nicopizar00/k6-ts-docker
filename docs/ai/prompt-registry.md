@@ -1,30 +1,32 @@
 # Prompt Registry
 
 Punch supports **eleven** prompts: one for each non-Build lifecycle phase
-plus five domain-specialized Build prompts. Each prompt has a single,
-well-defined entry point. See `.github/prompts/` for the prompt bodies.
+(Spec, Plan, Verify, Review, Ship), five domain-specialized Build prompts, and
+`punch-test` (the TDD/Prove-It companion to Verify). Spec absorbs the former
+Define phase. Each prompt has a single, well-defined entry point. See
+`.github/prompts/` for the prompt bodies.
 
 ## Active prompts
 
 | Prompt | Lifecycle phase | Mode | Agent | Use when |
 |---|---|---|---|---|
-| [`punch-define`](../../.github/prompts/punch-define.prompt.md) | Define | Ask | `punch-architect-readonly` | You need to translate a request into a clean problem statement. |
-| [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask | `punch-architect-readonly` | You have a Define note and need goals / non-goals / acceptance criteria. |
+| [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask (writes spec doc) | `punch-architect-readonly` | A request needs clarifying (former Define) then specifying into goals / non-goals / acceptance criteria. |
 | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | Plan | Ask (Plan discipline) | `punch-planner` | You have a Spec and need scoped tasks with allowed/read-only/forbidden paths. |
-| [`punch-build-orchestrator`](../../.github/prompts/punch-build-orchestrator.prompt.md) | Build | Agent | `punch-builder-scoped` | Approved Plan task touches `src/punch/**` or `bin/punch`. |
-| [`punch-build-compose`](../../.github/prompts/punch-build-compose.prompt.md) | Build | Agent | `punch-builder-scoped` | Approved Plan task touches `docker-compose.yml` or `docker/**`. |
-| [`punch-build-k6-http`](../../.github/prompts/punch-build-k6-http.prompt.md) | Build | Agent | `punch-builder-scoped` | Approved Plan task touches HTTP tests in `src/tests/`. |
-| [`punch-build-k6-browser`](../../.github/prompts/punch-build-k6-browser.prompt.md) | Build | Agent | `punch-builder-scoped` | Approved Plan task touches Browser tests (currently deferred). |
-| [`punch-build-data-harvest`](../../.github/prompts/punch-build-data-harvest.prompt.md) | Build | Agent | `punch-builder-scoped` | Approved Plan task changes an artifact, log, or report. |
+| [`punch-build-orchestrator`](../../.github/prompts/punch-build-orchestrator.prompt.md) | Build | Agent | `punch-builder-orchestrator` | Approved Plan task touches `src/punch/**` or `bin/punch`. |
+| [`punch-build-compose`](../../.github/prompts/punch-build-compose.prompt.md) | Build | Agent | `punch-builder-compose` | Approved Plan task touches `docker-compose.yml` or `docker/**`. |
+| [`punch-build-k6-http`](../../.github/prompts/punch-build-k6-http.prompt.md) | Build | Agent | `punch-builder-k6-http` | Approved Plan task touches HTTP tests in `src/tests/`. |
+| [`punch-build-k6-browser`](../../.github/prompts/punch-build-k6-browser.prompt.md) | Build | Agent | `punch-builder-k6-browser` | Approved Plan task touches Browser tests (currently deferred). |
+| [`punch-build-data-harvest`](../../.github/prompts/punch-build-data-harvest.prompt.md) | Build | Agent | `punch-builder-data-harvest` | Approved Plan task changes an artifact, log, or report. |
+| [`punch-test`](../../.github/prompts/punch-test.prompt.md) | Test (Verify companion) | Agent | `punch-verifier` | Prove a change RED→GREEN at the k6 check/threshold level via `./bin/punch`. |
 | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md) | Verify | Agent / Ask | `punch-verifier` | Build is complete; you need `reports/state/punch-run.json` evidence. |
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-reviewer` | Verify passed; audit the diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-reviewer` | Review approved; commit, push, open PR. **Never merges.** |
 
 ## One prompt per phase — except Build
 
-The Define, Spec, Plan, Verify, Review, and Ship phases each have a
+The Spec, Plan, Verify, Review, and Ship phases each have a
 single prompt. Splitting them by ticket type would multiply maintenance
-without adding value.
+without adding value. (`punch-test` is a thin Verify companion, not a separate phase.)
 
 Build is the exception: it has five domain prompts (orchestrator,
 compose, k6-http, k6-browser, data-harvest). Build is the only phase
@@ -38,18 +40,22 @@ Every prompt file under `.github/prompts/` must declare:
 
 ```yaml
 ---
-mode: ask | edit | agent
+agent: ask | agent | plan | <custom-agent-name>
 description: <one line, used by the Copilot UI>
 ---
 ```
 
+VS Code prompt files use the **`agent:`** field (not `mode:`) — it names a
+built-in mode or a custom agent under `.github/agents/`. Punch prompts bind to a
+specific custom agent (e.g. `agent: punch-builder-orchestrator`).
+
 And cover, in this order:
 
-1. **Lifecycle phase** — which of Define / Spec / Plan / Build / Verify
-   / Review / Ship this serves.
+1. **Lifecycle phase** — which of Spec / Plan / Build / Verify / Review /
+   Ship this serves (Spec absorbs the former Define).
 2. **Mode** — Ask, Agent (scoped), or Agent (mechanical only).
-3. **Owner skill(s)** — which of the six skills this prompt activates.
-4. **Agent** — which of the five agent personas runs this prompt.
+3. **Owner skill(s)** — which skill(s) this prompt activates (domain + lifecycle).
+4. **Agent** — which agent persona runs this prompt (4 core personas + the 5-member builder family).
 5. **When to use** — concrete trigger.
 6. **Pre-conditions** (Build prompts only) — Plan + task ID + human
    approval.

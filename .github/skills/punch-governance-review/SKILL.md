@@ -38,8 +38,8 @@ It does **not** own:
 This skill replaces the earlier `punch-ai-governance-audit` skill. The
 previous version enforced an absolute three-skill cap and a one-prompt-
 per-phase rule; this version enforces *boundary discipline* and *handoff
-hygiene* on a deliberately larger asset set (6 skills, 5 agents, 11
-prompts). The justification for lifting the cap lives in
+hygiene* on a deliberately larger asset set (6 domain + N lifecycle skills,
+9 agents — 4 core personas + a 5-member builder family — and 11 prompts). The justification for lifting the cap lives in
 [`docs/ai/skill-registry.md`](../../../docs/ai/skill-registry.md) and
 [`docs/ai/prompt-registry.md`](../../../docs/ai/prompt-registry.md).
 
@@ -58,7 +58,7 @@ prompts). The justification for lifting the cap lives in
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.
-   - Every `*.prompt.md` has `mode: ask|edit|agent` + `description:`.
+   - Every `*.prompt.md` has `agent: ask|agent|plan|<custom-agent>` + `description:` (VS Code prompt files use `agent:`, not `mode:`).
    - Every `SKILL.md` has `name:`, `description:`, `applies-to:`.
    - Every `*.agent.md` has `name:` + `description:`.
 2. **Asset inventory matches registries.**
@@ -73,8 +73,9 @@ prompts). The justification for lifting the cap lives in
      read-only, and forbidden paths.
    - Every agent file lists allowed and forbidden behavior.
 4. **Lifecycle alignment.**
-   - Each lifecycle phase (Define, Spec, Plan, Verify, Review, Ship) has
-     exactly one prompt.
+   - Each lifecycle phase (Spec, Plan, Verify, Review, Ship) has
+     exactly one prompt (Spec absorbs the former Define; `punch-test` is a
+     Verify companion).
    - Build has 5 domain prompts.
    - Every prompt's "Owner skill" line points at an existing skill.
    - Every prompt's "Agent" line points at an existing agent.
@@ -87,7 +88,7 @@ prompts). The justification for lifting the cap lives in
      `punch-architecture.instructions.md`, or
      `agentic-workflow.instructions.md`.
 7. **Mode discipline.**
-   - Prompts marked `mode: agent` declare an explicit scope (allowed
+   - Prompts bound to a builder agent declare an explicit scope (allowed
      paths from a Plan, or named "mechanical only" purpose).
 8. **Scope discipline (diff-scoped audits only).**
    - For each file changed under a Build prompt's path, confirm it is in

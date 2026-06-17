@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: punch-builder-k6-browser
 description: Phase 4 — Build (k6 Browser). Implement ONE approved k6 Browser task within scope. CURRENTLY DEFERRED.
 ---
 
@@ -7,8 +7,8 @@ description: Phase 4 — Build (k6 Browser). Implement ONE approved k6 Browser t
 
 **Lifecycle phase:** Build
 **Mode:** Agent (edits permitted, scoped to the Plan)
-**Owner skill:** [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
-**Agent:** [`punch-builder-scoped`](../agents/punch-builder-scoped.agent.md)
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
+**Agent:** [`punch-builder-k6-browser`](../agents/punch-builder-k6-browser.agent.md)
 
 > **Status: deferred.** The reference k6 image does not ship Chromium and
 > the project has not approved the image-size / build-time / CI-cost
