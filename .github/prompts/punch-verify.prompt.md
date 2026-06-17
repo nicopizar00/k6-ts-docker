@@ -7,7 +7,8 @@ description: Phase 5 — Verify. Produce validation evidence by running official
 
 **Lifecycle phase:** Verify
 **Mode:** Agent (runs commands) or Ask (interprets existing artifacts)
-**Owner skill:** [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
+**Owner skill:** [`debugging-and-error-recovery`](../skills/debugging-and-error-recovery/SKILL.md) (failure-handling method)
++ [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
 + [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
 + [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
 **Agent:** [`punch-verifier`](../agents/punch-verifier.agent.md)

@@ -7,9 +7,9 @@ description: Phase 6 — Review. Read-only critique of the diff against the Plan
 
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
-**Owner skill:** [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
-when the diff touches `.github/` or `docs/ai/`; otherwise the matching
-domain skill
+**Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (the five-axis method);
+[`punch-governance-review`](../skills/punch-governance-review/SKILL.md) when the
+diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
 
 ## When to use

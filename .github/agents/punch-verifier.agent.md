@@ -88,7 +88,7 @@ Minimal next action: <one sentence>
 ## Skill activation
 
 Always: [`punch-context`](../skills/punch-context/SKILL.md).
-Method (for `punch-test` RED→GREEN): [`test-driven-development`](../skills/test-driven-development/SKILL.md).
+Methods: [`test-driven-development`](../skills/test-driven-development/SKILL.md) (`punch-test` RED→GREEN) + [`debugging-and-error-recovery`](../skills/debugging-and-error-recovery/SKILL.md) (failure triage).
 Required:
 - [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
   — to interpret the orchestrator's evidence file.

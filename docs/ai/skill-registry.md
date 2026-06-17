@@ -73,10 +73,12 @@ method, not the stack rules.
 | [`planning-and-task-breakdown`](../../.github/skills/planning-and-task-breakdown/SKILL.md) | Decompose a spec into scoped, verifiable tasks | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | `.github/skills/planning-and-task-breakdown/SKILL.md` |
 | [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | the 5 `punch-build-*` prompts + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
 | [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build-k6-*` | `.github/skills/test-driven-development/SKILL.md` |
+| [`debugging-and-error-recovery`](../../.github/skills/debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md), `punch-verifier` | `.github/skills/debugging-and-error-recovery/SKILL.md` |
+| [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-governance-review` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
 
-More lifecycle skills (`debugging-and-error-recovery`, `code-review-and-quality`,
-`code-simplification`, `git-workflow-and-versioning`, `documentation-and-adrs`,
-`security-and-hardening`, …) are admitted in
+More lifecycle skills (`code-simplification`, `git-workflow-and-versioning`,
+`documentation-and-adrs`, `security-and-hardening`, `doubt-driven-development`,
+`source-driven-development`, …) are admitted in
 [`agent-skills-absorption-plan.md`](agent-skills-absorption-plan.md) Phase 3 and
 registered in this table in the same PR that adds each one.
 
