@@ -98,7 +98,8 @@ Ship summary:
 ## Skill activation
 
 Always: [`punch-context`](../skills/punch-context/SKILL.md).
-Review method: [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md).
+Review method: [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (+ [`code-simplification`](../skills/code-simplification/SKILL.md) for simplicity).
+Ship method: [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md).
 Required when the diff touches the matching domain:
 - [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
   — for any change under `.github/` or `docs/ai/`.
