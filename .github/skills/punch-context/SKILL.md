@@ -1,7 +1,6 @@
 ---
 name: punch-context
 description: Project-wide context primer for any AI assistant working in Punch — architecture, runtime, lifecycle, and scope discipline in one place.
-applies-to: "**"
 ---
 
 # Skill: punch-context

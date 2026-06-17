@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 4 — Build (orchestrator). Implement ONE approved Python orchestration task within scope.
 ---
 

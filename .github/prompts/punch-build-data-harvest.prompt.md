@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 4 — Build (data harvest / reporting). Implement ONE approved artifact, log, or reporting task within scope.
 ---
 

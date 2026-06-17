@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 7 — Ship. Mechanical finalization; human approves merge.
 ---
 

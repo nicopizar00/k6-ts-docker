@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 4 — Build (compose). Implement ONE approved Docker/Docker Compose task within scope.
 ---
 

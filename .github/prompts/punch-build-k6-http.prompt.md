@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 4 — Build (k6 HTTP). Implement ONE approved k6 HTTP performance test task within scope.
 ---
 

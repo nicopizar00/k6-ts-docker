@@ -1,12 +1,12 @@
 ---
-mode: ask
+agent: punch-reviewer
 description: Phase 6 — Review. Read-only critique of the diff against the Plan before Ship.
 ---
 
 # Punch — Review
 
 **Lifecycle phase:** Review
-**Mode:** Ask (read-only — no edits permitted)
+**Mode:** Read-only — no product edits (enforced by agent definition)
 **Owner skill:** [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
 when the diff touches `.github/` or `docs/ai/`; otherwise the matching
 domain skill

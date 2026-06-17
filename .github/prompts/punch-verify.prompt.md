@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 5 — Verify. Produce validation evidence by running official Punch commands.
 ---
 

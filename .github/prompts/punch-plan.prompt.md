@@ -1,12 +1,12 @@
 ---
-mode: ask
+agent: punch-planner
 description: Phase 3 — Plan. Convert a Spec into scoped tasks with explicit allowed/read-only/forbidden paths.
 ---
 
 # Punch — Plan
 
 **Lifecycle phase:** Plan
-**Mode:** Ask (Plan discipline — output is a plan, not edits)
+**Mode:** Plan discipline — output is a plan, no product edits (enforced by agent definition)
 **Owner skill:** [`punch-context`](../skills/punch-context/SKILL.md) +
 the matching domain skill(s); on `.github/` changes,
 [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)

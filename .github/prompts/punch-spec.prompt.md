@@ -1,12 +1,12 @@
 ---
-mode: ask
+agent: punch-architect-readonly
 description: Phase 2 — Spec. Convert a Define note into goals, non-goals, constraints, and acceptance criteria.
 ---
 
 # Punch — Spec
 
 **Lifecycle phase:** Spec
-**Mode:** Ask (read-only — output is a spec doc, not edits)
+**Mode:** Read-only — output is a spec doc, no product edits (enforced by agent definition)
 **Owner skill:** [`punch-context`](../skills/punch-context/SKILL.md) +
 the matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)

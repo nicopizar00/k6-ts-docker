@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 description: Phase 4 — Build (k6 Browser). Implement ONE approved k6 Browser task within scope. CURRENTLY DEFERRED.
 ---
 

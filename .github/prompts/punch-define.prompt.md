@@ -1,12 +1,12 @@
 ---
-mode: ask
+agent: punch-architect-readonly
 description: Phase 1 — Define. Read broadly to translate a request into a clean problem statement.
 ---
 
 # Punch — Define
 
 **Lifecycle phase:** Define
-**Mode:** Ask (read-only — no edits permitted)
+**Mode:** Read-only — no product edits (enforced by agent definition)
 **Owner skill:** [`punch-context`](../skills/punch-context/SKILL.md) +
 the relevant domain skill picked at the end
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)

@@ -1,6 +1,7 @@
 ---
 name: punch-architect-readonly
 description: Read-only persona for the Define and Spec phases. Reads broadly across the repository, identifies layer ownership and risks, produces problem statements and specifications. Never edits product code.
+user-invocable: false
 ---
 
 # Agent: punch-architect-readonly
