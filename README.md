@@ -42,6 +42,7 @@ The suite runs against a small four-service reference app:
 | `smoke` | All services are reachable and healthy |
 | `catalog-gate` | p95 latency and error-rate thresholds on catalog reads |
 | `order-journey` | Create an order, read it back, validate consistency; writes a state file |
+| `bff-checkout-journey` | End-to-end BFF checkout journey against an external target; writes a state file |
 
 ## Execution chain
 
@@ -96,6 +97,7 @@ support the lifecycle.
 
 - Track A roadmap: [`docs/roadmap-track-a-performance-gate.md`](docs/roadmap-track-a-performance-gate.md)
 - Track B roadmap: [`docs/roadmap-track-b-reference-app.md`](docs/roadmap-track-b-reference-app.md)
+- [`docs/architecture/specs/bff-checkout-journey-implementation.md`](docs/architecture/specs/bff-checkout-journey-implementation.md)
 - Contribution rules: [`CLAUDE.md`](CLAUDE.md)
 
 ## Contributing

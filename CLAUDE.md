@@ -78,7 +78,7 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     │   ├── how-to-run.md                 # existing — run commands
     │   ├── architecture/
     │   │   └── punch-boundaries.md       # layered ownership map
-    │   ├── ai/                           # AI lifecycle docs
+    │   ├── ai/                           # AI lifecycle docs + agent-skills absorption review/plan
     │   │   ├── operating-model.md
     │   │   ├── workflow.md
     │   │   ├── scoped-build-policy.md
@@ -95,9 +95,9 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     └── .github/
         ├── copilot-instructions.md       # always-on global Copilot rules
         ├── instructions/                 # path-specific behavior rules
-        ├── prompts/                      # one prompt per phase + 5 Build prompts
-        ├── skills/                       # six behavioral skills
-        ├── agents/                       # five agent personas
+        ├── prompts/                      # phase prompts + 5 Build prompts + punch-test
+        ├── skills/                       # domain + lifecycle skills (docs/ai/skill-registry.md)
+        ├── agents/                       # agent personas (4 core + 5 builders + specialists)
         └── workflows/
             └── k6.yml
 
@@ -147,12 +147,14 @@ Python CLI reaches feature parity):
 - Read this file first, then `docs/ai/operating-model.md`,
   `docs/architecture.md`, `docs/architecture/punch-boundaries.md`,
   and `docs/ai-context.md`.
-- The operating model is **Define → Spec → Plan → Build → Verify →
-  Review → Ship**. Use the matching prompt in `.github/prompts/` and
-  stay in the declared mode (Ask vs Agent). Build is split into five
-  domain-specialized prompts (orchestrator, compose, k6-http,
-  k6-browser, data-harvest) — see
-  `docs/ai/scoped-build-policy.md`.
+- The operating model is **Spec → Plan → Build → Verify → Review →
+  Ship** (Spec absorbs the former Define clarify step). Use the matching
+  prompt in `.github/prompts/` and stay in the declared mode (Ask vs
+  Agent). Build is split into five domain-specialized prompts
+  (orchestrator, compose, k6-http, k6-browser, data-harvest) — see
+  `docs/ai/scoped-build-policy.md`. Each phase activates a lifecycle
+  method skill + a domain skill; the *which skill when* index is in
+  `docs/ai/skill-registry.md`.
 - Before adding files, dependencies, or abstractions, confirm they fit the
   execution chain and the structure above.
 - `src/services/` contains Node.js services for the reference application.

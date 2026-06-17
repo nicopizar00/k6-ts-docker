@@ -2,7 +2,7 @@
 name: punch-builder-k6-http
 description: Build-phase persona for k6 HTTP tests. Implements ONE approved Plan task in src/tests/*.ts (non-browser), scoped to allowed paths. Stops and returns to Plan on scope expansion.
 tools: ['edit', 'search']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-builder-k6-http

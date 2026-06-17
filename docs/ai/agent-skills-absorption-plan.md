@@ -42,8 +42,12 @@ assumptions below:
   into domain skills (`context-engineering`→`punch-context`,
   `observability-and-instrumentation`→`punch-data-harvest`,
   `performance-optimization`→`punch-k6-performance`); web/CI-only skills excluded
-  and recorded in `skill-registry.md`. **Pending: Phase 7** (slim `AGENTS.md`,
-  skill index, validator).
+  and recorded in `skill-registry.md`. **Phase 7 done** — `AGENTS.md` slimmed to a
+  pointer contract; a *which skill when* discovery index added to
+  `skill-registry.md` with a `CLAUDE.md` pointer; the upstream Node
+  `validate-skills.js` folded into `punch-governance-review` (no host Node).
+  **The absorption is complete.** (Phase 4 — slimming the phase-prompt *bodies* to
+  remove prompt↔skill duplication — remains optional.)
 
 ## How "Build" works for this absorption (important)
 

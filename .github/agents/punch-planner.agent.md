@@ -2,7 +2,7 @@
 name: punch-planner
 description: Plan-phase persona. Reads broadly, then produces scoped implementation tasks with explicit allowed/read-only/forbidden paths, validation commands, rollback notes, and human checkpoints. Never implements.
 tools: ['search', 'edit']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-planner

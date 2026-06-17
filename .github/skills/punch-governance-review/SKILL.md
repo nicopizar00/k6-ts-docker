@@ -44,6 +44,11 @@ specialist — and 11 prompts). The justification for lifting the cap lives in
 [`docs/ai/skill-registry.md`](../../../docs/ai/skill-registry.md) and
 [`docs/ai/prompt-registry.md`](../../../docs/ai/prompt-registry.md).
 
+It also **subsumes the upstream `scripts/validate-skills.js`** (a Node frontmatter
+validator): its checks — valid `name`/`description`, frontmatter completeness,
+registry parity — are covered by the audit procedure below and run with no host
+Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
+
 ## When to use
 
 - A PR touches `.github/` or `docs/ai/`.

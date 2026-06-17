@@ -2,7 +2,7 @@
 name: punch-builder-orchestrator
 description: Build-phase persona for the Python orchestrator. Implements ONE approved Plan task in src/punch/** or bin/punch, stdlib-only, scoped to allowed paths. Stops and returns to Plan on scope expansion.
 tools: ['edit', 'search']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-builder-orchestrator

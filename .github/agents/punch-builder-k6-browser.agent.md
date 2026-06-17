@@ -2,7 +2,7 @@
 name: punch-builder-k6-browser
 description: Build-phase persona for k6 Browser tests (currently deferred). Implements ONE approved Plan task in src/tests/browser-*.ts, scoped to allowed paths. Stops and returns to Plan on scope expansion.
 tools: ['edit', 'search']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-builder-k6-browser

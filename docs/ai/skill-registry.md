@@ -11,6 +11,31 @@ Punch skills sit on **two independent axes**:
 Each entry below explains its responsibility and why it earns a separate skill.
 The "Deferred" section lists candidates that were intentionally **not** created.
 
+## Skill discovery — which skill when
+
+Load the skill that matches the task: a **domain skill** for the subsystem, a
+**lifecycle skill** for the method. Multiple apply (a k6 change uses
+`punch-k6-performance` + `incremental-implementation` + `test-driven-development`).
+
+| You are… | Skill(s) |
+|---|---|
+| new to the repo | `punch-context` |
+| refining a vague idea | `idea-refine` |
+| writing a spec | `spec-driven-development` |
+| breaking a spec into tasks | `planning-and-task-breakdown` |
+| editing the orchestrator | `punch-python-orchestration` + `incremental-implementation` |
+| editing compose / Dockerfiles | `punch-docker-compose` + `incremental-implementation` |
+| writing / changing a k6 test | `punch-k6-performance` + `test-driven-development` + `incremental-implementation` |
+| changing an artifact / report | `punch-data-harvest` + `incremental-implementation` |
+| a run failed | `debugging-and-error-recovery` |
+| proving a fix RED→GREEN | `test-driven-development` |
+| reviewing a diff | `code-review-and-quality` (+ `code-simplification`, `security-and-hardening`) |
+| committing / shipping | `git-workflow-and-versioning` |
+| recording a decision (ADR) | `documentation-and-adrs` |
+| a high-stakes / irreversible decision | `doubt-driven-development` |
+| coding against a k6/Docker/Postgres API | `source-driven-development` |
+| auditing AI config | `punch-governance-review` |
+
 ## Domain skills (six — capped)
 
 | Skill | Owns | Defined in |

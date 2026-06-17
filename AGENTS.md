@@ -76,37 +76,13 @@ Definitions live in .github/agents/*.agent.md.
 
 Available skills
 
-Skills come in two kinds: **domain skills** (one per Punch subsystem) and **lifecycle skills** (engineering methods adapted from the upstream agent-skills set; more arrive via the absorption plan in docs/ai/agent-skills-absorption-plan.md).
+Skills come in two kinds: **domain skills** (one per Punch subsystem — context, orchestration, compose, k6-performance, data-harvest, governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review, simplification, git-workflow, docs/ADRs, security, doubt-driven, source-driven, idea-refine).
 
-Domain skills:
-
-| Skill | Decision domain |
-|---|---|
-| punch-context              | Project-wide primer for new agents |
-| punch-python-orchestration | The bin/punch CLI and subprocess control flow |
-| punch-docker-compose       | Compose service contracts and Dockerfiles |
-| punch-k6-performance       | k6 test conventions, thresholds, handleSummary |
-| punch-data-harvest         | Artifact paths, schemas, terminal-vs-file noise |
-| punch-governance-review    | AI configuration health |
-
-Lifecycle skills:
-
-| Skill | Method |
-|---|---|
-| idea-refine | Refine a raw idea before Spec (divergent → convergent) |
-
-Definitions live in .github/skills/<skill>/SKILL.md. The register is docs/ai/skill-registry.md.
+The authoritative register (all 19, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
 
 Lifecycle entry points
 
-| Phase | Prompt | Mode |
-|---|---|---|
-| Spec   | punch-spec                                         | Ask (writes spec doc) |
-| Plan   | punch-plan                                         | Ask (Plan discipline) |
-| Build  | one of punch-build-orchestrator / -compose / -k6-http / -k6-browser / -data-harvest | Agent (scoped) |
-| Verify | punch-verify (+ punch-test, the TDD companion)     | Agent / Ask |
-| Review | punch-review                                       | Ask |
-| Ship   | punch-ship                                         | Agent (mechanical only) |
+The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (11 prompts: spec, plan, build×5, test, verify, review, ship).
 
 Rules for AI assistants
 

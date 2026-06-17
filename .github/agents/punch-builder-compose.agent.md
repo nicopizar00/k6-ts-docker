@@ -2,7 +2,7 @@
 name: punch-builder-compose
 description: Build-phase persona for the Docker Compose runtime. Implements ONE approved Plan task in docker-compose.yml or docker/**, scoped to allowed paths. Stops and returns to Plan on scope expansion.
 tools: ['edit', 'search']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-builder-compose

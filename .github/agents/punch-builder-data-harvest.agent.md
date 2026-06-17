@@ -2,7 +2,7 @@
 name: punch-builder-data-harvest
 description: Build-phase persona for artifacts, logs, and reports. Implements ONE approved Plan task in src/tests/support/** or the reporting parts of src/punch/**, scoped to allowed paths. Stops and returns to Plan on scope expansion.
 tools: ['edit', 'search']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-builder-data-harvest

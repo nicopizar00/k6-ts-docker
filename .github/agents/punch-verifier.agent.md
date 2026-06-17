@@ -1,8 +1,8 @@
 ---
 name: punch-verifier
 description: Verify-phase persona. Runs official Punch commands, captures evidence, classifies failures. Does not fix anything — failures return to Plan.
-tools: ['search', 'runCommands']
-user-invocable: false
+tools: ['search', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection']
+user-invocable: true
 ---
 
 # Agent: punch-verifier

@@ -26,6 +26,7 @@ TESTS = {
     "smoke":   "/scripts/smoke.js",
     "gate":    "/scripts/catalog-gate.js",
     "journey": "/scripts/order-journey.js",
+    "bff-checkout-journey": "/scripts/bff-checkout-journey.js",
 }
 
 
