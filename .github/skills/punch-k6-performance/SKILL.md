@@ -88,6 +88,23 @@ the helper genuinely needs a third caller). Report:
 - **Browser is deferred.** Do not enable k6 Browser in built tests without
   a Plan that accepts the image-size / build-time / CI-cost trade.
 
+## Optimization method (folded from upstream `performance-optimization`)
+
+Punch's performance surface is **k6 HTTP load against the reference services** —
+not Core Web Vitals, React re-renders, or bundle size (no frontend). The
+transferable method:
+
+- **Measure before optimizing.** The threshold + the run *is* the measurement;
+  don't guess. No premature optimization.
+- **Loop: measure → identify the bottleneck → fix → re-run → guard.** The guard is
+  a threshold/check that fails if the regression returns.
+- **Backend bottlenecks that apply here:** N+1 or unbounded queries in `orders` →
+  Postgres; missing pagination on list endpoints; synchronous heavy work in a hot
+  path. Profile the slow path — don't relax the threshold (see
+  [`debugging-and-error-recovery`](../debugging-and-error-recovery/SKILL.md)).
+- **The threshold is the performance budget** and the regression gate — keep it
+  visible at the top of the test and meaningful.
+
 ## Why this is a separate skill
 
 Performance semantics (what "fast enough" means, what thresholds gate a

@@ -84,9 +84,11 @@ method, not the stack rules.
 
 Phase 3 of the [absorption plan](agent-skills-absorption-plan.md) (Tier-A + the P3
 set) is **complete** — every lifecycle skill above is absorbed and registered.
-Remaining upstream skills are Tier-B/C (`performance-optimization`,
-`observability-and-instrumentation`, `context-engineering`, …) — to be **folded into
-domain skills or excluded** in Phase 6, not added as standalone lifecycle skills.
+**Phase 6 folded** the Tier-B method skills into existing domain skills
+(`context-engineering`→`punch-context`, `observability-and-instrumentation`→`punch-data-harvest`,
+`performance-optimization`→`punch-k6-performance`) and **excluded** the web/CI-only
+skills — see *Deferred / excluded* below. No standalone lifecycle skill was added
+for any of these.
 
 ## Why these are still deferred (not created)
 
@@ -96,6 +98,9 @@ domain skills or excluded** in Phase 6, not added as standalone lifecycle skills
 | `punch-monitoring` / `punch-injectables` | No real monitoring or fault-injection use case yet. Premature. The layer slot is reserved in `punch-boundaries.md`. |
 | `punch-documentation` | The `documentation.instructions.md` path file is enough. A skill would only restate it. |
 | `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — we never create a `punch-<phase>` skill. A phase prompt may *activate* a lifecycle method skill (e.g. `punch-spec` → `spec-driven-development`); the phase stays a prompt+agent, the method is the skill. |
+| `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — their transferable method lives in `punch-context`, `punch-data-harvest`, and `punch-k6-performance` respectively (Phase 6). |
+| `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD is external to Punch (`punch-architecture.instructions.md`); its npm/Prisma/Playwright stack doesn't fit. |
+| `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser is deferred and distinct from Chrome-DevTools web testing. |
 
 ## Cap-lifting discipline (domain axis)
 

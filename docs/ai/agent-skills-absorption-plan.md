@@ -38,8 +38,12 @@ assumptions below:
   Tier-A + the P3 set) are done and committed. **Phase 5 underway:** the
   `security-auditor` specialist agent is added; upstream `code-reviewer` is folded
   into `punch-reviewer` + `code-review-and-quality`; `test-engineer` and
-  `web-performance-auditor` are excluded. **Pending:** Phase 6 (fold/exclude
-  Tier-B/C) and Phase 7 (slim `AGENTS.md`, skill index, validator).
+  `web-performance-auditor` are excluded. **Phase 6 done** — Tier-B methods folded
+  into domain skills (`context-engineering`→`punch-context`,
+  `observability-and-instrumentation`→`punch-data-harvest`,
+  `performance-optimization`→`punch-k6-performance`); web/CI-only skills excluded
+  and recorded in `skill-registry.md`. **Pending: Phase 7** (slim `AGENTS.md`,
+  skill index, validator).
 
 ## How "Build" works for this absorption (important)
 

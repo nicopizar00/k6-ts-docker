@@ -83,6 +83,23 @@ A focused diff under `src/tests/support/` and/or `src/punch/`. Report:
 - **State files are canonical.** `passed: true|false` in
   `reports/state/punch-run.json` is the verification gate.
 
+## Observability discipline (folded from upstream `observability-and-instrumentation`)
+
+Punch's reference services are a didactic demo, not a production system with
+on-call — so RED metrics, OpenTelemetry tracing, and symptom-based alerting are
+**out of scope**. The transferable discipline that *is* in scope:
+
+- **Instrument with a question in mind.** Before adding an artifact or log line,
+  name what question it answers (e.g. "did the gate's p95 hold?"). Telemetry
+  without a question is noise.
+- **Structured over prose where it helps.** Aggregates in the JSON summary, not
+  per-iteration dumps; a stable schema beats interpolated log strings.
+- **Never log secrets/tokens/URLs** into any artifact (the hard rule above).
+- **The run evidence is the telemetry.** `reports/state/punch-run.json` answers
+  "did it pass?"; `reports/logs/<service>.log` answers "why not?" — keep the split.
+
+For diagnosing a live failure, use [`debugging-and-error-recovery`](../debugging-and-error-recovery/SKILL.md).
+
 ## Why this is a separate skill
 
 Reporting is the contract surface between Punch and everyone downstream
