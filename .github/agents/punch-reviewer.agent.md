@@ -36,7 +36,7 @@ same constraint: do not introduce new logic or scope.
 
 - Read the diff and the Plan.
 - Read any file in the repo for context.
-- Activate [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
+- Activate [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
   when the diff touches `.github/` or `docs/ai/`.
 - Write a Review report to chat (or to the PR description if Ship is
   next).
@@ -101,6 +101,6 @@ Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.
 Review method: [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md), with [`code-simplification`](../skills/code-simplification/SKILL.md) (simplicity), [`security-and-hardening`](../skills/security-and-hardening/SKILL.md) (security axis), and [`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md) (doc check).
 Ship method: [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md).
 Required when the diff touches the matching domain:
-- [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
+- [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
   — for any change under `.github/` or `docs/ai/`.
 - The relevant domain skill for boundary verification.

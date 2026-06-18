@@ -79,6 +79,6 @@ For each task:
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Plan method: [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md).
 On demand for boundary verification:
-- [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
+- [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
   when the Plan touches `.github/` or `docs/ai/`.
 - The relevant domain skill for the task's layer.

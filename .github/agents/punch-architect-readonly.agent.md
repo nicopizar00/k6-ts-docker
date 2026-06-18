@@ -74,4 +74,4 @@ On demand (matched by topic):
 - Compose/runtime questions → `punch-compose-runtime`.
 - Test/perf questions → `punch-k6-testing`.
 - Reporting/artifact questions → `punch-data-harvest`.
-- AI configuration questions → `punch-governance-review`.
+- AI configuration questions → `punch-ai-governance`.
