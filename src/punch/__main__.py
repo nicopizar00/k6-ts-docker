@@ -261,7 +261,11 @@ def build_parser() -> argparse.ArgumentParser:
     init_p.add_argument("--write", action="store_true",
                         help="Persist the generated bootstrap artifacts to the output dir.")
     init_p.add_argument("--with-graphify", action="store_true",
-                        help="Run a lightweight Graphify availability check (never required).")
+                        help="Explicit opt-in marker for the lightweight Graphify "
+                             "availability check. Init always records Graphify "
+                             "file-readiness and never shells out to the CLI "
+                             "(dependency-free); this flag only annotates that the "
+                             "check was requested. Never required.")
     init_p.add_argument("--output", metavar="DIR", default=None,
                         help="Output dir for generated artifacts (default: docs/ai/governance/init).")
 

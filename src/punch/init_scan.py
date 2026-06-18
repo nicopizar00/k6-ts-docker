@@ -791,6 +791,15 @@ def render_graphify_readiness(r: ScanResult) -> str:
     lines = [
         "# graphify-readiness", "", GENERATED_BANNER, "",
         "Graphify is **optional** — `punch init` never fails when it is absent.", "",
+        f"_Availability check requested via `--with-graphify`: "
+        f"{'yes' if g['checked'] else 'no (file-readiness is still recorded below)'}._",
+        "",
+        "`punch init` records Graphify **file-readiness** (the paths below) on every "
+        "run and **never shells out** to the `graphify` CLI — that keeps init "
+        "dependency-free and Docker-First. `--with-graphify` is an explicit opt-in "
+        "marker for this lightweight check; building or refreshing an actual graph is "
+        "`/graphify` (see Suggested commands).",
+        "",
         "## Status", "",
         f"- CLI installed: {b(g['cli_installed'])}" + (f" (`{g['cli_path']}`)" if g['cli_path'] else ""),
         f"- `graphify-out/` exists: {b(g['graphify_out_exists'])}",
