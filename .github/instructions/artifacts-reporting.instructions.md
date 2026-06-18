@@ -56,4 +56,4 @@ the reporting/state code in `src/punch/`), the artifact directory
 
 ## Build prompt
 
-Use [`punch-build-data-harvest`](../prompts/punch-build-data-harvest.prompt.md).
+Use [`punch-build`](../prompts/punch-build.prompt.md) — the dispatcher routes data-harvest tasks to `punch-runtime-engineer`.

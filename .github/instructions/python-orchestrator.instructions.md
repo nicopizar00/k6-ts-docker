@@ -47,4 +47,4 @@ tests are deferred until the CLI grows beyond a small command set.
 
 ## Build prompt
 
-Use [`punch-build-orchestrator`](../prompts/punch-build-orchestrator.prompt.md).
+Use [`punch-build`](../prompts/punch-build.prompt.md) — the dispatcher routes orchestrator tasks to `punch-runtime-engineer`.

@@ -45,4 +45,4 @@ bundle to `docker/k6.Dockerfile` COPY step and ensure the compose
 
 ## Build prompt
 
-Use [`punch-build-compose`](../prompts/punch-build-compose.prompt.md).
+Use [`punch-build`](../prompts/punch-build.prompt.md) — the dispatcher routes Compose tasks to `punch-runtime-engineer`.
