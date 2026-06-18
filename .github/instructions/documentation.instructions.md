@@ -41,7 +41,8 @@ Scope: `README.md`, `CLAUDE.md`, and everything under `docs/`.
 
 ## Build prompt
 
-Doc-only changes typically use [`punch-build-data-harvest`](../prompts/punch-build-data-harvest.prompt.md)
-when they change an artifact contract, otherwise no Build prompt is
+Doc-only changes typically use [`punch-build`](../prompts/punch-build.prompt.md)
+(routed to `punch-runtime-engineer`) when they change an artifact contract,
+otherwise no Build prompt is
 needed — a doc edit can go straight from Plan to PR if it does not affect
 runtime behavior.

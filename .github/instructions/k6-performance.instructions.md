@@ -48,7 +48,7 @@ Applies to `src/tests/*.ts` that are **not** `browser-*.ts`.
 - File naming: `<feature>-<kind>.ts` where kind is `smoke`, `gate`, or
   `journey`. Bundle name in `dist/` mirrors the source name.
 - Use the `http` module from k6 (`import http from 'k6/http'`).
-- Build prompt: [`punch-build-k6-http`](../prompts/punch-build-k6-http.prompt.md).
+- Build prompt: [`punch-build`](../prompts/punch-build.prompt.md) (routes to `punch-performance-test-engineer`).
 
 ## Browser test rules
 
@@ -67,7 +67,7 @@ Applies to `src/tests/browser-*.ts` and `src/tests/browser-*.ts.example`.
   - Use browser-specific thresholds (`browser_web_vital_lcp`,
     `browser_web_vital_fid`, `browser_web_vital_cls`).
   - Reuse the same `handleSummary` evidence contract as HTTP tests.
-- Build prompt: [`punch-build-k6-browser`](../prompts/punch-build-k6-browser.prompt.md).
+- Build prompt: [`punch-build`](../prompts/punch-build.prompt.md) (routes to `punch-performance-test-engineer`; Browser still deferred).
 
 ## When this file activates
 
