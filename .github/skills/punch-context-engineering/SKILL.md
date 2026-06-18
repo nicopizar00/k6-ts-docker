@@ -117,7 +117,7 @@ whether it runs**. Not every sub-agent runs Graphify.
 3. **Rebuild / `graphify update`** only when the task is broad, architectural,
    cross-cutting, or prompt/agent/skill governance. Then widen the corpus to
    include live documentation, temporal spec/plan files, and other VS Code Copilot
-   outputs — and `.ai-ingest/` if present.
+   outputs.
 4. **Not the source of truth.** Graphify only orients; **source files validate,
    tests confirm.**
 5. **Single gate.** Punch decides when Context Engineering is needed; Context
