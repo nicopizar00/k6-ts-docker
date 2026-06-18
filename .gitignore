@@ -1,6 +1,8 @@
 dist/
 reports/
 graphify-out/
+# `punch init` first-wave bootstrap output — disposable; regenerate any time.
+docs/ai/governance/init/
 node_modules/
 __pycache__/
 *.pyc

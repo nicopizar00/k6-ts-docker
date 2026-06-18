@@ -51,7 +51,8 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     │   │       └── report.ts             # shared HTML report builder
     │   └── punch/                        # Python orchestrator (stdlib only)
     │       ├── __init__.py
-    │       └── __main__.py               # argparse CLI; streams docker compose
+    │       ├── __main__.py               # argparse CLI; streams docker compose
+    │       └── init_scan.py              # `punch init` bootstrap scanner / readiness mapper
     ├── dist/                             # bundled k6-ready JS (gitignored)
     ├── reports/                          # k6 output (gitignored)
     │   ├── state/                        # machine-readable state files
@@ -139,6 +140,11 @@ Anything not listed here needs justification before being added.
 Preferred entry point (Python orchestrator):
 
 - `./bin/punch doctor` — confirm host prerequisites.
+- `./bin/punch init` — one-time, non-destructive first-wave scan that maps the
+  repo's Copilot assets + docs readiness for Punch adoption (Punch = template
+  origin; resolves a local governance key). Dry-run by default; `--write` to
+  persist the disposable bootstrap reports under `docs/ai/governance/init/`. It
+  prepares the repo for `/document`; it does **not** reconcile docs.
 - `./bin/punch run smoke` — run health smoke test; results in `reports/`.
 - `./bin/punch run gate` — run catalog performance gate.
 - `./bin/punch run journey` — run order create-read journey.
