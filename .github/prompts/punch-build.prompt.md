@@ -100,29 +100,42 @@ without re-planning.
 
 ## Operating comms (enforced)
 
-Caveman is **enforced** for the whole Build phase — this prompt, the
-`punch-builder` dispatcher, and every engineer it dispatches. It runs the
-canonical Copilot skill ([`.agents/skills/caveman/`](../../.agents/skills/caveman/SKILL.md))
-through the Punch adapter
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). This is not
-optional in Build; it is the default operating mode for all assistant prose
-(implementation updates, sub-agent handoffs, post-evidence debug summaries,
-commit drafts).
+**Skill activation (Agent Skills logic).** Build is the phase where the `caveman`
+Agent Skill is **invoked by default** — alongside the Owner skills above. Activate
+it on entering Build: canonical install
+[`.agents/skills/caveman/`](../../.agents/skills/caveman/SKILL.md), Punch overlay
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Per the Agent
+Skills meta-skill (`using-agent-skills`), state the activation once, then let the
+skill's own persistence keep it on — no per-message re-invocation.
 
-- **Default mode: `full`** (`/caveman full`), applied to **every** message in
-  the Build phase. Drop to `/caveman lite` when prose must stay fully
-  sentence-formed, or `/caveman ultra` only on explicit low-risk request.
-  `stop caveman` / `normal mode` reverts.
-- Apply it **only after** the Build task is understood — never as a substitute
-  for reasoning.
-- **Never** compress code, commands, paths, Python orchestration details, Docker
-  Compose output, k6 output, JSON/YAML/CSV, logs, stack traces, errors, exit
-  codes, test evidence (`reports/state/punch-run.json`), acceptance criteria, or
-  risk notes — quote those verbatim. Caveman compresses prose **around** the
-  evidence, not the evidence.
-- **Priority:** Correctness > evidence > maintainability > brevity > Caveman
-  style. If brevity harms clarity, uncertainty, or risk explanation, **stop
-  Caveman and answer normally** (Auto-Clarity), then resume.
+**Default mode: `full` (recommended Caveman instructions).**
+
+> Respond terse like smart caveman. All technical substance stay. Only fluff die.
+> **Default: `full`.** Switch: `/caveman lite|full|ultra`.
+>
+> - Drop: articles (a/an/the), filler (just/really/basically), pleasantries,
+>   hedging. Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
+> - Pattern: `[thing] [action] [reason]. [next step].`
+> - Not: "Sure! I'd be happy to help you with that." — Yes: "Bug in auth
+>   middleware. Token expiry check use `<` not `<=`. Fix:"
+
+**Persistence (recommended Caveman instructions).** ACTIVE EVERY RESPONSE across
+the whole Build phase, the `punch-builder` dispatcher, and every engineer it
+dispatches. No revert after many turns; still active if unsure. Off only on
+`stop caveman` / `normal mode`.
+
+**Punch evidence overlay (overrides Caveman brevity).** Caveman compresses
+assistant **prose only**. **Never** compress code, commands, paths, Python
+orchestration details, Docker Compose output, k6 output, JSON/YAML/CSV, logs,
+stack traces, errors, exit codes, test evidence (`reports/state/punch-run.json`),
+acceptance criteria, or risk notes — quote those verbatim. Apply only **after**
+the task is understood, never as a substitute for reasoning. **Priority:**
+correctness > evidence > maintainability > brevity > Caveman style.
+
+**Auto-Clarity (stop conditions, recommended Caveman instructions).** Drop Caveman
+to normal prose for security warnings, irreversible actions, incomplete-evidence
+triage, architecture tradeoffs, or when compression risks a misread; resume after.
+Code / commits / PRs: write normal.
 
 Scope, modes, and stop conditions: the adapter SKILL.md and
 [ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md).
