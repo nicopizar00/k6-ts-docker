@@ -70,9 +70,9 @@ layer, in order (see `scoped-build-policy.md` § Cross-layer tasks):
 
 **Good (Punch integration slice — "add a new `cart` gate test"):**
 ```
-Task K-01: add src/tests/cart-gate.ts with thresholds + handleSummary   (punch-build-k6-http)
-Task C-01: expose the cart route in compose if a new service is needed   (punch-build-compose)
-Task O-01: wire `./bin/punch run cart` into the CLI                      (punch-build-orchestrator)
+Task K-01: add src/tests/cart-gate.ts with thresholds + handleSummary   (punch-build → performance-test-engineer)
+Task C-01: expose the cart route in compose if a new service is needed   (punch-build → runtime-engineer)
+Task O-01: wire `./bin/punch run cart` into the CLI                      (punch-build → runtime-engineer)
 ```
 Each task respects its own allowed/read-only/forbidden scope; Verify runs the
 whole suite, not just the new test.
