@@ -85,16 +85,16 @@ phases, approval-before-write, depth-1 delegation).
 |---|---|---|---|
 | Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect-readonly` |
 | Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
-| Build    | one of the 5 [`punch-build-*`](prompts/) prompts                | Agent (scoped)           | matching `punch-builder-*` |
+| Build    | [`punch-build`](prompts/punch-build.prompt.md)                  | Agent (scoped, via dispatch) | `punch-builder` → one engineer |
 | Verify   | [`punch-verify`](prompts/punch-verify.prompt.md) / [`punch-test`](prompts/punch-test.prompt.md) | Agent / Ask | `punch-verifier` |
 | Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
 | Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
 
 Spec absorbs the former Define phase (it opens with the clarify/refine step).
-The Build prompts are: `punch-build-orchestrator`, `punch-build-compose`,
-`punch-build-k6-http`, `punch-build-k6-browser`, `punch-build-data-harvest`,
-each run by its own `punch-builder-*` agent. `punch-test` is the TDD/Prove-It
-companion to Verify.
+Build is a single `punch-build` prompt bound to the `punch-builder` dispatcher,
+which classifies the approved Plan task and delegates (depth-1) to
+`punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
+(k6 + TS bundle). `punch-test` is the TDD/Prove-It companion to Verify.
 
 ## Change cascade (when X changes, update Y)
 

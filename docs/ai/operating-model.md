@@ -83,9 +83,10 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 1. **Start with one phase.** Most teams under-do Plan and over-do Build.
    Begin by enforcing "no Build without Plan" for one sprint.
 2. **One persona per role, not one agent per ticket.** The agents in
-   `.github/agents/` (4 core personas, the 5-member builder family, and
-   on-demand specialists like `security-auditor`) are reusable across all work.
-   Resist adding a new core persona without killing one.
+   `.github/agents/` (core personas, the `punch-builder` dispatcher + its two
+   engineers, and on-demand specialists like `security-auditor` and the
+   `punch-ai-governance` maintainer) are reusable across all work. Resist adding a
+   new core persona without killing one.
 3. **Promote prompts, not prose.** When you find yourself pasting the same
    guidance into chat, that's a missing prompt — file a small PR.
 4. **Audit before adding.** New skill / new agent / new prompt should answer:
@@ -93,9 +94,10 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 ## Avoiding agent sprawl
 
-This redesign deliberately moved from a 3-skill cap to a 6-domain-skill /
-10-agent (4 core personas + a 5-member builder family + the `security-auditor`
-specialist) setup. The ceiling is enforced by *function*, not *count*:
+This redesign deliberately moved from a 3-skill cap to a six-domain-skill setup
+with a small agent roster (core personas + the `punch-builder` dispatcher and its
+two engineers + the `security-auditor` and `punch-ai-governance` specialists). The
+ceiling is enforced by *function*, not *count*:
 
 - **Domain skills** must each name a unique Punch subsystem (context,
   orchestration, runtime, performance, artifacts, governance). Six is the
@@ -106,13 +108,14 @@ specialist) setup. The ceiling is enforced by *function*, not *count*:
   duplicating a domain skill or path-instruction, and be registered when added.
   A phase prompt *activates* a lifecycle skill; the phase does not become one.
 - Each **agent** is a **core persona** (architect-readonly, planner, verifier,
-  reviewer), a member of the **builder family** (one per Build domain:
-  orchestrator, compose, k6-http, k6-browser, data-harvest), or an on-demand
-  **specialist persona** (`security-auditor`). A new core persona should require
-  killing one; the builder family tracks the five Build domains; specialists
-  each name a unique on-demand review lens.
-- Each **prompt** is either a lifecycle phase or a build-domain
-  specialization. New prompts must show why an existing one cannot stretch.
+  reviewer), the **`punch-builder` dispatcher** or one of its two **engineers**
+  (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
+  domain, depth-1), or an on-demand **specialist persona** (`security-auditor`,
+  `punch-ai-governance`). A new core persona should require killing one;
+  specialists each name a unique on-demand lens.
+- Each **prompt** is a single lifecycle phase (Build's per-domain scope lives in
+  the engineers, not in extra prompts). New prompts must show why an existing one
+  cannot stretch.
 
 The `punch-ai-governance` skill checks new additions against this rule
 during Review. The skill axes and the absorption process are detailed in
