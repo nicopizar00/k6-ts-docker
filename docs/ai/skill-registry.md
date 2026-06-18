@@ -127,7 +127,7 @@ cross-reference) — refresh from upstream, never hand-edit.
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via the official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | Punch adapter over the canonical skill: **enforced default-on `full` in Build**, **privileged across all agents** for routine prose; never compresses technical evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Enforced in `/punch-build` + `/punch-test`: governance voice `ultra`, build/test execution sub-agents `wenyan`; privileged elsewhere. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -142,10 +142,10 @@ Copilot-scoped and Docker-First-minimal.
 | Field | Value |
 |---|---|
 | Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
-| Status | **enforced (default-on `full`) in Build** · **privileged across all agents** · never compresses evidence |
-| Scope | Build phase enforced (`punch-build` prompt + `punch-builder` + engineers); all `.github/agents/` privilege it (non-Build agents lead with normal prose for judgment-heavy work) |
+| Status | **enforced in `/punch-build` + `/punch-test`** (two tiers) · **privileged elsewhere** · never compresses evidence |
+| Scope | Build+Test enforced; governance voice (prompts + `punch-builder`) `ultra`, execution sub-agents (`punch-runtime-engineer`, `punch-performance-test-engineer`, `punch-verifier`) `wenyan`; all other agents privilege it (lead with normal prose for judgment-heavy work) |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
-| Default mode | **`full`** (allowed: `lite` / `full` / `ultra`; `stop caveman` reverts) |
+| Default mode | **`ultra`** governance / **`wenyan`** execution (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
 | Governed by | `punch-ai-governance` (refresh + drift) |
 | Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
 | Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · pristine snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) (gitignored local staging); canonical install in `.agents/skills/caveman/` |

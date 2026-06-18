@@ -1,4 +1,4 @@
-# ADR 0003 — Caveman for concise assistant-prose comms (Build-enforced, agent-privileged)
+# ADR 0003 — Caveman for concise assistant-prose comms (Build+Test enforced, agent-privileged)
 
 **Status:** Accepted (2026-06-18) · **revised 2026-06-18** (see *Revision* below —
 the canonical Copilot installer was run and the scope was broadened per owner
@@ -108,6 +108,26 @@ above is **superseded**:
   Docker-First execution chain is untouched. The canonical upstream skill
   (`.agents/skills/caveman/`) is adopted-upstream — exempt from authored-canon
   checks; the Punch adapter `punch-build-caveman` remains authored and checked.
+
+## Revision 2 (2026-06-18) — single-source + ultra/wenyan tiering + Test
+
+Per owner direction and the `/enhance` lean pass:
+
+- **Single source.** `.github/skills/punch-build-caveman/SKILL.md` is now the
+  **canonical** Caveman policy. The prompts, the 9 agents, and
+  `copilot-instructions.md` were collapsed to one-line pointers (the ~11-line block
+  was byte-for-byte duplicated across all 9 agents). The full rules — tiers, modes,
+  evidence list, Auto-Clarity — live only in the SKILL.
+- **Scope Build → Build + Test.** Caveman is now enforced in **both** `/punch-build`
+  and `/punch-test`; `/punch-test` gained an Operating-comms section.
+- **Two operating tiers.** Governance/orchestration voice (`punch-build` &
+  `punch-test` prompts + `punch-builder` dispatcher) defaults to **`ultra`**;
+  build/test **execution** sub-agents (`punch-runtime-engineer`,
+  `punch-performance-test-engineer`, `punch-verifier`) run **`wenyan`** (maximum
+  efficiency; `allowed_modes` now includes the `wenyan-lite|full|ultra` family).
+- **Unchanged invariants.** Evidence is never compressed (in any mode, including
+  `wenyan` — only the surrounding prose is terse/classical); Auto-Clarity stop
+  conditions hold; Critical Rules take precedence; the execution chain is untouched.
 
 ## Consequences
 

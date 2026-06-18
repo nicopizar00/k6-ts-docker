@@ -105,14 +105,6 @@ Required when the diff touches the matching domain:
   — for any change under `.github/` or `docs/ai/`.
 - The relevant domain skill for boundary verification.
 
-## Caveman comms (privileged)
+## Caveman comms
 
-This agent **privileges Caveman** for routine assistant prose
-([`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md); canonical Copilot skill
-`.agents/skills/caveman/`), but **leads with normal prose** for its judgment-heavy work
-(specs, plans, reviews, risk, governance, architecture, security). All capabilities,
-tools, scope, guards, and evidence rules above are **unchanged**. Caveman compresses
-**assistant prose only** — never compress code, commands, paths, logs, stack traces,
-errors, exit codes, k6 / Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`,
-acceptance criteria, or risk notes. Auto-Clarity: normal prose for security / irreversible /
-ambiguous / architecture-tradeoff content; `stop caveman` reverts. Modes: `/caveman lite|full|ultra`.
+Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

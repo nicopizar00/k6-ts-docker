@@ -85,15 +85,6 @@ Containerized bundle success + `./bin/punch run <test>` →
 - Orchestrator / Compose / harvest-contract need → return to `punch-builder` (→ runtime-engineer).
 - Scope expansion → return to Plan.
 
-## Caveman comms (enforced)
+## Caveman comms
 
-This agent operates in **Caveman `full` by default** during Build (enforced — see the
-[`punch-build` prompt](../prompts/punch-build.prompt.md#operating-comms-enforced) and
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md); canonical Copilot skill
-`.agents/skills/caveman/`). Caveman compresses **assistant prose only** — all
-capabilities, tools, scope, guards, and evidence rules above are **unchanged**. Never
-compress code, commands, paths, logs, stack traces, errors, exit codes, k6 / Docker
-Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, or
-risk notes — quote verbatim. Auto-Clarity: drop to normal prose for security warnings,
-irreversible actions, incomplete-evidence triage, or ambiguity; `stop caveman` reverts.
-Modes: `/caveman lite|full|ultra`.
+Caveman **`wenyan`** (build execution tier, enforced) — see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) for tiers/modes/evidence rules. Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

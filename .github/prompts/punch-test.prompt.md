@@ -57,3 +57,18 @@ passing run. Full end-to-end evidence is [`punch-verify`](punch-verify.prompt.md
 
 - Never run `docker run`/`docker compose` directly or k6 on the host — `./bin/punch` only.
 - Never edit source to make a test pass — authoring/fixing is a Build task.
+
+## Operating comms (enforced)
+
+Caveman is enforced for Test. Activate the `caveman` Agent Skill **once** on
+entering the phase (per `using-agent-skills`), then rely on its persistence:
+
+- **Governance tier** (this prompt + the `punch-verifier` judge): **`ultra`**.
+- **Execution tier** (the test-execution sub-agent path): **`wenyan`** — maximum
+  efficiency.
+- **Evidence is never compressed** — RED/GREEN output, commands, and
+  `reports/state/punch-run.json` values are quoted verbatim in any mode.
+
+Full policy (tiers, modes, evidence list, Auto-Clarity, priority order) lives in
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) +
+[ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md) — not restated here.

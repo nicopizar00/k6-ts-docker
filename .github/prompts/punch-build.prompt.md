@@ -9,7 +9,7 @@ description: Build — execute ONE approved Plan task. The punch-builder dispatc
 **Mode:** Agent (scoped, via dispatch)
 **Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + the task's domain skill
 **Agent:** [`punch-builder`](../agents/punch-builder.agent.md) → delegates to one engineer
-**Operating comms:** Caveman **enforced, default-on at `full`** for this entire prompt and every sub-agent it dispatches — see [Operating comms (enforced)](#operating-comms-enforced). Evidence is never compressed.
+**Operating comms:** Caveman enforced — `ultra` here, `wenyan` for the engineer sub-agents. See [Operating comms (enforced)](#operating-comms-enforced). Evidence never compressed.
 
 ## Pre-conditions
 
@@ -32,16 +32,14 @@ If any is missing, **stop** and return to Plan.
      [`punch-performance-test-engineer`](../agents/punch-performance-test-engineer.agent.md)
      (`punch-k6-testing`).
 2. Hand the engineer the goal, scope, constraints, expected output, and required
-   evidence (depth-1 — the engineer delegates to no one). The engineer inherits
-   the **enforced Caveman `full`** operating comms below.
-3. On return, consolidate the result, changed files, evidence, and next step —
-   in Caveman `full`, with all evidence quoted verbatim.
+   evidence (depth-1 — the engineer delegates to no one).
+3. On return, consolidate the result, changed files, evidence, and next step.
 
 ## Expected output
 
 Per the `punch-builder` evidence contract: **Result · Changed Files · Evidence ·
-Unresolved Assumptions · Recommended Next Step** — prose in Caveman `full`,
-evidence (paths, commands, run output, `reports/state/punch-run.json`) verbatim.
+Unresolved Assumptions · Recommended Next Step**. Evidence (paths, commands, run
+output, `reports/state/punch-run.json`) verbatim.
 
 ## Validation gate
 
@@ -100,42 +98,14 @@ without re-planning.
 
 ## Operating comms (enforced)
 
-**Skill activation (Agent Skills logic).** Build is the phase where the `caveman`
-Agent Skill is **invoked by default** — alongside the Owner skills above. Activate
-it on entering Build: canonical install
-[`.agents/skills/caveman/`](../../.agents/skills/caveman/SKILL.md), Punch overlay
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Per the Agent
-Skills meta-skill (`using-agent-skills`), state the activation once, then let the
-skill's own persistence keep it on — no per-message re-invocation.
+Caveman is enforced for Build. Activate the `caveman` Agent Skill **once** on
+entering the phase (per `using-agent-skills`), then rely on its persistence:
 
-**Default mode: `full` (recommended Caveman instructions).**
+- **Governance tier** (this prompt + the `punch-builder` dispatcher): **`ultra`**.
+- **Execution tier** (the engineer sub-agents): **`wenyan`** — maximum efficiency.
+- **Evidence is never compressed** — code, commands, paths, k6/Compose output,
+  JSON/YAML/CSV, `reports/state/punch-run.json` are quoted verbatim in any mode.
 
-> Respond terse like smart caveman. All technical substance stay. Only fluff die.
-> **Default: `full`.** Switch: `/caveman lite|full|ultra`.
->
-> - Drop: articles (a/an/the), filler (just/really/basically), pleasantries,
->   hedging. Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
-> - Pattern: `[thing] [action] [reason]. [next step].`
-> - Not: "Sure! I'd be happy to help you with that." — Yes: "Bug in auth
->   middleware. Token expiry check use `<` not `<=`. Fix:"
-
-**Persistence (recommended Caveman instructions).** ACTIVE EVERY RESPONSE across
-the whole Build phase, the `punch-builder` dispatcher, and every engineer it
-dispatches. No revert after many turns; still active if unsure. Off only on
-`stop caveman` / `normal mode`.
-
-**Punch evidence overlay (overrides Caveman brevity).** Caveman compresses
-assistant **prose only**. **Never** compress code, commands, paths, Python
-orchestration details, Docker Compose output, k6 output, JSON/YAML/CSV, logs,
-stack traces, errors, exit codes, test evidence (`reports/state/punch-run.json`),
-acceptance criteria, or risk notes — quote those verbatim. Apply only **after**
-the task is understood, never as a substitute for reasoning. **Priority:**
-correctness > evidence > maintainability > brevity > Caveman style.
-
-**Auto-Clarity (stop conditions, recommended Caveman instructions).** Drop Caveman
-to normal prose for security warnings, irreversible actions, incomplete-evidence
-triage, architecture tradeoffs, or when compression risks a misread; resume after.
-Code / commits / PRs: write normal.
-
-Scope, modes, and stop conditions: the adapter SKILL.md and
-[ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md).
+Full policy (tiers, modes, evidence list, Auto-Clarity, priority order) lives in
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) +
+[ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md) — not restated here.
