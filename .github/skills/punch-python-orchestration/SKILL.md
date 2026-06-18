@@ -29,7 +29,7 @@ It owns:
 
 It does **not** own:
 
-- Docker / container internals (see `punch-docker-compose`).
+- Docker / container internals (see `punch-compose-runtime`).
 - k6 thresholds or test logic (see `punch-k6-performance`).
 - HTML or JSON report shape (see `punch-data-harvest` and
   `src/tests/support/report.ts`).
