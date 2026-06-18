@@ -1,14 +1,14 @@
 ---
 name: incremental-implementation
 description: Delivers changes in thin vertical slices. Use in the Punch Build phase for any task touching more than one file or more than ~100 lines. The method is stack-neutral; Punch's scope contract and phase split (Build edits, Verify runs, Ship commits) override the generic loop.
-applies-to: lifecycle/Build — the method the punch-build-* prompts + builder agents activate; not path-scoped
+applies-to: lifecycle/Build — the method the punch-build prompt + builder agents activate; not path-scoped
 ---
 
 # Incremental Implementation
 
 ## In Punch
 
-This is the **method** the five `punch-build-*` prompts and their builder agents
+This is the **method** the `punch-build` prompt and its builder agents
 activate (Build phase). Punch reshapes the generic loop:
 
 - **Phase-distributed loop:** a builder **edits one scoped slice** (builders carry

@@ -16,6 +16,8 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+import socket
+from urllib.parse import urlparse
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REPORTS_DIR = REPO_ROOT / "reports"
@@ -106,9 +108,38 @@ def _compose_build() -> int:
 
 def _run_one(test: str) -> int:
     script = TESTS[test]
-    cmd = ["docker", "compose", "run", "--rm", "k6", "run", script]
+    cmd = ["docker", "compose", "run", "--rm"]
+    # forward any TARGET_ prefixed env vars into the container
+    for k in sorted(os.environ.keys()):
+        if k.startswith("TARGET_"):
+            cmd.extend(["-e", k])
+    cmd.extend(["k6", "run", script])
     log = LOGS_DIR / f"k6-{test}.log"
     return _stream(cmd, log_path=log)
+
+
+def _diagnose_target_connectivity() -> None:
+    """Attempt a best-effort TCP connect to TARGET_BASE_URL to help diagnosis.
+
+    This runs on the host (not inside the container) and is only advisory; it
+    does not change orchestration behavior but helps the operator understand
+    why a containerized k6 run might fail to reach a host-provided service.
+    """
+    target = os.environ.get("TARGET_BASE_URL")
+    if not target:
+        return
+    try:
+        p = urlparse(target)
+        host = p.hostname
+        port = p.port or (443 if p.scheme == "https" else 80)
+        print(f"[punch] diagnosing TARGET_BASE_URL reachability: {host}:{port}", flush=True)
+        try:
+            with socket.create_connection((host, port), timeout=2):
+                print(f"[punch] host reachable: {host}:{port}", flush=True)
+        except OSError as e:
+            print(f"[punch] host NOT reachable from host: {host}:{port} ({e})", flush=True)
+    except Exception as e:
+        print(f"[punch] could not parse TARGET_BASE_URL '{target}': {e}", flush=True)
 
 
 def _collect_service_logs() -> None:

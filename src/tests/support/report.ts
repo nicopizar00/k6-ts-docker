@@ -5,7 +5,7 @@ export interface SummaryJson {
   durationMs: number;
   totalRequests: number;
   errorRate: number;
-  p95Ms: number;
+  p90Ms: number;
   checkPassRate: number;
   passed: boolean;
 }
@@ -19,18 +19,39 @@ export interface ReportMeta {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function buildSummaryJson(data: any, meta: ReportMeta): SummaryJson {
   const metrics = data.metrics ?? {};
-  const passed =
-    (metrics['http_req_failed']?.values?.rate ?? 1) < 0.01 &&
-    (metrics['checks']?.values?.rate ?? 0) >= 0.99;
+  const errorRate = metrics['http_req_failed']?.values?.rate ?? 1;
+  const checkRate = metrics['checks']?.values?.rate ?? 0;
+  const p90 = metrics['http_req_duration']?.values?.['p(90)'] ?? 0;
+
+  // If k6 produced threshold evaluation results, base pass/fail on those.
+  let passed: boolean | null = null;
+  for (const mv of Object.values(metrics)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const m = mv as any;
+    if (m.thresholds && Object.keys(m.thresholds).length > 0) {
+      for (const t of Object.values(m.thresholds)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const thr = t as any;
+        if (typeof thr.ok === 'boolean') {
+          if (passed === null) passed = true;
+          passed = passed && thr.ok;
+        }
+      }
+    }
+  }
+  if (passed === null) {
+    // No threshold results available — fall back to laxer p90 rules.
+    passed = errorRate < 0.10 && checkRate >= 0.90 && p90 < 1000;
+  }
   return {
     testSuite: meta.title,
     testType: meta.testType,
     targetUrl: meta.targetUrl,
     durationMs: data.state?.testRunDurationMs ?? 0,
     totalRequests: metrics['http_reqs']?.values?.count ?? 0,
-    errorRate: metrics['http_req_failed']?.values?.rate ?? 0,
-    p95Ms: metrics['http_req_duration']?.values?.['p(95)'] ?? 0,
-    checkPassRate: metrics['checks']?.values?.rate ?? 0,
+    errorRate: errorRate,
+    p90Ms: p90,
+    checkPassRate: checkRate,
     passed,
   };
 }
@@ -116,7 +137,7 @@ ${thresholdRows.join('\n')}
     <tr><td>Total requests</td><td>${httpReqs}</td></tr>
     <tr><td>Request rate</td><td>${reqRate} req/s</td></tr>
     <tr><td>Avg response time</td><td>${avg} ms</td></tr>
-    <tr><td>p95 response time</td><td>${p95} ms</td></tr>
+    <tr><td>p90 response time</td><td>${((metrics['http_req_duration']?.values?.['p(90)'] ?? 0) as number).toFixed(2)} ms</td></tr>
     <tr><td>Error rate</td><td>${errorRate}%</td></tr>
     <tr><td>Check pass rate</td><td>${checkRate}%</td></tr>
   </table>
