@@ -2,7 +2,8 @@
 
 Build is the only phase that edits product code. To keep Build safe inside
 a multi-layer system (Python orchestrator + Compose + k6 + reporting), every
-Build prompt declares its scope as **three path lists**.
+Build task declares its scope as **three path lists**, carried by the engineer
+agent the `punch-builder` dispatcher routes it to.
 
 ## The three lists
 
@@ -12,9 +13,10 @@ Build prompt declares its scope as **three path lists**.
 3. **Forbidden paths** — Build must refuse to touch these. Touching one is
    a *scope expansion* and triggers the [stop-and-replan rule](#scope-expansion-process).
 
-Each Build prompt under `.github/prompts/punch-build-*.prompt.md` ships with
-defaults for these lists. The approved Plan can narrow or widen them, but
-never beyond the prompt's *forbidden* set.
+Each **engineer agent** (`punch-runtime-engineer`, `punch-performance-test-engineer`)
+ships with defaults for these lists; the single `punch-build` prompt + `punch-builder`
+dispatcher routes a task to the right one. The approved Plan can narrow or widen
+them, but never beyond the engineer's *forbidden* set.
 
 ## Human checkpoint
 
@@ -42,9 +44,12 @@ Unauthorized cross-layer edits cause the most regressions.
 
 ## Examples by build domain
 
+Each domain below is routed by `punch-builder` to the named engineer, which
+carries the scope table.
+
 ### Python orchestration task
 
-Use [`punch-build-orchestrator`](../../.github/prompts/punch-build-orchestrator.prompt.md).
+Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
 
 ```
 Allowed:
@@ -62,7 +67,7 @@ Forbidden:
 
 ### Docker Compose / runtime task
 
-Use [`punch-build-compose`](../../.github/prompts/punch-build-compose.prompt.md).
+Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
 
 ```
 Allowed:
@@ -79,7 +84,7 @@ Forbidden:
 
 ### k6 HTTP test task
 
-Use [`punch-build-k6-http`](../../.github/prompts/punch-build-k6-http.prompt.md).
+Routed to [`punch-performance-test-engineer`](../../.github/agents/punch-performance-test-engineer.agent.md).
 
 ```
 Allowed:
@@ -96,7 +101,7 @@ Forbidden:
 
 ### k6 Browser test task
 
-Use [`punch-build-k6-browser`](../../.github/prompts/punch-build-k6-browser.prompt.md).
+Routed to [`punch-performance-test-engineer`](../../.github/agents/punch-performance-test-engineer.agent.md).
 
 ```
 Allowed:
@@ -118,7 +123,7 @@ Forbidden:
 
 ### Data harvest / reporting task
 
-Use [`punch-build-data-harvest`](../../.github/prompts/punch-build-data-harvest.prompt.md).
+Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
 
 ```
 Allowed:
@@ -146,9 +151,10 @@ into compose, expose it via `bin/punch run X`"). These are **integration
 tasks** and require:
 
 - A single Plan that explicitly authorizes the cross-layer edit.
-- One Build prompt invocation per layer, in a fixed order (k6 → compose →
-  orchestrator typically), each respecting its own scope.
+- One `punch-build` invocation per layer, in a fixed order (k6 → compose →
+  orchestrator typically) — the dispatcher routes each to its engineer, each
+  respecting its own scope.
 - Verify runs the full suite, not just the new test.
 
 Never collapse an integration task into a single broad Build. The point of
-the per-layer prompts is keeping each layer's reviewer focused.
+per-domain engineers is keeping each layer's reviewer focused.
