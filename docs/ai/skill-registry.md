@@ -34,7 +34,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | recording a decision (ADR) | `documentation-and-adrs` |
 | a high-stakes / irreversible decision | `doubt-driven-development` |
 | coding against a k6/Docker/Postgres API | `source-driven-development` |
-| auditing AI config | `punch-governance-review` |
+| auditing AI config | `punch-ai-governance` |
 
 ## Domain skills (six — capped)
 
@@ -45,7 +45,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
 | [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
-| [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-governance-review/SKILL.md` |
+| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-ai-governance/SKILL.md` |
 
 ### Why six, and what each adds
 
@@ -58,7 +58,7 @@ Each domain skill names a unique **decision domain**:
 | `punch-compose-runtime` | "What is the runtime contract?" |
 | `punch-k6-testing` | "What does fast enough mean?" |
 | `punch-data-harvest` | "What artifacts does the run produce?" |
-| `punch-governance-review` | "Is the AI operating model itself healthy?" |
+| `punch-ai-governance` | "Is the AI operating model itself healthy?" |
 
 These domains have different reviewers, different failure modes, and
 different cadences. Splitting them keeps each concern isolated.
@@ -99,7 +99,7 @@ method, not the stack rules.
 | [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | the 5 `punch-build-*` prompts + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
 | [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build-k6-*` | `.github/skills/test-driven-development/SKILL.md` |
 | [`debugging-and-error-recovery`](../../.github/skills/debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md), `punch-verifier` | `.github/skills/debugging-and-error-recovery/SKILL.md` |
-| [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-governance-review` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
+| [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-ai-governance` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
 | [`code-simplification`](../../.github/skills/code-simplification/SKILL.md) | Reduce complexity without changing behavior (Chesterton's Fence) | Review simplicity axis + Build Rule 0 | `.github/skills/code-simplification/SKILL.md` |
 | [`git-workflow-and-versioning`](../../.github/skills/git-workflow-and-versioning/SKILL.md) | Atomic commits, short-lived branches, conventional messages | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md), `punch-reviewer` | `.github/skills/git-workflow-and-versioning/SKILL.md` |
 | [`documentation-and-adrs`](../../.github/skills/documentation-and-adrs/SKILL.md) | Record decisions (ADRs) + the why; keep docs/contracts current | decisions/contract changes; `documentation.instructions.md` | `.github/skills/documentation-and-adrs/SKILL.md` |
@@ -150,5 +150,5 @@ each must (1) name a unique engineering method, (2) not duplicate a domain skill
 or a path-instruction, and (3) be registered in the Lifecycle-skills table in the
 same PR that adds it.
 
-The [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md)
+The [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md)
 skill flags any skill on disk without a row in either skills table during Review.

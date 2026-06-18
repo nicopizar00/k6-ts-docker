@@ -66,7 +66,7 @@ And cover, in this order:
 11. **Validation gate** — what advances the change to the next phase.
 
 If a new prompt is proposed, the
-[`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md)
+[`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md)
 skill checks the phase / domain is not already covered and that the file
 follows this contract.
 
