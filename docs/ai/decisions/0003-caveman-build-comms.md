@@ -42,8 +42,8 @@ INSTALL.md's documented Copilot path (`npx -y github:JuliusBrussee/caveman --
 
 ## Decision
 
-Adopt Caveman as a **Build-only, opt-in prose adapter** — reuse the *style*, do
-**not** run the official installer:
+Adopt Caveman as a **Build-only, default-on prose adapter** — reuse the *style*,
+do **not** run the official installer:
 
 - **Authored adapter, scoped to Build.** A Punch-authored skill
   [`punch-build-caveman`](../../../.github/skills/punch-build-caveman/SKILL.md)
@@ -60,8 +60,10 @@ Adopt Caveman as a **Build-only, opt-in prose adapter** — reuse the *style*, d
   `.github/copilot-instructions.md` Critical Rules. The optional Copilot pointer
   is a clearly-marked **Build-only** section below the Critical Rules, not an
   always-on global rule.
-- **Default `lite`.** Allowed `lite` / `full` / `ultra`; `full`/`ultra` only on
-  explicit low-risk request.
+- **Default-on in Build at `full`.** Build runs Caveman by default at `full`;
+  allowed `lite` / `full` / `ultra`; `stop caveman` / `normal mode` reverts.
+  (Initial adoption defaulted to `lite`/opt-in; revised 2026-06-18 to default
+  `full` in Build per owner direction — evidence-preservation rules unchanged.)
 - **Evidence is sacred.** Caveman compresses assistant prose only. It never
   compresses or rewrites code, commands, paths, Python orchestration details,
   Docker Compose output, k6 output, JSON/YAML/CSV, logs, stack traces, errors,
@@ -81,5 +83,6 @@ Adopt Caveman as a **Build-only, opt-in prose adapter** — reuse the *style*, d
   change must be reconciled manually (see `.ai-upstream/caveman/UPSTREAM.md`
   *Updating*). Any Caveman activation **outside** Build, or any compression of
   technical evidence, is **drift** and a Review failure.
-- **Guardrail:** Caveman is never mandatory and never default-on. It is a Build
-  convenience only; other lifecycle phases answer in normal prose.
+- **Guardrail:** Caveman is **default-on in Build only**; it never activates in
+  Spec, Plan, Verify, Review, Ship, Governance, or architecture reasoning, and is
+  always overridable (`stop caveman`). Evidence is never compressed.

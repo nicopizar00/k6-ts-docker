@@ -1,13 +1,13 @@
 ---
 name: punch-build-caveman
-description: "Punch Build-scoped adapter of the upstream Caveman Skill. Use ONLY inside Build implementation work to make assistant PROSE concise (implementation updates, sub-agent handoffs, post-evidence debugging summaries, commit-message drafts). Never compresses code, commands, paths, logs, errors, k6/Compose output, or JSON/YAML/CSV. Default mode lite. Not active in Spec, Plan, Verify, Review, Ship, Governance, or architecture reasoning."
+description: "Punch Build-scoped adapter of the upstream Caveman Skill. Default-on inside Build implementation work to make assistant PROSE efficient (implementation updates, sub-agent handoffs, post-evidence debugging summaries, commit-message drafts). Never compresses code, commands, paths, logs, errors, k6/Compose output, or JSON/YAML/CSV. Default mode full. Not active in Spec, Plan, Verify, Review, Ship, Governance, or architecture reasoning."
 source: https://github.com/JuliusBrussee/caveman
 provenance: ../../.ai-upstream/caveman/UPSTREAM.md
 adr: ../../docs/ai/decisions/0003-caveman-build-comms.md
 scope: project
 type: external-upstream-skill-adapter
 punch_lifecycle_phase: build
-default_mode: lite
+default_mode: full
 allowed_modes: [lite, full, ultra]
 ---
 
@@ -79,9 +79,13 @@ Quote these verbatim. Compression applies to the explanatory prose around them.
 
 Invoke with `/caveman lite` · `/caveman full` · `/caveman ultra`.
 
-- **Default: `lite`** — drop filler/hedging, keep articles and full sentences.
-- Use `full` or `ultra` **only** when the user explicitly asks **and** the task
-  is low risk. Never default to `full`/`ultra`.
+- **Default: `full`** — Build runs Caveman on by default at `full` (drop
+  articles, fragments OK, short synonyms; no tool-call narration or decorative
+  tables).
+- Drop to **`lite`** (keep articles + full sentences) when prose must stay fully
+  sentence-formed; use **`ultra`** only on explicit low-risk request.
+- `stop caveman` / `normal mode` reverts to normal prose for the rest of the
+  session.
 
 ## Stop conditions (Auto-Clarity)
 

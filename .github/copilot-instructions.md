@@ -132,12 +132,12 @@ Host `graphify` is a scoped Rule-1 exception ([ADR 0002](../docs/ai/decisions/00
 
 ## Caveman (optional concise comms — Punch Build only)
 
-The [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md) adapter lets the
-**Build** phase compress assistant **prose** on request (`/caveman lite|full|ultra`,
-default `lite`). It is **opt-in, off by default, and never mandatory**. It does
-**not** apply to Spec, Plan, Verify, Review, Ship, Governance, documentation, or
-architecture reasoning unless the user explicitly asks — those keep normal prose.
-The Critical Rules above always take precedence.
+The [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md) adapter keeps the
+**Build** phase's assistant **prose** efficient. In Build it is **on by default
+at `full`** (`/caveman lite|full|ultra`; `stop caveman` reverts). It does **not**
+apply to Spec, Plan, Verify, Review, Ship, Governance, documentation, or
+architecture reasoning — those keep normal prose unless the user asks. The
+Critical Rules above always take precedence.
 
 Caveman compresses prose only. It must **never** compress, rewrite, summarize, or
 omit code, commands, file paths, Python orchestration details, Docker Compose
