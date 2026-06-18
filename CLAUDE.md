@@ -95,9 +95,9 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     └── .github/
         ├── copilot-instructions.md       # always-on global Copilot rules
         ├── instructions/                 # path-specific behavior rules
-        ├── prompts/                      # phase prompts + 5 Build prompts + punch-test
+        ├── prompts/                      # 8 lifecycle prompts (Spec→Ship + punch-test + punch-document)
         ├── skills/                       # domain + lifecycle skills (docs/ai/skill-registry.md)
-        ├── agents/                       # agent personas (4 core + 5 builders + specialists)
+        ├── agents/                       # agent personas (lifecycle + punch-builder dispatcher + 2 engineers + specialists)
         └── workflows/
             └── k6.yml
 
@@ -159,8 +159,9 @@ Python CLI reaches feature parity):
 - The operating model is **Spec → Plan → Build → Verify → Review →
   Ship** (Spec absorbs the former Define clarify step). Use the matching
   prompt in `.github/prompts/` and stay in the declared mode (Ask vs
-  Agent). Build is split into five domain-specialized prompts
-  (orchestrator, compose, k6-http, k6-browser, data-harvest) — see
+  Agent). Build is a single `punch-build` prompt; the `punch-builder`
+  dispatcher routes the approved task to `punch-runtime-engineer` or
+  `punch-performance-test-engineer` — see
   `docs/ai/scoped-build-policy.md`. Each phase activates a lifecycle
   method skill + a domain skill; the *which skill when* index is in
   `docs/ai/skill-registry.md`.

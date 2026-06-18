@@ -1,5 +1,9 @@
 # Plan: BFF Checkout Journey k6 Test
 
+> **Historical.** This plan predates the consolidation to a single `punch-build`
+> prompt + `punch-builder` dispatcher; the per-task Build-prompt reference below
+> was updated to the current model (see `docs/ai/prompt-registry.md`).
+
 ## Goal
 
 Implement the approved spec by adding a new HTTP k6 test that exercises an external containerized BFF checkout journey via `TARGET_BASE_URL`, using the repository’s existing Docker-first test framework.
@@ -27,7 +31,7 @@ Implement the approved spec by adding a new HTTP k6 test that exercises an exter
 - Rollback notes:
   - Remove the new test file or revert the diff if the run fails or the external API contract changes.
 - Human checkpoint: human approval required before Build.
-- Build prompt: `punch-build-k6-http`
+- Build prompt: `punch-build` (via `punch-performance-test-engineer`)
 
 ## Order of execution
 

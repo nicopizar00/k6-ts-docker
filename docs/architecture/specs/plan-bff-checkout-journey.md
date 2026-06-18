@@ -1,5 +1,9 @@
 # Plan: BFF Checkout Journey
 
+> **Historical.** This plan predates the consolidation to a single `punch-build`
+> prompt + `punch-builder` dispatcher; the per-task Build-prompt references below
+> were updated to the current model (see `docs/ai/prompt-registry.md`).
+
 ## Summary
 - Implement a runnable `bff-checkout-journey` test: source → bundle → image → run → reports.
 - Order: K-02 (bundle) → K-01 (test file already added) → O-01 (orchestrator wiring; already implemented).
@@ -22,7 +26,7 @@ Add runnable k6 journey test `bff-checkout-journey` so `./bin/punch run bff-chec
   - `./bin/punch run bff-checkout-journey`
 - Rollback notes: revert `package.json`/build changes
 - Human checkpoint: approval required before Build
-- Build prompt: `punch-build-k6-http`
+- Build prompt: `punch-build` (via `punch-performance-test-engineer`)
 
 ### K-01: k6 test file (implemented)
 - Task ID: K-01
@@ -34,7 +38,7 @@ Add runnable k6 journey test `bff-checkout-journey` so `./bin/punch run bff-chec
 - Validation commands: `./bin/punch run bff-checkout-journey`
 - Rollback: remove `src/tests/bff-checkout-journey.ts`
 - Human checkpoint: required
-- Build prompt: `punch-build-k6-http`
+- Build prompt: `punch-build` (via `punch-performance-test-engineer`)
 - Status: implemented (file present)
 
 ### O-01: Orchestrator wiring (implemented)
@@ -47,7 +51,7 @@ Add runnable k6 journey test `bff-checkout-journey` so `./bin/punch run bff-chec
 - Validation commands: `./bin/punch run bff-checkout-journey`
 - Rollback: revert `src/punch/__main__.py`
 - Human checkpoint: required
-- Build prompt: `punch-build-orchestrator`
+- Build prompt: `punch-build` (via `punch-runtime-engineer`)
 - Status: implemented
 
 ## Order of execution

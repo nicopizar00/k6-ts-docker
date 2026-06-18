@@ -77,11 +77,12 @@ GitHub Actions uploads all of these as the `performance-suite-reports` artifact.
 
 ## AI-assisted operating model
 
-This repo uses a seven-phase lifecycle for AI-assisted changes: **Define
-→ Spec → Plan → Build → Verify → Review → Ship**. Each non-Build phase
-has one prompt; Build has five domain-specialized prompts (orchestrator,
-compose, k6-http, k6-browser, data-harvest). Six skills and five agents
-support the lifecycle.
+This repo uses a six-phase lifecycle for AI-assisted changes: **Spec →
+Plan → Build → Verify → Review → Ship** (Spec absorbs the former Define
+step). Each phase has one prompt; Build is a single `punch-build` prompt
+whose `punch-builder` dispatcher routes to one of two domain engineers.
+Domain + lifecycle skills and the agent personas support the lifecycle —
+see the registries below for the live inventory.
 
 - Operating model: [`docs/ai/operating-model.md`](docs/ai/operating-model.md)
 - Lifecycle walkthrough: [`docs/ai/workflow.md`](docs/ai/workflow.md)
