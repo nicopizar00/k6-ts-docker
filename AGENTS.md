@@ -4,13 +4,15 @@ Project Overview
 
 k6-ts-docker is a didactic performance testing playground that bundles TypeScript k6 tests into Docker images and runs them against a small multi-service reference app via docker compose and GitHub Actions. The host requirements are only Docker and Python 3 (stdlib).
 
+The orchestrator is called **Punch** (`bin/punch`, `src/punch/`).
+
 Repository Structure
 
 - src/services/ : reference services (gateway, catalog, orders)
 - src/tests/ : k6 TypeScript test sources (smoke, gate, journey)
 - src/punch/  : Python stdlib-based orchestrator used by ./bin/punch
 - docker/    : Dockerfiles and postgres init SQL
-- .github/   : workflows, prompts, skills, and instructions
+- .github/   : workflows, prompts, skills, instructions, agents
 - dist/      : esbuild output (gitignored)
 - reports/   : run artifacts and validation state
 
@@ -37,13 +39,63 @@ Testing & Validation
 CI / Workflows
 
 - Primary workflow: .github/workflows/k6.yml — runs on push and pull_request to the default branch and validates artifact transfer between jobs
-- New AI setup workflow: .github/workflows/copilot-setup-steps.yml (created in this change) — helps contributors and Copilot-style agents prepare the repo environment
+- AI setup workflow: .github/workflows/copilot-setup-steps.yml — helps contributors and Copilot-style agents prepare the repo environment
 
 Key Patterns and Conventions
 
 - Docker First: all builds and tests run inside Docker; do not assume node or k6 on host
 - Python stdlib only for orchestration — no pip deps
 - Keep the execution chain: TypeScript -> esbuild (in Docker) -> k6 image -> run -> reports
+
+AI Operating Model
+
+Punch uses a six-phase lifecycle for AI-assisted changes:
+
+    Spec → Plan → Build → Verify → Review → Ship
+
+Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates (depth-1) to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`). The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
+
+Available agents
+
+| Agent | Persona | Used by phases |
+|---|---|---|
+| punch-architect-readonly | Investigator (writes the spec doc) | Spec |
+| punch-planner            | Scoped-task planner    | Plan |
+| punch-builder            | Build dispatcher (routes to one engineer) | Build |
+| punch-runtime-engineer   | Runtime engineer (Python orchestration / Compose / data harvest) | Build, Verify |
+| punch-performance-test-engineer | Performance engineer (k6 HTTP/Browser + TS bundle/lint) | Build, Verify |
+| punch-verifier           | Evidence collector     | Verify, Test |
+| punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
+| security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
+| punch-ai-governance      | AI-config maintainer (user-direct; graphify-only terminal per ADR 0002; never a sub-agent) | `@punch-ai-governance`, Review AI-config axis |
+
+Definitions live in .github/agents/*.agent.md.
+
+**Build delegation.** `punch-builder` lists exactly its two engineers in
+`agents:`; each engineer carries `agents: []` (depth-1, no recursion). The
+`punch-ai-governance` maintainer is user-direct (`disable-model-invocation: true`)
+and appears in no `agents:` allowlist.
+
+**Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
+
+Available skills
+
+Skills come in two kinds: **domain skills** (one per Punch subsystem — context, orchestration, compose, k6-performance, data-harvest, governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review, simplification, git-workflow, docs/ADRs, security, doubt-driven, source-driven, idea-refine).
+
+The authoritative register (all 19, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
+
+Lifecycle entry points
+
+The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (11 prompts: spec, plan, build×5, test, verify, review, ship).
+
+Rules for AI assistants
+
+- Broad read before narrow write. Spec/Plan read widely; Build edits narrowly.
+- No Build without Plan. Every Build call must reference an approved Plan task ID with allowed/read-only/forbidden paths.
+- No scope expansion inside Build. If a Build needs to touch a file outside the task's allowed paths, stop and return to Plan.
+- Verify through Punch official commands. ./bin/punch doctor and ./bin/punch run <test> are the verification contract — not host-side docker or k6.
+- Review before Ship. Ship is mechanical only (git/gh); it never introduces new logic.
+- Humans merge. Ship opens the PR; humans approve and merge.
 
 Adding a new test
 
@@ -57,4 +109,15 @@ Common Pitfalls
 - Editing dist/ directly: dist/ is generated by the build stage inside Docker — don't commit built bundles unless intentional
 - Host-side tooling: avoid adding host-side npm/k6/pip assumptions. Use ./bin/punch which shells out to docker compose
 
-Generated by ai-ready skill
+Caveman comms
+
+All agents privilege Caveman for concise assistant **prose** (canonical Copilot skill `.agents/skills/caveman/`, Punch adapter `.github/skills/punch-build-caveman/`). It is **enforced, default-on `full`** during Build (the `punch-builder` family); other agents privilege it for routine prose but **lead with normal prose** for judgment-heavy work and keep all their capabilities/constraints. Caveman compresses prose only — never code, commands, paths, logs, errors, exit codes, k6/Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, or risk notes. `/caveman lite|full|ultra`; `stop caveman` reverts. See ADR 0003.
+
+For deeper reading
+
+- CLAUDE.md — project rules and architectural constitution
+- docs/architecture/punch-boundaries.md — layered ownership map
+- docs/ai/operating-model.md — the lifecycle and asset taxonomy
+- docs/ai/workflow.md — lifecycle walkthrough with a worked example
+- docs/ai/scoped-build-policy.md — allowed/forbidden paths by Build domain
+- docs/ai/model-selection.md — which model class for which phase

@@ -1,6 +1,13 @@
 dist/
 reports/
+graphify-out/
 node_modules/
 __pycache__/
 *.pyc
 .python-version
+.copilot/
+
+# .ai-upstream/ is a LOCAL staging area: safe-copy upstream skills here, then
+# promote/adapt into .github/ (canon). Not version-controlled. See .ai-upstream/.gitkeep
+.ai-upstream/*
+!.ai-upstream/.gitkeep

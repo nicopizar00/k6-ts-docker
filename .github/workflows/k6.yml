@@ -29,14 +29,8 @@ jobs:
           mkdir -p reports/state reports/logs
           chmod -R 777 reports
 
-      - name: Run smoke test
-        run: docker compose run --rm k6 run /scripts/smoke.js
-
-      - name: Run catalog performance gate
-        run: docker compose run --rm k6 run /scripts/catalog-gate.js
-
-      - name: Run order create-read journey
-        run: docker compose run --rm k6 run /scripts/order-journey.js
+      - name: Run k6 suite via punch
+        run: ./bin/punch run all
 
       - name: Collect Docker logs
         if: always()
@@ -63,6 +57,7 @@ jobs:
           | Smoke | smoke-report.html · smoke.json |
           | Catalog gate | catalog-gate-report.html · catalog-gate.json |
           | Order journey | order-journey-report.html · order-journey.json · state/test-context.json |
+          | Run evidence | state/punch-run.json (written by `bin/punch`) |
           | Docker logs | logs/gateway-api.log · catalog-api.log · orders-api.log · postgres.log |
 
           Artifact: **performance-suite-reports**
@@ -94,6 +89,7 @@ jobs:
             reports/catalog-gate.json \
             reports/order-journey-report.html \
             reports/order-journey.json \
+            reports/state/punch-run.json \
             reports/state/test-context.json \
             reports/logs/gateway-api.log \
             reports/logs/catalog-api.log \
@@ -123,6 +119,7 @@ jobs:
           | catalog-gate-report.html | HTML report — catalog read performance gate |
           | order-journey-report.html | HTML report — order create-read journey |
           | smoke.json / catalog-gate.json / order-journey.json | Raw k6 metrics (line-delimited) |
-          | state/test-context.json | Serialized journey metadata for automation |
+          | state/punch-run.json | Canonical run evidence — tests, exit codes, `passed` boolean |
+          | state/test-context.json | Journey-specific metadata written by `order-journey.ts` |
           | logs/*.log | Docker service logs for debugging |
           EOF

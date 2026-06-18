@@ -9,6 +9,11 @@ const ORDERS_URL = __ENV.ORDERS_URL || 'http://orders-api:3002';
 export const options = {
   vus: 1,
   duration: '10s',
+  thresholds: {
+    http_req_failed: ['rate<0.60'],
+    http_req_duration: ['p(90)<2000'],
+    checks: ['rate>0.20'],
+  },
 };
 
 export default function () {

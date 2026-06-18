@@ -1,50 +1,197 @@
 # Skill Registry
 
-The MVP supports exactly **three** skills. Each entry below explains its
-responsibility, scope, and why it earns a separate skill. The "Deferred"
-section lists candidate skills that were intentionally **not** created.
+Punch skills sit on **two independent axes**:
 
-## Active skills
+- **Domain skills** — one per Punch *subsystem*. Capped at **six**; adding a
+  seventh requires killing one.
+- **Lifecycle skills** — engineering *methods* adapted from the upstream
+  `agent-skills` set. A separate axis, **not** subject to the domain cap;
+  admitted in batches by the [absorption plan](history/agent-skills-absorption-plan.md).
+
+Each entry below explains its responsibility and why it earns a separate skill.
+The "Deferred" section lists candidates that were intentionally **not** created.
+
+## Skill discovery — which skill when
+
+Load the skill that matches the task: a **domain skill** for the subsystem, a
+**lifecycle skill** for the method. Multiple apply (a k6 change uses
+`punch-k6-testing` + `incremental-implementation` + `test-driven-development`).
+
+| You are… | Skill(s) |
+|---|---|
+| new to the repo | `punch-context-engineering` |
+| routing a repo-understanding / cross-file / architecture / governance task (before picking the sub-agent) | `punch-context-engineering` (the Graphify gate) |
+| refining a vague idea | `idea-refine` |
+| writing a spec | `spec-driven-development` |
+| breaking a spec into tasks | `planning-and-task-breakdown` |
+| editing the orchestrator | `punch-python-orchestration` + `incremental-implementation` |
+| editing compose / Dockerfiles | `punch-compose-runtime` + `incremental-implementation` |
+| writing / changing a k6 test | `punch-k6-testing` + `test-driven-development` + `incremental-implementation` |
+| changing an artifact / report | `punch-data-harvest` + `incremental-implementation` |
+| a run failed | `debugging-and-error-recovery` |
+| proving a fix RED→GREEN | `test-driven-development` |
+| reviewing a diff | `code-review-and-quality` (+ `code-simplification`, `security-and-hardening`) |
+| committing / shipping | `git-workflow-and-versioning` |
+| recording a decision (ADR) | `documentation-and-adrs` |
+| a high-stakes / irreversible decision | `doubt-driven-development` |
+| coding against a k6/Docker/Postgres API | `source-driven-development` |
+| auditing AI config | `punch-ai-governance` |
+
+## Domain skills (six — capped)
 
 | Skill | Owns | Defined in |
 |---|---|---|
-| [`punch-orchestration`](../../.github/skills/punch-orchestration/SKILL.md) | The `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-orchestration/SKILL.md` |
-| [`punch-performance-k6`](../../.github/skills/punch-performance-k6/SKILL.md) | k6 test shape, thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-performance-k6/SKILL.md` |
-| [`punch-ai-governance-audit`](../../.github/skills/punch-ai-governance-audit/SKILL.md) | Frontmatter contracts, three-skill cap, lifecycle alignment, duplication and conflict detection | `.github/skills/punch-ai-governance-audit/SKILL.md` |
+| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; the lifecycle; the scope-discipline principle; the Graphify gate | `.github/skills/punch-context-engineering/SKILL.md` |
+| [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | The `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
+| [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
+| [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |
+| [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
+| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-ai-governance/SKILL.md` |
 
-## Why three and not more
+### Why six, and what each adds
 
-Each active skill represents a distinct **decision domain**:
+Each domain skill names a unique **decision domain**:
 
-- **Orchestration** decides *how the run happens*.
-- **Performance** decides *what "fast enough" means*.
-- **Governance** decides *whether the operating model itself is healthy*.
+| Skill | Decision domain |
+|---|---|
+| `punch-context-engineering` | "What primer does any agent need?" |
+| `punch-python-orchestration` | "How does the run happen?" |
+| `punch-compose-runtime` | "What is the runtime contract?" |
+| `punch-k6-testing` | "What does fast enough mean?" |
+| `punch-data-harvest` | "What artifacts does the run produce?" |
+| `punch-ai-governance` | "Is the AI operating model itself healthy?" |
 
 These domains have different reviewers, different failure modes, and
-different cadences. Splitting them isolates each concern. Splitting further
-would fragment a single decision domain into nominal sub-skills — added
-overhead without behavioral specialization.
+different cadences. Splitting them keeps each concern isolated.
 
-## Why these are deferred (not created)
+### Why the cap moved from 3 to 6
+
+The previous registry capped skills at three (`punch-orchestration`,
+`punch-performance-k6`, `punch-ai-governance-audit`). The redesign
+deliberately lifted that cap to admit three previously-deferred decision
+domains:
+
+| New skill | What it admits |
+|---|---|
+| `punch-context-engineering` | A common entry point so each Build prompt does not duplicate the "load this primer first" instruction. |
+| `punch-compose-runtime` | Compose contracts (service names, healthchecks, image pins) were previously implied in the path-instruction file but had no skill to activate during Build. The contract template makes the cost of Compose changes visible at Plan time. |
+| `punch-data-harvest` | Artifacts were previously owned half by `punch-orchestration` (state files) and half by `punch-performance-k6` (HTML/JSON). Centralizing the artifact *contract* in one skill keeps downstream consumers (CI, future automation) coherent. |
+
+The skill renames (`orchestration` → `python-orchestration`,
+`performance-k6` → `k6-performance`, `ai-governance-audit` →
+`governance-review`) align names with the spec and broaden the
+governance skill's remit from "cap enforcement" to "boundary discipline
++ handoff hygiene".
+
+## Lifecycle skills (method axis — not capped)
+
+Lifecycle skills encode reusable engineering *methods* adapted from the upstream
+`agent-skills` set. A phase prompt activates **one lifecycle skill** (the method)
+plus the relevant **domain skill** (the Punch specifics) — this is how
+skill-first execution coexists with Punch's phase/scope governance. Punch's
+path-instructions always win on stack specifics; the lifecycle skill supplies the
+method, not the stack rules.
+
+| Lifecycle skill | Method | Activated by | Defined in |
+|---|---|---|---|
+| [`idea-refine`](../../.github/skills/idea-refine/SKILL.md) | Refine a raw idea before Spec (divergent → convergent) | invoked within Spec (no standalone prompt) | `.github/skills/idea-refine/SKILL.md` |
+| [`spec-driven-development`](../../.github/skills/spec-driven-development/SKILL.md) | Spec before code — surface assumptions, reframe as success criteria | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | `.github/skills/spec-driven-development/SKILL.md` |
+| [`planning-and-task-breakdown`](../../.github/skills/planning-and-task-breakdown/SKILL.md) | Decompose a spec into scoped, verifiable tasks | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | `.github/skills/planning-and-task-breakdown/SKILL.md` |
+| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | [`punch-build`](../../.github/prompts/punch-build.prompt.md) + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
+| [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build` (via `punch-performance-test-engineer`) | `.github/skills/test-driven-development/SKILL.md` |
+| [`debugging-and-error-recovery`](../../.github/skills/debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md), `punch-verifier` | `.github/skills/debugging-and-error-recovery/SKILL.md` |
+| [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-ai-governance` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
+| [`code-simplification`](../../.github/skills/code-simplification/SKILL.md) | Reduce complexity without changing behavior (Chesterton's Fence) | Review simplicity axis + Build Rule 0 | `.github/skills/code-simplification/SKILL.md` |
+| [`git-workflow-and-versioning`](../../.github/skills/git-workflow-and-versioning/SKILL.md) | Atomic commits, short-lived branches, conventional messages | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md), `punch-reviewer` | `.github/skills/git-workflow-and-versioning/SKILL.md` |
+| [`documentation-and-adrs`](../../.github/skills/documentation-and-adrs/SKILL.md) | Record decisions (ADRs) + the why; keep docs/contracts current | decisions/contract changes; `documentation.instructions.md` | `.github/skills/documentation-and-adrs/SKILL.md` |
+| [`security-and-hardening`](../../.github/skills/security-and-hardening/SKILL.md) | Threat-model + harden Punch surfaces (gateway input, Postgres, secrets, supply chain) | Review security axis; future `security-auditor` | `.github/skills/security-and-hardening/SKILL.md` |
+| [`doubt-driven-development`](../../.github/skills/doubt-driven-development/SKILL.md) | Fresh-context adversarial review of non-trivial/high-stakes decisions | Plan + Build (on-demand) | `.github/skills/doubt-driven-development/SKILL.md` |
+| [`source-driven-development`](../../.github/skills/source-driven-development/SKILL.md) | Ground framework code (k6/Docker/Postgres) in official docs + cite | Build (on-demand) | `.github/skills/source-driven-development/SKILL.md` |
+
+Phase 3 of the [absorption plan](history/agent-skills-absorption-plan.md) (Tier-A + the P3
+set) is **complete** — every lifecycle skill above is absorbed and registered.
+**Phase 6 folded** the Tier-B method skills into existing domain skills
+(`context-engineering`→`punch-context-engineering`, `observability-and-instrumentation`→`punch-data-harvest`,
+`performance-optimization`→`punch-k6-testing`) and **excluded** the web/CI-only
+skills — see *Deferred / excluded* below. No standalone lifecycle skill was added
+for any of these.
+
+## Adopted upstream skills (tool axis)
+
+External skills reused **as-is** — neither a Punch domain nor a Punch method.
+Registered here for parity only; their content is upstream-maintained and **exempt
+from authored-canon checks** (frontmatter completeness, naming, duplication,
+cross-reference) — refresh from upstream, never hand-edit.
+
+| Skill | What it provides | Reused from | Defined in |
+|---|---|---|---|
+| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
+| `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via the official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Enforced in `/punch-build` + `/punch-test`: governance voice `ultra`, build/test execution sub-agents `wenyan`; privileged elsewhere. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+
+`graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
+Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+The canonical `.agents/skills/caveman/` install is upstream-maintained (adopted —
+exempt from authored-canon checks); the auxiliary upstream packs the default
+installer also fetched (`caveman-compress` with host Python scripts, `cavecrew`,
+`caveman-commit`/`-help`/`-review`/`-stats`) were **removed** to keep the install
+Copilot-scoped and Docker-First-minimal.
+
+### `punch-build-caveman` — governance metadata
+
+| Field | Value |
+|---|---|
+| Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
+| Status | **enforced in `/punch-build` + `/punch-test`** (two tiers) · **privileged elsewhere** · never compresses evidence |
+| Scope | Build+Test enforced; governance voice (prompts + `punch-builder`) `ultra`, execution sub-agents (`punch-runtime-engineer`, `punch-performance-test-engineer`, `punch-verifier`) `wenyan`; all other agents privilege it (lead with normal prose for judgment-heavy work) |
+| Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
+| Default mode | **`ultra`** governance / **`wenyan`** execution (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
+| Governed by | `punch-ai-governance` (refresh + drift) |
+| Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
+| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · pristine snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) (gitignored local staging); canonical install in `.agents/skills/caveman/` |
+| Install method | **official installer run, Copilot-scoped:** `curl -fsSL .../install.sh \| bash -s -- --only copilot --with-init`. Non-Copilot artifacts + auxiliary skill packs removed afterward (see [ADR 0003 Revision](decisions/0003-caveman-build-comms.md)) |
+| Files changed by installer | added `.agents/skills/caveman/` (kept); appended to `.github/copilot-instructions.md` + `AGENTS.md` (both reconciled by hand); created `.cursor`/`.windsurf`/`.clinerules`/`.opencode` + extra skill packs + `skills-lock.json` (all **removed**) |
+| Copilot instruction file edited manually | yes — the two duplicated caveman blocks merged into one canonical Copilot-scoped section *below* the Critical Rules (no Critical Rule altered) |
+
+The `punch-build-caveman` **adapter** is Punch-authored and therefore **subject**
+to the frontmatter / naming / duplication checks. The upstream `.agents/skills/caveman/`
+install and the pristine `.ai-upstream/caveman/` snapshot are upstream-maintained
+and **exempt** from those checks (refresh from upstream, never hand-edit).
+
+## Why these are still deferred (not created)
 
 | Candidate | Why it does NOT exist as a skill |
 |---|---|
-| `punch-python` | `punch-orchestration` already owns Python. A separate Python skill would duplicate the rules in `.github/instructions/python-orchestration.instructions.md`. |
-| `punch-docker` | Docker semantics are owned by `docker-compose.yml` and the per-service Dockerfiles. Path instructions cover the rules. No behavioral specialization that orchestration or performance lacks. |
-| `punch-k6-http` and `punch-k6-browser` | Both are k6 conventions. Splitting fragments a single decision domain (performance semantics). |
-| `punch-data-harvesting` | No real data harvesting use case yet. Premature. |
-| `punch-reporting` | The HTML and JSON shape is owned by `src/tests/support/report.ts` and the `handleSummary` contract in `punch-performance-k6`. No separate decision domain. |
+| `punch-k6-http` and `punch-k6-browser` | Splitting `punch-k6-testing` again would fragment a single decision domain (performance semantics). HTTP and Browser live in one skill with sub-sections. |
+| `punch-monitoring` / `punch-injectables` | No real monitoring or fault-injection use case yet. Premature. The layer slot is reserved in `punch-boundaries.md`. |
 | `punch-documentation` | The `documentation.instructions.md` path file is enough. A skill would only restate it. |
-| `punch-understand`, `punch-shape`, `punch-build`, `punch-verify`, `punch-review`, `punch-ship` | **Lifecycle phases are prompts, not skills.** Creating them would invert the operating model. |
+| `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — we never create a `punch-<phase>` skill. A phase prompt may *activate* a lifecycle method skill (e.g. `punch-spec` → `spec-driven-development`); the phase stays a prompt+agent, the method is the skill. |
+| `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — their transferable method lives in `punch-context-engineering`, `punch-data-harvest`, and `punch-k6-testing` respectively (Phase 6). |
+| `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD is external to Punch (`punch-architecture.instructions.md`); its npm/Prisma/Playwright stack doesn't fit. |
+| `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser is deferred and distinct from Chrome-DevTools web testing. |
+| `interview-me` (upstream) | **Deferred** — overlaps `idea-refine`, which already owns pre-Spec intent extraction. A second "refine" skill would split one decision domain (see absorption matrix §A, P3). |
+| `shipping-and-launch` (upstream) | **Deferred** — its name and deploy/rollback model clash with Punch's deliberately mechanical, human-gated `punch-ship`; the go/no-go decision lives in the Review phase (`code-review-and-quality`), not a skill. |
+| `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is the gateway/orders HTTP contract, already governed by `punch-compose-runtime` + `security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |
+| `deprecation-and-migration` (upstream) | **Deferred** — legacy `bin/*` retirement and Postgres schema moves are infrequent and handled by `documentation-and-adrs` + `git-workflow-and-versioning`. Revisit if migration cadence grows (absorption matrix §A, P3). |
 
-## Cap enforcement
+## Cap-lifting discipline (domain axis)
 
-The `punch-ai-governance-audit` skill explicitly flags any new skill not in
-the active list. To add a fourth skill, propose a Shape plan that:
+The domain cap moved from 3 to 6 because the new skills each named a *unique
+decision domain* that was previously absorbed into another skill at the cost of
+clarity. To add a **seventh domain** skill, propose a Plan that:
 
-1. Names the new skill.
-2. Lists what existing skill could not absorb its responsibility.
+1. Names the new skill and its decision domain.
+2. Lists which of the six existing domain skills could not absorb its
+   responsibility.
 3. Demonstrates a real, recurring decision the existing skills mishandle.
 4. Updates this registry in the same PR.
 
 If steps 2–3 cannot be answered concretely, the answer is "don't add it".
+
+**Lifecycle skills** are governed by the absorption plan, not the domain cap, but
+each must (1) name a unique engineering method, (2) not duplicate a domain skill
+or a path-instruction, and (3) be registered in the Lifecycle-skills table in the
+same PR that adds it.
+
+The [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md)
+skill flags any skill on disk without a row in either skills table during Review.

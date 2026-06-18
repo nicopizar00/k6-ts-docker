@@ -42,6 +42,7 @@ The suite runs against a small four-service reference app:
 | `smoke` | All services are reachable and healthy |
 | `catalog-gate` | p95 latency and error-rate thresholds on catalog reads |
 | `order-journey` | Create an order, read it back, validate consistency; writes a state file |
+| `bff-checkout-journey` | End-to-end BFF checkout journey against an external target; writes a state file |
 
 ## Execution chain
 
@@ -76,24 +77,31 @@ GitHub Actions uploads all of these as the `performance-suite-reports` artifact.
 
 ## AI-assisted operating model
 
-This repo uses a six-phase lifecycle for AI-assisted changes: **Understand →
-Shape → Build → Verify → Review → Ship**. Each phase has a dedicated prompt
-under [`.github/prompts/`](.github/prompts) and three behavioral skills
-under [`.github/skills/`](.github/skills).
+This repo uses a six-phase lifecycle for AI-assisted changes: **Spec →
+Plan → Build → Verify → Review → Ship** (Spec absorbs the former Define
+step). Each phase has one prompt; Build is a single `punch-build` prompt
+whose `punch-builder` dispatcher routes to one of two domain engineers.
+Domain + lifecycle skills and the agent personas support the lifecycle —
+see the registries below for the live inventory.
 
-- Lifecycle protocol: [`docs/ai/operating-protocol.md`](docs/ai/operating-protocol.md)
+- Operating model: [`docs/ai/operating-model.md`](docs/ai/operating-model.md)
+- Lifecycle walkthrough: [`docs/ai/workflow.md`](docs/ai/workflow.md)
+- Scoped-build policy: [`docs/ai/scoped-build-policy.md`](docs/ai/scoped-build-policy.md)
+- Model selection: [`docs/ai/model-selection.md`](docs/ai/model-selection.md)
 - Mode mapping: [`docs/ai/copilot-mode-mapping.md`](docs/ai/copilot-mode-mapping.md)
 - Skill registry: [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md)
 - Prompt registry: [`docs/ai/prompt-registry.md`](docs/ai/prompt-registry.md)
+- Layered architecture: [`docs/architecture/punch-boundaries.md`](docs/architecture/punch-boundaries.md)
 - Validation contract: [`docs/workflows/validation.md`](docs/workflows/validation.md)
 
 ## Next steps
 
 - Track A roadmap: [`docs/roadmap-track-a-performance-gate.md`](docs/roadmap-track-a-performance-gate.md)
 - Track B roadmap: [`docs/roadmap-track-b-reference-app.md`](docs/roadmap-track-b-reference-app.md)
+- [`docs/architecture/specs/bff-checkout-journey-implementation.md`](docs/architecture/specs/bff-checkout-journey-implementation.md)
 - Contribution rules: [`CLAUDE.md`](CLAUDE.md)
 
-Contributing
+## Contributing
 
-See CONTRIBUTING.md for contribution guidelines, local commands, and branch/PR conventions. Small, focused PRs are preferred; run `./bin/punch run smoke` to validate basic health before opening a PR.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution guidelines, local commands, and branch/PR conventions. Small, focused PRs are preferred; run `./bin/punch run smoke` to validate basic health before opening a PR.
 

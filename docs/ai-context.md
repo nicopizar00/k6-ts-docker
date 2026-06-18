@@ -54,4 +54,4 @@ If uncertain, ask before implementing.
 - **Multi-stage Dockerfile** — Builder stage (Node/esbuild) + runner stage (grafana/k6). Host needs only Docker.
 - **Docker Compose as run interface** — Defines the full run command (flags, output path, volume). Dockerfile has no CMD to avoid ambiguity.
 - **k6 image pinned to explicit version** — `grafana/k6:latest` is unpinned and risks silent breakage. Pin to a specific release; update intentionally.
-- **No GitHub Actions yet** — CI workflow is a separate task to avoid scope creep. Will be added when tests are stable.
+- **GitHub Actions for CI** — Full suite runs via [`.github/workflows/k6.yml`](../.github/workflows/k6.yml); a second job validates that the uploaded artifacts contain every expected report file.
