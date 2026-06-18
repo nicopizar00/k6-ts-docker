@@ -1,15 +1,9 @@
 # Prompt Registry
 
-Punch has one prompt per lifecycle phase — Spec, Plan, **Build** (a single
-`punch-build` dispatcher, added in Phase F), Verify, Review, Ship — plus
-`punch-test` (the TDD/Prove-It companion to Verify). Spec absorbs the former
-Define phase. Each prompt has a single, well-defined entry point. See
-`.github/prompts/` for the prompt bodies.
-
-> **Transition note.** The five per-domain `punch-build-*` prompts were retired
-> in favour of one `punch-build` prompt bound to the `punch-builder` dispatcher
-> agent, which delegates to `punch-runtime-engineer` / `punch-performance-test-engineer`.
-> The `punch-build` row is added when its prompt lands (Phase F).
+Punch has **seven** prompts — one per lifecycle phase (Spec, Plan, Build, Verify,
+Review, Ship) plus `punch-test` (the TDD/Prove-It companion to Verify). Spec
+absorbs the former Define phase. Each prompt has a single, well-defined entry
+point. See `.github/prompts/` for the prompt bodies.
 
 ## Active prompts
 
@@ -17,6 +11,7 @@ Define phase. Each prompt has a single, well-defined entry point. See
 |---|---|---|---|---|
 | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask (writes spec doc) | `punch-architect-readonly` | A request needs clarifying (former Define) then specifying into goals / non-goals / acceptance criteria. |
 | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | Plan | Ask (Plan discipline) | `punch-planner` | You have a Spec and need scoped tasks with allowed/read-only/forbidden paths. |
+| [`punch-build`](../../.github/prompts/punch-build.prompt.md) | Build | Agent (scoped, via dispatch) | `punch-builder` | An approved Plan task needs implementing; the dispatcher routes it to the runtime or performance-test engineer. |
 | [`punch-test`](../../.github/prompts/punch-test.prompt.md) | Test (Verify companion) | Agent | `punch-verifier` | Prove a change RED→GREEN at the k6 check/threshold level via `./bin/punch`. |
 | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md) | Verify | Agent / Ask | `punch-verifier` | Build is complete; you need `reports/state/punch-run.json` evidence. |
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-reviewer` | Verify passed; audit the diff before Ship. |
@@ -46,7 +41,7 @@ description: <one line, used by the Copilot UI>
 
 VS Code prompt files use the **`agent:`** field (not `mode:`) — it names a
 built-in mode or a custom agent under `.github/agents/`. Punch prompts bind to a
-specific custom agent (e.g. `agent: punch-builder-orchestrator`).
+specific custom agent (e.g. `agent: punch-builder`).
 
 And cover, in this order:
 
@@ -54,7 +49,7 @@ And cover, in this order:
    Ship this serves (Spec absorbs the former Define).
 2. **Mode** — Ask, Agent (scoped), or Agent (mechanical only).
 3. **Owner skill(s)** — which skill(s) this prompt activates (domain + lifecycle).
-4. **Agent** — which agent persona runs this prompt (4 core personas + the 5-member builder family).
+4. **Agent** — which agent persona runs this prompt (core personas + the `punch-builder` dispatcher + its two engineers).
 5. **When to use** — concrete trigger.
 6. **Pre-conditions** (Build prompts only) — Plan + task ID + human
    approval.
@@ -72,14 +67,12 @@ follows this contract.
 
 ## Why not more prompts
 
-Eleven prompts cover the entire matrix of (phase) × (Build domain). Each
-extra prompt is one more interface to maintain, one more place for
-guidance to drift. Add a new prompt only when:
+Seven prompts cover the whole lifecycle. Each extra prompt is one more interface
+to maintain, one more place for guidance to drift. Add a new prompt only when:
 
-- A real recurring task does not fit any existing phase or Build
-  domain, **and**
+- A real recurring task does not fit any existing phase, **and**
 - Splitting it from an existing prompt would shrink, not duplicate.
 
-The deliberate choice was: **scale prompts by Build domain, not by
-phase nuance.** Resist the temptation to add `punch-spec-fast` or
-`punch-review-deep`.
+The deliberate choice was: **one prompt per phase; Build's per-domain scope lives
+in the engineers, not in extra prompts.** Resist the temptation to add
+`punch-spec-fast` or `punch-review-deep`.
