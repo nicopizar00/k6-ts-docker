@@ -27,7 +27,7 @@ It owns:
 It does **not** own:
 
 - Orchestration control flow (see `punch-python-orchestration`).
-- k6 test logic or thresholds (see `punch-k6-performance`).
+- k6 test logic or thresholds (see `punch-k6-testing`).
 - The artifact contract for what k6 writes (see `punch-data-harvest`).
 
 ## When to use

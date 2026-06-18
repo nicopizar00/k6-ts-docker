@@ -8,7 +8,7 @@ description: Test phase — drive a change with the Prove-It / TDD discipline at
 **Lifecycle phase:** Test (the TDD/Prove-It companion to Verify)
 **Mode:** Agent (runs `./bin/punch`; does not author code)
 **Owner skill:** [`test-driven-development`](../skills/test-driven-development/SKILL.md) (the method)
-+ [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md) (the k6 domain)
++ [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md) (the k6 domain)
 **Agent:** [`punch-verifier`](../agents/punch-verifier.agent.md)
 
 ## When to use
