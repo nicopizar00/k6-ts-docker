@@ -2,24 +2,23 @@
 name: punch-build-caveman
 description: "Canonical Punch Caveman policy (single source). Enforced for the /punch-build and /punch-test phases: governance/orchestration voice default `ultra`, build/test EXECUTION sub-agents `wenyan` (max efficiency); privileged elsewhere. Compresses assistant PROSE only — never code, commands, paths, logs, errors, k6/Compose output, JSON/YAML/CSV, or run evidence. Other files link here instead of restating."
 applies-to: lifecycle/Build+Test — assistant-prose communication (punch-build & punch-test prompts + punch-builder/punch-verifier + the engineers); not path-scoped
-source: https://github.com/JuliusBrussee/caveman
-provenance: ../../../.ai-upstream/caveman/UPSTREAM.md
-adr: ../../../docs/ai/decisions/0003-caveman-build-comms.md
-scope: project
-type: external-upstream-skill-adapter
-punch_lifecycle_phase: [build, test]
-default_mode: ultra
-allowed_modes: [lite, full, ultra, wenyan-lite, wenyan-full, wenyan-ultra]
 ---
 
 # Punch — Caveman comms (canonical policy)
 
 This is the **single source** for Caveman behavior in Punch. The prompts, agents,
 and `copilot-instructions.md` **link here** and carry only their per-context delta —
-they do not restate the rules below. Canonical upstream skill:
-`.agents/skills/caveman/`. Provenance:
+they do not restate the rules below.
+
+**Adoption — external upstream skill adapter (project scope).** Adapted from
+upstream [Caveman](https://github.com/JuliusBrussee/caveman); canonical install at
+`.agents/skills/caveman/`; pristine snapshot + provenance in
 [`.ai-upstream/caveman/UPSTREAM.md`](../../../.ai-upstream/caveman/UPSTREAM.md);
-decision: [ADR 0003](../../../docs/ai/decisions/0003-caveman-build-comms.md).
+decision + governed scope in
+[ADR 0003](../../../docs/ai/decisions/0003-caveman-build-comms.md). Lifecycle
+phases: **Build + Test**. Default mode **`ultra`**; full mode list under
+[Modes](#modes). (Adopt → filter → adapt: only `name`/`description`/`applies-to`
+stay in frontmatter — the official Copilot SKILL schema — the rest lives here.)
 
 ## Operating tiers (the mode policy)
 
