@@ -33,7 +33,7 @@ It does **not** own:
 - k6 thresholds or test logic (see `punch-k6-testing`).
 - HTML or JSON report shape (see `punch-data-harvest` and
   `src/tests/support/report.ts`).
-- Governance of the AI configuration (see `punch-governance-review`).
+- Governance of the AI configuration (see `punch-ai-governance`).
 
 ## When to use
 
