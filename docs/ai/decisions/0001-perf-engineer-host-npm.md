@@ -19,11 +19,15 @@ round-trip.
 ## Decision
 
 `punch-performance-test-engineer` is the **single sanctioned surface** allowed to
-run host `npm`/`esbuild`/lint while authoring and maintaining the k6 test
-toolchain. This is a **scoped exception** to Docker First, not a repeal:
+run host `npm`/`pnpm`/`esbuild`/lint — **and host `k6` for the smoke pre-check**
+(`npm run smoke:local`) — while authoring and maintaining the k6 test toolchain.
+This is a **scoped exception** to Docker First, not a repeal:
 
 - The exception applies **only** to this agent, **only** for the TS/k6 test
-  toolchain (`package.json`, `tsconfig.json`, esbuild/lint config, `src/tests/**`).
+  toolchain (`package.json`, `tsconfig.json`, esbuild/lint config, `src/tests/**`)
+  and the **`smoke:local` host-k6 gate** — a fast *does-the-script-run* check
+  before orchestration. It runs **smoke only** and writes **no** canonical
+  `punch-run.json`.
 - **No other agent, command, or contributor workflow** gains host-Node
   dependence. `bin/punch`, orchestration, and the end-user contract stay
   Docker-only + stdlib Python.
