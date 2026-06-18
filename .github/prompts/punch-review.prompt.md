@@ -8,7 +8,7 @@ description: Phase 6 — Review. Read-only critique of the diff against the Plan
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
 **Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (the five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for the simplicity axis);
-[`punch-governance-review`](../skills/punch-governance-review/SKILL.md) when the
+[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when the
 diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
 
@@ -43,7 +43,7 @@ lifecycle hygiene. For a dedicated security pass on diffs touching
    unnecessary dependencies, or speculative configuration?
 7. **Ownership check.** Does the change respect each layer's domain?
 8. **Governance check** (when `.github/` or `docs/ai/` is touched).
-   Activate [`punch-governance-review`](../skills/punch-governance-review/SKILL.md):
+   Activate [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md):
    frontmatter complete, registries match files, agents and skills are
    referenced consistently.
 9. **Doc check.** Are docs and the maintenance matrix updated for any

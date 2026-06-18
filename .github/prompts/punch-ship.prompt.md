@@ -9,7 +9,7 @@ description: Phase 7 — Ship. Mechanical finalization; human approves merge.
 **Mode:** Agent (mechanical operations only — no logic edits)
 **Owner skill:** [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (the `git` + `gh` mechanics)
-+ [`punch-governance-review`](../skills/punch-governance-review/SKILL.md) (the readiness summary)
++ [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (the readiness summary)
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
 
 ## When to use
