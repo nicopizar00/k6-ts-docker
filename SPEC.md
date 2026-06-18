@@ -77,4 +77,4 @@ Add a new HTTP k6 journey test under `src/tests/bff-checkout-journey.ts` that ex
   - Remove `src/tests/bff-checkout-journey.ts` and revert the diff if verification fails.
 - Expected diff size: ~120 lines.
 - Human checkpoint: approval required before Build.
-- Build via: `punch-build-k6-http`.
+- Build via: `punch-build` (via `punch-performance-test-engineer`).
