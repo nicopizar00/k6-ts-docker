@@ -11,6 +11,7 @@ description: Phase 7 — Ship. Mechanical finalization; human approves merge.
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (the `git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (the readiness summary)
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
+**Operating comms:** Caveman **`full`** (per-phase canon). Git/`gh` commands, commit/PR text, and Verify evidence verbatim; the ship-readiness summary is a persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

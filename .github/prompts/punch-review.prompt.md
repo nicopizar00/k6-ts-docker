@@ -11,6 +11,7 @@ description: Phase 6 — Review. Read-only critique of the diff against the Plan
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when the
 diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
+**Operating comms:** Caveman **`full`** (per-phase canon). Lead with normal prose for risk/architecture judgment; diff, evidence, and verdict verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

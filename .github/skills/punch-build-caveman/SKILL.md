@@ -1,6 +1,6 @@
 ---
 name: punch-build-caveman
-description: "Canonical Punch Caveman policy (single source). Enforced for the /punch-build and /punch-test phases: governance/orchestration voice default `ultra`, build/test EXECUTION sub-agents `wenyan` (max efficiency); privileged elsewhere. Compresses assistant PROSE only — never code, commands, paths, logs, errors, k6/Compose output, JSON/YAML/CSV, or run evidence. Other files link here instead of restating."
+description: "Canonical Punch Caveman policy (single source). Project default `lite`; per-phase canon — Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (execution sub-agents `wenyan`). Wenyan is forbidden in persistent artifacts (docs/maps/registries/handoffs) — sub-agent reports only. Compresses assistant PROSE only — never code, commands, paths, logs, errors, exit codes, k6/Compose output, JSON/YAML/CSV, or run evidence. Other files link here instead of restating."
 applies-to: lifecycle/Build+Test — assistant-prose communication (punch-build & punch-test prompts + punch-builder/punch-verifier + the engineers); not path-scoped
 ---
 
@@ -20,22 +20,47 @@ phases: **Build + Test**. Default mode **`ultra`**; full mode list under
 [Modes](#modes). (Adopt → filter → adapt: only `name`/`description`/`applies-to`
 stay in frontmatter — the official Copilot SKILL schema — the rest lives here.)
 
-## Operating tiers (the mode policy)
+## Caveman canon — per-phase levels (the mode policy)
 
-Caveman is **enforced** in `/punch-build` and `/punch-test`. Two tiers:
+Project default is **`lite`** (set repo-wide in `copilot-instructions.md`). Each
+lifecycle phase overrides it with the level below; sub-agents at every level
+return **wenyan-compatible** compact reports.
 
-| Tier | Who | Mode |
-|---|---|---|
-| Governance / orchestration | `punch-build` & `punch-test` prompts, `punch-builder` dispatcher | **`ultra`** (default) |
-| Execution sub-agents | `punch-runtime-engineer`, `punch-performance-test-engineer` (build work), `punch-verifier` (test run/judge) | **`wenyan`** (max efficiency; max variant `wenyan-ultra`) |
+| Phase (Punch prompt) | Lifecycle cmd | Voice level | Sub-agent reports |
+|---|---|---|---|
+| Document (`punch-document`) | `/document` | **`lite`** for persistent docs; **`ultra` only for terminal/status** summaries | `wenyan` |
+| Spec (`punch-spec`) | `/spec` | **`lite`** | `wenyan` |
+| Plan (`punch-plan`) | `/plan` | **`full`** | `wenyan` |
+| Build (`punch-build`) | `/build` | **`ultra`** | **`wenyan`** |
+| Test (`punch-test`) | `/test` | **`ultra`** | **`wenyan`** |
+| Review (`punch-review`) | `/review` | **`full`** | `wenyan` |
+| Ship (`punch-ship`) | `/ship` | **`full`** | `wenyan` |
+| Verify (`punch-verify`) | — (evidence companion to Test) | run output verbatim; surrounding prose **`lite`** | `wenyan` |
 
-Everywhere else (Spec, Plan, Review, Ship, Governance, architecture, docs):
-**privileged** — lead with normal prose for judgment-heavy work, use Caveman only
-for routine prose. `stop caveman` / `normal mode` reverts for the session.
+The Punch `punch-*` prompt filenames are not renamed; the *Lifecycle cmd* column
+is the Addy-Osmani Agent-Skills command each maps to (compatibility, not a rename).
+Build + Test remain the **enforced** phases (voice `ultra`, execution sub-agents
+`wenyan`); the other phases lead with normal prose for judgment-heavy work and use
+their level for routine prose. `stop caveman` / `normal mode` reverts for the session.
 
 Activation follows Agent Skills logic (`using-agent-skills`): state activation
 **once** on entering the phase, then let the skill's persistence carry it — no
 per-message re-invocation.
+
+## Delegation depth (Caveman is output-only)
+
+Caveman governs **output style only** — never tool access, assignments, or which
+sub-agents an agent may call; those stay with each custom agent and
+[`agent-guards.md`](../../../docs/ai/agent-guards.md). Canon: coordinator → worker
+is **depth-1**; **depth-2 is allowed only as lazy non-first** delegation (a level-1
+worker may fork a level-2 worker *after* discovering a bounded technical subtask);
+level-2 workers do **not** delegate; **depth-3+ is forbidden**. Punch implements the
+strict end of this canon — VS Code `chat.subagents.allowInvocationsFromSubagents`
+stays **off**, the two Build engineers are leaf (`agents: []`), so Punch runs
+**depth-1 only**; depth-2-lazy is the canon ceiling, not enabled. The one sanctioned
+1-deep fork is `/graphify` in Document mode. Every sub-agent report — at any depth —
+is **wenyan-compatible** and preserves exact paths, commands, exit codes, artifacts,
+pass/fail status, blockers, and next action verbatim.
 
 ## Punch priority (overrides Caveman brevity)
 
@@ -59,6 +84,15 @@ reorder, or omit:
 Quote these verbatim. Compression applies to the explanatory prose around them.
 This holds in every mode, including `wenyan` — the prose may be terse/classical, the
 evidence stays exact and readable.
+
+## Persistent artifacts — never Wenyan
+
+`wenyan*` is **forbidden** in any source-of-truth artifact: docs, ADRs, specs,
+plans, context maps, skills, prompts, registries, handoffs, and `reports/**`. It is
+allowed **only** in sub-agent reports. Persisted documentation uses **`lite`** or
+**`full`**; **`ultra` is avoided in persisted docs — status-/terminal-only**, never
+inside a doc body. `/document` (the `punch-document` reconciliation phase) writes
+persistent docs in `lite` and may use `ultra` only for its terminal/status summary.
 
 ## Modes
 

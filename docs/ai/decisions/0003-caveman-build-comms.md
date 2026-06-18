@@ -1,9 +1,10 @@
 # ADR 0003 — Caveman for concise assistant-prose comms (Build+Test enforced, agent-privileged)
 
-**Status:** Accepted (2026-06-18) · **revised 2026-06-18** (see *Revision* below —
-the canonical Copilot installer was run and the scope was broadened per owner
-direction; the original Decision section is kept for the record but is superseded
-where it conflicts).
+**Status:** Accepted (2026-06-18) · **revised 2026-06-18** (Revisions 1–3 below —
+the canonical Copilot installer was run, scope was broadened, and a project-wide
+per-phase Caveman Canon was adopted per owner direction; the original Decision
+section is kept for the record but is superseded where it conflicts, latest
+revision wins).
 **Deciders:** repository owner + Punch AI Governance work
 
 ## Context
@@ -130,6 +131,43 @@ Per owner direction and the `/enhance` lean pass:
   `wenyan` — only the surrounding prose is terse/classical); Auto-Clarity stop
   conditions hold; Critical Rules take precedence; the execution chain is untouched.
 
+## Revision 3 (2026-06-18) — Punch Caveman Canon (project default + per-phase levels)
+
+Per owner direction, Caveman becomes a **project-wide output-efficiency canon**
+rather than a Build/Test-only enforcement. Reconciled in place — the official
+Copilot installer was **not** re-run (it would re-create the forbidden parallel
+rule files and re-append duplicate blocks); the existing
+`.agents/skills/caveman/` install is reused.
+
+- **Project default `lite`.** Set repo-wide in `copilot-instructions.md`. Each
+  lifecycle phase overrides it.
+- **Per-phase canon.** Document `lite` (persistent docs; `ultra` status-only) ·
+  Spec `lite` · Plan `full` · Build `ultra` · Test `ultra` · Review `full` ·
+  Ship `full` · Verify `lite` prose (run output verbatim). Build + Test remain
+  the **enforced** phases (voice `ultra`, execution sub-agents `wenyan`).
+- **Sub-agent reports `wenyan`-compatible at every level** — preserving exact
+  paths, commands, exit codes, artifacts, pass/fail status, blockers, and next
+  action verbatim.
+- **Wenyan forbidden in persistent artifacts** — docs, ADRs, specs, plans,
+  context maps, skills, prompts, registries, handoffs, and `reports/**` use only
+  `lite`/`full`; `ultra` is status-/terminal-only. Wenyan is sub-agent-report only.
+- **Delegation depth — output-only separation.** Caveman governs output style,
+  never tools/access/assignments (rule preserved: custom agents still own those).
+  Canon allows depth-1 plus **depth-2 lazy-non-first**; depth-3+ forbidden. Punch
+  implements the strict end (depth-1; engineers leaf `agents: []`;
+  `chat.subagents.allowInvocationsFromSubagents` off) — depth-2-lazy is the canon
+  ceiling, not enabled.
+- **Slash-command mapping, no renames.** Existing `punch-*` prompt filenames are
+  unchanged; they map to the Addy-Osmani lifecycle commands `/spec /plan /build
+  /test /review /ship` plus Punch's `/document` (mapping table in
+  [`punch-build-caveman`](../../../.github/skills/punch-build-caveman/SKILL.md)).
+- **GitHub Copilot First preserved.** No optimization for Claude Code / Cursor /
+  Windsurf; single-source policy stays in `.github/skills/punch-build-caveman/`,
+  prompts/agents/`copilot-instructions.md`/`AGENTS.md` carry only lean pointers.
+- **Unchanged invariants.** Evidence never compressed; Auto-Clarity stop
+  conditions hold; Critical Rules take precedence; the execution chain is
+  untouched; agent tools/scope/guards unchanged.
+
 ## Consequences
 
 - **Positive:** Build prose gets terser by default with zero risk to evidence;
@@ -139,9 +177,11 @@ Per owner direction and the `/enhance` lean pass:
   change must be reconciled manually (see `.ai-upstream/caveman/UPSTREAM.md`
   *Updating*). Any Caveman activation **outside** Build, or any compression of
   technical evidence, is **drift** and a Review failure.
-- **Guardrail:** Caveman is **enforced in Build** and **privileged elsewhere**;
-  non-Build agents lead with normal prose for judgment-heavy work and invoke
-  Auto-Clarity for security / irreversible / ambiguous / architecture-tradeoff
-  content. It is always overridable (`stop caveman`). Evidence is never
-  compressed; compressing evidence or losing an agent's constraints is **drift**
+- **Guardrail:** Caveman follows the **per-phase canon** (Revision 3) — project
+  default `lite`, Build/Test enforced (`ultra`/`wenyan`), Plan/Review/Ship `full`,
+  Spec/Document `lite`. Non-Build/Test agents lead with normal prose for
+  judgment-heavy work and invoke Auto-Clarity for security / irreversible /
+  ambiguous / architecture-tradeoff content. Always overridable (`stop caveman`).
+  Evidence is never compressed; **Wenyan in a persistent artifact**, compression
+  of evidence, depth-3+ delegation, or loss of an agent's constraints is **drift**
   and a Review failure.

@@ -127,7 +127,7 @@ cross-reference) — refresh from upstream, never hand-edit.
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via the official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Enforced in `/punch-build` + `/punch-test`: governance voice `ultra`, build/test execution sub-agents `wenyan`; privileged elsewhere. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Project default `lite`; per-phase canon — Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (execution sub-agents `wenyan`). Wenyan forbidden in persistent artifacts; depth-1 delegation (depth-2-lazy canon ceiling, off). Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -142,10 +142,10 @@ Copilot-scoped and Docker-First-minimal.
 | Field | Value |
 |---|---|
 | Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
-| Status | **enforced in `/punch-build` + `/punch-test`** (two tiers) · **privileged elsewhere** · never compresses evidence |
-| Scope | Build+Test enforced; governance voice (prompts + `punch-builder`) `ultra`, execution sub-agents (`punch-runtime-engineer`, `punch-performance-test-engineer`, `punch-verifier`) `wenyan`; all other agents privilege it (lead with normal prose for judgment-heavy work) |
+| Status | **project default `lite`** · per-phase canon · **Build+Test enforced** · never compresses evidence · Wenyan forbidden in persistent artifacts |
+| Scope | Per-phase canon: Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (enforced). Execution sub-agents (`punch-runtime-engineer`, `punch-performance-test-engineer`, `punch-verifier`) `wenyan`; all sub-agent reports `wenyan`-compatible. Non-Build/Test agents lead with normal prose for judgment-heavy work. Delegation depth governed by `agent-guards.md` (depth-1; depth-2-lazy canon ceiling, off) — Caveman is output style only |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
-| Default mode | **`ultra`** governance / **`wenyan`** execution (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
+| Default mode | project **`lite`**; per-phase overrides (Plan/Review/Ship `full`, Build/Test `ultra`); execution sub-agents `wenyan` (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
 | Governed by | `punch-ai-governance` (refresh + drift) |
 | Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
 | Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · pristine snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) (gitignored local staging); canonical install in `.agents/skills/caveman/` |

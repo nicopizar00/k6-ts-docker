@@ -12,6 +12,7 @@ description: Spec — clarify and refine the request, then convert it into goals
 + [`idea-refine`](../skills/idea-refine/SKILL.md) (clarify step, when the idea is vague)
 + the matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)
+**Operating comms:** Caveman **`lite`** (per-phase canon). Spec docs are persistent — no Wenyan; goals/constraints/acceptance criteria verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

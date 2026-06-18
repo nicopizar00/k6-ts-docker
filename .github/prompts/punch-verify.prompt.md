@@ -12,6 +12,7 @@ description: Phase 5 — Verify. Produce validation evidence by running official
 + [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
 + [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
 **Agent:** [`punch-verifier`](../agents/punch-verifier.agent.md)
+**Operating comms:** Evidence phase — all run output, commands, exit codes, and `reports/state/punch-run.json` verbatim; surrounding prose **`lite`**. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

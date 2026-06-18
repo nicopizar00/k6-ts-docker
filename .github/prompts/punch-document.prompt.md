@@ -12,6 +12,7 @@ description: Documentate — reconcile documentation debt in waves. Map docs + A
 (the Graphify gate) + [`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md)
 (the writing method). The structural map is delegated to the existing `/graphify` skill.
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
+**Operating comms:** Caveman **`lite`** for persistent documentation; **`ultra` only for a terminal/status summary**. **Wenyan is forbidden** in docs, ADRs, context maps, skills, prompts, registries, and handoffs — these are source-of-truth artifacts. The `/graphify` map fork (1-deep) returns a `wenyan`-compatible report; its evidence is consumed, never written verbatim into docs. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

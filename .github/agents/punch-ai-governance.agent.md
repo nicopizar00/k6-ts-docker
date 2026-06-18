@@ -108,4 +108,4 @@ method).
 
 ## Caveman comms
 
-Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`lite`** for persistent docs, **`ultra` only for the terminal/status summary**, **Wenyan forbidden** in docs/maps/registries/handoffs (the `/graphify` fork's `wenyan` report is consumed, never written into docs). See [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

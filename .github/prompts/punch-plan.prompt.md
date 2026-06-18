@@ -11,6 +11,7 @@ description: Phase 3 — Plan. Convert a Spec into scoped tasks with explicit al
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + the matching domain skill(s);
 on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 **Agent:** [`punch-planner`](../agents/punch-planner.agent.md)
+**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs are persistent — no Wenyan; task contracts/paths/validation commands verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 

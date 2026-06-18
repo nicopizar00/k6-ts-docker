@@ -119,15 +119,20 @@ gate, install, and the Rule-1 host exception live in the
 [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md) Graphify
 gate + [ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md) — not restated here.
 
-## Caveman (concise comms)
+## Caveman (concise comms — default `lite`)
 
-Caveman compresses assistant **prose only**. `/punch-build` + `/punch-test` enforce
-it: governance voice **`ultra`**, build/test execution sub-agents **`wenyan`**;
-**privileged** elsewhere (lead with normal prose for judgment-heavy work). **Never**
-compress code, commands, paths, logs, errors, exit codes, k6/Compose output,
-JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, or risk notes —
-quote verbatim. Priority: correctness > evidence > maintainability > brevity. Drop
-to normal prose for security/irreversible/ambiguous/architecture content;
-`/caveman lite|full|ultra|wenyan-*`, `stop caveman` reverts. Critical Rules above
-take precedence. Full policy: [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md)
+Caveman compresses assistant **prose only**; project default is **`lite`**.
+Per-phase canon: Document/Spec **`lite`** · Plan/Review/Ship **`full`** · Build/Test
+**`ultra`** (both enforced); **sub-agent reports `wenyan`** at every level. **Wenyan
+is forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills,
+prompts, registries, handoffs, `reports/**`) — sub-agent reports only; persisted
+docs use `lite`/`full`, `ultra` for status/terminal only. **Never** compress code,
+commands, paths, logs, errors, exit codes, thresholds, k6/Compose output,
+JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or
+next-action — quote verbatim. Priority: correctness > evidence > maintainability >
+brevity. Drop to normal prose for security/irreversible/ambiguous/architecture
+content; `/caveman lite|full|ultra|wenyan-*`, `stop caveman` reverts. Caveman is
+output style only — it never changes tools, access, or delegation. Critical Rules
+above take precedence. Full canon (per-phase table, depth policy, evidence list):
+[`punch-build-caveman`](skills/punch-build-caveman/SKILL.md)
 + [ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md).
