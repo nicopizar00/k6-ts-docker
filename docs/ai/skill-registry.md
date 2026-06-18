@@ -24,7 +24,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | writing a spec | `spec-driven-development` |
 | breaking a spec into tasks | `planning-and-task-breakdown` |
 | editing the orchestrator | `punch-python-orchestration` + `incremental-implementation` |
-| editing compose / Dockerfiles | `punch-docker-compose` + `incremental-implementation` |
+| editing compose / Dockerfiles | `punch-compose-runtime` + `incremental-implementation` |
 | writing / changing a k6 test | `punch-k6-performance` + `test-driven-development` + `incremental-implementation` |
 | changing an artifact / report | `punch-data-harvest` + `incremental-implementation` |
 | a run failed | `debugging-and-error-recovery` |
@@ -42,7 +42,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 |---|---|---|
 | [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; the lifecycle; the scope-discipline principle | `.github/skills/punch-context-engineering/SKILL.md` |
 | [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | The `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
-| [`punch-docker-compose`](../../.github/skills/punch-docker-compose/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-docker-compose/SKILL.md` |
+| [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
 | [`punch-k6-performance`](../../.github/skills/punch-k6-performance/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-performance/SKILL.md` |
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
 | [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-governance-review/SKILL.md` |
@@ -55,7 +55,7 @@ Each domain skill names a unique **decision domain**:
 |---|---|
 | `punch-context-engineering` | "What primer does any agent need?" |
 | `punch-python-orchestration` | "How does the run happen?" |
-| `punch-docker-compose` | "What is the runtime contract?" |
+| `punch-compose-runtime` | "What is the runtime contract?" |
 | `punch-k6-performance` | "What does fast enough mean?" |
 | `punch-data-harvest` | "What artifacts does the run produce?" |
 | `punch-governance-review` | "Is the AI operating model itself healthy?" |
@@ -73,7 +73,7 @@ domains:
 | New skill | What it admits |
 |---|---|
 | `punch-context-engineering` | A common entry point so each Build prompt does not duplicate the "load this primer first" instruction. |
-| `punch-docker-compose` | Compose contracts (service names, healthchecks, image pins) were previously implied in the path-instruction file but had no skill to activate during Build. The contract template makes the cost of Compose changes visible at Plan time. |
+| `punch-compose-runtime` | Compose contracts (service names, healthchecks, image pins) were previously implied in the path-instruction file but had no skill to activate during Build. The contract template makes the cost of Compose changes visible at Plan time. |
 | `punch-data-harvest` | Artifacts were previously owned half by `punch-orchestration` (state files) and half by `punch-performance-k6` (HTML/JSON). Centralizing the artifact *contract* in one skill keeps downstream consumers (CI, future automation) coherent. |
 
 The skill renames (`orchestration` → `python-orchestration`,
@@ -128,7 +128,7 @@ for any of these.
 | `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser is deferred and distinct from Chrome-DevTools web testing. |
 | `interview-me` (upstream) | **Deferred** — overlaps `idea-refine`, which already owns pre-Spec intent extraction. A second "refine" skill would split one decision domain (see absorption matrix §A, P3). |
 | `shipping-and-launch` (upstream) | **Deferred** — its name and deploy/rollback model clash with Punch's deliberately mechanical, human-gated `punch-ship`; the go/no-go decision lives in the Review phase (`code-review-and-quality`), not a skill. |
-| `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is the gateway/orders HTTP contract, already governed by `punch-docker-compose` + `security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |
+| `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is the gateway/orders HTTP contract, already governed by `punch-compose-runtime` + `security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |
 | `deprecation-and-migration` (upstream) | **Deferred** — legacy `bin/*` retirement and Postgres schema moves are infrequent and handled by `documentation-and-adrs` + `git-workflow-and-versioning`. Revisit if migration cadence grows (absorption matrix §A, P3). |
 
 ## Cap-lifting discipline (domain axis)

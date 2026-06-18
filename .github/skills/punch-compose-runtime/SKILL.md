@@ -1,10 +1,10 @@
 ---
-name: punch-docker-compose
+name: punch-compose-runtime
 description: Owns Docker Compose and Dockerfile rules — services as runtime contracts, stable service names, healthcheck gating, env contracts, container-first execution.
 applies-to: docker-compose.yml, docker/**
 ---
 
-# Skill: punch-docker-compose
+# Skill: punch-compose-runtime
 
 ## Responsibility
 
