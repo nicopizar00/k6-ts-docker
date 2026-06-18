@@ -129,3 +129,24 @@ validates, tests confirm**.
 Host `graphify` is a scoped Rule-1 exception ([ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md));
 `graphify-out/` is throwaway evidence, never canonical. Not installed? Run
 `uv tool install graphifyy`. Build or refresh with `/graphify .` in Copilot Chat.
+
+## Caveman (optional concise comms — Punch Build only)
+
+The [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md) adapter lets the
+**Build** phase compress assistant **prose** on request (`/caveman lite|full|ultra`,
+default `lite`). It is **opt-in, off by default, and never mandatory**. It does
+**not** apply to Spec, Plan, Verify, Review, Ship, Governance, documentation, or
+architecture reasoning unless the user explicitly asks — those keep normal prose.
+The Critical Rules above always take precedence.
+
+Caveman compresses prose only. It must **never** compress, rewrite, summarize, or
+omit code, commands, file paths, Python orchestration details, Docker Compose
+output, k6 output, JSON/YAML/CSV, logs, stack traces, errors, exit codes, test
+evidence (`reports/state/punch-run.json`), acceptance criteria, or risk notes —
+quote those verbatim. **Priority: correctness > evidence > maintainability >
+brevity.** If brevity harms clarity or risk explanation, stop Caveman.
+
+Adopted as a scoped adapter (the official multi-agent installer was **not** run —
+it would make Caveman global and append to these Critical Rules; see
+[ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md) and
+[`.ai-upstream/caveman/`](../.ai-upstream/caveman/UPSTREAM.md)).

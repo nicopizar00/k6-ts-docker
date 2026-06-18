@@ -47,3 +47,28 @@ when `reports/state/punch-run.json` records `passed: true`.
 ## Scope expansion rule
 
 Any edit outside the task's allowed paths → **stop**, return to Plan.
+
+## Optional: concise Build comms (Caveman, Build-only)
+
+Build — and only Build — may use the
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) adapter to make
+**assistant prose** concise (implementation updates, sub-agent handoffs,
+post-evidence debug summaries, commit drafts). It is **opt-in and off by
+default**; the other lifecycle phases keep normal prose.
+
+- Apply it **only after** the Build task is understood — never as a substitute
+  for reasoning.
+- Default mode **`lite`** (`/caveman lite`). Use `/caveman full` or
+  `/caveman ultra` only when the user explicitly asks **and** the task is low
+  risk.
+- **Never** compress code, commands, paths, Python orchestration details, Docker
+  Compose output, k6 output, JSON/YAML/CSV, logs, stack traces, errors, exit
+  codes, test evidence (`reports/state/punch-run.json`), acceptance criteria, or
+  risk notes — quote those verbatim. Caveman compresses prose **around** the
+  evidence, not the evidence.
+- **Priority:** Correctness > evidence > maintainability > brevity. If brevity
+  harms clarity, uncertainty, or risk explanation, **stop Caveman and answer
+  normally**.
+
+Scope, modes, and stop conditions: the adapter SKILL.md and
+[ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md).

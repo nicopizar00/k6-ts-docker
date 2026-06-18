@@ -126,9 +126,31 @@ cross-reference) — refresh from upstream, never hand-edit.
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | Build-only compression of assistant **prose** (concise implementation updates, sub-agent handoffs, post-evidence debug summaries, commit drafts). Default `lite`; never compresses technical evidence | upstream `caveman` — provenance [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
-Gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
+`graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+
+### `punch-build-caveman` — governance metadata
+
+| Field | Value |
+|---|---|
+| Classification | external upstream skill — **authored Punch adapter** (not upstream verbatim) |
+| Status | optional · opt-in · **never mandatory, never default-on** |
+| Scope | **Punch Build only** (`punch-build` prompt + `punch-builder` + its engineers) — not Spec / Plan / Verify / Review / Ship / Governance / architecture |
+| Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
+| Default mode | `lite` (allowed: `lite` / `full` / `ultra`; `full`/`ultra` only on explicit low-risk request) |
+| Governed by | `punch-ai-governance` (refresh + drift) |
+| Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
+| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) |
+| Install method | **official installer NOT run** — dry-run showed it would make Caveman global and append to the Critical Rules file (unsafe); adopted as a scoped adapter instead. Command audited: `curl -fsSL .../install.sh \| bash -s -- --only copilot --with-init --dry-run` |
+| Files changed by installer | **none** (installer not executed; dry-run wrote nothing) |
+| Copilot instruction file edited manually | yes — added one clearly-marked **optional, Build-only** section *below* the always-on Critical Rules (no Critical Rule altered) |
+
+Unlike `graphify` (reused as-is, exempt from authored-canon checks), the
+`punch-build-caveman` **adapter** is Punch-authored and therefore **subject** to
+the frontmatter / naming / duplication checks. Only the pristine
+`.ai-upstream/caveman/` snapshot is frozen provenance exempt from those checks.
 
 ## Why these are still deferred (not created)
 
