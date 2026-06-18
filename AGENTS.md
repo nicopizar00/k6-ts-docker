@@ -53,7 +53,7 @@ Punch uses a six-phase lifecycle for AI-assisted changes:
 
     Spec → Plan → Build → Verify → Review → Ship
 
-Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`) — added in Phase E. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
+Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates (depth-1) to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`). The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
 
 Available agents
 
@@ -61,6 +61,7 @@ Available agents
 |---|---|---|
 | punch-architect-readonly | Investigator (writes the spec doc) | Spec |
 | punch-planner            | Scoped-task planner    | Plan |
+| punch-builder            | Build dispatcher (routes to one engineer) | Build |
 | punch-runtime-engineer   | Runtime engineer (Python orchestration / Compose / data harvest) | Build, Verify |
 | punch-performance-test-engineer | Performance engineer (k6 HTTP/Browser + TS bundle/lint) | Build, Verify |
 | punch-verifier           | Evidence collector     | Verify, Test |
@@ -70,9 +71,10 @@ Available agents
 
 Definitions live in .github/agents/*.agent.md.
 
-> **Build layer transition.** The five `punch-builder-*` agents were retired; the
-> `punch-builder` dispatcher + two engineers (`punch-runtime-engineer`,
-> `punch-performance-test-engineer`) replace them in Phase E.
+**Build delegation.** `punch-builder` lists exactly its two engineers in
+`agents:`; each engineer carries `agents: []` (depth-1, no recursion). The
+`punch-ai-governance` maintainer is user-direct (`disable-model-invocation: true`)
+and appears in no `agents:` allowlist.
 
 **Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
 
