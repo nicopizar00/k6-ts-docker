@@ -47,7 +47,8 @@ interchangeable.
 Rule of thumb: **instructions** are passive (loaded whenever a file is
 touched). **Prompts** are active (the human runs them). **Skills** are
 behavioral (the prompt or agent activates them). **Agents** are persona
-constraints (which tools, which mode, which handoff rules).
+constraints (which tools, which mode, which handoff rules) — bounded at runtime
+by the shared [`agent-guards.md`](agent-guards.md) discipline.
 
 ## Permission boundaries
 

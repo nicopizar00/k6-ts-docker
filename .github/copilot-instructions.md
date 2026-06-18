@@ -37,6 +37,10 @@ container contracts; it does not own GitHub Actions workflows.
 
 ## Agentic-coding rules
 
+Custom agents are bounded at runtime by the shared
+[`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
+phases, approval-before-write, depth-1 delegation).
+
 - **Never make broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
 - **Never modify Python orchestration, Docker Compose, and k6 tests in
