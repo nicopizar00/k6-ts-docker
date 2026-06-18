@@ -112,6 +112,10 @@ Anything not listed here needs justification before being added.
    implementation details, not user-facing commands. The Python orchestrator
    is a thin façade that shells out to `docker compose`; it adds no execution
    semantics of its own.
+   **One scoped exception:** the `punch-performance-test-engineer` agent may run
+   host `npm`/esbuild/lint while *authoring* the k6 TS test toolchain — the
+   shipped chain still bundles in `docker/k6.Dockerfile`. See
+   [ADR 0001](docs/ai/decisions/0001-perf-engineer-host-npm.md).
 2. **Small, reviewable steps.** Each change must be understandable in one
    sitting. Prefer multiple small PRs over one large one.
 3. **No unnecessary dependencies.** Every dependency must earn its place. If
