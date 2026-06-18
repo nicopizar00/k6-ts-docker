@@ -108,7 +108,7 @@ action.
 ## Phase 5 — Review
 
 **Prompt:** [`punch-review`](../../.github/prompts/punch-review.prompt.md)
-**Agent:** `punch-reviewer` (activates `punch-governance-review` skill if
+**Agent:** `punch-reviewer` (activates `punch-ai-governance` skill if
 the diff touches `.github/` or `docs/ai/`)
 
 Read-only critique of the diff against the plan.

@@ -71,7 +71,7 @@ ls .github/skills/*/SKILL.md
 ```
 
 Then invoke the Review phase (`punch-review` prompt), which activates
-the `punch-governance-review` skill when `.github/` or `docs/ai/` is
+the `punch-ai-governance` skill when `.github/` or `docs/ai/` is
 touched. Its expected output is a findings list ending with "Governance
 is clean".
 

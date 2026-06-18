@@ -61,7 +61,7 @@ is met. The mechanical evidence contract lives in
 - **Ship's CI is red** → human investigates. The agent does not chase
   CI failures without a new Plan.
 
-## When to use `punch-governance-review`
+## When to use `punch-ai-governance`
 
 The governance audit lives inside the Review phase. It activates
 automatically when the diff touches `.github/` or `docs/ai/`. There is
