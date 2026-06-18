@@ -81,6 +81,10 @@ On demand: [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md) /
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md) when auditing
 container or artifact surfaces.
 
+## Guards (per agent-guards.md)
+
+Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipline (tool surface, serial phases, approval-before-write, depth-1 delegation) plus this agent's Allowed/Forbidden behavior above.
+
 ## Caveman comms
 
 Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

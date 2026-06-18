@@ -43,6 +43,8 @@ It does **not** own:
 - Changing the evidence artifact shape.
 - Adjusting `doctor` checks.
 
+**Not for:** compose/service contracts (`punch-compose-runtime`), k6 test scripts (`punch-k6-testing`), or artifact schemas (`punch-data-harvest`).
+
 ## Inputs expected
 
 - The approved Plan task with allowed/read-only/forbidden paths.

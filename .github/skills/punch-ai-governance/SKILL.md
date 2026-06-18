@@ -55,6 +55,8 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 - The Review phase runs against a diff that includes AI configuration.
 - Periodic governance review (quarterly cadence recommended).
 
+**Not for:** product code (Python/TS/Docker — the domain skills) or the architecture itself (`CLAUDE.md`, `docs/architecture/`).
+
 ## Inputs expected
 
 - The current state of `.github/` and `docs/ai/` (Glob/Read).

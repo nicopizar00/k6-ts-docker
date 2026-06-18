@@ -97,6 +97,10 @@ Required:
 - [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
   — to confirm the artifact contract holds.
 
+## Guards (per agent-guards.md)
+
+Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipline (tool surface, serial phases, approval-before-write, depth-1 delegation) plus this agent's Allowed/Forbidden behavior above.
+
 ## Caveman comms
 
 Caveman **`wenyan`** (test execution tier, enforced) — see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) for tiers/modes/evidence rules. Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

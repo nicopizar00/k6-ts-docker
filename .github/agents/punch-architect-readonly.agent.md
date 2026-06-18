@@ -76,6 +76,10 @@ On demand (matched by topic):
 - Reporting/artifact questions → `punch-data-harvest`.
 - AI configuration questions → `punch-ai-governance`.
 
+## Guards (per agent-guards.md)
+
+Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipline (tool surface, serial phases, approval-before-write, depth-1 delegation) plus this agent's Allowed/Forbidden behavior above.
+
 ## Caveman comms
 
 Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

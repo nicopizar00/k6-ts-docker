@@ -38,6 +38,8 @@ It does **not** own:
 - Changing image versions (especially `grafana/k6`).
 - Editing any `docker/*.Dockerfile`.
 
+**Not for:** running the suite (`punch-python-orchestration`), k6 test logic (`punch-k6-testing`), or artifact schemas (`punch-data-harvest`).
+
 ## Inputs expected
 
 - The approved Plan task with allowed/read-only/forbidden paths.

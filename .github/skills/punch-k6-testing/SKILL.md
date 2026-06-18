@@ -42,6 +42,8 @@ It does **not** own:
 - Bumping the `grafana/k6` pin.
 - Considering whether to revive the Browser placeholder.
 
+**Not for:** launching tests (`punch-python-orchestration`), report paths/schemas (`punch-data-harvest`), or compose wiring (`punch-compose-runtime`).
+
 ## Inputs expected
 
 - The approved Plan task with allowed/read-only/forbidden paths.

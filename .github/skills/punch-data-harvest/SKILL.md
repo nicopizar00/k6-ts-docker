@@ -39,6 +39,8 @@ It does **not** own:
 - Modifying `src/tests/support/report.ts`.
 - Touching the reporting/state-writing parts of `src/punch/`.
 
+**Not for:** running the suite (`punch-python-orchestration`), compose/service wiring (`punch-compose-runtime`), or k6 test logic (`punch-k6-testing`).
+
 ## Inputs expected
 
 - The approved Plan task with allowed/read-only/forbidden paths.

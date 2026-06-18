@@ -8,6 +8,27 @@ applies-to: lifecycle/Spec — idea refinement at the start of Spec (Spec absorb
 
 Refines raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
+## In Punch
+
+This is the **method** invoked at the start of [`punch-spec`](../../prompts/punch-spec.prompt.md)
+(agent `punch-architect-readonly`) when a request is still a vague idea — Spec
+absorbed the former Define step. Where the generic guidance below conflicts with
+Punch, **Punch wins**:
+
+- **Stack constraints bound feasibility:** Docker-first, Python stdlib orchestrator,
+  k6 tests — never host `npm`/`k6`/`pip`. Judge "feasibility" against
+  [`punch-architecture.instructions.md`](../../instructions/punch-architecture.instructions.md)
+  and the execution chain (source → bundle → image → run → report).
+- **Hands off to Spec:** once the idea is sharp, continue with
+  [`spec-driven-development`](../spec-driven-development/SKILL.md) — idea-refine
+  produces *intent*, not the spec doc; acceptance lands later as
+  `reports/state/punch-run.json` evidence.
+- **Artifact:** the one-pager saves to `docs/ideas/[idea-name].md` only on user
+  confirmation, and is not canonical until promoted through Spec.
+- **Codebase-aware:** ground variations in the real repo (`Glob`/`Grep`/`Read`),
+  not generic product ideation. Long-form frameworks/examples live in this skill's
+  companion files (`frameworks.md`, `refinement-criteria.md`, `examples.md`).
+
 ## How It Works
 
 1.  **Understand & Expand (Divergent):** Restate the idea, ask sharpening questions, and generate variations.

@@ -36,17 +36,24 @@ enforced Operating-comms section to `/punch-test`; reconcile ADR 0003 + registri
 
 ## Wave 3 — Skill / guard polish
 
-| Target | Fix |
-|---|---|
-| `idea-refine/SKILL.md` | Add an "In Punch" framing section (runs at start of Spec, hands to spec-driven-development); trim generic upstream body toward the lean profile of peer skills (long-form stays in its companion `.md` files). |
-| 5 punch-domain skills (`punch-compose-runtime`, `punch-data-harvest`, `punch-python-orchestration`, `punch-k6-testing`, `punch-ai-governance`) | Add a one-line "When NOT to use" negative trigger (reuse each skill's existing "does not own" targets). |
-| All authored SKILL.md frontmatter | Standardize `applies-to` to a leading machine-readable token (path glob OR `lifecycle/<Phase>`) + optional note. |
-| Agent `## Guards` sections | Keep only the agent-specific guard; replace the restated generic rules (approval / ≤3 files / 2-failure / leaf-depth) with the `docs/ai/agent-guards.md` pointer; add the pointer to the 5 agents missing it (`punch-architect-readonly`, `punch-planner`, `punch-reviewer`, `punch-verifier`, `security-auditor`). |
-| `punch-build.prompt.md` absorbed tools/skills/paths block | Reduce to links to the two engineer agent files (the prompt already admits they "mirror the canonical agent files"). |
-| Untrusted-output rule | Designate `debugging-and-error-recovery` canonical; have `security-and-hardening`, `punch-data-harvest`, `punch-context-engineering` link rather than restate. |
+| Target | Fix | Status |
+|---|---|---|
+| `idea-refine/SKILL.md` | Add an "In Punch" framing section (runs at start of Spec, hands to spec-driven-development; long-form stays in companion `.md` files). | **Done** (framing added; deep body-trim skipped — companions already hold long-form, low value) |
+| 5 punch-domain skills | Add a one-line "Not for:" negative trigger reusing each skill's "does not own" targets. | **Done** |
+| Agent `## Guards` sections | Add the `agent-guards.md` pointer to the 5 agents missing it. | **Done** (pointer added to all 9; restated-generic-rule trimming in the 4 builders skipped — higher risk, low value) |
+| All authored SKILL.md frontmatter | Standardize `applies-to` to a leading machine-readable token. | **Deferred** — cosmetic, ~19-file churn, no current consumer keys off it. |
+| `punch-build.prompt.md` absorbed tools/skills/paths block | Reduce to links to the engineer agent files. | **Dropped** — the owner explicitly directed this block be **absorbed mandatory** into the Build prompt; reducing it would reverse that directive. |
+| Untrusted-output rule | Consolidate the restatements to link `debugging-and-error-recovery`. | **Deferred** — "functionality untouched either way" (analyzer); low value. |
+
+### Follow-up noted during Wave 3
+
+`punch-ai-governance/SKILL.md` "Replaces" section hard-codes a stale asset count
+("10 agents … 11 prompts" — actual: 9 agents, 8 prompts). Factual drift, same class
+as Wave 2; out of the Wave-3 clear-win scope. Fix in a small follow-up (replace the
+hard count with a pointer to the registries).
 
 ## Task-breakdown note
 
-Each Wave-2/3 row is a candidate task. Break down via `punch-plan` when ready;
+Each remaining row is a candidate task. Break down via `punch-plan` when ready;
 keep each as a small reviewable PR with the governance audit (`punch-ai-governance`)
 as the gate. None require a `./bin/punch` runtime run (docs/config only).
