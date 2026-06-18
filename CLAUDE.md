@@ -116,7 +116,7 @@ Anything not listed here needs justification before being added.
    run host `npm`/`pnpm`/esbuild/lint — and host `k6` for the `npm run smoke:local`
    smoke pre-check — while *authoring* the k6 TS test toolchain
    ([ADR 0001](docs/ai/decisions/0001-perf-engineer-host-npm.md)); and (b) the
-   `punch-ai-governance` agent may run host `graphify` for the `/punch-documentate`
+   `punch-ai-governance` agent may run host `graphify` for the `/punch-document`
    documentation map ([ADR 0002](docs/ai/decisions/0002-graphify-host-tool.md)).
    Both are *authoring/maintenance* conveniences off the evidence path; the shipped
    chain still bundles in `docker/k6.Dockerfile`, and `smoke:local`/`graphify-out/`

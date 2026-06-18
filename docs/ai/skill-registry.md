@@ -116,6 +116,20 @@ set) is **complete** — every lifecycle skill above is absorbed and registered.
 skills — see *Deferred / excluded* below. No standalone lifecycle skill was added
 for any of these.
 
+## Adopted upstream skills (tool axis)
+
+External skills reused **as-is** — neither a Punch domain nor a Punch method.
+Registered here for parity only; their content is upstream-maintained and **exempt
+from authored-canon checks** (frontmatter completeness, naming, duplication,
+cross-reference) — refresh from upstream, never hand-edit.
+
+| Skill | What it provides | Reused from | Defined in |
+|---|---|---|---|
+| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
+
+Gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
+Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+
 ## Why these are still deferred (not created)
 
 | Candidate | Why it does NOT exist as a skill |

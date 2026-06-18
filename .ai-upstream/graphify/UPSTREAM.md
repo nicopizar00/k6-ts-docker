@@ -12,13 +12,13 @@ copy is the reference we diff against when upstream changes.
 | Snapshot date | 2026-06-18 |
 | Install (host) | `uv tool install graphifyy` |
 | Skill entrypoint | `SKILL.md` (invoked as `/graphify`) + `references/` (lazy-loaded) |
-| Purpose in Punch | documentation-mapping **evidence** for the `/punch-documentate` reconciliation phase — see [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md) |
+| Purpose in Punch | documentation-mapping **evidence** for the `/punch-document` reconciliation phase — see [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md) |
 
 ## Rules
 
 - **Do not edit these files.** They are upstream verbatim. Punch's adaptation
   lives in `.github/` (the `punch-ai-governance` agent's Documentation mode and
-  the `punch-documentate` prompt), never here.
+  the `punch-document` prompt), never here.
 - `.ai-upstream/**` is **frozen provenance**: `punch-ai-governance` excludes it
   from cross-reference, naming, duplication, and stale-asset checks.
 - **Reuse, don't fork.** Punch consumes Graphify's native outputs

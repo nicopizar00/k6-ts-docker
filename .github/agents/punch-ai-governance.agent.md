@@ -24,7 +24,7 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 - The Review phase's AI-config axis (the axis `code-review-and-quality` defers
   here).
 - Periodic governance review of `.github/` and `docs/ai/`.
-- `/punch-documentate` — reconcile documentation debt in waves (see
+- `/punch-document` — reconcile documentation debt in waves (see
   **Documentation mode** below).
 
 ## When NOT to use
@@ -42,6 +42,7 @@ Allowed:    .github/** (skills, prompts, agents, instructions, copilot-instructi
             docs/ai/**, AGENTS.md, CLAUDE.md
 Read-only:  everything else (for context only), incl. graphify-out/** (graph evidence — read, never edit)
 Forbidden:  src/**, docker/**, docker-compose.yml, reports/**, .ai-upstream/** (provenance),
+            .github/skills/graphify/** (adopted upstream — refresh, don't hand-edit),
             docs/ai/history/** (frozen)
 ```
 
@@ -61,8 +62,8 @@ Forbidden:  src/**, docker/**, docker-compose.yml, reports/**, .ai-upstream/** (
 
 - Run the audit procedure in the `punch-ai-governance` skill (frontmatter
   completeness, registry↔disk parity, no-phase-named-skills, cross-reference
-  resolution, duplication, leakage grep), exempting `docs/ai/history/**` and
-  `.ai-upstream/**`.
+  resolution, duplication, leakage grep), exempting `docs/ai/history/**`,
+  `.ai-upstream/**`, and `.github/skills/graphify/**` (adopted upstream).
 - On approval, apply scoped fixes and update the matching registry row in the
   same step.
 
@@ -72,9 +73,9 @@ Forbidden:  src/**, docker/**, docker-compose.yml, reports/**, .ai-upstream/** (
 - Adding a skill/prompt/agent/instruction without a registry row in the same step.
 - Restating a rule already in `CLAUDE.md` or an instruction file — cross-link instead.
 
-## Documentation mode (`/punch-documentate`)
+## Documentation mode (`/punch-document`)
 
-Activated by the [`punch-documentate`](../prompts/punch-documentate.prompt.md)
+Activated by the [`punch-document`](../prompts/punch-document.prompt.md)
 prompt to retire documentation debt in **waves**. Graphify provides the map; this
 agent makes every decision.
 

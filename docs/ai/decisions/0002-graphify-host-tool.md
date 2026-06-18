@@ -30,7 +30,7 @@ a repeal:
 - **Reuse, don't fork.** Punch invokes the existing `/graphify` skill and
   consumes its **native outputs** (`graphify-out/graph.json`,
   `GRAPH_REPORT.md`). No custom AST/indexing skill is created.
-- **One governed workflow.** A `/punch-documentate` prompt drives the existing
+- **One governed workflow.** A `/punch-document` prompt drives the existing
   [`punch-ai-governance`](../../../.github/agents/punch-ai-governance.agent.md)
   agent, which reconciles documentation in **waves** (keep / merge / rewrite /
   archive / delete / promote). Graphify provides the map; `punch-ai-governance`
@@ -40,7 +40,7 @@ a repeal:
   inheritance**, kept **1-deep** (`chat.subagents.allowInvocationsFromSubagents`
   stays at its default — subagents cannot spawn subagents). For this, the agent
   gains `runSubagent` and a scoped run-tool surface. *(Implemented with the
-  `punch-documentate` workflow; see that prompt and the agent's Documentation
+  `punch-document` workflow; see that prompt and the agent's Documentation
   mode.)*
 - **Guard reworded, not removed.** `punch-ai-governance` still **never runs the
   Punch Docker/k6 runtime or the `bin/punch` suite**. Its only command surface
@@ -57,12 +57,12 @@ a repeal:
 - **Positive:** documentation debt gets a lean, wave-based reconciliation phase
   backed by graph evidence — with **no new skill and no new agent** (logic folds
   into the existing `punch-ai-governance` agent + one prompt).
-- **Negative / watch:** a contributor running `/punch-documentate` locally needs
+- **Negative / watch:** a contributor running `/punch-document` locally needs
   graphify host-installed (`uv tool install graphifyy`). This is acceptable: it
   is opt-in, off the evidence/execution path, and does not touch the Docker-First
   *runtime* guarantee.
 - **Watch:** `punch-ai-governance` now holds a terminal surface (scoped to the
   graphify map subagent). Any *other* command execution by this agent — or
-  host-graphify use outside `/punch-documentate` — is **drift**.
+  host-graphify use outside `/punch-document` — is **drift**.
 - **Guardrail:** `CLAUDE.md` Rule #1 links here; `punch-ai-governance` treats the
   above as the only sanctioned host-graphify surface.

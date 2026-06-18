@@ -110,7 +110,10 @@ whether it runs**. Not every sub-agent runs Graphify.
    > uv tool install graphifyy
    > ```
 
-1. **No `graphify-out/graph.json`** → run `/graphify .`.
+1. **No `graphify-out/graph.json`** → run `/graphify .`. The skill runs **in the
+   IDE session** — the active model does semantic extraction, **no API key**. Do
+   **not** use headless `graphify extract --backend` in-IDE (it throws
+   `no LLM API key found`); that path is for off-IDE / CI only.
 2. **Graph exists** → do not rebuild by default. Prefer targeted queries:
    `graphify query "<question>"`, `graphify path "<A>" "<B>"`,
    `graphify explain "<node>"`.

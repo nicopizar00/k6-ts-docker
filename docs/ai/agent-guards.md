@@ -11,7 +11,7 @@ repository bootstrap work.
 1. **Restricted tool surface.** An agent uses only the tools its purpose needs.
    Config-maintainer agents do **not** get a terminal — with one documented
    exception: `punch-ai-governance` may run host `graphify` for the
-   `/punch-documentate` map ([ADR 0002](decisions/0002-graphify-host-tool.md)),
+   `/punch-document` map ([ADR 0002](decisions/0002-graphify-host-tool.md)),
    never the Punch runtime. Runtime engineers get a terminal
    (Docker/Punch-mediated only — never host `k6`, and host `npm` only where a
    documented exception allows it, see [`decisions/`](decisions/)).

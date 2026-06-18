@@ -62,10 +62,12 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 
 ## Procedure (the audit pass)
 
-> **Frozen scope.** Treat `docs/ai/history/**` as frozen provenance and
-> `.ai-upstream/**` as upstream provenance: both are **excluded** from the
-> cross-reference, naming, duplication, and stale-asset checks below. They record
-> point-in-time state and intentionally retain old names.
+> **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
+> `.ai-upstream/**` as upstream provenance, and `.github/skills/graphify/**` as an
+> adopted-upstream skill: all are **excluded** from the frontmatter-completeness,
+> cross-reference, naming, duplication, and stale-asset checks below. `graphify` is
+> still **registered** (parity), but is upstream-maintained — refresh from upstream,
+> never hand-edit. These record point-in-time / external state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.

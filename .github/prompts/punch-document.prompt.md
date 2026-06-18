@@ -27,6 +27,8 @@ Run **one wave at a time**; defer the rest.
   exception — [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)). If
   the CLI is absent, the `punch-context-engineering` gate shows the **Graphify
   Team Setup** message and the wave proceeds with non-graph evidence.
+- The map runs **in the IDE session** — the active model does semantic extraction,
+  **no API key**. The headless `graphify extract --backend` path is not used in-IDE.
 
 ## How it works (boundary)
 
@@ -46,8 +48,8 @@ never committed (it is gitignored — [ADR 0002](../../docs/ai/decisions/0002-gr
 1. **Map & gather (via Context Engineering).** Follow `punch-context-engineering`'s
    Graphify gate to build, query, or update the graph for this wave's scope —
    reconciliation is a broad/governance task, so an `update` is usually warranted.
-   Delegate to the existing `/graphify` skill (1-deep); never re-implement
-   extraction. Consume native outputs (`graphify-out/graph.json`, `GRAPH_REPORT.md`)
+   Delegate to the existing `/graphify` skill (1-deep, inheriting the IDE session
+   model — no key); never re-implement extraction. Consume native outputs (`graphify-out/graph.json`, `GRAPH_REPORT.md`)
    and targeted `query|path|explain|affected` as duplication / orphan / stale
    signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
