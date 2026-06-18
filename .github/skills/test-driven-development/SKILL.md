@@ -1,7 +1,7 @@
 ---
 name: test-driven-development
 description: Drives changes with tests. In Punch a "test" is a k6 check or threshold run via ./bin/punch, proven by reports/state/punch-run.json. Use when changing test behavior or fixing a perf/contract bug — write the failing check first (Prove-It), then make it pass.
-applies-to: src/tests/**, lifecycle/Test+Build — backs punch-test and the punch-build-k6-* prompts
+applies-to: src/tests/**, lifecycle/Test+Build — backs punch-test and the punch-build prompt
 ---
 
 # Test-Driven Development

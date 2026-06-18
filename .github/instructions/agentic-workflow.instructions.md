@@ -1,6 +1,6 @@
 ---
 applyTo: ".github/**,docs/ai/**,CLAUDE.md,AGENTS.md"
-description: How the seven-phase agentic lifecycle is enforced in this repo.
+description: How the six-phase agentic lifecycle is enforced in this repo.
 ---
 
 # Agentic Workflow — Path Instructions
