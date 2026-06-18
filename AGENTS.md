@@ -64,6 +64,7 @@ Available agents
 | punch-verifier           | Evidence collector     | Verify, Test |
 | punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
 | security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
+| punch-ai-governance      | AI-config maintainer (user-direct; no terminal; never a sub-agent) | `@punch-ai-governance`, Review AI-config axis |
 
 Definitions live in .github/agents/*.agent.md.
 
