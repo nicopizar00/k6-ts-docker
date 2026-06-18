@@ -53,7 +53,7 @@ Punch uses a six-phase lifecycle for AI-assisted changes:
 
     Spec → Plan → Build → Verify → Review → Ship
 
-Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build fans out to five domain prompts and five matching builder agents. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
+Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`) — added in Phase E. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
 
 Available agents
 
@@ -61,18 +61,17 @@ Available agents
 |---|---|---|
 | punch-architect-readonly | Investigator (writes the spec doc) | Spec |
 | punch-planner            | Scoped-task planner    | Plan |
-| punch-builder-orchestrator | Scope-bound builder (Python orchestrator) | Build |
-| punch-builder-compose    | Scope-bound builder (Compose / runtime) | Build |
-| punch-builder-k6-http    | Scope-bound builder (k6 HTTP) | Build |
-| punch-builder-k6-browser | Scope-bound builder (k6 Browser — deferred) | Build |
-| punch-builder-data-harvest | Scope-bound builder (artifacts / reports) | Build |
 | punch-verifier           | Evidence collector     | Verify, Test |
 | punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
 | security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
 
 Definitions live in .github/agents/*.agent.md.
 
-**Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas + builder family; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
+> **Build layer transition.** The five `punch-builder-*` agents were retired; the
+> `punch-builder` dispatcher + two engineers (`punch-runtime-engineer`,
+> `punch-performance-test-engineer`) replace them in Phase E.
+
+**Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
 
 Available skills
 
