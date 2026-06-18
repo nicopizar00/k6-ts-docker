@@ -156,6 +156,11 @@ Python CLI reaches feature parity):
 - Read this file first, then `docs/ai/operating-model.md`,
   `docs/architecture.md`, `docs/architecture/punch-boundaries.md`,
   and `docs/ai-context.md`.
+- **GitHub Copilot is the primary host;** `.github/` is the single source of
+  truth for AI config. In **Claude Code**, activate the `guard` skill
+  (`.claude/skills/guard/SKILL.md`) — it reuses the `.github/` prompts/agents/
+  skills via the `.claude/commands/*` wraps (`/spec … /document`); it never
+  forks or overrides them ([ADR 0004](docs/ai/decisions/0004-claude-code-guard-bridge.md)).
 - The operating model is **Spec → Plan → Build → Verify → Review →
   Ship** (Spec absorbs the former Define clarify step). Use the matching
   prompt in `.github/prompts/` and stay in the declared mode (Ask vs

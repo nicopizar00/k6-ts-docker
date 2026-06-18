@@ -38,20 +38,30 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 ## Scope
 
 ```
-Allowed:    .github/** (skills, prompts, agents, instructions, copilot-instructions),
-            docs/ai/**, AGENTS.md, CLAUDE.md
-Read-only:  everything else (for context only), incl. graphify-out/** (graph evidence — read, never edit)
-Forbidden:  src/**, docker/**, docker-compose.yml, reports/**, .ai-upstream/** (provenance),
-            .github/skills/graphify/** (adopted upstream — refresh, don't hand-edit),
-            docs/ai/history/** (frozen)
+Allowed:    .github/** (ALL configs — skills, prompts, agents, instructions,
+            copilot-instructions; complete admin), docs/** (all documentation,
+            incl. docs/ai/**), AGENTS.md, CLAUDE.md, README.md,
+            .claude/skills/guard/** + .claude/commands/** (Claude Code reuse
+            bridge — wiring map only; ADR 0004)
+Read-only:  source / runtime, for context only — src/**, docker/**,
+            docker-compose.yml, reports/**, graphify-out/** (read, never edit)
+Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit)
+Handle with care (admin allowed; convention, not an access block):
+            .github/skills/graphify/** + .agents/skills/** (adopted upstream —
+            prefer refresh from upstream over hand-edit);
+            docs/ai/history/** (frozen record — append, don't rewrite)
 ```
+
+Complete admin over **all configs under `.github/`** and **all docs under
+`docs/`** (the `/punch-document` mandate). Product/runtime code stays read-only —
+that is the engineers' domain via `punch-builder`.
 
 ## Guards (per [`agent-guards.md`](../../docs/ai/agent-guards.md))
 
 - **Runtime-free terminal.** Never runs the Punch suite (`bin/punch`, Docker,
   k6). Its only command surface is the `/graphify` documentation-map in
   Documentation mode (ADR 0002).
-- **Approval before write.** Surface the intended `.github`/`docs/ai` change and
+- **Approval before write.** Surface the intended `.github`/`docs` change and
   wait for the user's go-ahead before writing to disk.
 - **≤3 files per logical step.** Keep edits small and reviewable.
 - **1-deep delegation.** Forks only the `/graphify` map (one level; VS Code's

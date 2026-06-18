@@ -1,7 +1,7 @@
 ---
 name: punch-ai-governance
 description: Audits AI configuration — instructions, prompts, skills, agents, lifecycle docs — for boundary compliance, scope discipline, handoff hygiene, frontmatter contracts, and cross-reference drift.
-applies-to: .github/**, docs/ai/**, AGENTS.md, CLAUDE.md
+applies-to: .github/**, docs/**, AGENTS.md, CLAUDE.md, README.md
 allowed-tools: Read, Grep, Glob
 ---
 

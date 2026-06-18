@@ -113,6 +113,10 @@ Caveman comms
 
 Caveman compresses concise assistant **prose** (canonical Copilot skill `.agents/skills/caveman/`, Punch single-source policy `.github/skills/punch-build-caveman/`). Project default is **`lite`**, with a per-phase canon: Document/Spec `lite` · Plan/Review/Ship `full` · Build/Test `ultra` (the enforced phases). **Sub-agent reports are `wenyan`** at every level; **Wenyan is forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills, prompts, registries, handoffs, `reports/**`). Non-Build/Test agents lead with **normal prose** for judgment-heavy work and keep all capabilities/constraints. Caveman is output style only — it never changes tools, access, or delegation. It never compresses code, commands, paths, logs, errors, exit codes, thresholds, k6/Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or next-action. `/caveman lite|full|ultra|wenyan-*`; `stop caveman` reverts. Full canon + depth policy: `.github/skills/punch-build-caveman/SKILL.md` + ADR 0003.
 
+Claude Code reuse (Guard bridge)
+
+GitHub Copilot VS Code is the primary host; `.github/` is the single source of truth. When the repo is opened in Claude Code, the project-scoped `guard` skill (`.claude/skills/guard/SKILL.md`) and thin command wraps (`.claude/commands/{spec,plan,build,test,review,ship,document}.md`) **reuse** the canonical `.github/` prompts/agents/skills — they never fork, duplicate, or override them. Rules change in `.github/` (Copilot First), never only in `.claude/`. See ADR 0004.
+
 For deeper reading
 
 - CLAUDE.md — project rules and architectural constitution

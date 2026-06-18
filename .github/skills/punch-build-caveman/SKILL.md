@@ -93,6 +93,9 @@ allowed **only** in sub-agent reports. Persisted documentation uses **`lite`** o
 **`full`**; **`ultra` is avoided in persisted docs — status-/terminal-only**, never
 inside a doc body. `/document` (the `punch-document` reconciliation phase) writes
 persistent docs in `lite` and may use `ultra` only for its terminal/status summary.
+**Emoji carve-out:** emojis / ASCII emoticons (✅ ⚠️ ❌ `:)`) are **permitted in
+persisted docs** when they aid scannability or signal status — an explicit
+`/document` exception to the no-decorative-emoji rule. Evidence stays verbatim.
 
 ## Modes
 

@@ -1,6 +1,6 @@
 ---
 agent: punch-ai-governance
-description: Documentate — reconcile documentation debt in waves. Map docs + AI-config with /graphify, then keep / merge / rewrite / archive / delete / promote.
+description: Documentate — own and reconcile ALL of docs/ (+ .github config, AGENTS.md, CLAUDE.md, README.md) in waves. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / rewrite / archive / delete / promote.
 ---
 
 # Punch — Documentate
@@ -17,10 +17,34 @@ description: Documentate — reconcile documentation debt in waves. Map docs + A
 ## When to use
 
 Periodically, or after a feature lands and docs drifted, to retire documentation
-debt — duplicated, stale, partial, or orphaned knowledge — across human docs
-(`README.md`, `docs/`, ADRs) and AI-facing docs (`AGENTS.md`,
-`.github/` instructions / prompts / skills / agents, `docs/ai/`, registries).
-Run **one wave at a time**; defer the rest.
+debt — duplicated, stale, partial, or orphaned knowledge — across **all of `docs/`**
+and the config/doc surface this prompt owns. Run **one wave at a time**; defer the rest.
+
+## Scope — resolves all `docs/`
+
+This prompt (via `punch-ai-governance`, which holds complete admin over `.github/`
+and `docs/`) owns and reconciles the **entire** documentation surface:
+
+- **All human docs** — `README.md`, `docs/**` (incl. `docs/architecture/**`,
+  `docs/workflows/**`, `docs/validation/**`, top-level `docs/*.md`), ADRs.
+- **All AI-facing docs** — `AGENTS.md`, `CLAUDE.md`, `docs/ai/**`, and the
+  `.github/` instructions / prompts / skills / agents + registries.
+
+Frozen/upstream zones (`docs/ai/history/**`, `.ai-upstream/**`, adopted-upstream
+skills) follow the convention in the agent's *Handle with care* scope: refresh /
+append, don't rewrite.
+
+## Documentation style — AI-First, minimal human-readable
+
+Every doc this phase writes or rewrites is:
+
+- **Lean** — say it once, link don't restate; single source of truth per fact.
+- **AI-First** — self-describing names, explicit structure, machine-scannable
+  (front-loaded summaries, tables, stable headings) so agents resolve it fast.
+- **Minimal human-readable** — short, skimmable prose for humans; no filler.
+- **Emojis / ASCII emoticons allowed** — when they aid scannability or signal
+  status (✅ ⚠️ ❌ `:)`); this is an explicit carve-out from Caveman's no-decorative-
+  emoji rule, for **persisted docs only**. Evidence stays verbatim regardless.
 
 ## Pre-conditions
 
@@ -40,9 +64,25 @@ never committed (it is gitignored — [ADR 0002](../../docs/ai/decisions/0002-gr
 
 ## Inputs
 
-- **Wave scope** — one of: AI-config (`.github/` + `docs/ai/`) · human docs
-  (`README.md`, `docs/`, `docs/architecture/`) · a single subsystem.
-- An existing `graphify-out/` if present (else the Map step builds it).
+- **Wave scope** — a slice of the full surface above: AI-config (`.github/` +
+  `docs/ai/`) · human docs (`README.md`, `docs/**`) · a single subsystem. The
+  *ownership* is all of `docs/`; the *wave* is the slice worked this pass.
+- The **Global Graphify repository track** (see below) — an existing
+  `graphify-out/` if present, else the Map step builds it.
+
+## Graphify — Global repository track
+
+Maintain **one repo-wide ("global") Graphify graph** as the standing map of the
+whole project, and **track** it across waves:
+
+- **Build once, global:** `/graphify .` over the repository root — the whole tree,
+  not per-wave slices — so cross-doc duplication/orphan/stale signals are visible
+  project-wide.
+- **Track incrementally:** between waves, keep it current with
+  `/graphify . --update` (re-extract only new/changed files); after doc-writing
+  waves, run a manual `--update` so authored docs re-enter the graph.
+- Still **evidence, never canonical** — `graphify-out/` is gitignored and never
+  promoted without a governance decision ([ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)).
 
 ## What to do
 
