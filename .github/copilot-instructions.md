@@ -19,21 +19,15 @@ before bending one.
 
 ## Architecture ownership
 
-Each layer owns one decision domain; Build prompts refuse to cross
-layers without an approved Plan. The full ownership map lives in
-[`docs/architecture/punch-boundaries.md`](../docs/architecture/punch-boundaries.md).
+Each layer owns one decision domain; Build prompts refuse to cross layers without
+an approved Plan. Layers: Bash wrapper · Python orchestrator (`src/punch/**`) ·
+Docker Compose · Dockerfiles · k6 tests (`src/tests/**`) · Artifacts (`reports/**`).
+The full ownership table + Review anti-patterns live in the always-on
+[`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md)
+(`applyTo: **`) and [`docs/architecture/punch-boundaries.md`](../docs/architecture/punch-boundaries.md)
+— not restated here.
 
-| Layer | Owns | Lives in |
-|---|---|---|
-| Bash wrapper | route shell calls to Python | `bin/punch`, `bin/*` |
-| Python orchestrator | argparse, subprocess, exit codes, evidence | `src/punch/**` |
-| Docker Compose | services, networks, env, healthchecks (runtime boundary) | `docker-compose.yml` |
-| Dockerfiles | how each service is built | `docker/*.Dockerfile` |
-| k6 tests | scenarios, thresholds, `handleSummary` | `src/tests/**` |
-| Artifacts / reports | the contract with downstream consumers | `reports/**` |
-
-CI/CD is **external** to Punch. Punch provides reusable local/CI-compatible
-container contracts; it does not own GitHub Actions workflows.
+CI/CD is **external** to Punch — it does not own GitHub Actions workflows.
 
 ## Agentic-coding rules
 
@@ -118,17 +112,12 @@ in the PR description.
 
 ## graphify (optional documentation mapping)
 
-`graphify` maps this repo into a knowledge graph (`graphify-out/`) — **optional**,
-used only as *evidence* to orient analysis. It is **not** the source of truth, and
-not every session's first action: **Context Engineering owns when it runs**. See the
-Graphify gate in [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md)
-— `/graphify .` only when `graphify-out/graph.json` is absent or a broad refresh is
-needed; otherwise prefer `graphify query|path|explain`. Graphify orients; **source
-validates, tests confirm**.
-
-Host `graphify` is a scoped Rule-1 exception ([ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md));
-`graphify-out/` is throwaway evidence, never canonical. Not installed? Run
-`uv tool install graphifyy`. Build or refresh with `/graphify .` in Copilot Chat.
+`graphify` maps the repo into a knowledge graph (`graphify-out/`) — **optional**
+evidence, never canonical; **Context Engineering owns when it runs**. Prefer
+`graphify query|path|explain`; `/graphify .` only for a missing/stale graph. Full
+gate, install, and the Rule-1 host exception live in the
+[`punch-context-engineering`](skills/punch-context-engineering/SKILL.md) Graphify
+gate + [ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md) — not restated here.
 
 ## Caveman (concise comms)
 
