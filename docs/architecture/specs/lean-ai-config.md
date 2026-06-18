@@ -45,12 +45,12 @@ enforced Operating-comms section to `/punch-test`; reconcile ADR 0003 + registri
 | `punch-build.prompt.md` absorbed tools/skills/paths block | Reduce to links to the engineer agent files. | **Dropped** — the owner explicitly directed this block be **absorbed mandatory** into the Build prompt; reducing it would reverse that directive. |
 | Untrusted-output rule | Consolidate the restatements to link `debugging-and-error-recovery`. | **Deferred** — "functionality untouched either way" (analyzer); low value. |
 
-### Follow-up noted during Wave 3
+### Follow-up noted during Wave 3 — **Done**
 
-`punch-ai-governance/SKILL.md` "Replaces" section hard-codes a stale asset count
-("10 agents … 11 prompts" — actual: 9 agents, 8 prompts). Factual drift, same class
-as Wave 2; out of the Wave-3 clear-win scope. Fix in a small follow-up (replace the
-hard count with a pointer to the registries).
+`punch-ai-governance/SKILL.md` "Replaces" section hard-coded a stale asset count
+("10 agents … 11 prompts" — actual: 9 agents, 8 prompts). Fixed: the hard counts
+were replaced with a pointer to the live registries (`skill-registry.md`,
+`prompt-registry.md`, `AGENTS.md`) so it can't drift again.
 
 ## Task-breakdown note
 
