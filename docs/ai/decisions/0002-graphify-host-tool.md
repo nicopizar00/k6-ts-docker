@@ -18,8 +18,12 @@ detection and `query` / `path` / `explain` / `affected` traversal — useful
 `uv tool install graphifyy`; it is **not** Dockerized and is not part of the
 source → bundle → image → run → report execution chain.
 
-A pristine upstream snapshot (v0.8.41) lives in `.ai-upstream/graphify/` with
-provenance in its `UPSTREAM.md`.
+A pristine upstream snapshot (v0.8.41) may be kept in `.ai-upstream/graphify/`
+with provenance in its `UPSTREAM.md`. Note: `.ai-upstream/` is a **gitignored
+local staging area** (see `.ai-upstream/.gitkeep`), not version-controlled — the
+canonical Punch adaptation lives in `.github/` (the `punch-document` prompt + the
+`punch-ai-governance` Documentation mode). The snapshot is a local drift baseline;
+re-fetch it (`uv tool install graphifyy`, re-copy the installed skill) when absent.
 
 ## Decision
 

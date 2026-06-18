@@ -125,7 +125,7 @@ cross-reference) — refresh from upstream, never hand-edit.
 
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
-| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
+| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | Build-only compression of assistant **prose** (concise implementation updates, sub-agent handoffs, post-evidence debug summaries, commit drafts). **Default-on at `full`** in Build; never compresses technical evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
@@ -150,7 +150,8 @@ Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-grap
 Unlike `graphify` (reused as-is, exempt from authored-canon checks), the
 `punch-build-caveman` **adapter** is Punch-authored and therefore **subject** to
 the frontmatter / naming / duplication checks. Only the pristine
-`.ai-upstream/caveman/` snapshot is frozen provenance exempt from those checks.
+`.ai-upstream/caveman/` snapshot — **gitignored local staging**, not
+version-controlled — is provenance exempt from those checks.
 
 ## Why these are still deferred (not created)
 

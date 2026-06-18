@@ -63,11 +63,14 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 ## Procedure (the audit pass)
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
-> `.ai-upstream/**` as upstream provenance, and `.github/skills/graphify/**` as an
-> adopted-upstream skill: all are **excluded** from the frontmatter-completeness,
-> cross-reference, naming, duplication, and stale-asset checks below. `graphify` is
-> still **registered** (parity), but is upstream-maintained — refresh from upstream,
-> never hand-edit. These record point-in-time / external state.
+> `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
+> fresh clone), and `.github/skills/graphify/**` as an adopted-upstream skill: all
+> are **excluded** from the frontmatter-completeness, cross-reference, naming,
+> duplication, and stale-asset checks below. `graphify` is still **registered**
+> (parity), but is upstream-maintained — refresh from upstream, never hand-edit.
+> The authored adapter `.github/skills/punch-build-caveman/**` is **not** exempt —
+> it is Punch-authored and subject to all checks. These record point-in-time /
+> external state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.
