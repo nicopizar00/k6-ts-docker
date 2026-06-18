@@ -57,3 +57,21 @@ were replaced with a pointer to the live registries (`skill-registry.md`,
 Each remaining row is a candidate task. Break down via `punch-plan` when ready;
 keep each as a small reviewable PR with the governance audit (`punch-ai-governance`)
 as the gate. None require a `./bin/punch` runtime run (docs/config only).
+
+## Reconciliation status (`/punch-document` closure)
+
+**Documentation debt closed for the AI-config scope** (`.github/` + `docs/ai/` +
+`AGENTS.md` / `CLAUDE.md` / `README.md`). Final `punch-ai-governance` audit —
+non-graph evidence (host `graphify` not required) — **clean**:
+
+- Frontmatter completeness · registry parity (skills/prompts/agents) · cross-
+  reference & link integrity · no phase-named skills — all pass.
+- Caveman guidance is **single-source**: the full never-compress evidence list
+  lives only in `punch-build-caveman/SKILL.md`; prompts, agents,
+  `copilot-instructions.md`, and ADR 0003 carry pointers / short summaries.
+- Accepted (not drift): `punch-builder` declares boundaries via Routing/Delegation
+  rules rather than Allowed/Forbidden headings (dispatcher shape).
+
+Waves 1–3 + the governance-count follow-up are complete. Deferred items
+(`applies-to` standardization, untrusted-output consolidation) remain queued for a
+future wave. **No further reconciliation pending for this scope.**

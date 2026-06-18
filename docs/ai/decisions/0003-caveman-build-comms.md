@@ -67,10 +67,11 @@ do **not** run the official installer:
   allowed `lite` / `full` / `ultra`; `stop caveman` / `normal mode` reverts.
   (Initial adoption defaulted to `lite`/opt-in; revised 2026-06-18 to default
   `full` in Build per owner direction — evidence-preservation rules unchanged.)
-- **Evidence is sacred.** Caveman compresses assistant prose only. It never
-  compresses or rewrites code, commands, paths, Python orchestration details,
-  Docker Compose output, k6 output, JSON/YAML/CSV, logs, stack traces, errors,
-  exit codes, test evidence, acceptance criteria, or risk notes.
+- **Evidence is sacred.** Caveman compresses assistant prose only; it never
+  compresses or rewrites technical evidence. The canonical never-compress list is
+  maintained in
+  [`punch-build-caveman`](../../../.github/skills/punch-build-caveman/SKILL.md)
+  (§Evidence preservation).
 - **Priority order.** Correctness > observable evidence > Build maintainability >
   Copilot compatibility > brevity > Caveman style. If brevity harms correctness,
   stop Caveman.
