@@ -72,7 +72,7 @@ visible whenever someone changes reporting.
 | Produced when | every test run |
 | Schema | k6's summary JSON shape, **filtered** to aggregates (counts, thresholds, durations). Do not write raw per-iteration data. |
 | Read by | humans, future automation |
-| Stability | tracks k6 upstream changes; absorb upgrades in `punch-k6-performance` |
+| Stability | tracks k6 upstream changes; absorb upgrades in `punch-k6-testing` |
 | Sensitivity | sanitize headers/env from any error sections |
 
 ### `reports/logs/<service>.log`

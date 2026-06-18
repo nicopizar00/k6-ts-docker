@@ -28,7 +28,7 @@ It owns:
 It does **not** own:
 
 - How the orchestrator runs the tests (see `punch-python-orchestration`).
-- Threshold semantics (see `punch-k6-performance`).
+- Threshold semantics (see `punch-k6-testing`).
 - Compose service wiring (see `punch-compose-runtime`).
 
 ## When to use
