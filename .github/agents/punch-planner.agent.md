@@ -76,7 +76,7 @@ For each task:
 
 ## Skill activation
 
-Always: [`punch-context`](../skills/punch-context/SKILL.md).
+Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Plan method: [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md).
 On demand for boundary verification:
 - [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)

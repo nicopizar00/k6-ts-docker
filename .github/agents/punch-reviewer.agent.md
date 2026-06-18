@@ -97,7 +97,7 @@ Ship summary:
 
 ## Skill activation
 
-Always: [`punch-context`](../skills/punch-context/SKILL.md).
+Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Review method: [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md), with [`code-simplification`](../skills/code-simplification/SKILL.md) (simplicity), [`security-and-hardening`](../skills/security-and-hardening/SKILL.md) (security axis), and [`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md) (doc check).
 Ship method: [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md).
 Required when the diff touches the matching domain:

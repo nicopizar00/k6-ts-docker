@@ -9,7 +9,7 @@ user-invocable: true
 
 ## Purpose
 
-A code-read-only investigator. Loads `punch-context` first, then ranges across
+A code-read-only investigator. Loads `punch-context-engineering` first, then ranges across
 the repo to:
 
 - Clarify and refine the raw request — using the `idea-refine` skill when the
@@ -65,7 +65,7 @@ the repo to:
 
 ## Skill activation
 
-Always: [`punch-context`](../skills/punch-context/SKILL.md).
+Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Spec method: [`spec-driven-development`](../skills/spec-driven-development/SKILL.md).
 When the request is still a vague idea: [`idea-refine`](../skills/idea-refine/SKILL.md)
 — the Spec clarify step.
