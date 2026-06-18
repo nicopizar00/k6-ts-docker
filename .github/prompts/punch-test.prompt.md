@@ -21,8 +21,9 @@ the upstream `test` command, applied to Punch's k6 + evidence model:
 - A new behavior → confirm the new check/threshold fails against current code,
   then passes once Build implements it.
 
-Authoring the test itself is a Build task ([`punch-build-k6-http`](punch-build-k6-http.prompt.md));
-this prompt **runs and judges** the test, it does not write it.
+Authoring the test itself is a Build task ([`punch-build`](punch-build.prompt.md) →
+`punch-performance-test-engineer`); this prompt **runs and judges** the test, it
+does not write it.
 
 ## Inputs
 

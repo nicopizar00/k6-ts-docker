@@ -65,9 +65,8 @@ For each task:
 
 ## Handoff rules
 
-- Plan → human checkpoint → Build (handoff to the matching builder:
-  [`punch-builder-orchestrator`](punch-builder-orchestrator.agent.md),
-  `-compose`, `-k6-http`, `-k6-browser`, or `-data-harvest`).
+- Plan → human checkpoint → Build (handoff to [`punch-builder`](punch-builder.agent.md),
+  which routes the task to `punch-runtime-engineer` or `punch-performance-test-engineer`).
 - If during Plan the user discovers the Spec was incomplete, return to
   Spec (handoff to
   [`punch-architect-readonly`](punch-architect-readonly.agent.md)).
