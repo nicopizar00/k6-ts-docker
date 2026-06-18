@@ -75,7 +75,7 @@ fix-before-merge, Medium/Low = schedule.
 
 ## Skill activation
 
-Always: [`punch-context`](../skills/punch-context/SKILL.md).
+Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Method: [`security-and-hardening`](../skills/security-and-hardening/SKILL.md).
 On demand: [`punch-docker-compose`](../skills/punch-docker-compose/SKILL.md) /
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md) when auditing

@@ -8,7 +8,7 @@ description: Spec — clarify and refine the request, then convert it into goals
 **Lifecycle phase:** Spec (the entry phase — it absorbs the former Define clarify step)
 **Mode:** Code read-only; may write the spec doc when persisted (per agent definition)
 **Owner skill:** [`spec-driven-development`](../skills/spec-driven-development/SKILL.md) (the method)
-+ [`punch-context`](../skills/punch-context/SKILL.md)
++ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
 + [`idea-refine`](../skills/idea-refine/SKILL.md) (clarify step, when the idea is vague)
 + the matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)
