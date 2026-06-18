@@ -8,7 +8,7 @@ description: Phase 3 — Plan. Convert a Spec into scoped tasks with explicit al
 **Lifecycle phase:** Plan
 **Mode:** Plan discipline — output is a plan, no product edits (enforced by agent definition)
 **Owner skill:** [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) (the method)
-+ [`punch-context`](../skills/punch-context/SKILL.md) + the matching domain skill(s);
++ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + the matching domain skill(s);
 on `.github/` changes, [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
 **Agent:** [`punch-planner`](../agents/punch-planner.agent.md)
 
