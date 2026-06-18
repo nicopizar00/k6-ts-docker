@@ -1,11 +1,11 @@
 ---
-name: punch-governance-review
+name: punch-ai-governance
 description: Audits AI configuration — instructions, prompts, skills, agents, lifecycle docs — for boundary compliance, scope discipline, handoff hygiene, frontmatter contracts, and cross-reference drift.
 applies-to: .github/**, docs/ai/**, AGENTS.md, CLAUDE.md
 allowed-tools: Read, Grep, Glob
 ---
 
-# Skill: punch-governance-review
+# Skill: punch-ai-governance
 
 ## Responsibility
 
@@ -124,7 +124,7 @@ drift — see findings"**.
 - **Read-only.** This skill flags drift; it does not edit. Fixes go
   through a normal Plan → Build cycle.
 - **No silent additions.** New skills, prompts, agents, or instructions
-  need a Plan, a registry entry, and a `punch-governance-review` pass
+  need a Plan, a registry entry, and a `punch-ai-governance` pass
   before merge.
 - **Cross-link, don't duplicate.** Any rule that already exists in
   `CLAUDE.md`, `punch-architecture.instructions.md`, or another file is
