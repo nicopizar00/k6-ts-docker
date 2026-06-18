@@ -56,23 +56,22 @@ unit Build will execute. The plan is the *contract* Build is bound to.
 - Validation commands (run by Verify).
 - Rollback notes.
 - Human checkpoint.
-- Which Build prompt + builder agent handles it (orchestrator / compose /
-  k6-http / k6-browser / data-harvest).
+- Which engineer `punch-builder` will route it to (`punch-runtime-engineer` for
+  orchestrator / compose / data-harvest; `punch-performance-test-engineer` for
+  k6 http / browser).
 
 **Gate:** plan approved by a human.
 
 ## Phase 3 — Build
 
-**Prompts:** one of —
+**Prompt:** [`punch-build`](../../.github/prompts/punch-build.prompt.md) → `punch-builder`,
+which classifies the task and delegates (depth-1) to one engineer:
 
-- [`punch-build-orchestrator`](../../.github/prompts/punch-build-orchestrator.prompt.md) → `punch-builder-orchestrator`
-- [`punch-build-compose`](../../.github/prompts/punch-build-compose.prompt.md) → `punch-builder-compose`
-- [`punch-build-k6-http`](../../.github/prompts/punch-build-k6-http.prompt.md) → `punch-builder-k6-http`
-- [`punch-build-k6-browser`](../../.github/prompts/punch-build-k6-browser.prompt.md) → `punch-builder-k6-browser`
-- [`punch-build-data-harvest`](../../.github/prompts/punch-build-data-harvest.prompt.md) → `punch-builder-data-harvest`
+- `punch-runtime-engineer` — Python orchestration, Compose, data harvest.
+- `punch-performance-test-engineer` — k6 HTTP/Browser, TS bundle, lint.
 
-Each Build prompt binds to its own **builder agent**, whose `tools:` scope is
-`edit` + `search` (no terminal — running commands is Verify's job).
+Each engineer carries that domain's allowed/read-only/forbidden scope. Engineers
+may run Docker/Punch-mediated commands for evidence; the maintainer never does.
 
 Implement **one** task from the approved plan. Edit **only** the allowed
 paths. If the change requires touching anything outside scope, stop and
@@ -170,13 +169,13 @@ Diff size:   ~30 lines
 Validation:  ./bin/punch run smoke --quiet (terminal empty, log file populated)
 Rollback:    revert single commit; no schema/contract changes
 Checkpoint:  human confirms before Build
-Build via:   punch-build-orchestrator → punch-builder-orchestrator
+Build via:   punch-build → punch-builder → punch-runtime-engineer
 ```
 
 ### Phase 3 — Build
 
-Run `punch-build-orchestrator` (agent `punch-builder-orchestrator`) with task
-O-01. Edit only `src/punch/__main__.py`. Report the diff.
+Run `punch-build` (dispatcher `punch-builder` → `punch-runtime-engineer`) with
+task O-01. Edit only `src/punch/__main__.py`. Report the diff.
 
 ### Phase 4 — Verify
 

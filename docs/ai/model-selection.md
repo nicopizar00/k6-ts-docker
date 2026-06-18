@@ -82,7 +82,7 @@ is the most common anti-pattern.
 For a small Python orchestrator task:
 
 - Spec / Plan / Review: strong reasoning model.
-- Build (one `punch-build-orchestrator` call): strong coding model.
+- Build (one `punch-build` call → `punch-runtime-engineer`): strong coding model.
 - Verify (`./bin/punch doctor`, `./bin/punch run smoke`, read JSON):
   fast model.
 - Ship (commit, push, PR): fast model.
