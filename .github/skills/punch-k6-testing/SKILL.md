@@ -1,7 +1,7 @@
 ---
 name: punch-k6-testing
 description: Owns k6 test conventions — HTTP vs Browser separation, thresholds, scenarios, shared data, handleSummary contract, evidence file naming, and performance pass/fail semantics.
-applies-to: src/tests/**, docker/k6.Dockerfile
+applies-to: src/tests/**, docker/k6.Dockerfile, package.json (k6/smoke scripts)
 ---
 
 # Skill: punch-k6-testing
@@ -104,6 +104,33 @@ transferable method:
   [`debugging-and-error-recovery`](../debugging-and-error-recovery/SKILL.md)).
 - **The threshold is the performance budget** and the regression gate — keep it
   visible at the top of the test and meaningful.
+
+## Local-first smoke gate (host k6, via npm/pnpm)
+
+A quick **CI/CD-style gate** to confirm a k6 load test actually runs on the local
+machine **before** standing up the layered Docker orchestration. Primary consumer:
+[`punch-performance-test-engineer`](../../agents/punch-performance-test-engineer.agent.md);
+any agent may use it. Wired into the npm/pnpm lifecycle as a script:
+
+```bash
+npm run smoke:local        # or: pnpm smoke:local
+K6_DURATION=1m npm run smoke:local        # duration option (default 30s; prefer <=5m)
+TARGET_BASE_URL=http://localhost:8080 npm run smoke:local   # point at a reachable target
+```
+
+It bundles `src/tests/smoke.ts` (host esbuild) and runs `k6 run` on the **host**
+k6 binary. Behavior and boundaries (deliberately minimal — no heavy guards):
+
+- **Host execution, not Docker.** Prints a clear one-line warning on every run.
+- **Tool check.** If host `k6` is not installed, it **warns and aborts** (exit 127)
+  pointing at install docs or `./bin/punch run smoke` — no traceback.
+- **Smoke only.** It is a *does-the-script-run* pre-check, not load/stress/gate/journey.
+- **Not the evidence path.** It does **not** write the canonical
+  `reports/state/punch-run.json`. Evidence/CI stays `./bin/punch run smoke` (Docker),
+  which is unchanged. Use the local gate to fail fast; use the Docker path to prove.
+- Host `k6` is an accepted *optional* host tool for this dev-loop gate — see
+  [ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md). The shipped
+  chain still bundles and runs k6 inside `docker/k6.Dockerfile`.
 
 ## Why this is a separate skill
 
