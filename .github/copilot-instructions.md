@@ -115,3 +115,18 @@ Refer to `docs/ai/operating-model.md`, `docs/ai/workflow.md`, and the
 instruction fragments under `.github/instructions/`. When proposing
 changes that touch multiple matrix rows, document the verification plan
 in the PR description.
+
+## graphify (optional documentation cartography)
+
+`graphify` is an **optional** host CLI that maps this repo into a knowledge graph
+(`graphify-out/`). Punch uses it only as **evidence** when reconciling documentation —
+it is **not** the canonical source for architecture or docs. `CLAUDE.md`, `docs/`, and
+the registries remain authoritative. Treat everything under `graphify-out/` as throwaway
+audit evidence, never as documentation to commit.
+
+graphify is a **scoped host-tool exception** to Rule 1 (Docker First) — see
+[ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md). The governed workflow that
+uses it ships as the `/punch-documentate` reconciliation phase; do not invoke graphify
+outside that workflow.
+
+Type `/graphify` in Copilot Chat to build or refresh the graph.

@@ -1,5 +1,6 @@
 dist/
 reports/
+graphify-out/
 node_modules/
 __pycache__/
 *.pyc
