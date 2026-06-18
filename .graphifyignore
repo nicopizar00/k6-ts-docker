@@ -1,0 +1,15 @@
+# Punch repository-level Graphify config — shared Context Engineering behavior.
+# Excludes noisy / generated / vendored paths from the knowledge-graph corpus
+# so `graphify .` maps the source of truth, not build output.
+node_modules/
+dist/
+build/
+coverage/
+.git/
+.venv/
+__pycache__/
+*.log
+*.tmp
+graphify-out/cache/
+reports/
+artifacts/

@@ -9,7 +9,10 @@ repository bootstrap work.
 ## The four rules
 
 1. **Restricted tool surface.** An agent uses only the tools its purpose needs.
-   Config-maintainer agents do **not** get a terminal; runtime engineers do
+   Config-maintainer agents do **not** get a terminal — with one documented
+   exception: `punch-ai-governance` may run host `graphify` for the
+   `/punch-documentate` map ([ADR 0002](decisions/0002-graphify-host-tool.md)),
+   never the Punch runtime. Runtime engineers get a terminal
    (Docker/Punch-mediated only — never host `k6`, and host `npm` only where a
    documented exception allows it, see [`decisions/`](decisions/)).
 2. **Serial phases.** Plan → Implement → Verify, in order. State the work plan,
@@ -28,7 +31,7 @@ repository bootstrap work.
 | `punch-builder` (dispatcher) | via delegation only | n/a (delegates) | per sub-task | **may call 1 sub-agent; that sub-agent may NOT spawn another** |
 | `punch-runtime-engineer` | **yes** — `./bin/punch`, `docker compose` for evidence | before product-code writes | yes | leaf — `agents: []` |
 | `punch-performance-test-engineer` | **yes** — k6 smoke/dry-run, containerized bundle | before product-code writes | yes | leaf — `agents: []` |
-| `punch-ai-governance` (maintainer) | **no** — edits `.github/**`, never runs Punch | **mandatory** before any `.github` write | yes | leaf — not a sub-agent |
+| `punch-ai-governance` (maintainer) | **scoped** — host `graphify` map only (ADR 0002); never runs Punch | **mandatory** before any `.github` write | yes | forks only the `/graphify` map (1-deep); never a sub-agent |
 
 ## Depth-1 / no recursion
 
@@ -37,4 +40,6 @@ further subagents unless `chat.subagents.allowInvocationsFromSubagents` is enabl
 (keep it **off**). Punch reinforces this — the two engineers carry `agents: []`,
 and `punch-builder` lists exactly its two engineers in `agents:`. The
 `punch-ai-governance` maintainer is **never** listed in any `agents:` allowlist
-(`disable-model-invocation: true`), so it is user-direct only.
+(`disable-model-invocation: true`), so it is user-direct only; in Documentation
+mode its single sanctioned delegation is the `/graphify` map (1-deep), and it
+spawns no other sub-agent.

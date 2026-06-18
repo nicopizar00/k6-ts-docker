@@ -1,9 +1,10 @@
 # Prompt Registry
 
-Punch has **seven** prompts — one per lifecycle phase (Spec, Plan, Build, Verify,
-Review, Ship) plus `punch-test` (the TDD/Prove-It companion to Verify). Spec
-absorbs the former Define phase. Each prompt has a single, well-defined entry
-point. See `.github/prompts/` for the prompt bodies.
+Punch has **eight** prompts — one per lifecycle phase (Spec, Plan, Build, Verify,
+Review, Ship), plus `punch-test` (the TDD/Prove-It companion to Verify) and
+`punch-documentate` (a recurring documentation-reconciliation phase, orthogonal to
+the linear lifecycle). Spec absorbs the former Define phase. Each prompt has a
+single, well-defined entry point. See `.github/prompts/` for the prompt bodies.
 
 ## Active prompts
 
@@ -16,6 +17,7 @@ point. See `.github/prompts/` for the prompt bodies.
 | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md) | Verify | Agent / Ask | `punch-verifier` | Build is complete; you need `reports/state/punch-run.json` evidence. |
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-reviewer` | Verify passed; audit the diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-reviewer` | Review approved; commit, push, open PR. **Never merges.** |
+| [`punch-documentate`](../../.github/prompts/punch-documentate.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Retire documentation debt in waves: map with `/graphify`, then keep / merge / rewrite / archive / delete / promote. |
 
 ## One prompt per phase
 
@@ -27,6 +29,11 @@ Build's per-domain scope discipline moved **from prompts into agents**: the one
 `punch-build` prompt activates the `punch-builder` dispatcher, which routes to a
 domain engineer carrying that domain's allowed / read-only / forbidden scope.
 This keeps a single Build entry point while preserving tight, reviewable scope.
+
+`punch-documentate` is **not** a lifecycle phase — it is a recurring maintenance
+workflow that runs orthogonal to Spec → Ship, reconciling documentation debt in
+waves. It earns its own prompt because it fits no existing phase and reuses the
+existing `punch-ai-governance` agent (no new agent, no new skill).
 
 ## Prompt contract
 

@@ -1,4 +1,4 @@
-# ADR 0002 — graphify as a scoped host-tool for documentation cartography
+# ADR 0002 — graphify as a scoped host-tool for documentation mapping
 
 **Status:** Accepted (2026-06-18)
 **Deciders:** repository owner + Punch AI Governance work

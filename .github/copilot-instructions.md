@@ -116,17 +116,16 @@ instruction fragments under `.github/instructions/`. When proposing
 changes that touch multiple matrix rows, document the verification plan
 in the PR description.
 
-## graphify (optional documentation cartography)
+## graphify (optional documentation mapping)
 
-`graphify` is an **optional** host CLI that maps this repo into a knowledge graph
-(`graphify-out/`). Punch uses it only as **evidence** when reconciling documentation —
-it is **not** the canonical source for architecture or docs. `CLAUDE.md`, `docs/`, and
-the registries remain authoritative. Treat everything under `graphify-out/` as throwaway
-audit evidence, never as documentation to commit.
+`graphify` maps this repo into a knowledge graph (`graphify-out/`) — **optional**,
+used only as *evidence* to orient analysis. It is **not** the source of truth, and
+not every session's first action: **Context Engineering owns when it runs**. See the
+Graphify gate in [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md)
+— `/graphify .` only when `graphify-out/graph.json` is absent or a broad refresh is
+needed; otherwise prefer `graphify query|path|explain`. Graphify orients; **source
+validates, tests confirm**.
 
-graphify is a **scoped host-tool exception** to Rule 1 (Docker First) — see
-[ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md). The governed workflow that
-uses it ships as the `/punch-documentate` reconciliation phase; do not invoke graphify
-outside that workflow.
-
-Type `/graphify` in Copilot Chat to build or refresh the graph.
+Host `graphify` is a scoped Rule-1 exception ([ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md));
+`graphify-out/` is throwaway evidence, never canonical. Not installed? Run
+`uv tool install graphifyy`. Build or refresh with `/graphify .` in Copilot Chat.

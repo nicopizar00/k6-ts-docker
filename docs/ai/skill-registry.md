@@ -20,6 +20,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | You are… | Skill(s) |
 |---|---|
 | new to the repo | `punch-context-engineering` |
+| routing a repo-understanding / cross-file / architecture / governance task (before picking the sub-agent) | `punch-context-engineering` (the Graphify gate) |
 | refining a vague idea | `idea-refine` |
 | writing a spec | `spec-driven-development` |
 | breaking a spec into tasks | `planning-and-task-breakdown` |
@@ -40,7 +41,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 
 | Skill | Owns | Defined in |
 |---|---|---|
-| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; the lifecycle; the scope-discipline principle | `.github/skills/punch-context-engineering/SKILL.md` |
+| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; the lifecycle; the scope-discipline principle; the Graphify gate | `.github/skills/punch-context-engineering/SKILL.md` |
 | [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | The `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
 | [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
 | [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |

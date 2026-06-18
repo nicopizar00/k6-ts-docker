@@ -67,6 +67,15 @@ For any non-trivial task, build a Punch Context Pack (phase, goal, domain, skill
 sub-agent, constraints, files to inspect / likely to change / not to touch,
 required evidence, open assumptions). Keep it internal if the task is simple.
 
+**Before selecting a sub-agent**, invoke
+[`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) when the
+task requires repository understanding, cross-file reasoning, architecture mapping,
+or prompt/agent/skill reconciliation. Context Engineering owns the Graphify gate
+(`/graphify .` only when `graphify-out/graph.json` is absent or a broad refresh is
+needed; otherwise `graphify query|path|explain`). Graphify orients; **source
+validates, tests confirm**. The engineer consumes the resulting compact context —
+it does not run Graphify itself.
+
 ## Guards (per [`agent-guards.md`](../../docs/ai/agent-guards.md))
 
 - **Depth-1 delegation.** Builder may call **one** engineer; that engineer carries

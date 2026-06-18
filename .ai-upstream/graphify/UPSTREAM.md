@@ -12,7 +12,7 @@ copy is the reference we diff against when upstream changes.
 | Snapshot date | 2026-06-18 |
 | Install (host) | `uv tool install graphifyy` |
 | Skill entrypoint | `SKILL.md` (invoked as `/graphify`) + `references/` (lazy-loaded) |
-| Purpose in Punch | documentation-cartography **evidence** for the `/punch-documentate` reconciliation phase — see [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md) |
+| Purpose in Punch | documentation-mapping **evidence** for the `/punch-documentate` reconciliation phase — see [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md) |
 
 ## Rules
 
