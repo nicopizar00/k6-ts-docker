@@ -1,6 +1,9 @@
-# ADR 0003 — Caveman as a Build-only assistant-prose compression adapter
+# ADR 0003 — Caveman for concise assistant-prose comms (Build-enforced, agent-privileged)
 
-**Status:** Accepted (2026-06-18)
+**Status:** Accepted (2026-06-18) · **revised 2026-06-18** (see *Revision* below —
+the canonical Copilot installer was run and the scope was broadened per owner
+direction; the original Decision section is kept for the record but is superseded
+where it conflicts).
 **Deciders:** repository owner + Punch AI Governance work
 
 ## Context
@@ -74,15 +77,50 @@ do **not** run the official installer:
 - **Governed.** `punch-ai-governance` owns refresh and drift; the adapter is
   registered in [`docs/ai/skill-registry.md`](../skill-registry.md).
 
+## Revision (2026-06-18) — canonical Copilot install + broadened scope
+
+Per owner direction, the original "do not run the installer / Build-only" stance
+above is **superseded**:
+
+- **Canonical install, run and scoped to Copilot.** The official installer was
+  executed: `curl -fsSL …/install.sh | bash -s -- --only copilot --with-init`.
+  It placed the upstream skill pack under `.agents/skills/`, ran
+  `npx skills add … -a github-copilot`, and (because `install.sh` does **not**
+  forward `--only` to `caveman-init`) also wrote non-Copilot rule files and
+  appended to `AGENTS.md` + `.github/copilot-instructions.md`.
+- **Scoped down to Copilot afterward.** The non-Copilot artifacts
+  (`.cursor/`, `.windsurf/`, `.clinerules/`, `.opencode/`) were **deleted**; the
+  `AGENTS.md` raw append was reverted and replaced with a Punch-voiced note; the
+  two duplicated blocks in `copilot-instructions.md` were merged into one
+  canonical, Critical-Rules-respecting section. The skill pack was **trimmed to
+  the core `caveman` skill** (`.agents/skills/caveman/`), dropping the auxiliary
+  packs — including `caveman-compress`, which ships host Python scripts that
+  conflict with Punch's Docker-First / stdlib-only minimalism. `skills-lock.json`
+  was removed.
+- **Scope broadened.** Caveman is now **enforced (default-on `full`) for the whole
+  Build phase** (prompt + dispatcher + engineers) and **privileged across all
+  agents** in `.github/agents/` — builder family enforced, the rest privilege it
+  for routine prose but **lead with normal prose** for judgment-heavy work
+  (specs, plans, reviews, risk, governance, architecture, security). All agents
+  keep their existing capabilities, tools, scope, and guards.
+- **Unchanged invariants.** Evidence is still never compressed; Auto-Clarity stop
+  conditions still apply; the Critical Rules still take precedence; the
+  Docker-First execution chain is untouched. The canonical upstream skill
+  (`.agents/skills/caveman/`) is adopted-upstream — exempt from authored-canon
+  checks; the Punch adapter `punch-build-caveman` remains authored and checked.
+
 ## Consequences
 
-- **Positive:** Build prose gets terser on demand with zero risk to evidence; no
-  host runtime, no global activation, no parallel structure, no governance
-  erosion. Nothing in the source → bundle → image → run → report chain changes.
+- **Positive:** Build prose gets terser by default with zero risk to evidence;
+  Caveman is available repo-wide for routine prose. Nothing in the source →
+  bundle → image → run → report chain changes.
 - **Negative / watch:** the adapter is hand-authored, so an upstream Caveman
   change must be reconciled manually (see `.ai-upstream/caveman/UPSTREAM.md`
   *Updating*). Any Caveman activation **outside** Build, or any compression of
   technical evidence, is **drift** and a Review failure.
-- **Guardrail:** Caveman is **default-on in Build only**; it never activates in
-  Spec, Plan, Verify, Review, Ship, Governance, or architecture reasoning, and is
-  always overridable (`stop caveman`). Evidence is never compressed.
+- **Guardrail:** Caveman is **enforced in Build** and **privileged elsewhere**;
+  non-Build agents lead with normal prose for judgment-heavy work and invoke
+  Auto-Clarity for security / irreversible / ambiguous / architecture-tradeoff
+  content. It is always overridable (`stop caveman`). Evidence is never
+  compressed; compressing evidence or losing an agent's constraints is **drift**
+  and a Review failure.

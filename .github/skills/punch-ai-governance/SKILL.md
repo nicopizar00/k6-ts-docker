@@ -64,13 +64,15 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and `.github/skills/graphify/**` as an adopted-upstream skill: all
-> are **excluded** from the frontmatter-completeness, cross-reference, naming,
-> duplication, and stale-asset checks below. `graphify` is still **registered**
-> (parity), but is upstream-maintained — refresh from upstream, never hand-edit.
-> The authored adapter `.github/skills/punch-build-caveman/**` is **not** exempt —
-> it is Punch-authored and subject to all checks. These record point-in-time /
-> external state.
+> fresh clone), and both `.github/skills/graphify/**` and `.agents/skills/**` (the
+> canonical Copilot Caveman install) as adopted-upstream skills: all are
+> **excluded** from the frontmatter-completeness, cross-reference, naming,
+> duplication, and stale-asset checks below. `graphify` and `.agents/skills/caveman`
+> are still **registered** (parity) in `skill-registry.md`, but are
+> upstream-maintained — refresh from upstream, never hand-edit. The authored
+> adapter `.github/skills/punch-build-caveman/**` is **not** exempt — it is
+> Punch-authored and subject to all checks. These record point-in-time / external
+> state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.
@@ -85,14 +87,14 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
    - Every file in `.github/agents/*.agent.md` is listed in `AGENTS.md`.
 3. **Boundary declarations.**
    - Every Build prompt
-     (`.github/prompts/punch-build-*.prompt.md`) lists allowed,
+     (`.github/prompts/punch-build.prompt.md`) lists allowed,
      read-only, and forbidden paths.
    - Every agent file lists allowed and forbidden behavior.
 4. **Lifecycle alignment.**
    - Each lifecycle phase (Spec, Plan, Verify, Review, Ship) has
      exactly one prompt (Spec absorbs the former Define; `punch-test` is a
      Verify companion).
-   - Build has 5 domain prompts.
+  - Build has a single `punch-build` prompt and a dispatcher that routes to domain engineers.
    - Every prompt's "Owner skill" line points at an existing skill.
    - Every prompt's "Agent" line points at an existing agent.
 5. **Cross-references.**

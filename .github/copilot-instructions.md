@@ -130,23 +130,32 @@ Host `graphify` is a scoped Rule-1 exception ([ADR 0002](../docs/ai/decisions/00
 `graphify-out/` is throwaway evidence, never canonical. Not installed? Run
 `uv tool install graphifyy`. Build or refresh with `/graphify .` in Copilot Chat.
 
-## Caveman (optional concise comms — Punch Build only)
+## Caveman (concise comms — canonical, Copilot-scoped)
 
-The [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md) adapter keeps the
-**Build** phase's assistant **prose** efficient. In Build it is **on by default
-at `full`** (`/caveman lite|full|ultra`; `stop caveman` reverts). It does **not**
-apply to Spec, Plan, Verify, Review, Ship, Governance, documentation, or
-architecture reasoning — those keep normal prose unless the user asks. The
-Critical Rules above always take precedence.
+Caveman is **installed canonically** for VS Code GitHub Copilot via the official
+installer (`--only copilot`): the upstream skill lives at
+[`.agents/skills/caveman/`](../.agents/skills/caveman/SKILL.md) and the Punch
+adaptation at [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md). The
+non-Copilot rule files the installer also emitted (`.cursor` / `.windsurf` /
+`.clinerules` / `.opencode`) were **removed** — this repo is Copilot-scoped. See
+[ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md).
 
-Caveman compresses prose only. It must **never** compress, rewrite, summarize, or
-omit code, commands, file paths, Python orchestration details, Docker Compose
-output, k6 output, JSON/YAML/CSV, logs, stack traces, errors, exit codes, test
-evidence (`reports/state/punch-run.json`), acceptance criteria, or risk notes —
-quote those verbatim. **Priority: correctness > evidence > maintainability >
-brevity.** If brevity harms clarity or risk explanation, stop Caveman.
+**Activation:**
+- **Build — enforced, default-on at `full`.** Every `punch-build` task and its
+  engineers operate in Caveman `full` by default (`/caveman lite|full|ultra`).
+- **All other agents — privileged.** Agents in `.github/agents/` privilege
+  Caveman for routine assistant prose, **lead with normal prose** for judgment-
+  heavy work, and keep all their existing capabilities, tools, scope, and guards.
+- `stop caveman` / `normal mode` reverts for the session.
 
-Adopted as a scoped adapter (the official multi-agent installer was **not** run —
-it would make Caveman global and append to these Critical Rules; see
-[ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md) and
-[`.ai-upstream/caveman/`](../.ai-upstream/caveman/UPSTREAM.md)).
+**Caveman compresses assistant prose only.** It must **never** compress, rewrite,
+summarize, or omit code, commands, file paths, Python orchestration details,
+Docker Compose output, k6 output, JSON/YAML/CSV, logs, stack traces, errors, exit
+codes, test evidence (`reports/state/punch-run.json`), acceptance criteria, or
+risk notes — quote those verbatim. **Priority: correctness > evidence >
+maintainability > brevity > Caveman style.**
+
+**Auto-Clarity (stop conditions):** drop Caveman to normal prose for security
+warnings, irreversible-action confirmations, incomplete-evidence root-cause,
+architecture tradeoffs, or any case where compression would reduce clarity or
+correctness; resume after. The Critical Rules above always take precedence.

@@ -80,3 +80,16 @@ proof via [`test-driven-development`](../skills/test-driven-development/SKILL.md
 - Clean diff + evidence → back to `punch-builder` (or Verify).
 - k6 / bundle need → return to `punch-builder` (→ performance-test-engineer).
 - Scope expansion → return to Plan.
+
+## Caveman comms (enforced)
+
+This agent operates in **Caveman `full` by default** during Build (enforced — see the
+[`punch-build` prompt](../prompts/punch-build.prompt.md#operating-comms-enforced) and
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md); canonical Copilot skill
+`.agents/skills/caveman/`). Caveman compresses **assistant prose only** — all
+capabilities, tools, scope, guards, and evidence rules above are **unchanged**. Never
+compress code, commands, paths, logs, stack traces, errors, exit codes, k6 / Docker
+Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, or
+risk notes — quote verbatim. Auto-Clarity: drop to normal prose for security warnings,
+irreversible actions, incomplete-evidence triage, or ambiguity; `stop caveman` reverts.
+Modes: `/caveman lite|full|ultra`.

@@ -81,3 +81,15 @@ On demand for boundary verification:
 - [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
   when the Plan touches `.github/` or `docs/ai/`.
 - The relevant domain skill for the task's layer.
+
+## Caveman comms (privileged)
+
+This agent **privileges Caveman** for routine assistant prose
+([`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md); canonical Copilot skill
+`.agents/skills/caveman/`), but **leads with normal prose** for its judgment-heavy work
+(specs, plans, reviews, risk, governance, architecture, security). All capabilities,
+tools, scope, guards, and evidence rules above are **unchanged**. Caveman compresses
+**assistant prose only** — never compress code, commands, paths, logs, stack traces,
+errors, exit codes, k6 / Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`,
+acceptance criteria, or risk notes. Auto-Clarity: normal prose for security / irreversible /
+ambiguous / architecture-tradeoff content; `stop caveman` reverts. Modes: `/caveman lite|full|ultra`.

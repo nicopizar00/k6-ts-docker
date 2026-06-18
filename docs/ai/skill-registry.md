@@ -97,7 +97,7 @@ method, not the stack rules.
 | [`idea-refine`](../../.github/skills/idea-refine/SKILL.md) | Refine a raw idea before Spec (divergent → convergent) | invoked within Spec (no standalone prompt) | `.github/skills/idea-refine/SKILL.md` |
 | [`spec-driven-development`](../../.github/skills/spec-driven-development/SKILL.md) | Spec before code — surface assumptions, reframe as success criteria | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | `.github/skills/spec-driven-development/SKILL.md` |
 | [`planning-and-task-breakdown`](../../.github/skills/planning-and-task-breakdown/SKILL.md) | Decompose a spec into scoped, verifiable tasks | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | `.github/skills/planning-and-task-breakdown/SKILL.md` |
-| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | the 5 `punch-build-*` prompts + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
+| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | [`punch-build`](../../.github/prompts/punch-build.prompt.md) + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
 | [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build-k6-*` | `.github/skills/test-driven-development/SKILL.md` |
 | [`debugging-and-error-recovery`](../../.github/skills/debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md), `punch-verifier` | `.github/skills/debugging-and-error-recovery/SKILL.md` |
 | [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-ai-governance` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
@@ -126,32 +126,37 @@ cross-reference) — refresh from upstream, never hand-edit.
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | Build-only compression of assistant **prose** (concise implementation updates, sub-agent handoffs, post-evidence debug summaries, commit drafts). **Default-on at `full`** in Build; never compresses technical evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via the official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | Punch adapter over the canonical skill: **enforced default-on `full` in Build**, **privileged across all agents** for routine prose; never compresses technical evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+The canonical `.agents/skills/caveman/` install is upstream-maintained (adopted —
+exempt from authored-canon checks); the auxiliary upstream packs the default
+installer also fetched (`caveman-compress` with host Python scripts, `cavecrew`,
+`caveman-commit`/`-help`/`-review`/`-stats`) were **removed** to keep the install
+Copilot-scoped and Docker-First-minimal.
 
 ### `punch-build-caveman` — governance metadata
 
 | Field | Value |
 |---|---|
-| Classification | external upstream skill — **authored Punch adapter** (not upstream verbatim) |
-| Status | **default-on in Build** · scoped to Build only · still never compresses evidence |
-| Scope | **Punch Build only** (`punch-build` prompt + `punch-builder` + its engineers) — not Spec / Plan / Verify / Review / Ship / Governance / architecture |
+| Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
+| Status | **enforced (default-on `full`) in Build** · **privileged across all agents** · never compresses evidence |
+| Scope | Build phase enforced (`punch-build` prompt + `punch-builder` + engineers); all `.github/agents/` privilege it (non-Build agents lead with normal prose for judgment-heavy work) |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
 | Default mode | **`full`** (allowed: `lite` / `full` / `ultra`; `stop caveman` reverts) |
 | Governed by | `punch-ai-governance` (refresh + drift) |
 | Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
-| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) — **local staging, gitignored** (canon adapter lives in `.github/`) |
-| Install method | **official installer NOT run** — dry-run showed it would make Caveman global and append to the Critical Rules file (unsafe); adopted as a scoped adapter instead. Command audited: `curl -fsSL .../install.sh \| bash -s -- --only copilot --with-init --dry-run` |
-| Files changed by installer | **none** (installer not executed; dry-run wrote nothing) |
-| Copilot instruction file edited manually | yes — added one clearly-marked **optional, Build-only** section *below* the always-on Critical Rules (no Critical Rule altered) |
+| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · pristine snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) (gitignored local staging); canonical install in `.agents/skills/caveman/` |
+| Install method | **official installer run, Copilot-scoped:** `curl -fsSL .../install.sh \| bash -s -- --only copilot --with-init`. Non-Copilot artifacts + auxiliary skill packs removed afterward (see [ADR 0003 Revision](decisions/0003-caveman-build-comms.md)) |
+| Files changed by installer | added `.agents/skills/caveman/` (kept); appended to `.github/copilot-instructions.md` + `AGENTS.md` (both reconciled by hand); created `.cursor`/`.windsurf`/`.clinerules`/`.opencode` + extra skill packs + `skills-lock.json` (all **removed**) |
+| Copilot instruction file edited manually | yes — the two duplicated caveman blocks merged into one canonical Copilot-scoped section *below* the Critical Rules (no Critical Rule altered) |
 
-Unlike `graphify` (reused as-is, exempt from authored-canon checks), the
-`punch-build-caveman` **adapter** is Punch-authored and therefore **subject** to
-the frontmatter / naming / duplication checks. Only the pristine
-`.ai-upstream/caveman/` snapshot — **gitignored local staging**, not
-version-controlled — is provenance exempt from those checks.
+The `punch-build-caveman` **adapter** is Punch-authored and therefore **subject**
+to the frontmatter / naming / duplication checks. The upstream `.agents/skills/caveman/`
+install and the pristine `.ai-upstream/caveman/` snapshot are upstream-maintained
+and **exempt** from those checks (refresh from upstream, never hand-edit).
 
 ## Why these are still deferred (not created)
 

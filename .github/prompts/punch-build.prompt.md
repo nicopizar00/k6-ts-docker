@@ -9,6 +9,7 @@ description: Build — execute ONE approved Plan task. The punch-builder dispatc
 **Mode:** Agent (scoped, via dispatch)
 **Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + the task's domain skill
 **Agent:** [`punch-builder`](../agents/punch-builder.agent.md) → delegates to one engineer
+**Operating comms:** Caveman **enforced, default-on at `full`** for this entire prompt and every sub-agent it dispatches — see [Operating comms (enforced)](#operating-comms-enforced). Evidence is never compressed.
 
 ## Pre-conditions
 
@@ -31,13 +32,16 @@ If any is missing, **stop** and return to Plan.
      [`punch-performance-test-engineer`](../agents/punch-performance-test-engineer.agent.md)
      (`punch-k6-testing`).
 2. Hand the engineer the goal, scope, constraints, expected output, and required
-   evidence (depth-1 — the engineer delegates to no one).
-3. On return, consolidate the result, changed files, evidence, and next step.
+   evidence (depth-1 — the engineer delegates to no one). The engineer inherits
+   the **enforced Caveman `full`** operating comms below.
+3. On return, consolidate the result, changed files, evidence, and next step —
+   in Caveman `full`, with all evidence quoted verbatim.
 
 ## Expected output
 
 Per the `punch-builder` evidence contract: **Result · Changed Files · Evidence ·
-Unresolved Assumptions · Recommended Next Step**.
+Unresolved Assumptions · Recommended Next Step** — prose in Caveman `full`,
+evidence (paths, commands, run output, `reports/state/punch-run.json`) verbatim.
 
 ## Validation gate
 
@@ -94,17 +98,21 @@ self-contained and non-negotiable.
 The Plan may **narrow** these lists; it may not widen them past the Forbidden set
 without re-planning.
 
-## Default Build comms (Caveman, Build-only)
+## Operating comms (enforced)
 
-Build — and only Build — runs the
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) adapter **on by
-default** to keep **assistant prose** efficient (implementation updates,
-sub-agent handoffs, post-evidence debug summaries, commit drafts). Other
-lifecycle phases keep normal prose; Caveman never activates outside Build.
+Caveman is **enforced** for the whole Build phase — this prompt, the
+`punch-builder` dispatcher, and every engineer it dispatches. It runs the
+canonical Copilot skill ([`.agents/skills/caveman/`](../../.agents/skills/caveman/SKILL.md))
+through the Punch adapter
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). This is not
+optional in Build; it is the default operating mode for all assistant prose
+(implementation updates, sub-agent handoffs, post-evidence debug summaries,
+commit drafts).
 
-- **Default mode: `full`** (`/caveman full`). Drop to `/caveman lite` when prose
-  must stay fully sentence-formed, or `/caveman ultra` only on explicit low-risk
-  request. `stop caveman` / `normal mode` reverts.
+- **Default mode: `full`** (`/caveman full`), applied to **every** message in
+  the Build phase. Drop to `/caveman lite` when prose must stay fully
+  sentence-formed, or `/caveman ultra` only on explicit low-risk request.
+  `stop caveman` / `normal mode` reverts.
 - Apply it **only after** the Build task is understood — never as a substitute
   for reasoning.
 - **Never** compress code, commands, paths, Python orchestration details, Docker
