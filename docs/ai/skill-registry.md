@@ -6,7 +6,7 @@ Punch skills sit on **two independent axes**:
   seventh requires killing one.
 - **Lifecycle skills** — engineering *methods* adapted from the upstream
   `agent-skills` set. A separate axis, **not** subject to the domain cap;
-  admitted in batches by the [absorption plan](agent-skills-absorption-plan.md).
+  admitted in batches by the [absorption plan](history/agent-skills-absorption-plan.md).
 
 Each entry below explains its responsibility and why it earns a separate skill.
 The "Deferred" section lists candidates that were intentionally **not** created.
@@ -107,7 +107,7 @@ method, not the stack rules.
 | [`doubt-driven-development`](../../.github/skills/doubt-driven-development/SKILL.md) | Fresh-context adversarial review of non-trivial/high-stakes decisions | Plan + Build (on-demand) | `.github/skills/doubt-driven-development/SKILL.md` |
 | [`source-driven-development`](../../.github/skills/source-driven-development/SKILL.md) | Ground framework code (k6/Docker/Postgres) in official docs + cite | Build (on-demand) | `.github/skills/source-driven-development/SKILL.md` |
 
-Phase 3 of the [absorption plan](agent-skills-absorption-plan.md) (Tier-A + the P3
+Phase 3 of the [absorption plan](history/agent-skills-absorption-plan.md) (Tier-A + the P3
 set) is **complete** — every lifecycle skill above is absorbed and registered.
 **Phase 6 folded** the Tier-B method skills into existing domain skills
 (`context-engineering`→`punch-context`, `observability-and-instrumentation`→`punch-data-harvest`,

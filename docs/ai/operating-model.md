@@ -116,7 +116,7 @@ specialist) setup. The ceiling is enforced by *function*, not *count*:
 The `punch-governance-review` skill checks new additions against this rule
 during Review. The skill axes and the absorption process are detailed in
 [`skill-registry.md`](skill-registry.md) and
-[`agent-skills-absorption-plan.md`](agent-skills-absorption-plan.md).
+[`agent-skills-absorption-plan.md`](history/agent-skills-absorption-plan.md).
 
 ## Where this differs from a generic agent setup
 
