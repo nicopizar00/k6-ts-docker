@@ -1,10 +1,10 @@
 ---
-name: punch-k6-performance
+name: punch-k6-testing
 description: Owns k6 test conventions — HTTP vs Browser separation, thresholds, scenarios, shared data, handleSummary contract, evidence file naming, and performance pass/fail semantics.
 applies-to: src/tests/**, docker/k6.Dockerfile
 ---
 
-# Skill: punch-k6-performance
+# Skill: punch-k6-testing
 
 ## Responsibility
 

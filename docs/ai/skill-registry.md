@@ -15,7 +15,7 @@ The "Deferred" section lists candidates that were intentionally **not** created.
 
 Load the skill that matches the task: a **domain skill** for the subsystem, a
 **lifecycle skill** for the method. Multiple apply (a k6 change uses
-`punch-k6-performance` + `incremental-implementation` + `test-driven-development`).
+`punch-k6-testing` + `incremental-implementation` + `test-driven-development`).
 
 | You are… | Skill(s) |
 |---|---|
@@ -25,7 +25,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | breaking a spec into tasks | `planning-and-task-breakdown` |
 | editing the orchestrator | `punch-python-orchestration` + `incremental-implementation` |
 | editing compose / Dockerfiles | `punch-compose-runtime` + `incremental-implementation` |
-| writing / changing a k6 test | `punch-k6-performance` + `test-driven-development` + `incremental-implementation` |
+| writing / changing a k6 test | `punch-k6-testing` + `test-driven-development` + `incremental-implementation` |
 | changing an artifact / report | `punch-data-harvest` + `incremental-implementation` |
 | a run failed | `debugging-and-error-recovery` |
 | proving a fix RED→GREEN | `test-driven-development` |
@@ -43,7 +43,7 @@ Load the skill that matches the task: a **domain skill** for the subsystem, a
 | [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; the lifecycle; the scope-discipline principle | `.github/skills/punch-context-engineering/SKILL.md` |
 | [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | The `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
 | [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
-| [`punch-k6-performance`](../../.github/skills/punch-k6-performance/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-performance/SKILL.md` |
+| [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
 | [`punch-governance-review`](../../.github/skills/punch-governance-review/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-governance-review/SKILL.md` |
 
@@ -56,7 +56,7 @@ Each domain skill names a unique **decision domain**:
 | `punch-context-engineering` | "What primer does any agent need?" |
 | `punch-python-orchestration` | "How does the run happen?" |
 | `punch-compose-runtime` | "What is the runtime contract?" |
-| `punch-k6-performance` | "What does fast enough mean?" |
+| `punch-k6-testing` | "What does fast enough mean?" |
 | `punch-data-harvest` | "What artifacts does the run produce?" |
 | `punch-governance-review` | "Is the AI operating model itself healthy?" |
 
@@ -111,7 +111,7 @@ Phase 3 of the [absorption plan](history/agent-skills-absorption-plan.md) (Tier-
 set) is **complete** — every lifecycle skill above is absorbed and registered.
 **Phase 6 folded** the Tier-B method skills into existing domain skills
 (`context-engineering`→`punch-context-engineering`, `observability-and-instrumentation`→`punch-data-harvest`,
-`performance-optimization`→`punch-k6-performance`) and **excluded** the web/CI-only
+`performance-optimization`→`punch-k6-testing`) and **excluded** the web/CI-only
 skills — see *Deferred / excluded* below. No standalone lifecycle skill was added
 for any of these.
 
@@ -119,11 +119,11 @@ for any of these.
 
 | Candidate | Why it does NOT exist as a skill |
 |---|---|
-| `punch-k6-http` and `punch-k6-browser` | Splitting `punch-k6-performance` again would fragment a single decision domain (performance semantics). HTTP and Browser live in one skill with sub-sections. |
+| `punch-k6-http` and `punch-k6-browser` | Splitting `punch-k6-testing` again would fragment a single decision domain (performance semantics). HTTP and Browser live in one skill with sub-sections. |
 | `punch-monitoring` / `punch-injectables` | No real monitoring or fault-injection use case yet. Premature. The layer slot is reserved in `punch-boundaries.md`. |
 | `punch-documentation` | The `documentation.instructions.md` path file is enough. A skill would only restate it. |
 | `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — we never create a `punch-<phase>` skill. A phase prompt may *activate* a lifecycle method skill (e.g. `punch-spec` → `spec-driven-development`); the phase stays a prompt+agent, the method is the skill. |
-| `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — their transferable method lives in `punch-context-engineering`, `punch-data-harvest`, and `punch-k6-performance` respectively (Phase 6). |
+| `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — their transferable method lives in `punch-context-engineering`, `punch-data-harvest`, and `punch-k6-testing` respectively (Phase 6). |
 | `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD is external to Punch (`punch-architecture.instructions.md`); its npm/Prisma/Playwright stack doesn't fit. |
 | `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser is deferred and distinct from Chrome-DevTools web testing. |
 | `interview-me` (upstream) | **Deferred** — overlaps `idea-refine`, which already owns pre-Spec intent extraction. A second "refine" skill would split one decision domain (see absorption matrix §A, P3). |
