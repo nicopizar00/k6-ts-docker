@@ -31,6 +31,14 @@ TESTS = {
     "bff-checkout-journey": "/scripts/bff-checkout-journey.js",
 }
 
+# Tests that target an EXTERNAL host (not the in-network reference app) and so
+# require an explicit env var. In a full-suite run (`run all`) they are SKIPPED —
+# not failed — when their env is unset, keeping the in-network gate green. Run them
+# directly (e.g. `punch run bff-checkout-journey`) with the env set to execute them.
+REQUIRES_ENV = {
+    "bff-checkout-journey": "TARGET_BASE_URL",
+}
+
 
 def _ensure_dirs() -> None:
     STATE_DIR.mkdir(parents=True, exist_ok=True)
@@ -179,6 +187,20 @@ def cmd_run(args: argparse.Namespace) -> int:
     results: list[dict] = []
     overall_rc = 0
     for test in sequence:
+        required_env = REQUIRES_ENV.get(test)
+        if requested == "all" and required_env and not os.environ.get(required_env):
+            print(
+                f"[punch] SKIP {test}: {required_env} not set "
+                f"(external-target test; run it directly with {required_env} set)",
+                flush=True,
+            )
+            results.append({
+                "test": test,
+                "skipped": True,
+                "reason": f"{required_env} not set",
+                "passed": True,
+            })
+            continue
         rc = _run_one(test)
         results.append({"test": test, "exitCode": rc, "passed": rc == 0})
         if rc != 0:
