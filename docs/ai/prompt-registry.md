@@ -1,9 +1,10 @@
 # Prompt Registry
 
-Punch has **eight** prompts — one per lifecycle phase (Spec, Plan, Build, Verify,
-Review, Ship), plus `punch-test` (the TDD/Prove-It companion to Verify) and
+Punch has **nine** prompts — one per lifecycle phase (Spec, Plan, Build, Verify,
+Review, Ship), plus `punch-test` (the TDD/Prove-It companion to Verify),
 `punch-document` (a recurring documentation-reconciliation phase, orthogonal to
-the linear lifecycle). Spec absorbs the former Define phase. Each prompt has a
+the linear lifecycle), and `punch-init` (a one-time bootstrap/adoption guard that
+precedes the lifecycle). Spec absorbs the former Define phase. Each prompt has a
 single, well-defined entry point. See `.github/prompts/` for the prompt bodies.
 
 ## Active prompts
@@ -18,6 +19,7 @@ single, well-defined entry point. See `.github/prompts/` for the prompt bodies.
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-reviewer` | Verify passed; audit the diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-reviewer` | Review approved; commit, push, open PR. **Never merges.** |
 | [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Retire documentation debt in waves: map with `/graphify`, then keep / merge / rewrite / archive / delete / promote. |
+| [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (one-time bootstrap) | Agent (runs `./bin/punch init`) | `punch-ai-governance` (enforced) | Bootstrapping a repo for Punch: scan Copilot assets + docs readiness, guard pending adoption items, hand off to `/punch-document`. |
 
 ## One prompt per phase
 

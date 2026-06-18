@@ -86,7 +86,7 @@ The authoritative register (all 19, with a "which skill when" discovery index) i
 
 Lifecycle entry points
 
-The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (11 prompts: spec, plan, build×5, test, verify, review, ship).
+The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (9 prompts: spec, plan, build, test, verify, review, ship, document, init). `punch-init` (bootstrap/adoption guard) and `punch-document` (doc reconciliation) are orthogonal phases, both enforced to `punch-ai-governance`.
 
 Rules for AI assistants
 
@@ -115,7 +115,7 @@ Caveman compresses concise assistant **prose** (canonical Copilot skill `.agents
 
 Claude Code reuse (Guard bridge)
 
-GitHub Copilot VS Code is the primary host; `.github/` is the single source of truth. When the repo is opened in Claude Code, the project-scoped `guard` skill (`.claude/skills/guard/SKILL.md`) and thin command wraps (`.claude/commands/{spec,plan,build,test,review,ship,document}.md`) **reuse** the canonical `.github/` prompts/agents/skills — they never fork, duplicate, or override them. Rules change in `.github/` (Copilot First), never only in `.claude/`. See ADR 0004.
+GitHub Copilot VS Code is the primary host; `.github/` is the single source of truth. When the repo is opened in Claude Code, the project-scoped `guard` skill (`.claude/skills/guard/SKILL.md`) and thin command wraps (`.claude/commands/{spec,plan,build,test,review,ship,document,init}.md`) **reuse** the canonical `.github/` prompts/agents/skills — they never fork, duplicate, or override them. Rules change in `.github/` (Copilot First), never only in `.claude/`. See ADR 0004.
 
 For deeper reading
 

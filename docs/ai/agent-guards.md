@@ -31,7 +31,7 @@ repository bootstrap work.
 | `punch-builder` (dispatcher) | via delegation only | n/a (delegates) | per sub-task | **may call 1 sub-agent; that sub-agent may NOT spawn another** |
 | `punch-runtime-engineer` | **yes** — `./bin/punch`, `docker compose` for evidence | before product-code writes | yes | leaf — `agents: []` |
 | `punch-performance-test-engineer` | **yes** — k6 smoke/dry-run, containerized bundle | before product-code writes | yes | leaf — `agents: []` |
-| `punch-ai-governance` (maintainer) | **scoped** — host `graphify` map only (ADR 0002); never runs Punch | **mandatory** before any `.github`/`docs` write | yes | forks only the `/graphify` map (1-deep); never a sub-agent |
+| `punch-ai-governance` (maintainer) | **scoped** — `./bin/punch init` (read-only scan) + host `graphify` map (ADR 0002); never the Punch runtime | **mandatory** before any `.github`/`docs` write | yes | forks only the `/graphify` map (1-deep); never a sub-agent |
 
 ## Depth-1 / no recursion
 

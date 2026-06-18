@@ -22,9 +22,9 @@ Add a **project-scoped Claude Code `guard` skill** plus thin per-command wraps t
   `.github/prompts/punch-*.prompt.md`, adopts that prompt's declared
   `.github/agents/*.agent.md` persona + scope + guards, applies the Caveman canon
   (`punch-build-caveman`), and obeys it. Golden rule: **reuse, never re-author.**
-- **`.claude/commands/{spec,plan,build,test,review,ship,document}.md`** — one-line
-  delegations to the canonical prompt + persona + Caveman level. They carry no
-  behavior of their own; the wiring map in `guard/SKILL.md` is the contract.
+- **`.claude/commands/{spec,plan,build,test,review,ship,document,init}.md`** —
+  one-line delegations to the canonical prompt + persona + Caveman level. They carry
+  no behavior of their own; the wiring map in `guard/SKILL.md` is the contract.
   `/verify` and `@punch-ai-governance` audits are reachable the same way.
 
 ## No-break invariants (Copilot First preserved)

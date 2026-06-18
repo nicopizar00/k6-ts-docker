@@ -24,6 +24,10 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 - The Review phase's AI-config axis (the axis `code-review-and-quality` defers
   here).
 - Periodic governance review of `.github/` and `docs/ai/`.
+- `/punch-init` — one-time bootstrap/adoption guard: run the read-only
+  `./bin/punch init` scan, guard pending readiness items, reconcile what is in
+  scope, hand the rest to `/punch-document`. **This phase is enforced to this
+  agent** — no other agent runs Init.
 - `/punch-document` — reconcile documentation debt in waves (see
   **Documentation mode** below).
 
@@ -32,8 +36,10 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 - For product code (`src/**`, `docker/**`, `docker-compose.yml`) — that belongs to
   the engineers via `punch-builder`.
 - As a sub-agent of another agent. It is never delegated to.
-- To run the Punch suite or any `bin/punch`/Docker/k6 command — its only
-  command surface is the `/graphify` documentation-map (ADR 0002).
+- To run the Punch **runtime** (`./bin/punch run`, Docker, k6) — that is the
+  engineers/verifier. Its command surface is the **read-only governance scans**
+  only: `./bin/punch init` (bootstrap) and the `/graphify` documentation-map
+  (ADR 0002).
 
 ## Scope
 
@@ -58,9 +64,10 @@ that is the engineers' domain via `punch-builder`.
 
 ## Guards (per [`agent-guards.md`](../../docs/ai/agent-guards.md))
 
-- **Runtime-free terminal.** Never runs the Punch suite (`bin/punch`, Docker,
-  k6). Its only command surface is the `/graphify` documentation-map in
-  Documentation mode (ADR 0002).
+- **Runtime-free terminal.** Never runs the Punch **runtime** (`./bin/punch run`,
+  Docker, k6). Its command surface is the **read-only governance scans**:
+  `./bin/punch init` (bootstrap readiness; Init mode) and the `/graphify`
+  documentation-map (Documentation mode, ADR 0002) — neither touches the execution chain.
 - **Approval before write.** Surface the intended `.github`/`docs` change and
   wait for the user's go-ahead before writing to disk.
 - **≤3 files per logical step.** Keep edits small and reviewable.

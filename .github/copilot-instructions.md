@@ -90,6 +90,12 @@ which classifies the approved Plan task and delegates (depth-1) to
 `punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
 (k6 + TS bundle). `punch-test` is the TDD/Prove-It companion to Verify.
 
+**Orthogonal phases (both via `punch-ai-governance`, enforced):**
+[`punch-init`](prompts/punch-init.prompt.md) — one-time bootstrap/adoption guard
+(`./bin/punch init`) that gates a repo into the lifecycle; and
+[`punch-document`](prompts/punch-document.prompt.md) — recurring documentation
+reconciliation. Init prepares; Document reconciles.
+
 ## Change cascade (when X changes, update Y)
 
 When a change touches one area, several others usually need updating in
