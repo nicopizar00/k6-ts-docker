@@ -71,7 +71,7 @@ When the request is still a vague idea: [`idea-refine`](../skills/idea-refine/SK
 — the Spec clarify step.
 On demand (matched by topic):
 - Orchestration questions → `punch-python-orchestration`.
-- Compose/runtime questions → `punch-docker-compose`.
+- Compose/runtime questions → `punch-compose-runtime`.
 - Test/perf questions → `punch-k6-performance`.
 - Reporting/artifact questions → `punch-data-harvest`.
 - AI configuration questions → `punch-governance-review`.

@@ -77,6 +77,6 @@ fix-before-merge, Medium/Low = schedule.
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Method: [`security-and-hardening`](../skills/security-and-hardening/SKILL.md).
-On demand: [`punch-docker-compose`](../skills/punch-docker-compose/SKILL.md) /
+On demand: [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md) /
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md) when auditing
 container or artifact surfaces.

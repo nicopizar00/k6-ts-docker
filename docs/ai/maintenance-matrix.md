@@ -23,7 +23,7 @@ Copilot-style agents.
      - Update `.mcp.json` service entries and AGENTS.md ports.
      - Update `.github/workflows/k6.yml` job steps (service names used in docker compose commands and log collection loop).
      - Update CONTRIBUTING.md run examples and docs/how-to-run.md.
-     - Update the compose contract in `.github/skills/punch-docker-compose/compose-contract.md`.
+     - Update the compose contract in `.github/skills/punch-compose-runtime/compose-contract.md`.
 
 4) src/services/* (gateway, catalog, orders)
    - When API surface (paths, ports) or behavior changes:
