@@ -1,7 +1,7 @@
 ---
 name: punch-runtime-engineer
 description: Build/Verify engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Implements one approved Plan task in scope and returns runtime evidence. A sub-agent of punch-builder; also user-invocable.
-tools: ['codebase', 'search', 'problems', 'changes', 'editFiles', 'runCommands', 'runTasks']
+tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput']
 agents: []
 user-invocable: true
 ---

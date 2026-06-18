@@ -1,7 +1,7 @@
 ---
 name: punch-ai-governance
 description: User-direct maintainer of Punch's AI configuration — skills, prompts, agents, instructions, lifecycle docs, and registries under .github/** and docs/ai/**. Audits for boundary compliance, scope discipline, handoff hygiene, frontmatter contracts, and cross-reference drift, and applies approved fixes. Never runs the runtime; never invoked as a sub-agent.
-tools: ['codebase', 'search', 'editFiles']
+tools: ['search/codebase', 'search', 'edit/editFiles']
 user-invocable: true
 disable-model-invocation: true
 ---

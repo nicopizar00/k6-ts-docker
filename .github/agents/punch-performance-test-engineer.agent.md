@@ -1,7 +1,7 @@
 ---
 name: punch-performance-test-engineer
 description: Build/Verify engineer for Punch performance testing — Grafana k6 HTTP and Browser test scripting (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain, package.json, and lint that produce the k6-ready scripts. Implements one approved Plan task in scope and returns runtime evidence. A sub-agent of punch-builder; also user-invocable.
-tools: ['codebase', 'search', 'problems', 'changes', 'editFiles', 'runCommands', 'runTasks']
+tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput']
 agents: []
 user-invocable: true
 ---
