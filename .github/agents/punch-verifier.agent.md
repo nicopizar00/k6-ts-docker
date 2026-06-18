@@ -92,7 +92,7 @@ Methods: [`test-driven-development`](../skills/test-driven-development/SKILL.md)
 Required:
 - [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
   — to interpret the orchestrator's evidence file.
-- [`punch-k6-performance`](../skills/punch-k6-performance/SKILL.md)
+- [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
   — to interpret k6 reports.
 - [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md)
   — to confirm the artifact contract holds.

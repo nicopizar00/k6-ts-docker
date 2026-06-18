@@ -18,7 +18,7 @@ This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt
   Punch surfaces: gateway input, secrets/env, parameterized Postgres queries in
   `orders` — there is **no web auth/XSS frontend**.
 - **Performance axis:** for threshold/k6 semantics see
-  [`punch-k6-performance`](../punch-k6-performance/SKILL.md).
+  [`punch-k6-testing`](../punch-k6-testing/SKILL.md).
 - **Boundaries:** check the diff against the ownership map
   ([`punch-architecture.instructions.md`](../../instructions/punch-architecture.instructions.md))
   and [`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md) — a Build
@@ -61,7 +61,7 @@ if imperfect. Don't block because it isn't how you'd have written it.
 ### 5. Performance
 - N+1 or unbounded queries (esp. `orders` → Postgres); missing pagination.
 - Thresholds present and meaningful; no synchronous heavy work in a hot path.
-- Deeper pass: `punch-k6-performance`. (No UI re-render concerns — Punch has no frontend.)
+- Deeper pass: `punch-k6-testing`. (No UI re-render concerns — Punch has no frontend.)
 
 ## Change Sizing
 
