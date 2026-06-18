@@ -27,7 +27,7 @@ It does **not** own:
 - The architecture itself (lives in `CLAUDE.md` and
   `docs/architecture/punch-boundaries.md`).
 - Domain rules (those live in the per-domain skills below).
-- Governance enforcement (lives in `punch-governance-review`).
+- Governance enforcement (lives in `punch-ai-governance`).
 
 ## When to use
 

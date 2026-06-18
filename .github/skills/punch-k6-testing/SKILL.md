@@ -32,7 +32,7 @@ It does **not** own:
 - How the test is launched (see `punch-python-orchestration`).
 - Docker Compose service wiring (see `punch-compose-runtime`).
 - The HTML/JSON report's storage contract (see `punch-data-harvest`).
-- Whether AI assets are well-formed (see `punch-governance-review`).
+- Whether AI assets are well-formed (see `punch-ai-governance`).
 
 ## When to use
 

@@ -1,6 +1,6 @@
 ---
 name: code-review-and-quality
-description: Conducts multi-axis code review before merge. Use in the Punch Review phase to assess a verified diff across correctness, readability, architecture, security, and performance. The method is stack-neutral; Punch routes the AI-config axis to punch-governance-review.
+description: Conducts multi-axis code review before merge. Use in the Punch Review phase to assess a verified diff across correctness, readability, architecture, security, and performance. The method is stack-neutral; Punch routes the AI-config axis to punch-ai-governance.
 applies-to: lifecycle/Review — the method behind punch-review; not path-scoped
 ---
 
@@ -12,7 +12,7 @@ This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt
 (agent `punch-reviewer`, read-only). Punch routes the axes:
 
 - **AI-config axis:** when the diff touches `.github/` or `docs/ai/`, defer to
-  [`punch-governance-review`](../punch-governance-review/SKILL.md) (frontmatter,
+  [`punch-ai-governance`](../punch-ai-governance/SKILL.md) (frontmatter,
   registries, boundary/handoff hygiene).
 - **Security axis:** deeper guidance in [`security-and-hardening`](../security-and-hardening/SKILL.md).
   Punch surfaces: gateway input, secrets/env, parameterized Postgres queries in
@@ -138,5 +138,5 @@ After review:
 - [ ] All Critical/required issues resolved (or explicitly deferred with justification).
 - [ ] Boundary + scope compliance checked against the Plan and ownership map.
 - [ ] `reports/state/punch-run.json` shows `passed: true`.
-- [ ] If the diff touched `.github/`/`docs/ai/`, `punch-governance-review` ran clean.
+- [ ] If the diff touched `.github/`/`docs/ai/`, `punch-ai-governance` ran clean.
 - [ ] Verdict recorded: **Approve** or **Request changes**.
