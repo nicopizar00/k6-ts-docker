@@ -46,6 +46,17 @@ Every doc this phase writes or rewrites is:
   status (✅ ⚠️ ❌ `:)`); this is an explicit carve-out from Caveman's no-decorative-
   emoji rule, for **persisted docs only**. Evidence stays verbatim regardless.
 
+## Canon output patterns
+
+Lifecycle artifacts (spec / plan / build / verify / review / ship) follow the
+**canon templates** in [`docs/ai/templates/lifecycle/`](../../docs/ai/templates/lifecycle/README.md);
+the filled, real worked example is
+[`docs/ai/golden-lifecycle/`](../../docs/ai/golden-lifecycle/README.md). This phase
+**maintains those patterns as canon** — reconcile new specs/plans/reports toward
+them, keep them lean, and never let them drift from the `.github/prompts/` Expected-
+output shapes (the prompts stay the behavior source of truth). `/punch-init` reports
+their presence as the `lifecycle_templates` readiness signal.
+
 ## Pre-conditions
 
 - Host `graphify` installed (`uv tool install graphifyy`; scoped Rule-1

@@ -503,6 +503,18 @@ def compute_readiness(repo_root: Path, assets: list[AssetRecord], graphify: dict
 
     total_docs = sum(len(v) for v in doc_groups.values())
 
+    # Canon lifecycle output patterns: the golden worked example + blank templates.
+    templates_dir = repo_root / "docs" / "ai" / "templates" / "lifecycle"
+    golden_readme = repo_root / "docs" / "ai" / "golden-lifecycle" / "README.md"
+    n_templates = len(list(templates_dir.glob("*.template.md"))) if templates_dir.is_dir() else 0
+    has_golden = golden_readme.is_file()
+    if n_templates >= 6 and has_golden:
+        templates_level = "present"
+    elif n_templates or has_golden:
+        templates_level = "partial"
+    else:
+        templates_level = "missing"
+
     readiness = {
         "github_copilot_instructions": ci_level,
         "prompts": _level(len(prompts), present_at=3),
@@ -511,6 +523,7 @@ def compute_readiness(repo_root: Path, assets: list[AssetRecord], graphify: dict
         "graphify": gfx,
         "docs_ai_governance": gov_level,
         "lifecycle_mapping": lifecycle,
+        "lifecycle_templates": templates_level,  # golden example + copy-ready templates
         "documentation_surface_known": "partial" if total_docs else "missing",  # first wave is partial by nature
     }
 
@@ -841,6 +854,10 @@ def render_next_actions(r: ScanResult) -> str:
         "- Assets marked `review` or `duplicate` need a human look before adoption.",
         ("- Missing lifecycle phases: " + ", ".join(f"`{p}`" for p in r.missing_phases)
          if r.missing_phases else "- ✅ all core lifecycle phases are covered."),
+        ("- Lifecycle output patterns (`lifecycle_templates`): "
+         f"**{r.readiness.get('lifecycle_templates', 'missing')}**. Adopt the canon "
+         "from `docs/ai/templates/lifecycle/`; worked example in "
+         "`docs/ai/golden-lifecycle/`."),
         "",
         "## 3. Run Graphify (optional, recommended)", "",
         "- See `graphify-readiness.md`. Build the global repo graph, then keep it "
