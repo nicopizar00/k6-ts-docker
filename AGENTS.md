@@ -62,6 +62,7 @@ Available agents
 | punch-architect-readonly | Investigator (writes the spec doc) | Spec |
 | punch-planner            | Scoped-task planner    | Plan |
 | punch-runtime-engineer   | Runtime engineer (Python orchestration / Compose / data harvest) | Build, Verify |
+| punch-performance-test-engineer | Performance engineer (k6 HTTP/Browser + TS bundle/lint) | Build, Verify |
 | punch-verifier           | Evidence collector     | Verify, Test |
 | punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
 | security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
