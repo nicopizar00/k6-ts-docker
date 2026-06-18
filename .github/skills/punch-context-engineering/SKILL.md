@@ -1,10 +1,13 @@
 ---
-name: punch-context
+name: punch-context-engineering
 description: Project-wide context primer for any AI assistant working in Punch — architecture, runtime, lifecycle, and scope discipline in one place.
 applies-to: project-wide primer; any agent, any phase; not path-scoped
 ---
 
-# Skill: punch-context
+# Skill: punch-context-engineering
+
+> Folds the upstream `context-engineering` method (load the *right* context at the
+> *right* time) into Punch's project primer — one skill, not two.
 
 ## Responsibility
 
@@ -29,7 +32,7 @@ It does **not** own:
 ## When to use
 
 - An agent is invoked on this repo and has no prior context.
-- A prompt explicitly says "load `punch-context` first".
+- A prompt explicitly says "load `punch-context-engineering` first".
 - A reviewer wants to point a new contributor at one map.
 
 ## Inputs expected
