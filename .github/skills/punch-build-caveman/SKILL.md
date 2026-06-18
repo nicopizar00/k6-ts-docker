@@ -3,8 +3,8 @@ name: punch-build-caveman
 description: "Punch Build-scoped adapter of the upstream Caveman Skill. Default-on inside Build implementation work to make assistant PROSE efficient (implementation updates, sub-agent handoffs, post-evidence debugging summaries, commit-message drafts). Never compresses code, commands, paths, logs, errors, k6/Compose output, or JSON/YAML/CSV. Default mode full. Not active in Spec, Plan, Verify, Review, Ship, Governance, or architecture reasoning."
 applies-to: lifecycle/Build — assistant-prose communication only (punch-build prompt + punch-builder + its engineers); not path-scoped, never active outside Build
 source: https://github.com/JuliusBrussee/caveman
-provenance: ../../.ai-upstream/caveman/UPSTREAM.md
-adr: ../../docs/ai/decisions/0003-caveman-build-comms.md
+provenance: ../../../.ai-upstream/caveman/UPSTREAM.md
+adr: ../../../docs/ai/decisions/0003-caveman-build-comms.md
 scope: project
 type: external-upstream-skill-adapter
 punch_lifecycle_phase: build
@@ -20,8 +20,8 @@ Use the upstream Caveman style **only** inside Punch **Build** work — the
 **not** replace or install the upstream Caveman Skill, its hooks, statusline, or
 per-agent rule files. It scopes the *style* to Build and pins Punch's
 evidence-preservation rules on top. Provenance + why-not-installer:
-[`.ai-upstream/caveman/UPSTREAM.md`](../../.ai-upstream/caveman/UPSTREAM.md);
-decision: [ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md).
+[`.ai-upstream/caveman/UPSTREAM.md`](../../../.ai-upstream/caveman/UPSTREAM.md);
+decision: [ADR 0003](../../../docs/ai/decisions/0003-caveman-build-comms.md).
 
 ## Punch Build priority (overrides Caveman brevity)
 
