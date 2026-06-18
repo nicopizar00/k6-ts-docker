@@ -25,6 +25,16 @@ canonical Punch adaptation lives in `.github/` (the `punch-document` prompt + th
 `punch-ai-governance` Documentation mode). The snapshot is a local drift baseline;
 re-fetch it (`uv tool install graphifyy`, re-copy the installed skill) when absent.
 
+**Leaned for Copilot plug-in (2026-06-18).** The in-repo
+`.github/skills/graphify/` skill was trimmed to Punch's **in-IDE subset**
+(build / `--update` / `--cluster-only` / query / path / explain / add+watch /
+hooks). Removed: remote-repo clone & cross-repo merge, media transcription
+(Whisper), external-DB push (Neo4j/FalkorDB, incl. credential examples), the MCP
+server, and wiki/SVG/GraphML/obsidian exports — none used by Punch. The skill is
+therefore an **authored Punch-leaned adaptation** (subject to governance checks),
+not a verbatim upstream copy; the pristine upstream remains the drift baseline in
+`.ai-upstream/graphify/`.
+
 ## Decision
 
 Graphify is adopted as a **scoped host-tool exception** to Docker First, used

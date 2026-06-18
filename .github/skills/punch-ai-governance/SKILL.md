@@ -68,14 +68,15 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and both `.github/skills/graphify/**` and `.agents/skills/**` (the
-> canonical Copilot Caveman install) as adopted-upstream skills: all are
-> **excluded** from the frontmatter-completeness, cross-reference, naming,
-> duplication, and stale-asset checks below. `graphify` and `.agents/skills/caveman`
-> are still **registered** (parity) in `skill-registry.md`, but are
-> upstream-maintained — refresh from upstream, never hand-edit. The authored
-> adapter `.github/skills/punch-build-caveman/**` is **not** exempt — it is
-> Punch-authored and subject to all checks. These record point-in-time / external
+> fresh clone), and `.agents/skills/**` (the canonical Copilot Caveman install) as
+> an adopted-upstream skill: these are **excluded** from the frontmatter-
+> completeness, cross-reference, naming, duplication, and stale-asset checks below.
+> `.agents/skills/caveman` is still **registered** (parity) in `skill-registry.md`
+> but is upstream-maintained — refresh from upstream, never hand-edit.
+> `.github/skills/graphify/**` is now a **Punch-leaned adaptation** (trimmed to the
+> in-IDE build/update/query subset; pristine upstream kept in
+> `.ai-upstream/graphify/`) — like `.github/skills/punch-build-caveman/**` it is
+> **authored and subject to all checks**. These record point-in-time / external
 > state.
 
 1. **Frontmatter completeness.**

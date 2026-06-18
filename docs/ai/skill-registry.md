@@ -125,12 +125,18 @@ cross-reference) — refresh from upstream, never hand-edit.
 
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
-| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key) | upstream `graphifyy` — provenance (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
+| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of the repo for Context Engineering orientation; runs in the IDE session (no API key). **Punch-leaned adaptation** — trimmed to the in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via the official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
 | [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Project default `lite`; per-phase canon — Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (execution sub-agents `wenyan`). Wenyan forbidden in persistent artifacts; depth-1 delegation (depth-2-lazy canon ceiling, off). Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` is gated through the [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+It is a **Punch-leaned adaptation** of upstream `graphifyy`, trimmed to the in-IDE
+build/update/query subset for a Copilot-plug-in-ready footprint (removed:
+remote-clone/cross-repo merge, media transcription, Neo4j/FalkorDB push, MCP server,
+wiki/SVG/GraphML/obsidian exports). The pristine upstream stays in
+`.ai-upstream/graphify/`; the leaned skill is **authored — subject to governance
+checks** (no longer refresh-verbatim).
 The canonical `.agents/skills/caveman/` install is upstream-maintained (adopted —
 exempt from authored-canon checks); the auxiliary upstream packs the default
 installer also fetched (`caveman-compress` with host Python scripts, `cavecrew`,
