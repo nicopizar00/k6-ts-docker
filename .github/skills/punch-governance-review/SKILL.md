@@ -62,6 +62,11 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 
 ## Procedure (the audit pass)
 
+> **Frozen scope.** Treat `docs/ai/history/**` as frozen provenance and
+> `.ai-upstream/**` as upstream provenance: both are **excluded** from the
+> cross-reference, naming, duplication, and stale-asset checks below. They record
+> point-in-time state and intentionally retain old names.
+
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.
    - Every `*.prompt.md` has `agent: ask|agent|plan|<custom-agent>` + `description:` (VS Code prompt files use `agent:`, not `mode:`).
