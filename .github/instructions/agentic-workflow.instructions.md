@@ -34,7 +34,7 @@ Spec absorbs the former Define phase (it opens with the clarify/refine step).
   [`punch-verify`](../prompts/punch-verify.prompt.md).
 - **Review evaluates risk, correctness, and boundary violations.**
   Read-only critique against the Plan. Activates
-  [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
+  [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
   when the diff touches `.github/` or `docs/ai/`.
 - **Ship summarizes state and finalizes mechanically.** Commits, push,
   PR. Humans merge. Ship never expands scope.
@@ -54,7 +54,7 @@ Every artifact in `.github/` declares frontmatter:
 - **Agents** (`*.agent.md`): `name:`, `description:`, `tools:` (capability
   scope). `model:` optional.
 
-The [`punch-governance-review`](../skills/punch-governance-review/SKILL.md)
+The [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 skill verifies this every time `.github/` or `docs/ai/` is touched.
 
 ## When adding a new AI asset

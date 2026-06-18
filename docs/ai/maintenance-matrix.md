@@ -69,17 +69,17 @@ Copilot-style agents.
       - Update `docs/ai/prompt-registry.md` in the same PR.
       - Update `.github/copilot-instructions.md` lifecycle table if a phase prompt name changes.
       - Update `AGENTS.md` if the phase-to-prompt mapping changes.
-      - Run `punch-governance-review` to confirm frontmatter and registry sync.
+      - Run `punch-ai-governance` to confirm frontmatter and registry sync.
 
 12) .github/skills/* (skills)
     - When skills are added, removed, or renamed:
       - Update `docs/ai/skill-registry.md` in the same PR.
       - Update every prompt/agent file that names the skill in its "Owner skill" / "Skill activation" section.
-      - Run `punch-governance-review` to confirm references resolve.
+      - Run `punch-ai-governance` to confirm references resolve.
 
 13) .github/agents/* (agents) — new in the redesigned lifecycle
     - When agents are added, removed, or renamed:
       - Update `AGENTS.md` in the same PR.
       - Update every prompt file that names the agent in its "Agent" line.
       - Update `docs/ai/copilot-mode-mapping.md` if the phase-to-agent mapping changes.
-      - Run `punch-governance-review` to confirm references resolve.
+      - Run `punch-ai-governance` to confirm references resolve.
