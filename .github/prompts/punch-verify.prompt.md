@@ -2,11 +2,10 @@
 agent: punch-verifier
 description: Phase 5 — Verify. Produce validation evidence by running official Punch commands.
 ---
-
 # Punch — Verify
 
 **Lifecycle phase:** Verify
-**Mode:** Agent (runs commands) or Ask (interprets existing artifacts)
+**Mode:** Agent (runs commands) or Ask (reads existing artifacts)
 **Owner skill:** [`debugging-and-error-recovery`](../skills/debugging-and-error-recovery/SKILL.md) (failure-handling method)
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
 + [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
@@ -16,38 +15,34 @@ description: Phase 5 — Verify. Produce validation evidence by running official
 
 ## When to use
 
-Build reported a clean diff and you need evidence the change works.
-Verify runs the orchestrator end-to-end against real Docker, then
-classifies the result.
+Build reported clean diff, need evidence change works. Verify runs orchestrator end-to-end against real Docker, then classifies result.
 
 ## Inputs
 
-- The Plan task or whole Plan being verified.
-- (Optional) `TARGET_BASE_URL` if the run targets an external service.
+- Plan task or whole Plan being verified.
+- (Optional) `TARGET_BASE_URL` if run targets external service.
 
 ## What to do
 
-1. `./bin/punch doctor` — confirms host prerequisites.
-2. `./bin/punch run smoke` — fastest signal the stack is healthy.
-3. Run the test(s) most relevant to the change:
+1. `./bin/punch doctor` — confirm host prerequisites.
+2. `./bin/punch run smoke` — fastest signal stack healthy.
+3. Run test(s) most relevant to change:
    - HTTP gate change → `./bin/punch run gate`
    - Journey change → `./bin/punch run journey`
    - End-to-end → `./bin/punch run all --collect-logs`
-4. Confirm `reports/state/punch-run.json` exists and shows `passed: true`.
-5. Read the relevant HTML and JSON reports for context.
-6. If anything fails, **stop**. Do not silently patch.
+4. Confirm `reports/state/punch-run.json` exists, shows `passed: true`.
+5. Read relevant HTML and JSON reports for context.
+6. Anything fails, **stop**. No silent patch.
 
 ## Expected output
 
-A Verify report with:
+Verify report with:
 
-- **Commands run** — each with its exit code.
+- **Commands run** — each with exit code.
 - **Artifacts produced** — paths only.
 - **Result** — pass / fail.
-- **If fail, classification** — implementation-related,
-  environment-related, or pre-existing.
-- **Minimal next action** — one sentence (continue to Review, return to
-  Plan with a corrective task, or escalate to human).
+- **If fail, classification** — implementation-related, environment-related, or pre-existing.
+- **Minimal next action** — one sentence (continue to Review, return to Plan with corrective task, or escalate to human).
 
 ## Validation gate
 
@@ -58,8 +53,6 @@ A Verify report with:
 
 ## Boundary rules
 
-- Never run `docker run` or `docker compose` directly outside Punch.
-  Use `./bin/punch`.
-- Never run k6 on the host.
-- Never edit source files to make Verify pass. (Failures classify and
-  return to Plan.)
+- Never run `docker run` or `docker compose` directly outside Punch. Use `./bin/punch`.
+- Never run k6 on host.
+- Never edit source files to make Verify pass. (Failures classify, return to Plan.)

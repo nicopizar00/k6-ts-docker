@@ -2,7 +2,7 @@
 
 > **Template.** Ship-readiness summary. Pattern source:
 > `.github/prompts/punch-ship.prompt.md` (Caveman `full`). **Mechanical only**
-> (git/gh) — Ship never merges, tags, or pushes to `main`; a human approves merge.
+> (git/gh) — Ship never merge, tag, or push `main`; human approve merge.
 
 ```
 Summary: <one paragraph — what the change does and why>
@@ -28,4 +28,4 @@ Recommendation: ship | hold
   Reason: <one sentence>
 ```
 
-**Gate:** human reviews the PR and merges. CI re-runs Verify. Ship is complete when a human merges.
+**Gate:** human review PR, merge. CI re-run Verify. Ship done when human merge.

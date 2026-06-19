@@ -2,61 +2,59 @@
 agent: punch-builder
 description: Build — execute ONE approved Plan task. The punch-builder dispatcher classifies it and delegates to the runtime or performance-test engineer within scope.
 ---
-
 # Punch — Build
 
 **Lifecycle phase:** Build
 **Mode:** Agent (scoped, via dispatch)
-**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + the task's domain skill
-**Agent:** [`punch-builder`](../agents/punch-builder.agent.md) → delegates to one engineer
-**Operating comms:** Caveman enforced — `ultra` here, `wenyan` for the engineer sub-agents. See [Operating comms (enforced)](#operating-comms-enforced). Evidence never compressed.
+**Owner skill:** [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) + [`test-driven-development`](../skills/test-driven-development/SKILL.md) + task domain skill
+**Agent:** [`punch-builder`](../agents/punch-builder.agent.md) → delegate one engineer
+**Operating comms:** Caveman enforced — `ultra` here, `wenyan` for engineer sub-agents. See [Operating comms (enforced)](#operating-comms-enforced). Evidence never compressed.
 
 ## Pre-conditions
 
-- An approved Plan task (from `punch-plan`) with a named task ID.
-- A human has confirmed the Plan.
+- Approved Plan task (from `punch-plan`) with named task ID.
+- Human confirmed Plan.
 
-If any is missing, **stop** and return to Plan.
+Any missing → **stop**, return to Plan.
 
 ## Inputs
 
-- The approved Plan task: goal, allowed/read-only/forbidden paths, task ID.
+- Approved Plan task: goal, allowed/read-only/forbidden paths, task ID.
 
 ## What to do
 
-1. Classify the task into **one** domain and select the engineer + domain skill:
+1. Classify task into **one** domain, pick engineer + domain skill:
    - orchestrator / `bin/punch` / Compose / service images / data harvest →
      [`punch-runtime-engineer`](../agents/punch-runtime-engineer.agent.md)
      (`punch-python-orchestration` / `punch-compose-runtime` / `punch-data-harvest`).
    - k6 HTTP/Browser / thresholds / `package.json` / TS bundle / lint →
      [`punch-performance-test-engineer`](../agents/punch-performance-test-engineer.agent.md)
      (`punch-k6-testing`).
-2. Hand the engineer the goal, scope, constraints, expected output, and required
-   evidence (depth-1 — the engineer delegates to no one).
-3. On return, consolidate the result, changed files, evidence, and next step.
+2. Hand engineer the goal, scope, constraints, expected output, required
+   evidence (depth-1 — engineer delegates to no one).
+3. On return, consolidate result, changed files, evidence, next step.
 
 ## Expected output
 
-Per the `punch-builder` evidence contract: **Result · Changed Files · Evidence ·
+Per `punch-builder` evidence contract: **Result · Changed Files · Evidence ·
 Unresolved Assumptions · Recommended Next Step**. Evidence (paths, commands, run
 output, `reports/state/punch-run.json`) verbatim.
 
 ## Validation gate
 
-Verify (`./bin/punch run <test>`) — do not claim success here. A change is done
+Verify (`./bin/punch run <test>`) — no success claim here. Change done
 when `reports/state/punch-run.json` records `passed: true`.
 
 ## Scope expansion rule
 
-Any edit outside the task's allowed paths → **stop**, return to Plan.
+Any edit outside task allowed paths → **stop**, return to Plan.
 
 ## Mandatory engineer tools + skills scope (absorbed)
 
 Both engineers are **leaf** agents (`agents: []`, depth-1, spawn nothing). When
-the dispatcher selects one, it MUST hand over that engineer's **full mandatory
-tools and skills scope** below. These mirror the canonical agent files — which
-remain the source of truth — and are absorbed here so the Build contract is
-self-contained and non-negotiable.
+dispatcher picks one, MUST hand over that engineer's **full mandatory
+tools and skills scope** below. These mirror canonical agent files — still source
+of truth — absorbed here so Build contract self-contained, non-negotiable.
 
 ### `punch-runtime-engineer` — runtime domain (Python / Compose / harvest)
 
@@ -93,18 +91,18 @@ self-contained and non-negotiable.
   `docker-compose.yml` edits, `.github/**`. Owns host `npm`/esbuild/lint per
   [ADR 0001](../../docs/ai/decisions/0001-perf-engineer-host-npm.md).
 
-The Plan may **narrow** these lists; it may not widen them past the Forbidden set
+Plan may **narrow** these lists; may not widen past Forbidden set
 without re-planning.
 
 ## Operating comms (enforced)
 
-Caveman is enforced for Build. Activate the `caveman` Agent Skill **once** on
-entering the phase (per `using-agent-skills`), then rely on its persistence:
+Caveman enforced for Build. Activate `caveman` Agent Skill **once** on
+entering phase (per `using-agent-skills`), then rely on persistence:
 
-- **Governance tier** (this prompt + the `punch-builder` dispatcher): **`ultra`**.
-- **Execution tier** (the engineer sub-agents): **`wenyan`** — maximum efficiency.
-- **Evidence is never compressed** — code, commands, paths, k6/Compose output,
-  JSON/YAML/CSV, `reports/state/punch-run.json` are quoted verbatim in any mode.
+- **Governance tier** (this prompt + `punch-builder` dispatcher): **`ultra`**.
+- **Execution tier** (engineer sub-agents): **`wenyan`** — max efficiency.
+- **Evidence never compressed** — code, commands, paths, k6/Compose output,
+  JSON/YAML/CSV, `reports/state/punch-run.json` quoted verbatim any mode.
 
 Full policy (tiers, modes, evidence list, Auto-Clarity, priority order) lives in
 [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) +

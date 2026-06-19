@@ -1,10 +1,9 @@
 # Lifecycle artifact templates 🧩
 
-Blank, schema-faithful skeletons for each Punch lifecycle phase. Copy one, fill it
-in, save it to its canonical location. Each template mirrors the **Expected
-output** section of the matching prompt in `.github/prompts/` — **the prompt is the
-source of truth; these are convenience scaffolds** (no rule is restated, only the
-output shape).
+Blank, schema-faithful skeletons for each Punch lifecycle phase. Copy one, fill,
+save to canonical location. Each template mirror **Expected output** section of
+matching prompt in `.github/prompts/` — **prompt is source of truth; these
+convenience scaffolds** (no rule restated, only output shape).
 
 | Phase | Template | Canonical save location | Caveman |
 |---|---|---|---|
@@ -15,10 +14,10 @@ output shape).
 | Review | `review.template.md` | chat / PR                                    | `full` |
 | Ship   | `ship.template.md`   | PR description                               | `full` |
 
-- A **filled, real worked example** (the health-smoke golden path) lives in
+- **Filled, real worked example** (health-smoke golden path) lives at
   [`../../golden-lifecycle/`](../../golden-lifecycle/README.md).
-- These templates and the golden example are **canon doc-output patterns** maintained
-  by `/punch-document` and detected by `/punch-init` (readiness:
+- These templates + golden example = **canon doc-output patterns** maintained
+  by `/punch-document`, detected by `/punch-init` (readiness:
   `lifecycle_templates`).
 - Caveman: persisted artifacts use `lite`/`full`, **never Wenyan**; emojis/ASCII
-  emoticons are allowed in docs (the `/document` carve-out).
+  emoticons allowed in docs (the `/document` carve-out).

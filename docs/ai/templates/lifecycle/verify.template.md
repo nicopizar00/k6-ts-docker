@@ -3,7 +3,7 @@
 > **Template.** Verify report. Pattern source:
 > `.github/prompts/punch-verify.prompt.md`. **Evidence quoted verbatim;** prose `lite`.
 
-- **Commands run** — <each with its exit code>
+- **Commands run** — <each with exit code>
   - `./bin/punch doctor` → exit <N>
   - `./bin/punch run <test>` → exit <N>
 - **Artifacts produced** — <paths only>
@@ -11,7 +11,7 @@
   - <...>
 - **Result** — pass | fail
 - **If fail, classification** — implementation-related | environment-related | pre-existing
-- **Minimal next action** — <one sentence: continue to Review / return to Plan / escalate>
+- **Minimal next action** — <one sentence: continue Review / back to Plan / escalate>
 
 ## Evidence (verbatim)
 ```json

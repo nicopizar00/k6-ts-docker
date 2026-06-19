@@ -1,21 +1,21 @@
 # Skill Absorption Matrix
 
-> **Reconciled 2026-06-17 (post-restructure).** Several P1 rows are now executed:
+> **Reconciled 2026-06-17 (post-restructure).** Several P1 rows now done:
 > `idea-refine` registered; `punch-refine` **deleted** (not "fix frontmatter");
 > `punch-define` deleted; `punch-builder-scoped` replaced by 5 builder agents.
 > Prompt frontmatter is **`agent:`**, not `mode:`. Canonical record:
 > [`agent-skills-absorption-plan.md` § Execution status](agent-skills-absorption-plan.md).
-> Tier-A/B/C skill rows below are still pending (Phase 3).
+> Tier-A/B/C skill rows below still pending (Phase 3).
 
-> **Status:** Review artifact (no runtime AI config changed). Produced
-> 2026-06-16 on branch `feat/agent-skills`. Decisions here are
-> **recommendations for a later, planned migration**, grounded in files
+> **Status:** Review artifact (no runtime AI config changed). Made
+> 2026-06-16 on branch `feat/agent-skills`. Decisions here =
+> **recommendations for later planned migration**, grounded in files
 > inspected this pass. See companions in this folder.
 
 **Legend — Action:** `keep` (no change) · `copy` (verbatim into runtime) ·
-`adapt` (rewrite examples/scope for Punch) · `merge` (fold into an existing
-asset) · `rewrite` (new Punch-authored asset informed by upstream) ·
-`deprecate` (retire after replacement lands) · `delete` · `exclude` (do not
+`adapt` (rewrite examples/scope for Punch) · `merge` (fold into existing
+asset) · `rewrite` (new Punch asset informed by upstream) ·
+`deprecate` (retire after replacement lands) · `delete` · `exclude` (don't
 absorb).
 **Priority:** P1 (foundation/unblock) · P2 (core lifecycle value) ·
 P3 (selective/nice-to-have).
@@ -32,8 +32,8 @@ migration; see [target architecture](recommended-target-ai-architecture.md)).
 | `skills/test-driven-development` | skill | upstream | Failing test → pass; Prove-It | `.github/skills/test-driven-development` | **adapt** | Verify/Build; reframe "test" as k6 checks/thresholds + `punch-run.json` | **High** — jest/vitest ≠ Punch evidence model | P2 |
 | `skills/debugging-and-error-recovery` | skill | upstream | Reproduce→localize→fix→guard | `.github/skills/debugging-and-error-recovery` | **adapt** | Verify failure handling; align with failure classification in `punch-verify` | Low | P2 |
 | `skills/code-review-and-quality` | skill | upstream | Five-axis review | `.github/skills/code-review-and-quality` | **adapt** | Review-phase core; defer AI-config axis to `punch-governance-review` | Med — overlap with governance skill | P2 |
-| `skills/code-simplification` | skill | upstream | Simplify w/o behavior change | `.github/skills/code-simplification` | **adapt** | Matches Punch "no premature abstraction"; back a new `punch-simplify` prompt | Low | P2 |
-| `skills/documentation-and-adrs` | skill | upstream | Record decisions/ADRs | `.github/skills/documentation-and-adrs` | **adapt** | Docs phase; introduce ADRs under `docs/`; respect `documentation.instructions.md` | Low | P3 |
+| `skills/code-simplification` | skill | upstream | Simplify w/o behavior change | `.github/skills/code-simplification` | **adapt** | Matches Punch "no premature abstraction"; back new `punch-simplify` prompt | Low | P2 |
+| `skills/documentation-and-adrs` | skill | upstream | Record decisions/ADRs | `.github/skills/documentation-and-adrs` | **adapt** | Docs phase; ADRs under `docs/`; respect `documentation.instructions.md` | Low | P3 |
 | `skills/git-workflow-and-versioning` | skill | upstream | Atomic commits, clean history | `.github/skills/git-workflow-and-versioning` | **adapt** | Ship phase; align with "mechanical only / humans merge / no `--no-verify`" | Med — must keep human-merge gate | P2 |
 | `skills/security-and-hardening` | skill | upstream | Harden against vulns | `.github/skills/security-and-hardening` | **adapt** | Real surfaces (gateway/orders/Postgres/env); drop web-auth-heavy parts | Med — large file, web-leaning | P3 |
 | `skills/shipping-and-launch` | skill | upstream | Pre-launch checklist, rollback | `.github/skills/` (Review-readiness) | **adapt** | Map to Punch **Review** go/no-go; deploy/rollback mostly N/A (CI external) | **High** — name clashes with Punch Ship | P3 |
@@ -48,10 +48,10 @@ migration; see [target architecture](recommended-target-ai-architecture.md)).
 
 | Source | Type | Origin | Current purpose | Recommended destination | Action | Reason | Risk | Pri |
 |---|---|---|---|---|---|---|---|:--:|
-| `skills/context-engineering` | skill | upstream | Right context at right time | `punch-context` skill | **merge** | `punch-context` already owns "primer/what to load"; fold method, don't add a 2nd skill | Med — cap discipline | P3 |
+| `skills/context-engineering` | skill | upstream | Right context at right time | `punch-context` skill | **merge** | `punch-context` already owns "primer/what to load"; fold method, don't add 2nd skill | Med — cap discipline | P3 |
 | `skills/observability-and-instrumentation` | skill | upstream | Logs/metrics/traces/alerts | `punch-data-harvest` skill | **merge** | `punch-data-harvest` owns log noise + evidence; fold RED-metric ideas | Med | P3 |
 | `skills/performance-optimization` | skill | upstream | Measure→fix→verify (CWV/React) | `punch-k6-performance` skill | **merge (partial) / exclude (web)** | Keep measure-first loop + N+1/backend; drop Core Web Vitals/React | Med — mostly web | P3 |
-| `skills/using-agent-skills` | meta-skill | upstream | Task→skill discovery flowchart | `.github/skills/` index + `punch-context` | **rewrite** | Build a Punch skill index spanning domain + lifecycle skills; don't duplicate lifecycle table | Med | P2 |
+| `skills/using-agent-skills` | meta-skill | upstream | Task→skill discovery flowchart | `.github/skills/` index + `punch-context` | **rewrite** | Build Punch skill index spanning domain + lifecycle skills; don't duplicate lifecycle table | Med | P2 |
 
 ## C. Upstream skills to EXCLUDE from Punch core
 
@@ -66,7 +66,7 @@ migration; see [target architecture](recommended-target-ai-architecture.md)).
 | Source | Type | Origin | Current purpose | Recommended destination | Action | Reason | Risk | Pri |
 |---|---|---|---|---|---|---|---|:--:|
 | `agents/security-auditor.md` | persona | upstream | Vulnerability/threat audit | `.github/agents/security-auditor.agent.md` | **adapt** | New persona Punch lacks; rename to `.agent.md`; scope to Punch surfaces | Med — keep scope realistic | P3 |
-| `agents/code-reviewer.md` | persona | upstream | Five-axis review | `punch-reviewer.agent.md` (augment) | **merge** | Don't duplicate the review persona; fold 5-axis framing into existing reviewer / review skill | Med — persona cap | P3 |
+| `agents/code-reviewer.md` | persona | upstream | Five-axis review | `punch-reviewer.agent.md` (augment) | **merge** | Don't duplicate review persona; fold 5-axis framing into existing reviewer / review skill | Med — persona cap | P3 |
 | `agents/test-engineer.md` | persona | upstream | Test strategy/coverage | — | **exclude** | Overlaps `punch-verifier`; Punch has no unit suite; keep "Prove-It" in TDD skill | Low | — |
 | `agents/web-performance-auditor.md` | persona | upstream | Core Web Vitals audit | — | **exclude** | Frontend/CWV only | Low | — |
 
@@ -104,13 +104,13 @@ migration; see [target architecture](recommended-target-ai-architecture.md)).
 | `.github/skills/idea-refine` | skill | Punch (verbatim upstream) | Idea refinement | register in `skill-registry.md`; add `applies-to`; drop `/mnt/...` | **keep + adapt** | Resolve existing governance drift before adding more | Low | **P1** |
 | `.github/prompts/punch-refine.prompt.md` | prompt | Punch | Wrapped idea-refine | **deleted** — idea-refine now runs inside `punch-spec` | **delete** ✅ | Superseded by command-mapped prompts | Low | **P1 done** |
 | `docs/ai/skill-registry.md` | governance | Punch | 6-skill register + cap | reframe cap: "domain skills (6) + lifecycle skills (N)" | **rewrite** | Cap currently blocks lifecycle absorption (see conflict report) | **High** — central governance change | **P1** |
-| `docs/ai/operating-model.md` | governance | Punch | Lifecycle + asset taxonomy | add "lifecycle/methodology skill" as a sanctioned skill kind | **adapt** | Resolves "phases are not skills" vs skill-first | High | **P1** |
+| `docs/ai/operating-model.md` | governance | Punch | Lifecycle + asset taxonomy | add "lifecycle/methodology skill" as sanctioned skill kind | **adapt** | Resolves "phases are not skills" vs skill-first | High | **P1** |
 | `.github/prompts/punch-spec|plan|review` (+ build) | prompt | Punch | Phase entry (heavy, 57–94 ln) | slim to thin wrappers that activate skills | **adapt** | Move procedure into skills (skill-first) | Med | P2 |
 | `AGENTS.md` | contract | Punch | Cross-agent guide (123 ln) | slim to pointer + `.github/skills/` note | **adapt** | De-duplicate vs `copilot-instructions`/`operating-model` | Med | P2 |
 | `CLAUDE.md` | constitution | Punch | Architectural constitution (170 ln) | keep as constitution; add minimal skill-discovery pointer | **keep** | Preserve canonical role; don't gut it | Low | P2 |
 | `.github/skills/*` (6 domain) | skill | Punch | Domain decision ownership | stay in `.github/skills/` | **keep** | Decided 2026-06-16: no migration; lifecycle skills join them here | Low | P2 |
 
-> The three **P1 governance rows in section G are the unblockers**: until the
-> skill taxonomy/cap is reframed and the existing `idea-refine` drift is fixed,
-> absorbing more skills only multiplies the drift. See
+> Three **P1 governance rows in section G = unblockers**: until
+> skill taxonomy/cap reframed and existing `idea-refine` drift fixed,
+> absorbing more skills only multiplies drift. See
 > [implementation order](recommended-target-ai-architecture.md#implementation-order).

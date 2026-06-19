@@ -1,28 +1,24 @@
 # Agent Guards
 
-Guards are a **runtime discipline** that Punch custom agents inherit. They are
-*adapted per agent purpose* — the only rule that flexes is terminal access, which
-follows from whether the agent's job is to produce runtime evidence or to edit
-configuration. Guards constrain agents **at runtime**; they do not govern one-off
-repository bootstrap work.
+Guards = **runtime discipline** Punch custom agents inherit. *Adapted per agent purpose* — only rule that flexes is terminal access, follow from whether agent job produce runtime evidence or edit config. Guards constrain agents **at runtime**; not govern one-off repo bootstrap work.
 
 ## The four rules
 
-1. **Restricted tool surface.** An agent uses only the tools its purpose needs.
-   Config-maintainer agents do **not** get a terminal — with one documented
-   exception: `punch-ai-governance` may run host `graphify` for the
+1. **Restricted tool surface.** Agent use only tools its purpose need.
+   Config-maintainer agents do **not** get terminal — one documented
+   exception: `punch-ai-governance` may run host `graphify` for
    `/punch-document` map ([ADR 0002](decisions/0002-graphify-host-tool.md)),
-   never the Punch runtime. Runtime engineers get a terminal
-   (Docker/Punch-mediated only — never host `k6`, and host `npm` only where a
-   documented exception allows it, see [`decisions/`](decisions/)).
-2. **Serial phases.** Plan → Implement → Verify, in order. State the work plan,
-   make the change, then show evidence. No parallel jumping.
-3. **Explicit approval before disk writes.** Before writing files, surface the
-   intended change and wait for the user's go-ahead. Memory is draft space; disk
-   is committed only on approval.
-4. **Bounded budget.** Keep each change small (≈≤3 files per logical step) and
-   diffs targeted. **Stop after 2 consecutive failures** — return to Plan and ask
-   for an architectural correction rather than retrying blindly.
+   never Punch runtime. Runtime engineers get terminal
+   (Docker/Punch-mediated only — never host `k6`, host `npm` only where
+   documented exception allow, see [`decisions/`](decisions/)).
+2. **Serial phases.** Plan → Implement → Verify, in order. State work plan,
+   make change, then show evidence. No parallel jumping.
+3. **Explicit approval before disk writes.** Before writing files, surface
+   intended change and wait for user go-ahead. Memory = draft space; disk
+   committed only on approval.
+4. **Bounded budget.** Keep each change small (≈≤3 files per logical step),
+   diffs targeted. **Stop after 2 consecutive failures** — return to Plan, ask
+   for architectural correction not retry blind.
 
 ## Per-agent adaptation (C1)
 
@@ -35,11 +31,11 @@ repository bootstrap work.
 
 ## Depth-1 / no recursion
 
-The depth-1 guarantee is **native VS Code behaviour**: subagents cannot spawn
-further subagents unless `chat.subagents.allowInvocationsFromSubagents` is enabled
-(keep it **off**). Punch reinforces this — the two engineers carry `agents: []`,
-and `punch-builder` lists exactly its two engineers in `agents:`. The
-`punch-ai-governance` maintainer is **never** listed in any `agents:` allowlist
-(`disable-model-invocation: true`), so it is user-direct only; in Documentation
-mode its single sanctioned delegation is the `/graphify` map (1-deep), and it
-spawns no other sub-agent.
+Depth-1 guarantee = **native VS Code behaviour**: subagents cannot spawn
+more subagents unless `chat.subagents.allowInvocationsFromSubagents` enabled
+(keep **off**). Punch reinforce — two engineers carry `agents: []`,
+`punch-builder` list exactly its two engineers in `agents:`. The
+`punch-ai-governance` maintainer **never** listed in any `agents:` allowlist
+(`disable-model-invocation: true`), so user-direct only; in Documentation
+mode its single sanctioned delegation = `/graphify` map (1-deep), spawn no
+other sub-agent.

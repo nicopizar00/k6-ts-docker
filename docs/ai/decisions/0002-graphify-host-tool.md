@@ -5,78 +5,28 @@
 
 ## Context
 
-Punch's Rule #1 is **Docker First**: the host needs only Docker and a stdlib
-Python 3 runtime. The one prior exception is [ADR 0001](0001-perf-engineer-host-npm.md)
-(host `npm` for the perf-test engineer).
+Punch Rule #1 = **Docker First**: host need only Docker + stdlib Python 3 runtime. One prior exception: [ADR 0001](0001-perf-engineer-host-npm.md) (host `npm` for perf-test engineer).
 
-We want a way to manage **documentation debt** — duplicated, stale, partial, or
-orphaned docs across `docs/`, `docs/ai/`, `.github/`, `README.md`, and
-`AGENTS.md`. [Graphify](https://github.com/safishamsi/graphify) (PyPI `graphifyy`,
-host CLI `graphify`) maps a corpus into a knowledge graph with community
-detection and `query` / `path` / `explain` / `affected` traversal — useful
-**evidence** for spotting that drift. It is a host CLI installed via
-`uv tool install graphifyy`; it is **not** Dockerized and is not part of the
-source → bundle → image → run → report execution chain.
+Want way to manage **documentation debt** — duplicated, stale, partial, orphaned docs across `docs/`, `docs/ai/`, `.github/`, `README.md`, `AGENTS.md`. [Graphify](https://github.com/safishamsi/graphify) (PyPI `graphifyy`, host CLI `graphify`) maps corpus into knowledge graph with community detection + `query` / `path` / `explain` / `affected` traversal — useful **evidence** for spotting drift. Host CLI installed via `uv tool install graphifyy`; **not** Dockerized, not part of source → bundle → image → run → report chain.
 
-A pristine upstream snapshot (v0.8.41) may be kept in `.ai-upstream/graphify/`
-with provenance in its `UPSTREAM.md`. Note: `.ai-upstream/` is a **gitignored
-local staging area** (see `.ai-upstream/.gitkeep`), not version-controlled — the
-canonical Punch adaptation lives in `.github/` (the `punch-document` prompt + the
-`punch-ai-governance` Documentation mode). The snapshot is a local drift baseline;
-re-fetch it (`uv tool install graphifyy`, re-copy the installed skill) when absent.
+Pristine upstream snapshot (v0.8.41) may live in `.ai-upstream/graphify/` with provenance in its `UPSTREAM.md`. Note: `.ai-upstream/` = **gitignored local staging area** (see `.ai-upstream/.gitkeep`), not version-controlled — canonical Punch adaptation lives in `.github/` (`punch-document` prompt + `punch-ai-governance` Documentation mode). Snapshot = local drift baseline; re-fetch (`uv tool install graphifyy`, re-copy installed skill) when absent.
 
-**Leaned for Copilot plug-in (2026-06-18).** The in-repo
-`.github/skills/graphify/` skill was trimmed to Punch's **in-IDE subset**
-(build / `--update` / `--cluster-only` / query / path / explain / add+watch /
-hooks). Removed: remote-repo clone & cross-repo merge, media transcription
-(Whisper), external-DB push (Neo4j/FalkorDB, incl. credential examples), the MCP
-server, and wiki/SVG/GraphML/obsidian exports — none used by Punch. The skill is
-therefore an **authored Punch-leaned adaptation** (subject to governance checks),
-not a verbatim upstream copy; the pristine upstream remains the drift baseline in
-`.ai-upstream/graphify/`.
+**Leaned for Copilot plug-in (2026-06-18).** In-repo `.github/skills/graphify/` skill trimmed to Punch **in-IDE subset** (build / `--update` / `--cluster-only` / query / path / explain / add+watch / hooks). Removed: remote-repo clone & cross-repo merge, media transcription (Whisper), external-DB push (Neo4j/FalkorDB, incl. credential examples), MCP server, wiki/SVG/GraphML/obsidian exports — none used by Punch. Skill therefore **authored Punch-leaned adaptation** (subject to governance checks), not verbatim upstream copy; pristine upstream stays drift baseline in `.ai-upstream/graphify/`.
 
 ## Decision
 
-Graphify is adopted as a **scoped host-tool exception** to Docker First, used
-**only** by the documentation-reconciliation workflow. This is an exception, not
-a repeal:
+Graphify adopted as **scoped host-tool exception** to Docker First, used **only** by documentation-reconciliation workflow. Exception, not repeal:
 
-- **Reuse, don't fork.** Punch invokes the existing `/graphify` skill and
-  consumes its **native outputs** (`graphify-out/graph.json`,
-  `GRAPH_REPORT.md`). No custom AST/indexing skill is created.
-- **One governed workflow.** A `/punch-document` prompt drives the existing
-  [`punch-ai-governance`](../../../.github/agents/punch-ai-governance.agent.md)
-  agent, which reconciles documentation in **waves** (keep / merge / rewrite /
-  archive / delete / promote). Graphify provides the map; `punch-ai-governance`
-  makes every decision.
-- **VS Code-native delegation.** The agent forks `/graphify` as a **single
-  subagent** for the structural map, relying on VS Code subagent **tool
-  inheritance**, kept **1-deep** (`chat.subagents.allowInvocationsFromSubagents`
-  stays at its default — subagents cannot spawn subagents). For this, the agent
-  gains `runSubagent` and a scoped run-tool surface. *(Implemented with the
-  `punch-document` workflow; see that prompt and the agent's Documentation
-  mode.)*
-- **Guard reworded, not removed.** `punch-ai-governance` still **never runs the
-  Punch Docker/k6 runtime or the `bin/punch` suite**. Its only command surface
-  is forking the `/graphify` map subagent.
-- **Outputs are throwaway.** Everything under `graphify-out/` is gitignored
-  audit **evidence** — never canonical documentation. `CLAUDE.md`, `docs/`, and
-  the registries remain authoritative; nothing is promoted to canonical without
-  a governance decision.
-- **No other surface.** No other agent, command, or contributor workflow gains
-  host-graphify dependence, and the execution chain is unchanged.
+- **Reuse, don't fork.** Punch invokes existing `/graphify` skill, consumes its **native outputs** (`graphify-out/graph.json`, `GRAPH_REPORT.md`). No custom AST/indexing skill created.
+- **One governed workflow.** `/punch-document` prompt drives existing [`punch-ai-governance`](../../../.github/agents/punch-ai-governance.agent.md) agent, which reconciles docs in **waves** (keep / merge / rewrite / archive / delete / promote). Graphify gives map; `punch-ai-governance` makes every decision.
+- **VS Code-native delegation.** Agent forks `/graphify` as **single subagent** for structural map, relying on VS Code subagent **tool inheritance**, kept **1-deep** (`chat.subagents.allowInvocationsFromSubagents` stays default — subagents cannot spawn subagents). For this, agent gains `runSubagent` + scoped run-tool surface. *(Implemented with `punch-document` workflow; see that prompt + agent Documentation mode.)*
+- **Guard reworded, not removed.** `punch-ai-governance` still **never runs Punch Docker/k6 runtime or `bin/punch` suite**. Only command surface = forking `/graphify` map subagent.
+- **Outputs throwaway.** Everything under `graphify-out/` = gitignored audit **evidence** — never canonical docs. `CLAUDE.md`, `docs/`, registries stay authoritative; nothing promoted to canonical without governance decision.
+- **No other surface.** No other agent, command, contributor workflow gains host-graphify dependence; execution chain unchanged.
 
 ## Consequences
 
-- **Positive:** documentation debt gets a lean, wave-based reconciliation phase
-  backed by graph evidence — with **no new skill and no new agent** (logic folds
-  into the existing `punch-ai-governance` agent + one prompt).
-- **Negative / watch:** a contributor running `/punch-document` locally needs
-  graphify host-installed (`uv tool install graphifyy`). This is acceptable: it
-  is opt-in, off the evidence/execution path, and does not touch the Docker-First
-  *runtime* guarantee.
-- **Watch:** `punch-ai-governance` now holds a terminal surface (scoped to the
-  graphify map subagent). Any *other* command execution by this agent — or
-  host-graphify use outside `/punch-document` — is **drift**.
-- **Guardrail:** `CLAUDE.md` Rule #1 links here; `punch-ai-governance` treats the
-  above as the only sanctioned host-graphify surface.
+- **Positive:** documentation debt gets lean, wave-based reconciliation phase backed by graph evidence — **no new skill, no new agent** (logic folds into existing `punch-ai-governance` agent + one prompt).
+- **Negative / watch:** contributor running `/punch-document` locally need graphify host-installed (`uv tool install graphifyy`). Acceptable: opt-in, off evidence/execution path, doesn't touch Docker-First *runtime* guarantee.
+- **Watch:** `punch-ai-governance` now holds terminal surface (scoped to graphify map subagent). Any *other* command execution by this agent — or host-graphify use outside `/punch-document` — = **drift**.
+- **Guardrail:** `CLAUDE.md` Rule #1 links here; `punch-ai-governance` treats above as only sanctioned host-graphify surface.

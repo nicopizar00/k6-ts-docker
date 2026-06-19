@@ -3,30 +3,29 @@
 > **Golden artifact (filled, real).** Phase 2. Pattern source:
 > `.github/prompts/punch-plan.prompt.md`. Caveman `full`.
 
-- **Goal** (from Spec): produce trackable pass/fail evidence from the health smoke
-  via one official command, changing no product code.
+- **Goal** (from Spec): trackable pass/fail evidence from health smoke
+  via one official command. No product code change.
 
 ## Tasks
 
 ### V-01 — run the health smoke and capture evidence
-- **Goal** — execute `./bin/punch run smoke` and confirm the acceptance criteria.
-- **Allowed edit paths** — _none_ (verification-only; no source edits).
+- **Goal** — run `./bin/punch run smoke`, confirm acceptance criteria.
+- **Allowed edit paths** — _none_ (verify-only; no source edits).
 - **Read-only context paths** — `src/tests/smoke.ts`, `docker-compose.yml`,
   `reports/**`.
 - **Forbidden paths** — `src/**` edits, `docker/**`, `docker-compose.yml` edits,
-  `.github/**` (this task changes nothing).
+  `.github/**` (task change nothing).
 - **Expected diff size** — 0 lines (evidence only).
 - **Validation commands** — `./bin/punch doctor` then `./bin/punch run smoke`.
-- **Rollback notes** — none required (no mutation); `./bin/punch clean` resets the
-  stack.
+- **Rollback notes** — none needed (no mutation); `./bin/punch clean` reset stack.
 - **Human checkpoint** — human approval required before Build.
-- **Build prompt** — `punch-build` (expected no-op — verification-class task).
+- **Build prompt** — `punch-build` (expect no-op — verify-class task).
 
 ## Order of execution
-Single task. (For integration changes the order would be k6 → compose → orchestrator.)
+Single task. (Integration changes would order k6 → compose → orchestrator.)
 
 ## Cross-cutting risks
-- Environment-only: Docker daemon down or stack unhealthy → classifies as
+- Environment-only: Docker daemon down or stack unhealthy → classify as
   *environment*, not implementation.
 
 ## Rollback plan

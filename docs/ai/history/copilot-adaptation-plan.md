@@ -1,32 +1,32 @@
 # Copilot Adaptation Plan
 
-> **Reconciled 2026-06-17 (post-restructure).** Key correction: VS Code prompt
-> files use the **`agent:`** frontmatter field (`ask`/`agent`/`plan`/custom-agent),
-> **not `mode:`** — verified against the VS Code docs. Track 2's `mode:` examples
-> below are corrected to `agent:`. The agent layer was also executed: 5 per-domain
-> builder agents replaced `punch-builder-scoped`, and `punch-define`/`punch-refine`
-> were deleted (`idea-refine` runs inside `punch-spec`). Canonical record:
+> **Reconciled 2026-06-17 (post-restructure).** Key fix: VS Code prompt
+> files use **`agent:`** frontmatter field (`ask`/`agent`/`plan`/custom-agent),
+> **not `mode:`** — verified vs VS Code docs. Track 2 `mode:` examples
+> below now `agent:`. Agent layer also done: 5 per-domain
+> builder agents replaced `punch-builder-scoped`; `punch-define`/`punch-refine`
+> deleted (`idea-refine` runs inside `punch-spec`). Canonical record:
 > [`agent-skills-absorption-plan.md` § Execution status](agent-skills-absorption-plan.md).
 
-> **Status:** Review artifact (no runtime AI config changed). Produced
-> 2026-06-16 on branch `feat/agent-skills`. All code blocks below are
-> **draft examples for review**, not files to create in this pass.
+> **Status:** Review artifact (no runtime AI config changed). Made
+> 2026-06-16 on branch `feat/agent-skills`. All code blocks below
+> **draft examples for review**, not files to create this pass.
 
 Goal: absorb upstream Core B **optimized first for GitHub Copilot Chat in VS
-Code**, while keeping Claude Code and Codex compatible. Six adaptation tracks,
-each with mechanical transformation rules grounded in files inspected this pass.
+Code**, keep Claude Code + Codex compatible. Six adaptation tracks,
+each with mechanical transform rules grounded in files inspected this pass.
 
 ## Compatibility facts that drive every rule
 
 From upstream `docs/copilot-setup.md` (verified):
 - Copilot reads skills from **`.github/skills`, `.claude/skills`, or
   `.agents/skills`** (`copilot-setup.md:7`). Punch already uses `.github/skills`.
-- Copilot custom agents **must be `*.agent.md`**; plain `*.md` is silently
-  ignored (`copilot-setup.md:22-25`). Upstream agents are plain `.md`.
-- Copilot project instructions live in `.github/copilot-instructions.md` and
-  should stay **concise** (`copilot-setup.md:84`). Punch's already is.
-- Copilot invokes agents with `@agent-name` (`copilot-setup.md:35-38`) — there
-  is **no programmatic subagent fan-out** like Claude Code's `subagent_type`.
+- Copilot custom agents **must be `*.agent.md`**; plain `*.md` silently
+  ignored (`copilot-setup.md:22-25`). Upstream agents plain `.md`.
+- Copilot project instructions live in `.github/copilot-instructions.md`,
+  stay **concise** (`copilot-setup.md:84`). Punch's already is.
+- Copilot invokes agents with `@agent-name` (`copilot-setup.md:35-38`) —
+  **no programmatic subagent fan-out** like Claude Code `subagent_type`.
 
 ## Track 1 — Upstream agents → `.github/agents/*.agent.md`
 
@@ -34,12 +34,12 @@ From upstream `docs/copilot-setup.md` (verified):
 1. Rename `agents/<role>.md` → `.github/agents/<role>.agent.md` (Copilot rule).
 2. Keep `name:` + `description:` frontmatter (already Copilot-compatible; matches
    Punch agent contract in `agentic-workflow.instructions.md:53`).
-3. Replace the Claude "Composition" block's `subagent_type`/Agent-tool language
+3. Replace Claude "Composition" block `subagent_type`/Agent-tool language
    with Copilot `@mention` + "invoked via `<punch-prompt>`" language.
-4. Insert a **Punch scope block** (allowed/forbidden behavior) — every Punch
+4. Insert **Punch scope block** (allowed/forbidden behavior) — every Punch
    agent declares this; upstream personas don't.
-5. Apply the absorption decisions: **add** `security-auditor`; **merge**
-   `code-reviewer` into `punch-reviewer`; **exclude** `test-engineer` and
+5. Apply absorption decisions: **add** `security-auditor`; **merge**
+   `code-reviewer` into `punch-reviewer`; **exclude** `test-engineer` +
    `web-performance-auditor`.
 
 **Draft example — `security-auditor.agent.md` (new):**
@@ -72,7 +72,7 @@ Defer code-style/architecture findings to `punch-reviewer`.
 
 **Transform rules**
 1. Frontmatter: replace Claude `description:`-only / `argument-hint:` with
-   **Punch's `agent:` field + `description:`** — VS Code prompt files use
+   **Punch `agent:` field + `description:`** — VS Code prompt files use
    `agent:` (`ask`/`agent`/`plan`/custom-agent), not `mode:` (`prompt-registry.md`).
 2. Replace `Invoke the agent-skills:<skill> skill` with
    `Activate the **<skill>** skill at `.github/skills/<skill>/SKILL.md``.

@@ -1,51 +1,38 @@
 # Scoped Build Policy
 
-Build is the only phase that edits product code. To keep Build safe inside
-a multi-layer system (Python orchestrator + Compose + k6 + reporting), every
-Build task declares its scope as **three path lists**, carried by the engineer
-agent the `punch-builder` dispatcher routes it to.
+Build only phase that edit product code. Keep Build safe inside multi-layer system (Python orchestrator + Compose + k6 + reporting): every Build task declare scope as **three path lists**, carried by engineer agent the `punch-builder` dispatcher route it to.
 
 ## The three lists
 
-1. **Allowed edit paths** — Build may create, modify, or delete files here.
-2. **Read-only context paths** — Build may read these for context but must
-   not edit them.
-3. **Forbidden paths** — Build must refuse to touch these. Touching one is
-   a *scope expansion* and triggers the [stop-and-replan rule](#scope-expansion-process).
+1. **Allowed edit paths** — Build may create, modify, delete files here.
+2. **Read-only context paths** — Build may read for context, must not edit.
+3. **Forbidden paths** — Build must refuse to touch. Touching one = *scope expansion*, triggers [stop-and-replan rule](#scope-expansion-process).
 
-Each **engineer agent** (`punch-runtime-engineer`, `punch-performance-test-engineer`)
-ships with defaults for these lists; the single `punch-build` prompt + `punch-builder`
-dispatcher routes a task to the right one. The approved Plan can narrow or widen
-them, but never beyond the engineer's *forbidden* set.
+Each **engineer agent** (`punch-runtime-engineer`, `punch-performance-test-engineer`) ship defaults for these lists; single `punch-build` prompt + `punch-builder` dispatcher route task to right one. Approved Plan can narrow or widen, never beyond engineer's *forbidden* set.
 
 ## Human checkpoint
 
 Before any Build prompt runs:
 
-1. The Plan must list the task's allowed / read-only / forbidden paths
-   explicitly.
-2. A human must confirm the plan (chat OK, or PR description).
-3. The Build prompt re-states the scope at the top of its work and aborts
-   if it cannot match the plan.
+1. Plan must list task's allowed / read-only / forbidden paths explicitly.
+2. Human must confirm plan (chat OK, or PR description).
+3. Build prompt re-state scope at top of work, abort if cannot match plan.
 
 ## Scope expansion process
 
-If, mid-Build, the agent discovers it cannot complete the task within the
-allowed paths:
+If mid-Build agent finds it cannot finish task within allowed paths:
 
-1. **Stop.** Do not edit a forbidden or read-only file as a "small fix".
-2. Capture the new fact (which file, which constraint).
-3. Return to **Plan**. Update the task or split it.
+1. **Stop.** No edit forbidden/read-only file as "small fix".
+2. Capture new fact (which file, which constraint).
+3. Return to **Plan**. Update task or split it.
 4. Get human re-approval.
-5. Resume Build on the updated plan.
+5. Resume Build on updated plan.
 
-This is the single most-violated rule in agentic coding. Stopping is cheap.
-Unauthorized cross-layer edits cause the most regressions.
+Most-violated rule in agentic coding. Stopping cheap. Unauthorized cross-layer edits cause most regressions.
 
 ## Examples by build domain
 
-Each domain below is routed by `punch-builder` to the named engineer, which
-carries the scope table.
+Each domain below routed by `punch-builder` to named engineer, which carry scope table.
 
 ### Python orchestration task
 
@@ -117,9 +104,7 @@ Forbidden:
   docker/k6.Dockerfile         (HTTP k6 image)
 ```
 
-> The Browser image is currently deferred (see
-> `src/tests/browser-smoke.ts.example`). Any task that *enables* it must
-> first land a Plan that accepts the cost (image size, build time, CI).
+> Browser image currently deferred (see `src/tests/browser-smoke.ts.example`). Any task that *enables* it must first land Plan that accepts cost (image size, build time, CI).
 
 ### Data harvest / reporting task
 
@@ -139,22 +124,14 @@ Forbidden:
   .github/workflows/**
 ```
 
-Reporting changes are *contract* changes. The plan must spell out the
-artifact path, schema, and downstream consumers (see
-[`punch-data-harvest` skill](../../.github/skills/punch-data-harvest/SKILL.md)
-and [`docs/ai/maintenance-matrix.md`](maintenance-matrix.md)).
+Reporting changes = *contract* changes. Plan must spell out artifact path, schema, downstream consumers (see [`punch-data-harvest` skill](../../.github/skills/punch-data-harvest/SKILL.md) and [`docs/ai/maintenance-matrix.md`](maintenance-matrix.md)).
 
 ## Cross-layer tasks
 
-Some real tasks legitimately cross layers (e.g. "add a new test, wire it
-into compose, expose it via `bin/punch run X`"). These are **integration
-tasks** and require:
+Some real tasks legit cross layers (e.g. "add new test, wire into compose, expose via `bin/punch run X`"). These = **integration tasks**, require:
 
-- A single Plan that explicitly authorizes the cross-layer edit.
-- One `punch-build` invocation per layer, in a fixed order (k6 → compose →
-  orchestrator typically) — the dispatcher routes each to its engineer, each
-  respecting its own scope.
-- Verify runs the full suite, not just the new test.
+- Single Plan that explicitly authorize cross-layer edit.
+- One `punch-build` invocation per layer, fixed order (k6 → compose → orchestrator typically) — dispatcher route each to its engineer, each respecting own scope.
+- Verify runs full suite, not just new test.
 
-Never collapse an integration task into a single broad Build. The point of
-per-domain engineers is keeping each layer's reviewer focused.
+Never collapse integration task into single broad Build. Point of per-domain engineers = keep each layer's reviewer focused.

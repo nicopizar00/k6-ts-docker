@@ -1,13 +1,12 @@
 # Golden lifecycle — a real, verifiable worked example 🟢
 
-A complete, **real** pass through **Spec → Plan → Build → Verify → Review → Ship**,
-one trackable artifact per phase, anchored to genuine anonymized evidence. This is
-the canon "golden test" teams copy when adopting Punch. Blank skeletons:
+Complete **real** pass through **Spec → Plan → Build → Verify → Review → Ship**,
+one trackable artifact per phase, anchored to genuine anonymized evidence. Canon "golden test" teams copy when adopting Punch. Blank skeletons:
 [`../templates/lifecycle/`](../templates/lifecycle/README.md).
 
-**Subject:** the simplest real verifiable smoke — confirm the stack's health smoke
-passes via `./bin/punch run smoke`. No product code changes (a *verification-class*
-path; also shows Build as a documented no-op).
+**Subject:** simplest real verifiable smoke — confirm stack health smoke
+passes via `./bin/punch run smoke`. No product code change (*verification-class*
+path; also shows Build as documented no-op).
 
 ## Artifacts
 
@@ -34,20 +33,20 @@ punch-run.json → passed: true   smoke.json → checkPassRate: 1, errorRate: 0
 
 1. **Spec/Plan** — copy `spec.template.md` / `plan.template.md` into
    `docs/architecture/specs/`; fill Goal, Acceptance criteria, scoped task contracts.
-2. **Build** — run `punch-build` per task ID (may be a documented no-op).
+2. **Build** — run `punch-build` per task ID (may be documented no-op).
 3. **Verify** — `./bin/punch run <test>` must leave `reports/state/punch-run.json`
-   `passed: true`; quote it verbatim.
-4. **Review → Ship** — read-only critique, then mechanical git/gh; **a human merges**.
+   `passed: true`; quote verbatim.
+4. **Review → Ship** — read-only critique, then mechanical git/gh; **human merges**.
 
-Each artifact ends with a **gate** — don't advance until it's met.
+Each artifact ends with **gate** — don't advance until met.
 
 ## Governance
 
-- **Canon.** These + `../templates/lifecycle/` are the canonical output *shapes*;
-  the `.github/prompts/` files stay the behavior source of truth.
+- **Canon.** These + `../templates/lifecycle/` = canonical output *shapes*;
+  `.github/prompts/` files stay behavior source of truth.
 - **`/punch-document`** maintains them as canon (lean; `lite`/`full`, never Wenyan).
-- **`/punch-init`** detects them as the `lifecycle_templates` readiness signal.
+- **`/punch-init`** detects them as `lifecycle_templates` readiness signal.
 
-Evidence is real output with host paths → `<repo-root>`; no secrets
-(`gateway-api:3000` is the in-network Compose service). Regenerate via
+Evidence = real output, host paths → `<repo-root>`; no secrets
+(`gateway-api:3000` = in-network Compose service). Regenerate via
 `./bin/punch run smoke`.

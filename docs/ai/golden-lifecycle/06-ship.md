@@ -29,4 +29,4 @@ Recommendation: ship
   Reason: green Verify evidence; documentation-only; canon-ready template set.
 ```
 
-**Gate:** open PR with this summary; CI re-runs Verify; a human merges. ✅
+**Gate:** open PR with this summary; CI re-runs Verify; human merges. ✅

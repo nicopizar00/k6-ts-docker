@@ -2,57 +2,56 @@
 agent: punch-reviewer
 description: Phase 6 — Review. Read-only critique of the diff against the Plan before Ship.
 ---
-
 # Punch — Review
 
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
-**Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (the five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for the simplicity axis);
-[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when the
-diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
+**Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for simplicity axis);
+[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
+diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Lead with normal prose for risk/architecture judgment; diff, evidence, and verdict verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment; diff, evidence, verdict verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
-Verify has passed. Before opening or merging a PR, audit the diff for
-correctness, simplicity, scope discipline, boundary compliance, and
-lifecycle hygiene. For a dedicated security pass on diffs touching
-`src/services/**`, env, or `docker/**`, invoke `@security-auditor`.
+Verify passed. Before open or merge PR, audit diff for
+correctness, simplicity, scope discipline, boundary compliance,
+lifecycle hygiene. Dedicated security pass on diffs touching
+`src/services/**`, env, or `docker/**` → invoke `@security-auditor`.
 
 ## Inputs
 
-- The diff (working tree, branch vs `main`, or PR URL).
-- The Plan task(s) that drove the change.
-- The Verify report.
+- Diff (working tree, branch vs `main`, or PR URL).
+- Plan task(s) that drove change.
+- Verify report.
 
 ## What to do
 
-1. **Scope check.** Are all changed files within the Plan's allowed
-   paths? Flag any out-of-scope edits.
-2. **Boundary check.** Does the diff respect the layer ownership in
+1. **Scope check.** All changed files within Plan's allowed
+   paths? Flag out-of-scope edits.
+2. **Boundary check.** Diff respects layer ownership in
    [`punch-boundaries.md`](../../docs/architecture/punch-boundaries.md)?
-   Flag cross-layer changes that the Plan did not authorize.
-3. **Rule check.** Does the diff respect `CLAUDE.md`,
-   `punch-architecture.instructions.md`, and the path-specific
+   Flag cross-layer changes Plan did not authorize.
+3. **Rule check.** Diff respects `CLAUDE.md`,
+   `punch-architecture.instructions.md`, and path-specific
    instructions?
-4. **Duplication check.** Did any AI asset, doc, or helper get
+4. **Duplication check.** Any AI asset, doc, or helper
    duplicated?
-5. **Evidence check.** Does `reports/state/punch-run.json` exist and
-   show `passed: true`?
-6. **Simplicity check.** Did the diff introduce premature abstraction,
-   unnecessary dependencies, or speculative configuration?
-7. **Ownership check.** Does the change respect each layer's domain?
-8. **Governance check** (when `.github/` or `docs/ai/` is touched).
+5. **Evidence check.** `reports/state/punch-run.json` exists and
+   shows `passed: true`?
+6. **Simplicity check.** Diff introduced premature abstraction,
+   unneeded dependencies, or speculative config?
+7. **Ownership check.** Change respects each layer's domain?
+8. **Governance check** (when `.github/` or `docs/ai/` touched).
    Activate [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md):
-   frontmatter complete, registries match files, agents and skills are
+   frontmatter complete, registries match files, agents and skills
    referenced consistently.
-9. **Doc check.** Are docs and the maintenance matrix updated for any
+9. **Doc check.** Docs and maintenance matrix updated for any
    contract change?
 
 ## Expected output
 
-A Review report with:
+Review report with:
 
 - **Verdict** — Approve / Request Changes.
 - **Files changed** — list.

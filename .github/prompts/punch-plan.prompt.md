@@ -2,77 +2,60 @@
 agent: punch-planner
 description: Phase 3 — Plan. Convert a Spec into scoped tasks with explicit allowed/read-only/forbidden paths.
 ---
-
 # Punch — Plan
 
 **Lifecycle phase:** Plan
-**Mode:** Plan discipline — output is a plan, no product edits (enforced by agent definition)
-**Owner skill:** [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) (the method)
-+ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + the matching domain skill(s);
+**Mode:** Plan discipline — output is plan, no product edits (enforced by agent definition)
+**Owner skill:** [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) (method)
++ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + matching domain skill(s);
 on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 **Agent:** [`punch-planner`](../agents/punch-planner.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs are persistent — no Wenyan; task contracts/paths/validation commands verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs persistent — no Wenyan; task contracts/paths/validation commands verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
-You have an approved Spec and need to partition it into tasks that Build
-can execute one at a time. The Plan is the contract that Build is
-literally bound to — every Build prompt refuses to edit files outside
-its task's allowed paths.
+Have approved Spec, need partition into tasks Build executes one at a time. Plan = contract Build bound to — every Build prompt refuses edit files outside task's allowed paths.
 
 ## Inputs
 
-- The approved Spec.
-- The constraint set: relevant files in `CLAUDE.md`, applicable path
-  instructions, the execution chain, and the maintenance matrix
-  ([`docs/ai/maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md)).
+- Approved Spec.
+- Constraint set: relevant files in `CLAUDE.md`, applicable path instructions, execution chain, maintenance matrix ([`docs/ai/maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md)).
 
 ## What to do
 
-1. Decompose the Spec into the smallest set of tasks that, together,
-   meet the acceptance criteria.
-2. Tag each task by Build domain: orchestrator (O), compose (C),
-   k6-http (K), k6-browser (B), data-harvest (D).
-3. For each task, fill in the **task contract**:
+1. Decompose Spec into smallest task set that together meet acceptance criteria.
+2. Tag each task by Build domain: orchestrator (O), compose (C), k6-http (K), k6-browser (B), data-harvest (D).
+3. Per task, fill **task contract**:
 
    - **Task ID** (e.g. `O-01`, `C-01`, `K-01`).
    - **Goal** — one sentence.
    - **Allowed edit paths** — globs.
    - **Read-only context paths** — globs.
-   - **Forbidden paths** — globs (must include every layer the task
-     does not own).
+   - **Forbidden paths** — globs (must include every layer task does not own).
    - **Expected diff size** — rough line count.
-   - **Validation commands** — the official Punch commands Verify will
-     run.
+   - **Validation commands** — official Punch commands Verify runs.
    - **Rollback notes** — how to undo if Verify fails.
    - **Human checkpoint** — "human approval required before Build".
-   - **Build prompt** — which of the 5 build-* prompts handles it.
+   - **Build prompt** — which of 5 build-* prompts handles it.
 
-4. If a task naturally crosses layers, flag it as an **integration
-   task** and split it into per-layer sub-tasks with a fixed execution
-   order.
-5. List risks and a rollback path for the whole change.
-6. Reference any cascade required by the maintenance matrix (e.g. CI
-   workflow update if a service name changes).
+4. Task crosses layers naturally → flag as **integration task**, split into per-layer sub-tasks with fixed execution order.
+5. List risks and rollback path for whole change.
+6. Reference any cascade required by maintenance matrix (e.g. CI workflow update if service name changes).
 
 ## Expected output
 
-A plan document (in chat, or written to `docs/` if requested) containing
-every task contract plus a top-level summary:
+Plan document (in chat, or written to `docs/` if requested) with every task contract plus top-level summary:
 
 - **Goal** (from Spec).
 - **Tasks** — full per-task contract.
-- **Order of execution** — typically k6 → compose → orchestrator for
-  integration changes.
-- **Cross-cutting risks** — single section for risks that span tasks.
-- **Rollback plan** — for the whole change.
+- **Order of execution** — typically k6 → compose → orchestrator for integration changes.
+- **Cross-cutting risks** — single section for risks spanning tasks.
+- **Rollback plan** — for whole change.
 
 ## Validation gate
 
-Plan is approved when a human confirms it. Build prompts refuse to run
-without an approved Plan task ID.
+Plan approved when human confirms. Build prompts refuse to run without approved Plan task ID.
 
 ## Edits permitted
 
-Only the plan doc itself, when the user explicitly asks to persist it.
-This prompt produces prose by default.
+Only plan doc itself, when user explicitly asks to persist. This prompt produces prose by default.

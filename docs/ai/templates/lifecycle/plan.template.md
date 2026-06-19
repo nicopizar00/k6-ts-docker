@@ -11,20 +11,20 @@
 - **Goal** — <one sentence>
 - **Allowed edit paths** — <globs>
 - **Read-only context paths** — <globs>
-- **Forbidden paths** — <globs; must include every layer the task does not own>
+- **Forbidden paths** — <globs; must list every layer task not own>
 - **Expected diff size** — <~N lines>
-- **Validation commands** — <official `./bin/punch …` commands Verify will run>
-- **Rollback notes** — <how to undo if Verify fails>
-- **Human checkpoint** — human approval required before Build
+- **Validation commands** — <official `./bin/punch …` commands Verify run>
+- **Rollback notes** — <how undo if Verify fail>
+- **Human checkpoint** — human approval needed before Build
 - **Build prompt** — `punch-build`
 
 ## Order of execution
-<typically k6 → compose → orchestrator for integration changes>
+<usually k6 → compose → orchestrator for integration changes>
 
 ## Cross-cutting risks
-<single section for risks that span tasks>
+<one section for risks spanning tasks>
 
 ## Rollback plan
-<for the whole change>
+<for whole change>
 
-**Gate:** approved when a human confirms it → Build (per task ID).
+**Gate:** approved when human confirms → Build (per task ID).

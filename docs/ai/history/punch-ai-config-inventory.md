@@ -1,42 +1,42 @@
 # Punch AI Configuration — Inventory
 
-> **Reconciled 2026-06-17.** The tables below are the **pre-restructure baseline**
-> (the starting state this review captured). The config has since been
-> restructured: **11 prompts** (`punch-define`/`punch-refine` deleted, `punch-test`
+> **Reconciled 2026-06-17.** Tables below = **pre-restructure baseline**
+> (starting state this review captured). Config since restructured:
+> **11 prompts** (`punch-define`/`punch-refine` deleted, `punch-test`
 > added), **9 agents** (`punch-builder-scoped` → 5 builder agents + 4 core
-> personas), **6-phase** lifecycle (Spec absorbs Define), and prompt frontmatter
-> is **`agent:`** (not `mode:`). The drift findings in §9 are now **resolved** —
-> see the per-item notes there. Canonical current record:
+> personas), **6-phase** lifecycle (Spec absorbs Define), prompt frontmatter
+> now **`agent:`** (not `mode:`). §9 drift findings now **resolved** —
+> see per-item notes. Canonical current record:
 > [`agent-skills-absorption-plan.md` § Execution status](agent-skills-absorption-plan.md).
 
 > **Status:** Review artifact (no runtime AI config changed). Produced
 > 2026-06-16 on branch `feat/agent-skills`. Companion to
 > [`upstream-agent-skills-inventory.md`](upstream-agent-skills-inventory.md)
-> and the other four review docs in this folder.
+> + other four review docs in folder.
 
-This is **Feature A** in the absorption model: the existing, deliberately
-governed Punch AI configuration. It is **mature and largely Copilot-best-practice
-already** — the absorption must preserve it, not overwrite it.
+**Feature A** in absorption model: existing, deliberately
+governed Punch AI config. **Mature, largely Copilot-best-practice
+already** — absorption must preserve, not overwrite.
 
 ## 1. Global Copilot instructions
 
 | File | Lines | Role | Health |
 |---|--:|---|---|
-| `.github/copilot-instructions.md` | 111 | Always-on global rules; deliberately short; links out to `docs/ai/` and `CLAUDE.md` | **Good.** Already follows upstream's "keep instructions concise" advice (`copilot-setup.md:84`). Not a workflow dump. |
+| `.github/copilot-instructions.md` | 111 | Always-on global rules; deliberately short; links out to `docs/ai/` and `CLAUDE.md` | **Good.** Already follows upstream "keep instructions concise" advice (`copilot-setup.md:84`). Not workflow dump. |
 
-Notable content: Critical Rules (Docker First, stdlib Python, mandatory
+Notable: Critical Rules (Docker First, stdlib Python, mandatory
 `punch-run.json` evidence, human-approves-Ship, no secrets); architecture
 ownership table; agentic rules; lifecycle entry-point table.
 
 ## 2. Path-specific instructions (`.github/instructions/`, 7)
 
-These encode the **Punch architecture constraints that must override generic
+Encode **Punch architecture constraints that must override generic
 upstream examples** (Decision policy #1). All carry `applyTo:` + `description:`.
 
 | File | `applyTo` | Owns |
 |---|---|---|
 | `punch-architecture.instructions.md` | `**` | Always-on ownership map + anti-patterns. |
-| `agentic-workflow.instructions.md` | `.github/**,docs/ai/**,CLAUDE.md,AGENTS.md` | Phase/mode discipline; **frontmatter contract**; "when adding an AI asset" gate. |
+| `agentic-workflow.instructions.md` | `.github/**,docs/ai/**,CLAUDE.md,AGENTS.md` | Phase/mode discipline; **frontmatter contract**; "when adding AI asset" gate. |
 | `python-orchestrator.instructions.md` | `src/punch/**,bin/punch` | Stdlib-only; streaming; exit codes; mandatory evidence artifact. |
 | `docker-compose.instructions.md` | (compose/docker) | Service contracts, healthchecks, image pins. |
 | `k6-performance.instructions.md` | `src/tests/**/*.ts*` | HTTP vs Browser separation; thresholds; `handleSummary`; no host k6. |
@@ -45,7 +45,7 @@ upstream examples** (Decision policy #1). All carry `applyTo:` + `description:`.
 
 ## 3. Prompt files (`.github/prompts/`, 12 on disk)
 
-`prompt-registry.md` declares **11**. There are **12 files**. The extra is
+`prompt-registry.md` declares **11**. **12 files** exist. Extra =
 `punch-refine.prompt.md` — **unregistered** (see Stale/drift below).
 
 | Prompt | Phase | Mode | Registered? | Note |
@@ -61,11 +61,10 @@ upstream examples** (Decision policy #1). All carry `applyTo:` + `description:`.
 | `punch-verify` | Verify | Agent/Ask | ✅ | |
 | `punch-review` | Review | Ask | ✅ | Slim candidate → `code-review-and-quality`. |
 | `punch-ship` | Ship | Agent (mechanical) | ✅ | **Mechanical only** — do not import upstream `/ship` fan-out here. |
-| `punch-refine` | (Define-ish) | — | ❌ → deleted | **Drift (resolved):** had `name:`/`argument-hint:` frontmatter; since **deleted** (idea-refine runs inside `punch-spec`). Verified prompt field is `agent:`, not `mode:`. |
+| `punch-refine` | (Define-ish) | — | ❌ → deleted | **Drift (resolved):** had `name:`/`argument-hint:` frontmatter; since **deleted** (idea-refine runs inside `punch-spec`). Verified prompt field `agent:`, not `mode:`. |
 
-Prompts are currently **heavy** (57–94 lines) and restate procedure — the
-opposite of upstream's 15–22-line wrappers. This is the main "slim and
-delegate" target.
+Prompts currently **heavy** (57–94 lines), restate procedure — opposite
+of upstream 15–22-line wrappers. Main "slim and delegate" target.
 
 ## 4. Custom agents (`.github/agents/`, 5)
 
@@ -84,9 +83,9 @@ Capped at 5 personas by `operating-model.md:100-102`.
 
 ## 5. Skills (`.github/skills/`, 7 dirs)
 
-Skills live in **`.github/skills/`** (a Copilot-valid location per
-`copilot-setup.md:7`), **not** `.agents/skills/` (which does not exist).
-`skill-registry.md` declares **6**. There are **7 dirs** — the extra is
+Skills live in **`.github/skills/`** (Copilot-valid location per
+`copilot-setup.md:7`), **not** `.agents/skills/` (does not exist).
+`skill-registry.md` declares **6**. **7 dirs** exist — extra =
 `idea-refine` (**unregistered**).
 
 | Skill dir | Registered? | Decision domain | Frontmatter |
@@ -110,11 +109,11 @@ thresholds.md), `punch-docker-compose` (compose-contract.md), `punch-data-harves
 |---|---|---|
 | `.claude/settings.json` | `{ enabledPlugins: { enhance@agentsys } }` | Harness-level only. No `.claude/skills`, `.claude/commands`, or `.claude/agents`. |
 | `.claude/settings.local.json` | local settings | Harness-level. |
-| `CLAUDE.md` | 170 lines | **The "constitution".** Referenced as canonical by `copilot-instructions.md:13` and `operating-model.md:125`. **Not** a thin compat layer today — it is the source many files link to. |
+| `CLAUDE.md` | 170 lines | **The "constitution".** Referenced as canonical by `copilot-instructions.md:13` and `operating-model.md:125`. **Not** thin compat layer today — source many files link to. |
 
-Implication: the generic guidance "CLAUDE.md should be minimal" conflicts with
-Punch's deliberate use of CLAUDE.md as the canonical constitution. This review
-recommends **preserving CLAUDE.md's constitutional role** (see
+Implication: generic "CLAUDE.md should be minimal" conflicts with
+Punch deliberate use of CLAUDE.md as canonical constitution. Review
+recommends **preserving CLAUDE.md constitutional role** (see
 [target architecture](recommended-target-ai-architecture.md)).
 
 ## 7. Cross-agent contract (`AGENTS.md`)
@@ -127,48 +126,48 @@ recommends **preserving CLAUDE.md's constitutional role** (see
 
 | Doc | Lines | Role |
 |---|--:|---|
-| `operating-model.md` | 126 | The lifecycle + 4-asset taxonomy + anti-sprawl ceilings. |
+| `operating-model.md` | 126 | Lifecycle + 4-asset taxonomy + anti-sprawl ceilings. |
 | `workflow.md` | 223 | Step-by-step lifecycle walkthrough + worked example. |
 | `scoped-build-policy.md` | 154 | Allowed/read-only/forbidden paths per Build domain. |
 | `model-selection.md` | 99 | Model class per phase (vendor-neutral). |
 | `copilot-mode-mapping.md` | 70 | Phase → Ask/Agent mapping. |
 | `maintenance-matrix.md` | 85 | File-level change cascade. |
-| `skill-registry.md` | 78 | The 6-skill register + cap-lifting discipline. |
-| `prompt-registry.md` | 80 | The 11-prompt register + contract. |
+| `skill-registry.md` | 78 | 6-skill register + cap-lifting discipline. |
+| `prompt-registry.md` | 80 | 11-prompt register + contract. |
 
 Also referenced but **outside `docs/ai/`**: `docs/architecture/punch-boundaries.md`
 (layer ownership), `docs/workflows/validation.md`, `docs/validation/README.md`.
 
 ## 9. Possible stale / duplicated / drifting files
 
-Concrete, evidence-backed findings (verified at review time). **Findings 1–3 are
+Concrete, evidence-backed findings (verified at review time). **Findings 1–3
 now RESOLVED (2026-06-17):** `idea-refine` registered + `applies-to` added +
 `/mnt` path removed; `punch-refine` deleted (idea-refine runs inside `punch-spec`).
 
-1. **`idea-refine` skill is unregistered.** Present in `.github/skills/` but
-   absent from `skill-registry.md` (which lists 6, none being idea-refine). By
-   `punch-governance-review`'s own rule "every file in `.github/skills/*/SKILL.md`
-   has a row in `skill-registry.md`" (`SKILL.md:65-67`) this is **current
+1. **`idea-refine` skill unregistered.** Present in `.github/skills/` but
+   absent from `skill-registry.md` (lists 6, none idea-refine). By
+   `punch-governance-review` own rule "every file in `.github/skills/*/SKILL.md`
+   has row in `skill-registry.md`" (`SKILL.md:65-67`) this is **current
    governance drift**.
-2. **`punch-refine` prompt is unregistered and off-contract.** Not in
-   `prompt-registry.md` (11 rows vs 12 files); its frontmatter used
-   `name:`/`argument-hint:` instead of the contract field (**`agent:`** — the
-   contract docs then wrongly said `mode:`). **Resolved: `punch-refine` deleted.**
-3. **`idea-refine` carries a Claude-only path.** `idea-refine/SKILL.md:22`
-   references `/mnt/skills/user/idea-refine/scripts/idea-refine.sh` — a claude.ai
-   runtime path that does nothing in Punch's Docker-first model.
+2. **`punch-refine` prompt unregistered + off-contract.** Not in
+   `prompt-registry.md` (11 rows vs 12 files); frontmatter used
+   `name:`/`argument-hint:` instead of contract field (**`agent:`** — contract
+   docs then wrongly said `mode:`). **Resolved: `punch-refine` deleted.**
+3. **`idea-refine` carries Claude-only path.** `idea-refine/SKILL.md:22`
+   references `/mnt/skills/user/idea-refine/scripts/idea-refine.sh` — claude.ai
+   runtime path, does nothing in Punch Docker-first model.
 4. **`AGENTS.md` ↔ `copilot-instructions.md` ↔ `operating-model.md` overlap.**
-   The lifecycle table, agent list, and "rules for AI assistants" appear in all
-   three (e.g. `AGENTS.md:84-102` vs `copilot-instructions.md:78-91`). Not a
-   contradiction, but a duplication the governance skill is meant to forbid
+   Lifecycle table, agent list, "rules for AI assistants" appear in all
+   three (e.g. `AGENTS.md:84-102` vs `copilot-instructions.md:78-91`). Not
+   contradiction, but duplication governance skill meant to forbid
    ("no rule restated across files", `copilot-instructions.md:74-76`).
-5. **CLAUDE.md is in context but `docs/ai/ai-context.md` and other docs are
+5. **CLAUDE.md in context but `docs/ai/ai-context.md` + other docs
    referenced inconsistently.** `CLAUDE.md` "For AI assistants" lists
    `docs/ai-context.md`; `copilot-instructions.md` lists `docs/ai/operating-model.md`.
-   Worth a cross-reference pass during absorption (not blocking).
+   Worth cross-reference pass during absorption (not blocking).
 
-> Findings 1–3 share one root cause: a **prior, partial, Claude-Code-style
-> absorption of `idea-refine`** that was never reconciled with Punch's
-> Copilot-first governance (no registry row, no `applies-to`, no `mode`). It is
-> the cautionary precedent for this larger absorption: **copy without
+> Findings 1–3 share one root cause: **prior, partial, Claude-Code-style
+> absorption of `idea-refine`** never reconciled with Punch
+> Copilot-first governance (no registry row, no `applies-to`, no `mode`).
+> Cautionary precedent for this larger absorption: **copy without
 > registering = drift.**

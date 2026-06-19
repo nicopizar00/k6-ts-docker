@@ -1,40 +1,40 @@
 # AI Operating Model
 
-This file defines **how** AI-assisted changes flow through Punch.
-For the **rules** about what code may look like, see `CLAUDE.md` and the
+This file define **how** AI changes flow through Punch.
+For **rules** about what code may look like, see `CLAUDE.md` and
 path-specific instructions under `.github/instructions/`.
 
-(Previously `operating-protocol.md`. The rename is part of the redesigned
-lifecycle: Spec → Plan → Build → Verify → Review → Ship — where Spec absorbs
-the former Define clarify step.)
+(Was `operating-protocol.md`. Rename part of redesigned
+lifecycle: Spec → Plan → Build → Verify → Review → Ship — Spec absorb
+former Define clarify step.)
 
 ## Foundational principle
 
-> The AI may explore broadly to understand. The AI may plan structurally to
-> delimit. The AI may only build inside an explicit scoped boundary. The AI
-> must verify through Punch's official runtime contract. The AI must not
+> AI may explore broadly to understand. AI may plan structurally to
+> delimit. AI may only build inside explicit scoped boundary. AI
+> must verify through Punch's official runtime contract. AI must not
 > expand implementation scope without returning to planning.
 
-This is the single sentence the entire operating model is shaped around.
+Single sentence whole operating model shaped around.
 
 ## The six phases
 
 | Phase | Purpose | Mode | Edits allowed |
 |---|---|---|---|
-| Spec     | Clarify/refine the request (former Define), then translate it into goals, non-goals, and constraints | Ask | Only the spec doc, if requested |
-| Plan     | Produce scoped tasks with allowed / read-only / forbidden paths | Ask (Plan discipline) | Only the plan doc, if requested |
-| Build    | Implement one approved task within its declared scope | Agent (scoped) | Yes — only allowed paths |
-| Verify   | Run official Punch commands and confirm evidence (`punch-test` for RED→GREEN) | Agent / Ask | Only if patching the change |
-| Review   | Read-only critique of the diff against the plan | Ask | No |
+| Spec     | Clarify/refine request (former Define), then translate into goals, non-goals, constraints | Ask | Only spec doc, if requested |
+| Plan     | Produce scoped tasks with allowed / read-only / forbidden paths | Ask (Plan discipline) | Only plan doc, if requested |
+| Build    | Implement one approved task within declared scope | Agent (scoped) | Yes — only allowed paths |
+| Verify   | Run official Punch commands, confirm evidence (`punch-test` for RED→GREEN) | Agent / Ask | Only if patching change |
+| Review   | Read-only critique of diff against plan | Ask | No |
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
-Each phase has a matching prompt under `.github/prompts/`. See
-[`prompt-registry.md`](prompt-registry.md) for what each one does and
-[`workflow.md`](workflow.md) for a walkthrough.
+Each phase has matching prompt under `.github/prompts/`. See
+[`prompt-registry.md`](prompt-registry.md) for what each does and
+[`workflow.md`](workflow.md) for walkthrough.
 
 ## Four kinds of AI asset
 
-Punch's AI configuration uses four distinct artifact types. They are not
+Punch's AI config use four distinct artifact types. Not
 interchangeable.
 
 | Kind | Lives in | Answers | Lifetime |
@@ -44,18 +44,18 @@ interchangeable.
 | **Skills** | `.github/skills/<skill>/SKILL.md` | "What does an expert in *this domain or method* always do?" | Long — domain skills (one per subsystem) + lifecycle skills (one per method). |
 | **Agents** | `.github/agents/` | "Which behavioral profile fits *this phase*?" | Long — one per persona. |
 
-Rule of thumb: **instructions** are passive (loaded whenever a file is
-touched). **Prompts** are active (the human runs them). **Skills** are
-behavioral (the prompt or agent activates them). **Agents** are persona
+Rule of thumb: **instructions** passive (loaded whenever file
+touched). **Prompts** active (human runs them). **Skills**
+behavioral (prompt or agent activates them). **Agents** persona
 constraints (which tools, which mode, which handoff rules) — bounded at runtime
-by the shared [`agent-guards.md`](agent-guards.md) discipline.
+by shared [`agent-guards.md`](agent-guards.md) discipline.
 
 ## Permission boundaries
 
-- **No edits in Ask Mode.** If a phase says Ask, the agent reads and writes
+- **No edits in Ask Mode.** If phase say Ask, agent reads and writes
   prose — not files.
-- **Plan output is the plan, not edits.** The plan doc itself is the
-  artifact. Build refuses to edit files outside the plan's allowed list.
+- **Plan output is the plan, not edits.** Plan doc itself is
+  artifact. Build refuse to edit files outside plan's allowed list.
 - **Build is scoped.** Each Build prompt declares allowed / read-only /
   forbidden paths. Scope expansion → stop, return to Plan.
 - **Verify uses official Punch commands.** No ad-hoc `docker run`. No host
@@ -65,14 +65,14 @@ by the shared [`agent-guards.md`](agent-guards.md) discipline.
 
 ## Validation gates
 
-A change cannot advance until its gate is met.
+Change cannot advance until gate met.
 
 | Transition | Gate |
 |---|---|
-| Spec → Plan | A clear, narrowed problem statement (former Define gate), then goals, non-goals, and acceptance criteria documented. |
-| Plan → Build | Plan approved by a human; allowed paths listed. |
-| Build → Verify | A focused diff inside the plan's allowed paths. |
-| Verify → Review | `reports/state/punch-run.json` with `passed: true` (or an equivalent named artifact for non-test changes). |
+| Spec → Plan | Clear, narrowed problem statement (former Define gate), then goals, non-goals, acceptance criteria documented. |
+| Plan → Build | Plan approved by human; allowed paths listed. |
+| Build → Verify | Focused diff inside plan's allowed paths. |
+| Verify → Review | `reports/state/punch-run.json` with `passed: true` (or equivalent named artifact for non-test changes). |
 | Review → Ship | Review verdict = Approve. |
 | Ship → done | Human-merged PR. |
 
@@ -80,62 +80,62 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 ## Adopting this in a team
 
-1. **Start with one phase.** Most teams under-do Plan and over-do Build.
+1. **Start with one phase.** Most teams under-do Plan, over-do Build.
    Begin by enforcing "no Build without Plan" for one sprint.
-2. **One persona per role, not one agent per ticket.** The agents in
-   `.github/agents/` (core personas, the `punch-builder` dispatcher + its two
-   engineers, and on-demand specialists like `security-auditor` and the
-   `punch-ai-governance` maintainer) are reusable across all work. Resist adding a
+2. **One persona per role, not one agent per ticket.** Agents in
+   `.github/agents/` (core personas, `punch-builder` dispatcher + its two
+   engineers, on-demand specialists like `security-auditor` and
+   `punch-ai-governance` maintainer) reusable across all work. Resist adding
    new core persona without killing one.
-3. **Promote prompts, not prose.** When you find yourself pasting the same
-   guidance into chat, that's a missing prompt — file a small PR.
+3. **Promote prompts, not prose.** When you paste same
+   guidance into chat repeatedly, that's missing prompt — file small PR.
 4. **Audit before adding.** New skill / new agent / new prompt should answer:
-   *which existing one could not absorb this?* If the answer is fuzzy, don't add.
+   *which existing one could not absorb this?* If answer fuzzy, don't add.
 
 ## Avoiding agent sprawl
 
-This redesign deliberately moved from a 3-skill cap to a six-domain-skill setup
-with a small agent roster (core personas + the `punch-builder` dispatcher and its
-two engineers + the `security-auditor` and `punch-ai-governance` specialists). The
-ceiling is enforced by *function*, not *count*:
+This redesign deliberately moved from 3-skill cap to six-domain-skill setup
+with small agent roster (core personas + `punch-builder` dispatcher and its
+two engineers + `security-auditor` and `punch-ai-governance` specialists). Ceiling
+enforced by *function*, not *count*:
 
-- **Domain skills** must each name a unique Punch subsystem (context,
-  orchestration, runtime, performance, artifacts, governance). Six is the
+- **Domain skills** must each name unique Punch subsystem (context,
+  orchestration, runtime, performance, artifacts, governance). Six is
   full domain set; adding more should require killing one.
-- **Lifecycle skills** are a separate axis — engineering methods adapted from
-  the upstream `agent-skills` set (idea-refine, spec-driven-development, …).
-  Not subject to the domain cap, but each must name a unique method, avoid
-  duplicating a domain skill or path-instruction, and be registered when added.
-  A phase prompt *activates* a lifecycle skill; the phase does not become one.
-- Each **agent** is a **core persona** (architect-readonly, planner, verifier,
-  reviewer), the **`punch-builder` dispatcher** or one of its two **engineers**
+- **Lifecycle skills** separate axis — engineering methods adapted from
+  upstream `agent-skills` set (idea-refine, spec-driven-development, …).
+  Not subject to domain cap, but each must name unique method, avoid
+  duplicating domain skill or path-instruction, and be registered when added.
+  Phase prompt *activates* lifecycle skill; phase does not become one.
+- Each **agent** is **core persona** (architect-readonly, planner, verifier,
+  reviewer), **`punch-builder` dispatcher** or one of its two **engineers**
   (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
-  domain, depth-1), or an on-demand **specialist persona** (`security-auditor`,
-  `punch-ai-governance`). A new core persona should require killing one;
-  specialists each name a unique on-demand lens.
-- Each **prompt** is a single lifecycle phase (Build's per-domain scope lives in
-  the engineers, not in extra prompts). New prompts must show why an existing one
+  domain, depth-1), or on-demand **specialist persona** (`security-auditor`,
+  `punch-ai-governance`). New core persona should require killing one;
+  specialists each name unique on-demand lens.
+- Each **prompt** is single lifecycle phase (Build's per-domain scope lives in
+  engineers, not extra prompts). New prompts must show why existing one
   cannot stretch.
 
-The `punch-ai-governance` skill checks new additions against this rule
-during Review. The skill axes and the absorption process are detailed in
+`punch-ai-governance` skill checks new additions against this rule
+during Review. Skill axes and absorption process detailed in
 [`skill-registry.md`](skill-registry.md) and
 [`agent-skills-absorption-plan.md`](history/agent-skills-absorption-plan.md).
 
 ## Where this differs from a generic agent setup
 
-- The orchestrator is **Python stdlib only**. No agent should suggest adding
-  a Python dependency.
-- The execution chain is **strictly linear**: TS → bundle (in Docker) →
+- Orchestrator is **Python stdlib only**. No agent should suggest adding
+  Python dependency.
+- Execution chain **strictly linear**: TS → bundle (in Docker) →
   k6 image → run → reports. Do not branch it.
 - CI/CD is **external** to Punch. Punch provides reusable local/CI-compatible
-  container contracts; it does not own GitHub Actions workflows.
+  container contracts; does not own GitHub Actions workflows.
 
 ## Drift control
 
-- Run `punch-ai-governance` (via the Review phase) before merging any PR
-  that touches `.github/` or `docs/ai/`.
-- Update `skill-registry.md` and `prompt-registry.md` in the same PR that
-  adds or removes an asset.
-- `CLAUDE.md` is the constitution. If a rule moves, it moves there; this
-  file only describes the lifecycle.
+- Run `punch-ai-governance` (via Review phase) before merging any PR
+  touching `.github/` or `docs/ai/`.
+- Update `skill-registry.md` and `prompt-registry.md` in same PR that
+  adds or removes asset.
+- `CLAUDE.md` is constitution. If rule moves, moves there; this
+  file only describes lifecycle.
