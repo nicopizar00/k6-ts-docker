@@ -1,35 +1,38 @@
-# `.github/assets` — GitHub Copilot VS Code 治理範本（Hub-Spoke）
+# `.github/assets` — GitHub Copilot Chat 匯出範本（VS Code · Hub-Spoke）
 
-此目錄為**範本包**（template）。專供「未入治理」之倉採用，使 GitHub Copilot VS Code 得最小可運之治理面。範本不自動生效。
+最小範本,使 `.github` GitHub Copilot 資產可作 VS Code GitHub Copilot Chat 範本匯出。匯出 = copy-paste `.github/` + `docs/ai/`。唯一標的 = **GitHub Copilot VS Code**。
 
 ## ⚠ 警（caveman ultra）
 
 > ⚠ TEMPLATE only. Human adapt before use. No ship as-is.
-> ⚠ Target = GitHub Copilot VS Code ONLY. Other host no guarantee.
-> ⚠ Prose = wenyan. Copilot may misread classical Chinese. Team review/translate first.
-> ⚠ CAVEMAN / GRAPHIFY / AGENT-SKILL = external opt tools. NOT installed here. Install local host self. No real steps given.
-> ⚠ Edit = human job. Fit to own repo rules after copy.
+> ⚠ Target = GitHub Copilot VS Code Chat ONLY. Other tool (Claude/Codex/agent) NOT in scope.
+> ⚠ resolve/ stub = link-fix only, NOT real content. Human fill on adopt.
+> ⚠ Prose = wenyan. Copilot may misread classical Chinese. Team review first.
 
-## 採用之法（adopt）
+## 內容（essentials）
 
-範本居 `.github/assets/`，不自動生效。採用者手移檔至真位：
+### Copilot Chat native 資產
 
 | 範本 | 真位（adopt 後） |
 |------|------------------|
-| `assets/copilot-instructions.md` | `.github/copilot-instructions.md` |
-| `assets/instructions/*.instructions.md` | `.github/instructions/` |
-| `assets/prompts/*.prompt.md` | `.github/prompts/` |
-| `assets/CLAUDE.md` | 倉根 `CLAUDE.md` |
-| `assets/AGENTS.md` | 倉根 `AGENTS.md` |
+| `copilot-instructions.md` | `.github/copilot-instructions.md`（中樞 hub） |
+| `instructions/governance.instructions.md` | `.github/instructions/`（輻,`applyTo: '**'`） |
+| `prompts/punch-init.prompt.md` | `.github/prompts/`（AI 治理代理） |
 
-移後，依本倉實情改 `<...>` 佔位。
+### `resolve/` — 倉內出域文鏈 stub
 
-## Hub-Spoke 構
+匯出時,`docs/ai/` 外被引之倉內文 → 斷。鏡射真路補之。
 
-- 中樞（hub）：`copilot-instructions.md` — always-on，唯載戒律與連。
-- 輻（spoke）：`instructions/`、`prompts/`、`CLAUDE.md`、`AGENTS.md` — 細則居此。
-- 改則改輻，中樞但連，勿復述。
+| 出域標的（引處數） | resolve/ 鏡射 |
+|--------------------|---------------|
+| `docs/architecture/punch-boundaries.md`（7） | `resolve/docs/architecture/punch-boundaries.md` |
+| `docs/workflows/validation.md`（2） | `resolve/docs/workflows/validation.md` |
 
-## 啟（init）
+## Hub-Spoke
 
-入治理之門 = `/punch-init` prompt（`prompts/punch-init.prompt.md`）。於 GitHub Copilot VS Code Agent Mode 執之，掃倉、繪備度、引採此範本。非破壞，dry-run 為默。
+中樞(hub)= `.github/copilot-instructions.md`,唯載戒律與連。輻載細則。改則改輻,勿復述。
+
+## 範圍外（out of scope · 不解）
+
+> ⚠ NOT resolved (intentional lean): root CLAUDE.md / AGENTS.md / CODEX.md (other tools); .ai-upstream caveman / graphify (external — official guide, install local host self). Links to these stay dangling on export; fix on maintenance.
+> ⚠ Pre-existing broken ref: `docs/ai/history/agent-skills-absorption-plan.md:59` — off-by-one `../../` → `../../../`. Fix at source.

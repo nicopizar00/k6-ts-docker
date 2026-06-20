@@ -6,7 +6,6 @@
 
 - 治理輻：[`instructions/governance.instructions.md`](instructions/governance.instructions.md)（`applyTo: '**'`）
 - 啟引：[`prompts/punch-init.prompt.md`](prompts/punch-init.prompt.md)
-- 他 LLM 轉接：[`CLAUDE.md`](CLAUDE.md) · [`AGENTS.md`](AGENTS.md)
 
 ## 綱（核心戒律）
 
