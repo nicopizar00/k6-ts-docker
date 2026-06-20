@@ -19,20 +19,27 @@
 | `instructions/governance.instructions.md` | `.github/instructions/`（輻,`applyTo: '**'`） |
 | `prompts/punch-init.prompt.md` | `.github/prompts/`（AI 治理代理） |
 
-### `resolve/` — 倉內出域文鏈 stub
+### `resolve/` — 倉內出域文鏈鏡照 snapshot（self-resolutive）
 
-匯出時,`docs/ai/` 外被引之倉內文 → 斷。鏡射真路補之。
+匯出時,`.github/` + `docs/ai/` 之外被引之倉內文 → 斷。`resolve/` 鏡真路、補之,使 bundle **自解(self-resolutive)、韌(resilient)**:bundle 唯需 `.github/` · `docs/ai/` · `.ai-upstream/` · `resolve/`,不外伸。鏡照乃 **caveman-wenyan 最小 snapshot**(非真文,人於 adopt 時填 / 換)。`/punch-init` certify 此鏡照覆全出域鏈(見 `prompts/punch-init.prompt.md` 之 resolve gate)。
 
-| 出域標的（引處數） | resolve/ 鏡射 |
-|--------------------|---------------|
+| 出域標的（引處數） | resolve/ 鏡照 snapshot |
+|--------------------|------------------------|
 | `docs/architecture/punch-boundaries.md`（7） | `resolve/docs/architecture/punch-boundaries.md` |
 | `docs/workflows/validation.md`（2） | `resolve/docs/workflows/validation.md` |
+| `CLAUDE.md`（2 · 倉根戒律源） | `resolve/CLAUDE.md` |
+| `AGENTS.md`（1 · AI 代理導覽） | `resolve/AGENTS.md` |
 
 ## Hub-Spoke
 
 中樞(hub)= `.github/copilot-instructions.md`,唯載戒律與連。輻載細則。改則改輻,勿復述。
 
-## 範圍外（out of scope · 不解）
+## 範圍外（out of scope · 不入範本 · 不 certify）
 
-> ⚠ NOT resolved (intentional lean): root CLAUDE.md / AGENTS.md / CODEX.md (other tools); .ai-upstream caveman / graphify (external — official guide, install local host self). Links to these stay dangling on export; fix on maintenance.
-> ⚠ Pre-existing broken ref: `docs/ai/history/agent-skills-absorption-plan.md:59` — off-by-one `../../` → `../../../`. Fix at source.
+範本唯涵 **VS Code GitHub Copilot** 相關、已定之資產。下類**不入範本、`/punch-init` 不計、不 certify**:
+
+- **WIP / 草稿 / history 文**：如 `docs/ai/history/**`、未定 plan / draft。凍區,不鏡、不解、不修。(故 `docs/ai/history/agent-skills-absorption-plan.md:59` 之 off-by-one 斷鏈 **不入範本範圍** —— history 文,源頭維護自理。)
+- **他工具文**：root `CODEX.md` 及他 LLM 專屬(非 Copilot)。
+- **外部工具 snapshot**：`.ai-upstream/` 之 caveman / graphify —— 外部,官方指南,人自裝於本機。
+
+> ⚠ 此三類之斷鏈於匯出時留懸,**by design**,非範本缺陷。`/punch-init` resolve gate 唯 certify 上方 `resolve/` 表之出域鏈。
