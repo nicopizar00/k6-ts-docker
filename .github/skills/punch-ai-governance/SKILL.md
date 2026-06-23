@@ -32,6 +32,9 @@ It owns:
   coordinator that lists it (so `cavecrew-builder`'s `edit/editFiles` keeps it
   Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
+- The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
+  are adopted untouched, adapted-in-place, or unadopted — and which adaptations
+  still owe a `punch-` rename (read-only; see procedure below).
 
 It does **not** own:
 
@@ -126,6 +129,41 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 9. **No phase-named skills.**
    - Flag any skill matching
      `punch-(define|spec|plan|build|verify|review|ship)`.
+
+## Canon adopt-adapt report (read-only)
+
+A second pass, **report only** — it classifies every `.github/skills/*` against
+the `.ai-upstream/agent-skills/skills/` canon and recommends prefixing; it
+**never renames, edits, or deletes**. The mechanical comparison runs read-only
+under the AI Governance agent's terminal
+(`git diff --no-index <canon> <adapted>` / `diff -rq`); decision authority is
+this skill. Wired as a hard step in
+[`/punch-init`](../../prompts/punch-init.prompt.md).
+
+**Precondition (user-required).** `.ai-upstream/**` is gitignored local upstream
+staging and may be absent. This report **does not** fetch or refresh it —
+syncing the canon snapshot is an intentional **user action** (see
+[`.github/.ai-upstream/README.md`](../../.ai-upstream/README.md)). Canon absent →
+emit `canon-unavailable` and skip the parity verdict (never a hard fail).
+
+For each canon skill `<name>` and each `.github/skills` entry, classify:
+
+| class | condition | recommendation (report only) |
+| --- | --- | --- |
+| **adopted-untouched** | `<name>` both sides, byte-identical to canon | leave agnostic — no prefix |
+| **adapted-in-place** | `<name>` both sides, **any** diff vs canon | **recommend `punch-<name>` rename** + ref update — the "one diff → prefix" rule |
+| **adapted-prefixed** | `punch-<name>` maps to canon `<name>` | OK — adaptation already named |
+| **native** | `.github/skills` entry with no canon `<name>` | OK — Punch-authored |
+| **unadopted** | canon `<name>` absent from `.github/skills` (bare or `punch-`) | list as available; **adopting is a user decision** |
+
+**Hand-off, not mutation.** Renames (`adapted-in-place` → `punch-*`) and
+adoptions (`unadopted` → adopt) go through a normal Plan → Build (or
+[`/punch-document`](../../prompts/punch-document.prompt.md)) — never this report.
+`.ai-upstream` refresh and adopt/decline decisions stay with the user.
+
+**Output.** A parity table (class per skill) + a numbered recommendation list for
+every `adapted-in-place` skill owing a prefix, then a verdict line:
+**"Canon parity clean"** or **"Canon drift — N skills owe `punch-` prefix"**.
 
 ## Output format
 

@@ -26,12 +26,21 @@ ongoing doc work is [`/punch-document`](punch-document.prompt.md).
    summary, then `./bin/punch init --write` to persist six bootstrap maps under
    `docs/ai/governance/init/` (gitignored, disposable). `--with-graphify` for
    optional availability marker.
-2. **Guard pending** (see gate below) — surface every unresolved item.
-3. **Reconcile in scope** — only what safely governance agent's to settle
+2. **Canon adopt-adapt report** (read-only, **required**) — run the canon
+   parity pass from
+   [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md): classify
+   every `.github/skills/*` against the `.ai-upstream` canon and emit the parity
+   table + recommendations. Flag each **adapted-in-place** skill that diffs from
+   canon yet keeps an agnostic name (owes `punch-`), and list **unadopted** canon
+   skills. **Report only** — never rename or adopt here. `.ai-upstream` absent →
+   `canon-unavailable`; refreshing it is a user action (does not block Init).
+3. **Guard pending** (see gate below) — surface every unresolved item.
+4. **Reconcile in scope** — only what safely governance agent's to settle
    now (record governance key, confirm `lifecycle_templates` present). Each
    write surfaced for approval first (agent guard).
-4. **Hand off** — route doc debt, feature claims, asset adaptation to
-   `/punch-document`; never do that reconciliation here.
+5. **Hand off** — route doc debt, feature claims, asset adaptation (incl.
+   `punch-` renames + canon adoptions from step 2) to `/punch-document`; never
+   do that reconciliation here.
 
 ## Guard the pending (block before the lifecycle runs)
 
@@ -46,6 +55,13 @@ item resolved or explicitly deferred by human:
   (worked example: [`docs/ai/golden-lifecycle/`](../../docs/ai/golden-lifecycle/README.md)).
 - ⚠️ **assets marked `adapt`/`review`/`duplicate`** — rebind `punch-*` → local key
   / human-review before use (via `/punch-document`, not here).
+- ⚠️ **adapted-in-place skills missing `punch-` prefix** — canon adopt-adapt
+  report (step 2) flags any `.github/skills` adaptation that diffs from
+  `.ai-upstream` canon yet keeps an agnostic name; rename via `/punch-document`,
+  not here.
+- ℹ️ **canon snapshot refresh / adopt** — `.ai-upstream` sync and adopt/decline
+  of unadopted canon skills are **user actions**; report degrades to
+  `canon-unavailable` when absent — never blocks Init.
 - ⚠️ **caveman/cavecrew vendor skills missing** — Build comms + the engineer→
   cavecrew delegation chain need them installed (manual). Required Punch assets +
   install command: [`.github/.ai-upstream/README.md`](../.ai-upstream/README.md).
@@ -60,6 +76,8 @@ item resolved or explicitly deferred by human:
 
 - Init readiness summary: governance key + source, `overall.status`,
   readiness table, exit code.
+- **canon adopt-adapt parity** verdict (clean / N owe `punch-` prefix) +
+  unadopted-canon list (or `canon-unavailable`).
 - **pending guard list** above with each item state (resolved / deferred).
 - One next command: `/punch-document` (reconcile) or first lifecycle phase
   (`/punch-spec`) once `adoption_ready`/`document_ready`.
