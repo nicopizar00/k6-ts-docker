@@ -21,7 +21,7 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 
 - `@punch-ai-governance` to audit or maintain skills, prompts, agents,
   instructions, lifecycle docs, or the registries.
-- The Review phase's AI-config axis (the axis `code-review-and-quality` defers
+- The Review phase's AI-config axis (the axis `punch-code-review-and-quality` defers
   here).
 - Periodic governance review of `.github/` and `docs/ai/`.
 - `/punch-init` — one-time bootstrap/adoption guard: run the read-only
@@ -115,7 +115,7 @@ agent makes every decision.
 Always: [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (the audit
 procedure) + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
 (the primer). In Documentation mode, also
-[`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md) (the writing
+[`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md) (the writing
 method).
 
 ## Handoff rules

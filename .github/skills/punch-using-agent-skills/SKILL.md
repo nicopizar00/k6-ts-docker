@@ -24,29 +24,29 @@ Task arrives → find phase → apply skill. Punch slugs only:
 ```
 Task arrives
     │
-    ├── Vague idea, need variants? ───────→ idea-refine
-    ├── New feature/change, no spec? ─────→ spec-driven-development
-    ├── Have spec, need tasks? ───────────→ planning-and-task-breakdown
-    ├── Implementing code? ───────────────→ incremental-implementation
+    ├── Vague idea, need variants? ───────→ punch-idea-refine
+    ├── New feature/change, no spec? ─────→ punch-spec-driven-development
+    ├── Have spec, need tasks? ───────────→ punch-planning-and-task-breakdown
+    ├── Implementing code? ───────────────→ punch-incremental-implementation
     │   ├── Need repo/cross-file context? → punch-context-engineering
-    │   ├── Coding against an API/doc? ───→ source-driven-development
-    │   └── High-stakes / unfamiliar? ────→ doubt-driven-development
+    │   ├── Coding against an API/doc? ───→ punch-source-driven-development
+    │   └── High-stakes / unfamiliar? ────→ punch-doubt-driven-development
     │   Subsystem domain skill (pick one):
     │   ├── bin/punch, src/punch ─────────→ punch-python-orchestration
     │   ├── compose / Dockerfiles ────────→ punch-compose-runtime
     │   ├── k6 test (HTTP/Browser) ───────→ punch-k6-testing
     │   ├── artifact / report / state ────→ punch-data-harvest
     │   └── .github/** AI config ─────────→ punch-ai-governance
-    ├── Writing/running tests? ───────────→ test-driven-development
-    │   └── Browser-based? ───────────────→ browser-testing-with-devtools
+    ├── Writing/running tests? ───────────→ punch-test-driven-development
+    │   └── Browser-based? ───────────────→ punch-browser-testing-with-devtools
     ├── Run broke? ───────────────────────→ punch-debugging-and-error-recovery
-    ├── Reviewing a diff? ────────────────→ code-review-and-quality
-    │   ├── Too complex? ─────────────────→ code-simplification
-    │   ├── Security concern? ────────────→ security-and-hardening
-    │   └── Perf regression? ─────────────→ performance-optimization
-    ├── Committing / branching? ──────────→ git-workflow-and-versioning
-    ├── Logs / metrics / events? ─────────→ observability-and-instrumentation
-    ├── Recording a decision (ADR)? ──────→ documentation-and-adrs
+    ├── Reviewing a diff? ────────────────→ punch-code-review-and-quality
+    │   ├── Too complex? ─────────────────→ punch-code-simplification
+    │   ├── Security concern? ────────────→ punch-security-and-hardening
+    │   └── Perf regression? ─────────────→ punch-performance-optimization
+    ├── Committing / branching? ──────────→ punch-git-workflow-and-versioning
+    ├── Logs / metrics / events? ─────────→ punch-observability-and-instrumentation
+    ├── Recording a decision (ADR)? ──────→ punch-documentation-and-adrs
     └── Doc map / graph? ─────────────────→ graphify
 ```
 
@@ -117,8 +117,8 @@ Punch: not done until `reports/state/punch-run.json` records the run.
 2. **Skills are workflows, not suggestions.** Follow steps in order; don't skip
    verification.
 3. **Multiple skills apply.** A k6 change → `punch-k6-testing` +
-   `incremental-implementation` + `test-driven-development`.
-4. **When in doubt, start with a spec** (`spec-driven-development`).
+   `punch-incremental-implementation` + `punch-test-driven-development`.
+4. **When in doubt, start with a spec** (`punch-spec-driven-development`).
 5. **State activation once** on entering a phase, then let persistence carry it
    — no per-message re-invocation.
 
@@ -134,26 +134,26 @@ verification because "looks right".
 
 | Phase | Skill | One line |
 |---|---|---|
-| Spec | idea-refine | Refine vague ideas, diverge then converge |
-| Spec | spec-driven-development | Requirements + acceptance criteria before code |
-| Plan | planning-and-task-breakdown | Decompose into small verifiable tasks |
-| Build | incremental-implementation | Thin vertical slices, verify each |
+| Spec | punch-idea-refine | Refine vague ideas, diverge then converge |
+| Spec | punch-spec-driven-development | Requirements + acceptance criteria before code |
+| Plan | punch-planning-and-task-breakdown | Decompose into small verifiable tasks |
+| Build | punch-incremental-implementation | Thin vertical slices, verify each |
 | Build | punch-context-engineering | Right context at the right time (Graphify gate) |
-| Build | source-driven-development | Verify against official docs before coding |
-| Build | doubt-driven-development | Adversarial fresh-context review of decisions |
+| Build | punch-source-driven-development | Verify against official docs before coding |
+| Build | punch-doubt-driven-development | Adversarial fresh-context review of decisions |
 | Build | punch-python-orchestration | `bin/punch` / `src/punch` CLI + subprocess |
 | Build | punch-compose-runtime | Compose contracts, healthchecks, image pins |
 | Build | punch-k6-testing | k6 HTTP/Browser shape, thresholds, summary |
 | Build | punch-data-harvest | Artifact paths/schemas, report builder |
 | Build | punch-ai-governance | `.github/**` frontmatter + registry consistency |
-| Test | test-driven-development | Failing test first, then make it pass |
-| Test | browser-testing-with-devtools | DevTools MCP runtime verification |
+| Test | punch-test-driven-development | Failing test first, then make it pass |
+| Test | punch-browser-testing-with-devtools | DevTools MCP runtime verification |
 | Test | punch-debugging-and-error-recovery | Reproduce → localize → fix → guard |
-| Review | code-review-and-quality | Multi-axis review with quality gates |
-| Review | code-simplification | Cut complexity, preserve behavior |
-| Review | security-and-hardening | Input validation, least privilege |
-| Review | performance-optimization | Measure first, optimize what matters |
-| Ship | git-workflow-and-versioning | Atomic commits, clean history |
-| Ship | documentation-and-adrs | Document the why, not just the what |
-| Ship | observability-and-instrumentation | Structured logs, metrics, alerts |
+| Review | punch-code-review-and-quality | Multi-axis review with quality gates |
+| Review | punch-code-simplification | Cut complexity, preserve behavior |
+| Review | punch-security-and-hardening | Input validation, least privilege |
+| Review | punch-performance-optimization | Measure first, optimize what matters |
+| Ship | punch-git-workflow-and-versioning | Atomic commits, clean history |
+| Ship | punch-documentation-and-adrs | Document the why, not just the what |
+| Ship | punch-observability-and-instrumentation | Structured logs, metrics, alerts |
 | Document | graphify | Doc/dependency map (host tool, off evidence path) |

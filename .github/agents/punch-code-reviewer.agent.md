@@ -81,10 +81,10 @@ replaces the five-axis review or owns the verdict.
 ## Skill activation
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Method: [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md), with
-[`code-simplification`](../skills/code-simplification/SKILL.md) (simplicity axis),
-[`security-and-hardening`](../skills/security-and-hardening/SKILL.md) (security axis),
-[`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md) (doc check).
+Method: [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md), with
+[`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md) (simplicity axis),
+[`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md) (security axis),
+[`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md) (doc check).
 Required when the diff touches `.github/` or `docs/ai/`:
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md).
 

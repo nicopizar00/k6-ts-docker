@@ -85,7 +85,7 @@ A focused diff under `src/tests/support/` and/or `src/punch/`. Report:
 - **State files are canonical.** `passed: true|false` in
   `reports/state/punch-run.json` is the verification gate.
 
-## Observability discipline (folded from upstream `observability-and-instrumentation`)
+## Observability discipline (folded from upstream `punch-observability-and-instrumentation`)
 
 Punch's reference services are a didactic demo, not a production system with
 on-call — so RED metrics, OpenTelemetry tracing, and symptom-based alerting are

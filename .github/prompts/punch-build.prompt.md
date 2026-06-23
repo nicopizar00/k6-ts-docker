@@ -24,16 +24,16 @@ Missing either → **stop**, return to Plan.
 
 Always:
 
-- [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) — one verifiable slice at a time.
-- [`test-driven-development`](../skills/test-driven-development/SKILL.md) — RED → GREEN → REFACTOR for behavior changes.
-- [`source-driven-development`](../skills/source-driven-development/SKILL.md) — verify against actual source / runtime behavior, never assumptions.
+- [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md) — one verifiable slice at a time.
+- [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — RED → GREEN → REFACTOR for behavior changes.
+- [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — verify against actual source / runtime behavior, never assumptions.
 - [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — load repo / cross-file context before editing.
 
 When the task needs it:
 
-- [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
+- [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
-- [`doubt-driven-development`](../skills/doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
+- [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
 - [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers + bounded cavecrew workers (depth-1, tool-subset).
 - [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface.
 
@@ -44,7 +44,7 @@ replacement for these skills.
 
 - `/build` — implement the next pending task, verify it, then **stop**.
 - `/build auto` — after explicit human approval, implement all pending tasks in
-  dependency order; uses `planning-and-task-breakdown` if no task list exists.
+  dependency order; uses `punch-planning-and-task-breakdown` if no task list exists.
 
 ## Rules
 

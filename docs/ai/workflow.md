@@ -12,14 +12,14 @@ Spec ─▶ Plan ─▶ Build ─▶ Test ─▶ Review ─▶ Ship
  doc     doc    task    Punch cmd   edits   only
 ```
 
-Spec absorbs former **Define** phase — opens with clarify/refine step (`idea-refine` skill) before specifying.
+Spec absorbs former **Define** phase — opens with clarify/refine step (`punch-idea-refine` skill) before specifying.
 
 ## Phase 1 — Spec (absorbs the former Define)
 
 **Prompt:** [`punch-spec`](../../.github/prompts/punch-spec.prompt.md)
 **Agent:** `punch-architect`
 
-Clarify request into clean problem statement — read broad, trace execution chain, use `idea-refine` skill when idea still vague — then crystallize into spec. Only file this phase may write: spec doc itself.
+Clarify request into clean problem statement — read broad, trace execution chain, use `punch-idea-refine` skill when idea still vague — then crystallize into spec. Only file this phase may write: spec doc itself.
 
 **Output:**
 

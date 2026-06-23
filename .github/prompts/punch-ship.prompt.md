@@ -6,7 +6,7 @@ description: Phase 7 — Ship. punch-release-captain fans out the specialists, d
 
 **Lifecycle phase:** Ship
 **Mode:** Agent (gate + mechanical finalization — no logic edits)
-**Owner skill:** [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
+**Owner skill:** [`punch-git-workflow-and-versioning`](../skills/punch-git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
 **Agent:** [`punch-release-captain`](../agents/punch-release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.

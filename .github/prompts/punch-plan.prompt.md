@@ -6,7 +6,7 @@ description: Plan — convert a Spec into scoped tasks with explicit allowed/rea
 
 **Lifecycle phase:** Plan
 **Mode:** Plan discipline — output is plan, no product edits (enforced by agent definition)
-**Owner skill:** [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) (method)
+**Owner skill:** [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) (method)
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + matching domain skill(s);
 on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 **Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.

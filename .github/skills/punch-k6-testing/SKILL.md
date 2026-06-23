@@ -90,7 +90,7 @@ the helper genuinely needs a third caller). Report:
 - **Browser is deferred.** Do not enable k6 Browser in built tests without
   a Plan that accepts the image-size / build-time / CI-cost trade.
 
-## Optimization method (folded from upstream `performance-optimization`)
+## Optimization method (folded from upstream `punch-performance-optimization`)
 
 Punch's performance surface is **k6 HTTP load against the reference services** —
 not Core Web Vitals, React re-renders, or bundle size (no frontend). The

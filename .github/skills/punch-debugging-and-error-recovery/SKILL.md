@@ -88,7 +88,7 @@ Ask "why does this happen?" until you reach the actual cause.
 ### Step 5: Guard against recurrence
 
 Add a k6 **check or threshold** (or an orchestrator assertion) that fails without
-the fix and passes with it — see [`test-driven-development`](../test-driven-development/SKILL.md).
+the fix and passes with it — see [`punch-test-driven-development`](../punch-test-driven-development/SKILL.md).
 
 ### Step 6: Verify end-to-end
 

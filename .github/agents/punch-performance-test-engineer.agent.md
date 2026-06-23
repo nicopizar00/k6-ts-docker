@@ -65,8 +65,8 @@ approval before product-code writes; stop after 2 consecutive failures.
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Domain: [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
 (+ [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md), read-only, when wiring `handleSummary`).
-Method: [`incremental-implementation`](../skills/incremental-implementation/SKILL.md);
-proof via [`test-driven-development`](../skills/test-driven-development/SKILL.md).
+Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
+proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
 Delegation: may invoke bounded **cavecrew** leaf workers
 (`cavecrew-investigator` / `cavecrew-builder` / `cavecrew-reviewer`) directly —
 **nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,

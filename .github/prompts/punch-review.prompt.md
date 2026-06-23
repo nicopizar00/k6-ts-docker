@@ -6,11 +6,11 @@ description: Phase 6 — Review. Read-only five-axis critique of the diff agains
 
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
-**Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for simplicity axis);
+**Owner skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five-axis method, with [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md) for simplicity axis);
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
 diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
-**Required skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md).
+**Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
 **Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Brief cavecrew (any other sub-agent nesting) in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use

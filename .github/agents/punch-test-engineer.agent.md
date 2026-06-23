@@ -58,7 +58,7 @@ Handoff: <Review on PASS · Plan/Build on implementation FAIL · human on env/pr
   (`punch-build` → `punch-performance-test-engineer`).
 - Never push, tag, merge, or open a PR. Never modify `reports/`.
 - **Do not invoke from another persona.** Builder may lazy-load the
-  [`test-driven-development`](../skills/test-driven-development/SKILL.md) skill
+  [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) skill
   while building, but only this agent (via `/punch-test` or `/punch-ship` fan-out)
   issues the final PASS/FAIL gate.
 
@@ -77,7 +77,7 @@ delegated.
 ## Skills
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Method: [`test-driven-development`](../skills/test-driven-development/SKILL.md)
+Method: [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md)
 (RED→GREEN) + [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md)
 (failure triage). Required to read evidence:
 [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),

@@ -1,6 +1,6 @@
 ---
 name: punch-architect
-description: Spec + Plan owner for Punch. Read-only investigator — refines a vague request (idea-refine), writes the spec (goals/non-goals/constraints/acceptance), then decomposes it into scoped Build tasks with explicit allowed/read-only/forbidden paths, validation commands, and rollback notes. Never edits product code. Absorbs the former punch-architect-readonly + punch-planner.
+description: Spec + Plan owner for Punch. Read-only investigator — refines a vague request (punch-idea-refine), writes the spec (goals/non-goals/constraints/acceptance), then decomposes it into scoped Build tasks with explicit allowed/read-only/forbidden paths, validation commands, and rollback notes. Never edits product code. Absorbs the former punch-architect-readonly + punch-planner.
 tools: ['search', 'edit']
 user-invocable: true
 ---
@@ -13,7 +13,7 @@ only writes are the spec/plan markdown artifacts — never product code.
 
 ## Spec phase ([`punch-spec`](../prompts/punch-spec.prompt.md))
 
-- Clarify/refine the raw request — `idea-refine` when the idea is still vague —
+- Clarify/refine the raw request — `punch-idea-refine` when the idea is still vague —
   into a clean problem statement (the work the former Define phase owned).
 - Convert it into a specification: goals, non-goals, constraints, acceptance
   criteria.
@@ -61,15 +61,15 @@ per layer, each with its own scope and a named layer order.
 - Spec → Plan (same persona).
 - Plan → human checkpoint → Build (handoff to [`punch-builder`](punch-builder.agent.md)).
 - If, mid-Spec, the request proves ill-formed, restart the clarify step
-  (`idea-refine`) — there is no separate Define phase.
+  (`punch-idea-refine`) — there is no separate Define phase.
 - If, mid-Plan, the Spec proves incomplete, return to the Spec step above.
 
 ## Skill activation
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Spec method: [`spec-driven-development`](../skills/spec-driven-development/SKILL.md),
-with [`idea-refine`](../skills/idea-refine/SKILL.md) when the idea is still vague.
-Plan method: [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md).
+Spec method: [`punch-spec-driven-development`](../skills/punch-spec-driven-development/SKILL.md),
+with [`punch-idea-refine`](../skills/punch-idea-refine/SKILL.md) when the idea is still vague.
+Plan method: [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md).
 On demand (matched by topic): `punch-python-orchestration` · `punch-compose-runtime`
 · `punch-k6-testing` · `punch-data-harvest` · `punch-ai-governance` (when the
 spec/plan touches `.github/` or `docs/ai/`).

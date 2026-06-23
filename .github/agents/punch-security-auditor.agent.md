@@ -19,7 +19,7 @@ verdict** — it never edits code.
 - `@punch-security-auditor` on a diff, a service, or `docker/**` when a change
   touches input handling, Postgres, secrets/env, external URLs, or dependencies.
 - During Review when the security axis of
-  [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) needs a
+  [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) needs a
   dedicated pass.
 
 ## When NOT to use
@@ -31,7 +31,7 @@ verdict** — it never edits code.
 ## Scope (Punch surfaces)
 
 Audit only the surfaces that exist in Punch — see
-[`security-and-hardening`](../skills/security-and-hardening/SKILL.md) for the method:
+[`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md) for the method:
 
 - **Input** validated at the gateway boundary before reaching catalog/orders.
 - **Postgres** queries in `orders` are **parameterized** (`$1`), never concatenated.
@@ -66,7 +66,7 @@ verdict is never delegated. **Not** `cavecrew-builder` (no edit tool here).
 ## Skill activation
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Method: [`security-and-hardening`](../skills/security-and-hardening/SKILL.md).
+Method: [`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md).
 On demand: [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md) /
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md) when auditing
 container or artifact surfaces.

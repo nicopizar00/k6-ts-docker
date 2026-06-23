@@ -8,7 +8,7 @@ description: Documentate — own and reconcile ALL of docs/ (+ .github config, A
 **Mode:** Ask / Agent — reconciliation edits via `punch-ai-governance`
 **Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 (decision authority) + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-(Graphify gate) + [`documentation-and-adrs`](../skills/documentation-and-adrs/SKILL.md)
+(Graphify gate) + [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
 (writing method). Structural map delegated to existing `/graphify` skill.
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
 **Operating comms:** Caveman **`lite`** for persistent docs; **`ultra` only for terminal/status summary**. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. `/graphify` map fork (1-deep) returns `wenyan`-compatible report; evidence consumed, never written verbatim into docs. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

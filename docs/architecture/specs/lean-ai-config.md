@@ -15,7 +15,7 @@ Caveman guidance is restated in ~13 places (9 agents byte-for-byte identical, pl
 Caveman from being adopted in plain Copilot Chat (only `copilot-instructions.md`
 auto-loads; the strong rules live in unreachable spokes). Secondary: stale "5 build
 prompts" references in always-on memory, `copilot-instructions.md` bloat, and
-`idea-refine` drift.
+`punch-idea-refine` drift.
 
 ## Wave 1 — Caveman single-source + ultra/wenyan tiering + expand to `/punch-test`
 
@@ -38,7 +38,7 @@ enforced Operating-comms section to `/punch-test`; reconcile registries.
 
 | Target | Fix | Status |
 |---|---|---|
-| `idea-refine/SKILL.md` | Add an "In Punch" framing section (runs at start of Spec, hands to spec-driven-development; long-form stays in companion `.md` files). | **Done** (framing added; deep body-trim skipped — companions already hold long-form, low value) |
+| `punch-idea-refine/SKILL.md` | Add an "In Punch" framing section (runs at start of Spec, hands to punch-spec-driven-development; long-form stays in companion `.md` files). | **Done** (framing added; deep body-trim skipped — companions already hold long-form, low value) |
 | 5 punch-domain skills | Add a one-line "Not for:" negative trigger reusing each skill's "does not own" targets. | **Done** |
 | Agent `## Guards` sections | Add the `agent-guards.md` pointer to the 5 agents missing it. | **Done** (pointer added to all 9; restated-generic-rule trimming in the 4 builders skipped — higher risk, low value) |
 | All authored SKILL.md frontmatter | Standardize `applies-to` to a leading machine-readable token. | **Deferred** — cosmetic, ~19-file churn, no current consumer keys off it. |

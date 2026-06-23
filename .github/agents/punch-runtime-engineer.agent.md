@@ -65,8 +65,8 @@ Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.
 Domain: [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
 [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md),
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md).
-Method: [`incremental-implementation`](../skills/incremental-implementation/SKILL.md);
-proof via [`test-driven-development`](../skills/test-driven-development/SKILL.md).
+Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
+proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
 Delegation: may invoke bounded **cavecrew** leaf workers
 (`cavecrew-investigator` / `cavecrew-builder` / `cavecrew-reviewer`) directly —
 **nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,

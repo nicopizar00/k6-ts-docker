@@ -6,9 +6,9 @@ description: Test phase — the canonical, independent test gate for the current
 
 **Lifecycle phase:** Test (TDD/Prove-It; the verification phase — addyosmani `/test`)
 **Mode:** Agent (runs `./bin/punch`; no code authoring)
-**Owner skill:** [`test-driven-development`](../skills/test-driven-development/SKILL.md) (method)
+**Owner skill:** [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) (method)
 + [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md) (k6 domain)
-**Agent:** [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — the independent test gate; the only final PASS/FAIL authority. Builder may lazy-load `test-driven-development` while building, but does not own this gate.
+**Agent:** [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — the independent test gate; the only final PASS/FAIL authority. Builder may lazy-load `punch-test-driven-development` while building, but does not own this gate.
 
 ## When to use
 

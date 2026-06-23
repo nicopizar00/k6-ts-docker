@@ -98,7 +98,7 @@ consecutive failures and return to Plan.
 ## Testing (lazy — not the final authority)
 
 Builder (and its engineers) may lazy-load
-[`test-driven-development`](../skills/test-driven-development/SKILL.md) while
+[`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) while
 building. Testing obligations only:
 
 - Use TDD/Prove-It when changing behavior.

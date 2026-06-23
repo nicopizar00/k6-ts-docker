@@ -66,7 +66,7 @@ code in Ship; any "while I'm here" fix returns to Plan.
 ## Skill activation
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Ship method: [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md)
+Ship method: [`punch-git-workflow-and-versioning`](../skills/punch-git-workflow-and-versioning/SKILL.md)
 (commit/branch discipline) + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md)
 (`git` + `gh` mechanics) + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 (readiness summary when the diff touches `.github/` or `docs/ai/`).
