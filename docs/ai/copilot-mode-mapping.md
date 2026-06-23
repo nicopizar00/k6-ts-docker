@@ -21,7 +21,7 @@ Punch use **Ask** and **Agent** as primary modes, treat **Plan** as Ask-Mode dis
 | Build  | Agent | matching `punch-builder-*` | One scoped task, autonomous edit. |
 | Test   | Agent (run) or Ask (interpret) | `punch-test-engineer` | Run `./bin/punch` need Agent; read result is Ask. |
 | Review | Ask | `punch-code-reviewer` | Read-only five-axis critique. |
-| Ship   | Agent (gate + mechanical) | `release-captain` | Fan-out → GO/NO-GO + rollback, then git + gh — no logic edits. |
+| Ship   | Agent (gate + mechanical) | `punch-release-captain` | Fan-out → GO/NO-GO + rollback, then git + gh — no logic edits. |
 
 ## Prompt → agent contract
 

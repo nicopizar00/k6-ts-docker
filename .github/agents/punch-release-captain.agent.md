@@ -1,12 +1,12 @@
 ---
-name: release-captain
+name: punch-release-captain
 description: Release coordinator and owner of /punch-ship. Fans out (parallel) to the Punch specialists, synthesizes their reports into one GO | NO-GO decision with a rollback plan, then — only on GO — performs the mechanical commit/push/PR. Humans merge. Adapts the vendor agent-skills release-captain to Punch.
 tools: ['search', 'execute/runInTerminal', 'execute/getTerminalOutput', 'agent']
 agents: ['punch-code-reviewer', 'punch-security-auditor', 'punch-test-engineer']
 user-invocable: true
 ---
 
-# Agent: release-captain
+# Agent: punch-release-captain
 
 The release captain for `/punch-ship`. Owns the **final release gate** and the
 mechanical finalization. Adapts the vendor agent-skills `release-captain`: the

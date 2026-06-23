@@ -1,15 +1,16 @@
 ---
 name: punch-performance-test-engineer
-description: Private Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Not user-facing; invoked by punch-builder with one approved Plan task. Returns runtime evidence.
+description: Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
 agents: ['cavecrew-investigator', 'cavecrew-builder', 'cavecrew-reviewer']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-performance-test-engineer
 
-Private Build/Test engineer. Not user-facing. Invoked by
-[`punch-builder`](punch-builder.agent.md) with one approved Plan task.
+Build/Test engineer. Routed by
+[`punch-builder`](punch-builder.agent.md) with one approved Plan task, or
+invoked directly.
 
 ## Scope
 

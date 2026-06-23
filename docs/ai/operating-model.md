@@ -108,7 +108,7 @@ enforced by *function*, not *count*:
   duplicating domain skill or path-instruction, and be registered when added.
   Phase prompt *activates* lifecycle skill; phase does not become one.
 - Each **agent** is **core persona** (`punch-architect` Spec+Plan,
-  `punch-test-engineer` Test, `punch-code-reviewer` Review, `release-captain`
+  `punch-test-engineer` Test, `punch-code-reviewer` Review, `punch-release-captain`
   Ship), **`punch-builder` dispatcher** or one of its two **engineers**
   (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
   domain), an on-demand **specialist persona** (`punch-security-auditor`,

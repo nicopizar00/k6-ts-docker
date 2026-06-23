@@ -30,7 +30,7 @@ Guards = **runtime discipline** Punch custom agents inherit. *Adapted per agent 
 | `punch-code-reviewer` (Review coordinator) | no — read-only | n/a (read-only) | n/a | **read-only cavecrew** (`cavecrew-investigator`, `cavecrew-reviewer`); not `cavecrew-builder` (no edit ⊄); verdict never delegated |
 | `punch-security-auditor` (Review security axis) | no — read-only | n/a (read-only) | n/a | **`cavecrew-investigator` only**; verdict never delegated |
 | `punch-test-engineer` (Test coordinator) | **yes** — `./bin/punch` | n/a (no edit) | n/a | **`cavecrew-investigator` only** (read-only locate); verdict never delegated |
-| `release-captain` (Ship coordinator) | **yes** — git/gh (commit/push/PR) | n/a (no logic edits) | n/a | fan-out **report-only leaves**: `punch-code-reviewer` + `punch-security-auditor` + `punch-test-engineer` (parallel; they don't nest further here); GO/NO-GO never delegated |
+| `punch-release-captain` (Ship coordinator) | **yes** — git/gh (commit/push/PR) | n/a (no logic edits) | n/a | fan-out **report-only leaves**: `punch-code-reviewer` + `punch-security-auditor` + `punch-test-engineer` (parallel; they don't nest further here); GO/NO-GO never delegated |
 | `cavecrew-investigator` (worker) | no — read-only | n/a | bounded locate packet | leaf — no `agents:` |
 | `cavecrew-builder` (worker) | no | before edit | **1-2 files; refuse 3+** | leaf — no `agents:` |
 | `cavecrew-reviewer` (worker) | no — read-only | n/a | bounded diff check | leaf — no `agents:` |
@@ -42,12 +42,12 @@ Depth-1 guarantee = **native VS Code behaviour**: subagents cannot spawn
 more subagents unless `chat.subagents.allowInvocationsFromSubagents` enabled
 (keep **off**). Only a **phase coordinator** spawns, depth-1: `punch-builder`
 (Build), `punch-code-reviewer` (Review), `punch-test-engineer` (Test),
-`release-captain` (Ship). Punch reinforce — both engineers carry `agents: []`;
+`punch-release-captain` (Ship). Punch reinforce — both engineers carry `agents: []`;
 cavecrew workers carry no `agents:`; so every leaf is non-spawning and the setting
 stays off. `punch-builder` lists its two engineers **plus** the three `cavecrew-*`
 workers in `agents:`; `punch-code-reviewer` lists `cavecrew-investigator` +
 `cavecrew-reviewer` (read-only); `punch-security-auditor` + `punch-test-engineer`
-list `cavecrew-investigator` only; `release-captain` lists the three Review/Test
+list `cavecrew-investigator` only; `punch-release-captain` lists the three Review/Test
 specialists as report-only leaves (which therefore do not spawn cavecrew under
 Ship). The
 `punch-ai-governance` maintainer **never** listed in any `agents:` allowlist

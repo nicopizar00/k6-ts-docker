@@ -100,7 +100,7 @@ Read-only critique of diff against plan.
 ## Phase 6 — Ship
 
 **Prompt:** [`punch-ship`](../../.github/prompts/punch-ship.prompt.md)
-**Agent:** `release-captain` (fan-out → GO/NO-GO + rollback, then mechanical commit/push/PR) — *humans merge.*
+**Agent:** `punch-release-captain` (fan-out → GO/NO-GO + rollback, then mechanical commit/push/PR) — *humans merge.*
 
 Mechanical only: `git add` in-scope files, commit with tight message, push, open PR. **Never merge.** **Never push tags.** **Never `--no-verify`.**
 

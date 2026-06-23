@@ -1,15 +1,16 @@
 ---
 name: punch-runtime-engineer
-description: Private Build/Test engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Not user-facing; invoked by punch-builder with one approved Plan task. Returns runtime evidence.
+description: Build/Test engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
 agents: ['cavecrew-investigator', 'cavecrew-builder', 'cavecrew-reviewer']
-user-invocable: false
+user-invocable: true
 ---
 
 # Agent: punch-runtime-engineer
 
-Private Build/Test engineer. Not user-facing. Invoked by
-[`punch-builder`](punch-builder.agent.md) with one approved Plan task.
+Build/Test engineer. Routed by
+[`punch-builder`](punch-builder.agent.md) with one approved Plan task, or
+invoked directly.
 
 ## Scope
 

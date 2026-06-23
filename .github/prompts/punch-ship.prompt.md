@@ -1,6 +1,6 @@
 ---
-agent: release-captain
-description: Phase 7 — Ship. release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
+agent: punch-release-captain
+description: Phase 7 — Ship. punch-release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
 ---
 # Punch — Ship
 
@@ -9,7 +9,7 @@ description: Phase 7 — Ship. release-captain fans out the specialists, decides
 **Owner skill:** [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
-**Agent:** [`release-captain`](../agents/release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
+**Agent:** [`punch-release-captain`](../agents/punch-release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
 **Operating comms:** Caveman **`full`** (per-phase canon). Release decision is a persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use

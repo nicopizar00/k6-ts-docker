@@ -85,7 +85,7 @@ roster-bounded: cavecrew workers carry no `agents:`.
 | Build    | [`punch-build`](prompts/punch-build.prompt.md)                  | Agent (scoped, via dispatch) | `punch-builder` → one engineer |
 | Test     | [`punch-test`](prompts/punch-test.prompt.md)                  | Agent / Ask              | `punch-test-engineer` |
 | Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-code-reviewer` |
-| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (gate + mechanical) | `release-captain` |
+| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (gate + mechanical) | `punch-release-captain` |
 
 Spec absorbs former Define phase (opens with clarify/refine step).
 Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
