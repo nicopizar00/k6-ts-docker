@@ -9,7 +9,7 @@ applies-to: lifecycle/Review — the method behind punch-review; not path-scoped
 ## In Punch
 
 This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt.md)
-(agent `punch-reviewer`, read-only). Punch routes the axes:
+(agent `punch-code-reviewer`, read-only). Punch routes the axes:
 
 - **AI-config axis:** when the diff touches `.github/` or `docs/ai/`, defer to
   [`punch-ai-governance`](../punch-ai-governance/SKILL.md) (frontmatter,

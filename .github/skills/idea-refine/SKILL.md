@@ -11,7 +11,7 @@ Refines raw ideas into sharp, actionable concepts worth building through structu
 ## In Punch
 
 This is the **method** invoked at the start of [`punch-spec`](../../prompts/punch-spec.prompt.md)
-(agent `punch-architect-readonly`) when a request is still a vague idea — Spec
+(agent `punch-architect`) when a request is still a vague idea — Spec
 absorbed the former Define step. Where the generic guidance below conflicts with
 Punch, **Punch wins**:
 

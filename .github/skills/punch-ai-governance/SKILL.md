@@ -25,8 +25,9 @@ It owns:
   `skill-registry.md`, `AGENTS.md`, and `copilot-instructions.md`
   resolves; every asset referenced exists.
 - Delegation-depth integrity: every `agents:` roster stays depth-1 — only a
-  phase coordinator (`punch-builder` / `punch-reviewer` / `punch-test-engineer`)
-  lists sub-agents; engineers and `cavecrew-*` workers carry empty / absent
+  phase coordinator (`punch-builder` / `punch-code-reviewer` / `punch-test-engineer`
+  / `punch-security-auditor`) lists sub-agents; engineers and `cavecrew-*` workers
+  carry empty / absent
   `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
   coordinator that lists it (so `cavecrew-builder`'s `edit/editFiles` keeps it
   Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).

@@ -17,7 +17,7 @@ Spec absorbs former **Define** phase — opens with clarify/refine step (`idea-r
 ## Phase 1 — Spec (absorbs the former Define)
 
 **Prompt:** [`punch-spec`](../../.github/prompts/punch-spec.prompt.md)
-**Agent:** `punch-architect-readonly`
+**Agent:** `punch-architect`
 
 Clarify request into clean problem statement — read broad, trace execution chain, use `idea-refine` skill when idea still vague — then crystallize into spec. Only file this phase may write: spec doc itself.
 
@@ -34,7 +34,7 @@ Clarify request into clean problem statement — read broad, trace execution cha
 ## Phase 2 — Plan
 
 **Prompt:** [`punch-plan`](../../.github/prompts/punch-plan.prompt.md)
-**Agent:** `punch-planner`
+**Agent:** `punch-architect`
 
 Convert spec into one or more scoped tasks. Each task = smallest unit Build executes. Plan = *contract* Build bound to.
 
@@ -89,7 +89,7 @@ Run official Punch commands. No invented shortcuts, no k6 on host. Failures clas
 ## Phase 5 — Review
 
 **Prompt:** [`punch-review`](../../.github/prompts/punch-review.prompt.md)
-**Agent:** `punch-reviewer` (activates `punch-ai-governance` skill if diff touches `.github/` or `docs/ai/`)
+**Agent:** `punch-code-reviewer` (activates `punch-ai-governance` skill if diff touches `.github/` or `docs/ai/`)
 
 Read-only critique of diff against plan.
 
@@ -100,7 +100,7 @@ Read-only critique of diff against plan.
 ## Phase 6 — Ship
 
 **Prompt:** [`punch-ship`](../../.github/prompts/punch-ship.prompt.md)
-**Agent:** `punch-reviewer` (mechanical handoff) — *humans merge.*
+**Agent:** `release-captain` (fan-out → GO/NO-GO + rollback, then mechanical commit/push/PR) — *humans merge.*
 
 Mechanical only: `git add` in-scope files, commit with tight message, push, open PR. **Never merge.** **Never push tags.** **Never `--no-verify`.**
 

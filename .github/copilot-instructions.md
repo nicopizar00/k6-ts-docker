@@ -80,12 +80,12 @@ roster-bounded: cavecrew workers carry no `agents:`.
 
 | Phase | Prompt | Mode | Agent |
 |---|---|---|---|
-| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect-readonly` |
-| Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
+| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect` |
+| Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-architect` |
 | Build    | [`punch-build`](prompts/punch-build.prompt.md)                  | Agent (scoped, via dispatch) | `punch-builder` → one engineer |
 | Test     | [`punch-test`](prompts/punch-test.prompt.md)                  | Agent / Ask              | `punch-test-engineer` |
-| Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
-| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
+| Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-code-reviewer` |
+| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (gate + mechanical) | `release-captain` |
 
 Spec absorbs former Define phase (opens with clarify/refine step).
 Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
@@ -143,11 +143,11 @@ Type `/graphify` in Copilot Chat to build or update the graph.
 
 Caveman compresses assistant **prose only**; repo default **`lite`**, every
 Copilot session. Per-phase voice: Spec **`lite`** · Plan **`full`** · Build (to
-humans) **`full`** · Review/Ship **`full`** · Document **`lite`** · Test
-**`ultra`**. Build execution sub-agents speak **`wenyan-lite`**; when an engineer
-or coordinator invokes **cavecrew**, the brief is **`wenyan-full`** and cavecrew workers report
-**`wenyan-ultra`**. **Wenyan lives only in sub-agent reports — never in persistent
-artifacts** (docs, ADRs, specs, plans, skills, prompts, registries). Drop to
+humans) **`ultra`** · Review/Ship **`full`** · Document **`lite`** · Test
+**`ultra`**. Sub-agent briefs: `punch-builder`→engineer **`wenyan-lite`**; the two
+engineers→**cavecrew** **`wenyan-full`**; any other sub-agent nesting→cavecrew
+**`wenyan-ultra`**; cavecrew worker reports are **non-guarded (lazy)**. Wenyan
+stays mainly in sub-agent reports — **avoid it in committed docs/registries**. Drop to
 normal prose for security/irreversible/ambiguous/architecture content. Caveman =
 output style only;
 never changes tools, access, or delegation. Critical Rules above take precedence.

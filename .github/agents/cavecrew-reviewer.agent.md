@@ -9,8 +9,8 @@ user-invocable: false
 
 Compact diff reviewer. Bounded leaf worker. Not user-facing — invoked by a phase
 **coordinator** ([`punch-builder`](punch-builder.agent.md) for an in-build sanity
-check before commit, or [`punch-reviewer`](punch-reviewer.agent.md) for a bounded
-pass over a large diff), depth-1. Read-only `tools` ⊆ both. Inherits the owning
+check before commit, or [`punch-code-reviewer`](punch-code-reviewer.agent.md) for
+a bounded pass over a large diff), depth-1. Read-only `tools` ⊆ both. Inherits the owning
 persona's scope by **injected brief** (no skill field in VS Code custom agents).
 Vendor cavecrew worker, adapted for Punch.
 
@@ -23,7 +23,8 @@ Vendor cavecrew worker, adapted for Punch.
 Out of scope:
 
 - **Not** the `/review` gate. This is an in-build smoke check; the independent
-  [`punch-reviewer`](punch-reviewer.agent.md) / `/review` verdict still stands.
+  [`punch-code-reviewer`](punch-code-reviewer.agent.md) / `/review` verdict still
+  stands.
 - No `/test` or `/ship` verdict.
 
 ## Behavior
@@ -39,5 +40,6 @@ advisory to the caller, never a gate verdict.
 
 ## Comms
 
-Reports **`wenyan-ultra`** (sub-agent report tier only). Never wenyan in any
-persisted artifact. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+Reports **`wenyan-ultra`** to its coordinator — **non-guarded (lazy)**; any
+`wenyan` tier is admitted. The coordinator may use these findings as-is. Canon:
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

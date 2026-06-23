@@ -1,7 +1,7 @@
 ---
 name: security-and-hardening
 description: Hardens code against vulnerabilities. Use when a change touches the gateway input boundary, Postgres queries, secrets/env, external URLs, or dependencies. Stack-neutral threat-modeling; scoped to Punch's real surfaces — there is no web auth/session/XSS frontend here.
-applies-to: src/services/**, docker/**, src/tests/** — the security axis of Review; backs a future security-auditor agent
+applies-to: src/services/**, docker/**, src/tests/** — the security axis of Review; backs the `punch-security-auditor` agent
 ---
 
 # Security and Hardening
@@ -9,7 +9,7 @@ applies-to: src/services/**, docker/**, src/tests/** — the security axis of Re
 ## In Punch
 
 This is the **security axis** that [`code-review-and-quality`](../code-review-and-quality/SKILL.md)
-routes to, and the basis for a future `security-auditor` agent. Punch's reference
+routes to, and the method behind the `punch-security-auditor` agent. Punch's reference
 app is a didactic, internal multi-service demo — so **web auth, sessions, cookies,
 XSS, CSP, and CORS do not apply**. The real surfaces are:
 

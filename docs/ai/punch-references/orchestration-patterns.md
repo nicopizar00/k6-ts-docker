@@ -129,7 +129,7 @@ A slash command or prompt file **owns** the build phase and runs one coordinatin
 
 **Same pattern at other phases (read-only workers only).** The coordinator need not be the builder — any phase persona pinned by its prompt's `agent:` field may coordinate bounded workers whose `tools` are a **subset** of its own:
 
-- `/review` → `punch-reviewer` may spawn `cavecrew-investigator` + `cavecrew-reviewer` (read-only). Not `cavecrew-builder` — reviewer has no edit tool, so an editing worker is not ⊆ its scope.
+- `/review` → `punch-code-reviewer` (the Review verdict owner, adapted from vendor `code-reviewer`) may spawn `cavecrew-investigator` + `cavecrew-reviewer` (read-only) as a bounded pre-scan. Not `cavecrew-builder` — reviewer has no edit tool, so an editing worker is not ⊆ its scope.
 - `/test` → `punch-test-engineer` may spawn `cavecrew-investigator` only (locate checks/coverage). The PASS/FAIL verdict is never delegated.
 - `/ship` keeps Pattern 3 (parallel fan-out), not this pattern.
 

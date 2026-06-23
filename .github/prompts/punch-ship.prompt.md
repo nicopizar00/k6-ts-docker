@@ -1,16 +1,16 @@
 ---
-agent: punch-reviewer
-description: Phase 7 — Ship. Mechanical finalization; human approves merge.
+agent: release-captain
+description: Phase 7 — Ship. release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
 ---
 # Punch — Ship
 
 **Lifecycle phase:** Ship
-**Mode:** Agent (mechanical only — no logic edits)
+**Mode:** Agent (gate + mechanical finalization — no logic edits)
 **Owner skill:** [`git-workflow-and-versioning`](../skills/git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
-**Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Ship-readiness summary persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Agent:** [`release-captain`](../agents/release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
+**Operating comms:** Caveman **`full`** (per-phase canon). Release decision is a persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -26,8 +26,8 @@ Review approved change. Ship handles mechanical steps: commit, push, open PR, **
 
 Before any git step, fan out **in parallel** to the trio for a final gate:
 
-- [`code-reviewer`](../agents/code-reviewer.agent.md) — 5-dimension diff review.
-- [`security-auditor`](../agents/security-auditor.agent.md) — secrets/PII/input/supply-chain pass.
+- [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — 5-dimension diff review.
+- [`punch-security-auditor`](../agents/punch-security-auditor.agent.md) — secrets/PII/input/supply-chain pass.
 - [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — independent test verdict (`./bin/punch run`).
 
 Each returns its own verdict. **Any REQUEST CHANGES / FAIL → stop, do not commit**,
@@ -63,7 +63,7 @@ Completed tasks:
 Validation status:
   - reports/state/punch-run.json: passed: <bool>
   - Tests run: <list>
-  - Pre-ship fan-out: code-reviewer <APPROVE|CHANGES> · security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
+  - Pre-ship fan-out: punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
 
 Known risks:
   - <one-liner or "none">
@@ -75,7 +75,9 @@ Operational impact:
 
 Documentation status: <updated / not applicable>
 
-Recommendation: ship | hold
+Rollback plan: <how to revert — branch/commit, revert PR, data/migration notes>
+
+Release decision: GO | NO-GO
   Reason: <one sentence>
 ```
 

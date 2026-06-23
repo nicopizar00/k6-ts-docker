@@ -15,7 +15,7 @@ scope expansion and high-stakes work. The "fresh-context reviewer" in Punch is a
 **separate review pass**, not a programmatic subagent:
 
 - a new Copilot Chat session given only ARTIFACT + CONTRACT (no prior reasoning), or
-- the `@punch-reviewer` / `@security-auditor` custom agent invoked on the artifact, or
+- the `@punch-code-reviewer` / `@punch-security-auditor` custom agent invoked on the artifact, or
 - a **user-authorized** cross-model review (paste elsewhere / a CLI the user runs).
 
 High-stakes in Punch: Postgres schema or `init.sql` changes, reporting-contract
@@ -74,7 +74,7 @@ ARTIFACT: <paste>   CONTRACT: <paste>
 ```
 
 **Pass ARTIFACT + CONTRACT only — never the CLAIM** (it biases toward agreement).
-Run it in a fresh Copilot session or via `@punch-reviewer`/`@security-auditor`.
+Run it in a fresh Copilot session or via `@punch-code-reviewer`/`@punch-security-auditor`.
 A **cross-model** second opinion catches blind spots a single model shares with
 itself — offer it for high-stakes artifacts, but only the user authorizes running
 an external tool, and only with ARTIFACT + CONTRACT (no session context).

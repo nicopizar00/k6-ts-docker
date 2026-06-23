@@ -84,7 +84,7 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
    Begin by enforcing "no Build without Plan" for one sprint.
 2. **One persona per role, not one agent per ticket.** Agents in
    `.github/agents/` (core personas, `punch-builder` dispatcher + its two
-   engineers, on-demand specialists like `security-auditor`, `code-reviewer` and
+   engineers, on-demand specialists like `punch-security-auditor`, `punch-code-reviewer` and
    `punch-ai-governance` maintainer) reusable across all work. Resist adding
    new core persona without killing one.
 3. **Promote prompts, not prose.** When you paste same
@@ -96,7 +96,7 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 This redesign deliberately moved from 3-skill cap to six-domain-skill setup
 with small agent roster (core personas + `punch-builder` dispatcher and its
-two engineers + `security-auditor` and `punch-ai-governance` specialists). Ceiling
+two engineers + `punch-security-auditor` and `punch-ai-governance` specialists). Ceiling
 enforced by *function*, not *count*:
 
 - **Domain skills** must each name unique Punch subsystem (context,
@@ -107,12 +107,13 @@ enforced by *function*, not *count*:
   Not subject to domain cap, but each must name unique method, avoid
   duplicating domain skill or path-instruction, and be registered when added.
   Phase prompt *activates* lifecycle skill; phase does not become one.
-- Each **agent** is **core persona** (architect-readonly, planner,
-  `punch-test-engineer`, reviewer), **`punch-builder` dispatcher** or one of its
-  two **engineers** (`punch-runtime-engineer`, `punch-performance-test-engineer` —
-  split by Build domain), or on-demand **specialist persona** (`security-auditor`,
-  `code-reviewer`, `punch-ai-governance`). New core persona should require killing
-  one; specialists each name unique on-demand lens.
+- Each **agent** is **core persona** (`punch-architect` Spec+Plan,
+  `punch-test-engineer` Test, `punch-code-reviewer` Review, `release-captain`
+  Ship), **`punch-builder` dispatcher** or one of its two **engineers**
+  (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
+  domain), an on-demand **specialist persona** (`punch-security-auditor`,
+  `punch-ai-governance`), or a bounded **`cavecrew-*` leaf worker**. New core
+  persona should require killing one; specialists each name unique on-demand lens.
 - Each **prompt** is single lifecycle phase (Build's per-domain scope lives in
   engineers, not extra prompts). New prompts must show why existing one
   cannot stretch.

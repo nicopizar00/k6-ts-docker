@@ -1,6 +1,6 @@
 ---
 name: punch-build-caveman
-description: "Canonical Punch Caveman policy (single source). Repo default `lite`; per-phase voice — Spec/Document `lite`, Plan/Build/Review/Ship `full`, Test `ultra`. Build execution sub-agents speak `wenyan-lite`; engineer→cavecrew briefs `wenyan-full`; cavecrew workers `wenyan-ultra`. Wenyan is forbidden in persistent artifacts (docs/maps/registries) — sub-agent reports only. Evidence follows the producing agent's caveman level. Other files link here instead of restating."
+description: "Canonical Punch Caveman policy (single source). Repo default `lite`; per-phase voice — Spec/Document `lite`, Plan/Review/Ship `full`, Build/Test `ultra`. `punch-builder` → engineer briefs `wenyan-lite`; the two engineers → cavecrew brief `wenyan-full`; any other sub-agent nesting → cavecrew briefs `wenyan-ultra`. cavecrew reports are non-guarded (lazy) — any `wenyan` tier; a coordinator may use the worker artifact as-is. Wenyan stays mainly in sub-agent reports — avoid it in committed docs/registries. Evidence follows the producing agent's caveman level. Other files link here instead of restating."
 applies-to: lifecycle/Build+Test — assistant-prose communication (punch-build & punch-test prompts + punch-builder/punch-test-engineer + the engineers); not path-scoped
 ---
 
@@ -30,7 +30,7 @@ phase overrides it with the voice below.
 |---|---|---|
 | Spec (`punch-spec`) | `/spec` | **`lite`** (Punch default) |
 | Plan (`punch-plan`) | `/plan` | **`full`** |
-| Build (`punch-build`) — to humans | `/build` | **`full`** |
+| Build (`punch-build`) — to humans | `/build` | **`ultra`** (Punch-command agent) |
 | Test (`punch-test`) | `/test` | **`ultra`**; evidence verbatim (the verification phase) |
 | Review (`punch-review`) | `/review` | **`full`** |
 | Ship (`punch-ship`) | `/ship` | **`full`** |
@@ -38,10 +38,20 @@ phase overrides it with the voice below.
 
 **Build delegation tiers** (compression deepens per tier):
 
-- Human-facing output (coordinator **or** engineer → humans): **`full`**.
+- Human-facing output:
+  - Punch-command agents → humans follow the **phase voice** above
+    (`punch-builder` Build = **`ultra`**, `punch-test-engineer` Test = **`ultra`**,
+    `punch-code-reviewer` Review = **`full`**).
+  - Engineers (`punch-runtime-engineer` / `punch-performance-test-engineer`) →
+    humans: **`full`**.
 - Sub-agent-facing briefs use `wenyan`:
-  - Coordinator → engineer (`punch-runtime-engineer` / `punch-performance-test-engineer`): **`wenyan-lite`**.
-  - Engineer **or** coordinator → **cavecrew** worker: **`wenyan-full`**; the worker reports **`wenyan-ultra`**.
+  - `punch-builder` → engineer: **`wenyan-lite`**.
+  - The two engineers → **cavecrew** worker: **`wenyan-full`**.
+  - Any other sub-agent nesting (a coordinator/reviewer/auditor → cavecrew
+    directly): **`wenyan-ultra`**.
+- cavecrew worker reports are **non-guarded (lazy)** — any `wenyan` tier (default
+  `wenyan-ultra`). A coordinator/engineer **may use the worker artifact as-is** —
+  no mandatory restate.
 
 cavecrew workers are **leaves** (`agents:` empty) — they never spawn a further
 tier, so depth is roster-bounded (max `builder → engineer → cavecrew`). Nesting
@@ -59,14 +69,15 @@ per-message re-invocation.
 
 Caveman governs **output style only** — never tool access or which sub-agents an
 agent may call. Spawners: the phase **coordinator** (`punch-builder` Build,
-`punch-reviewer` Review, `punch-test-engineer` Test) and, nested, the Build
-**engineer**. At Build the coordinator delegates the complete build to one
-engineer; the engineer (or the coordinator directly) may spawn bounded
-**cavecrew** leaf workers — engineer-spawned inherit by **lineage**,
+`punch-code-reviewer` Review, `punch-test-engineer` Test, `punch-security-auditor`
+on-demand) and, nested, the Build **engineer**. At Build the coordinator delegates
+the complete build to one engineer; the engineer (or the coordinator directly) may
+spawn bounded **cavecrew** leaf workers — engineer-spawned inherit by **lineage**,
 coordinator-spawned by **injected brief** (VS Code custom agents have no skills
-field); a worker's `tools` are a subset of its spawner. Compression deepens per
-tier (`wenyan-lite` to the engineer, `wenyan-full` to a cavecrew worker, which
-reports `wenyan-ultra`). Nesting uses GitHub Copilot's default sub-agent behavior
+field); a worker's `tools` are a subset of its spawner. Brief tiers:
+**`wenyan-lite`** `punch-builder`→engineer, **`wenyan-full`** the two
+engineers→cavecrew, **`wenyan-ultra`** any other nesting→cavecrew; the worker
+reports non-guarded (lazy). Nesting uses GitHub Copilot's default sub-agent behavior
 with `chat.subagents.allowInvocationsFromSubagents: true`; depth is
 roster-bounded — cavecrew workers carry no `agents:`. Evidence in a worker report
 follows that worker's caveman level. Canon depth/guards:

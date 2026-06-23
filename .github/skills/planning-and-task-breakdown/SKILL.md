@@ -1,6 +1,6 @@
 ---
 name: planning-and-task-breakdown
-description: Breaks work into ordered, verifiable tasks. Use in the Punch Plan phase when you have a spec and need scoped tasks, when a task feels too large to start, or when cross-layer work needs sequencing. The method here is stack-neutral; Punch's task contract lives in scoped-build-policy and the punch-planner agent.
+description: Breaks work into ordered, verifiable tasks. Use in the Punch Plan phase when you have a spec and need scoped tasks, when a task feels too large to start, or when cross-layer work needs sequencing. The method here is stack-neutral; Punch's task contract lives in scoped-build-policy and the punch-architect agent.
 applies-to: lifecycle/Plan — the method the punch-plan prompt activates; not path-scoped
 ---
 
@@ -9,13 +9,13 @@ applies-to: lifecycle/Plan — the method the punch-plan prompt activates; not p
 ## In Punch
 
 This is the **method** the [`punch-plan`](../../prompts/punch-plan.prompt.md) prompt
-activates (agent `punch-planner`). Punch overrides the generic format below:
+activates (agent `punch-architect`). Punch overrides the generic format below:
 
 - **Task contract:** every Punch task declares **allowed / read-only / forbidden
   paths**, validation commands, rollback notes, a human checkpoint, and which
   `punch-build-*` prompt handles it. That contract is defined in
   [`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md) and the
-  `punch-planner` agent — use it, don't restate it here.
+  `punch-architect` agent — use it, don't restate it here.
 - **Verification = Punch commands:** tasks verify via `./bin/punch run <test>` and
   `reports/state/punch-run.json`, never `npm test`/`npm run build`.
 - **Layer order:** Punch's dependency direction is k6 test → Compose service →
@@ -44,7 +44,7 @@ already contains well-defined tasks.
 
 Before any code: read the spec and the relevant code, identify existing patterns,
 map dependencies, note risks. **The output is a plan document, not edits** — the
-`punch-planner` agent carries no code-edit tool.
+`punch-architect` agent carries no code-edit tool.
 
 ### Step 2: Map the dependency graph
 
@@ -79,7 +79,7 @@ whole suite, not just the new test.
 
 ### Step 4: Write tasks (Punch contract)
 
-Each task follows the `punch-planner` output contract. Minimum fields:
+Each task follows the `punch-architect` output contract. Minimum fields:
 
 ```markdown
 ## Task [ID e.g. K-01 / C-01 / O-01 / D-01]: [short title]

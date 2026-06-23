@@ -82,7 +82,8 @@ Return clear, verifiable findings to `punch-builder`.
 
 ## Comms
 
-Caveman **`full`** to humans; receives **`wenyan-lite`** briefs from
-`punch-builder`. When invoking **cavecrew**, briefs in **`wenyan-full`**; workers
-report **`wenyan-ultra`**. Canon:
+Caveman **`full`** to humans (default); receives **`wenyan-lite`** briefs from
+`punch-builder`. Briefs **cavecrew** in **`wenyan-full`**; cavecrew worker reports
+are **non-guarded (lazy)** — any `wenyan` tier — and the engineer may use the
+artifact as-is. Evidence verbatim. Canon:
 [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

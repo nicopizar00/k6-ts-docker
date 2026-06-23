@@ -10,9 +10,10 @@ user-invocable: false
 Read-only locator. Bounded **leaf** worker (`agents:` empty — spawns nothing).
 Not user-facing — invoked for one locate packet by a phase **coordinator**
 ([`punch-builder`](punch-builder.agent.md) at Build,
-[`punch-reviewer`](punch-reviewer.agent.md) at Review,
-[`punch-test-engineer`](punch-test-engineer.agent.md) at Test) **or, nested, by a
-Build engineer**. Inherits its spawner's scope — by **lineage** when an engineer
+[`punch-code-reviewer`](punch-code-reviewer.agent.md) at Review,
+[`punch-test-engineer`](punch-test-engineer.agent.md) at Test,
+[`punch-security-auditor`](punch-security-auditor.agent.md) on demand) **or,
+nested, by a Build engineer**. Inherits its spawner's scope — by **lineage** when an engineer
 spawns it, by **injected brief** when a coordinator does (VS Code custom agents
 have no skill field). Read-only `tools` ⊆ any spawner. Vendor cavecrew worker,
 adapted for Punch.
@@ -42,5 +43,6 @@ Read-only tools only. No terminal writes. Does not spawn sub-agents — leaf wor
 
 ## Comms
 
-Reports **`wenyan-ultra`** (sub-agent report tier only). Never wenyan in any
-persisted artifact. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+Reports **`wenyan-ultra`** to its coordinator — **non-guarded (lazy)**; any
+`wenyan` tier is admitted. The coordinator may use this artifact as-is. Canon:
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

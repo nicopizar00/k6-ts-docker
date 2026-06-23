@@ -57,26 +57,33 @@ Spec absorbs the former Define phase (it opens with a clarify/refine step). Each
 
 Available agents
 
-| Agent | Persona | Used by phases |
+| Agent | Persona | Phase |
 |---|---|---|
-| punch-architect-readonly | Investigator (writes the spec doc) | Spec |
-| punch-planner            | Scoped-task planner    | Plan |
-| punch-builder            | Build dispatcher (routes to one engineer) | Build |
-| punch-runtime-engineer   | Runtime engineer (Python orchestration / Compose / data harvest) | Build, Verify |
-| punch-performance-test-engineer | Performance engineer (k6 HTTP/Browser + TS bundle/lint) | Build, Verify |
-| punch-verifier           | Evidence collector     | Verify, Test |
-| punch-reviewer           | Diff critic + ship mechanic | Review, Ship |
-| security-auditor         | Security audit (specialist, on-demand) | Review security axis, `@security-auditor` |
-| punch-ai-governance      | AI-config maintainer (user-direct; graphify-only terminal per ADR 0002; never a sub-agent) | `@punch-ai-governance`, Review AI-config axis |
+| punch-architect | Spec + Plan owner — investigator; writes spec/plan docs only | Spec, Plan |
+| punch-builder | Build dispatcher — routes to one engineer | Build |
+| punch-runtime-engineer | Runtime engineer (Python / Compose / data harvest) | Build |
+| punch-performance-test-engineer | Performance engineer (k6 + TS bundle/lint) | Build |
+| punch-test-engineer | Test verdict owner — runs `./bin/punch` | Test |
+| punch-code-reviewer | Review verdict owner — five-axis | Review |
+| punch-security-auditor | Security audit — on-demand specialist | Review security axis |
+| release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
+| punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Init, Document |
+| cavecrew-investigator, cavecrew-builder, cavecrew-reviewer | Leaf workers — locate / 1-2 file edit / diff pre-scan (not user-facing) | Build, Test, Review |
 
 Definitions live in .github/agents/*.agent.md.
 
-**Build delegation.** `punch-builder` lists exactly its two engineers in
-`agents:`; each engineer carries `agents: []` (depth-1, no recursion). The
-`punch-ai-governance` maintainer is user-direct (`disable-model-invocation: true`)
-and appears in no `agents:` allowlist.
+**Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists its two
+engineers + the three `cavecrew-*`; `punch-code-reviewer` / `punch-test-engineer`
+/ `punch-security-auditor` list read-only cavecrew; `release-captain` (Ship) fans
+out to the three specialists as report-only leaves. Engineers + cavecrew carry
+`agents: []` — non-spawning leaves. `punch-ai-governance` is user-direct
+(`disable-model-invocation: true`), in no `agents:` allowlist.
 
-**Specialist personas** (invoked on-demand via `@mention`, not bound to a phase) sit alongside the phase personas; `security-auditor` is the first. Upstream `code-reviewer` is folded into `punch-reviewer` + the `code-review-and-quality` skill; `test-engineer` (covered by `punch-verifier`) and `web-performance-auditor` (no frontend) are excluded.
+**Vendor agent-skills personas, adopted-adapted to Punch** (Punch-named, own their
+verdict, may use cavecrew): `punch-code-reviewer` (← `code-reviewer`),
+`punch-security-auditor` (← `security-auditor`), `punch-test-engineer` (←
+`test-engineer`); `release-captain` (← `release-captain`). `web-performance-auditor`
+excluded (no frontend).
 
 Available skills
 

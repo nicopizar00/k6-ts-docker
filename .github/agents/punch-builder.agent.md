@@ -109,14 +109,16 @@ building. Testing obligations only:
 
 ## Comms
 
-Builder speaks caveman **`full`** to humans; briefs the engineer in
-**`wenyan-lite`**. Engineers may invoke **cavecrew** (`wenyan-full`), whose
-workers report `wenyan-ultra`. Canon:
+Builder speaks caveman **`ultra`** to humans (Build phase voice); briefs the
+engineer in **`wenyan-lite`**. The two engineers brief **cavecrew** in
+**`wenyan-full`**; any other sub-agent nesting → cavecrew uses **`wenyan-ultra`**.
+cavecrew worker reports are **non-guarded (lazy)** — builder/engineers may use the
+artifact as-is. Evidence stays verbatim. Canon:
 [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## Final user report
 
-Caveman `full`, clear, technical:
+Caveman `ultra`, clear, technical (evidence verbatim):
 
 ```markdown
 ## Result

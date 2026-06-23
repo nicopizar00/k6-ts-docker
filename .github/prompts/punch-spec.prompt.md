@@ -1,5 +1,5 @@
 ---
-agent: punch-architect-readonly
+agent: punch-architect
 description: Spec — clarify and refine the request, then convert it into goals, non-goals, constraints, and acceptance criteria. Absorbs the former Define step.
 ---
 # Punch — Spec
@@ -10,7 +10,7 @@ description: Spec — clarify and refine the request, then convert it into goals
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
 + [`idea-refine`](../skills/idea-refine/SKILL.md) (clarify step, when idea vague)
 + matching domain skill (orchestration / compose / k6 / data-harvest)
-**Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)
+**Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.
 **Operating comms:** Caveman **`lite`** (per-phase canon). Spec docs persistent — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use

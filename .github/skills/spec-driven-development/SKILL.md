@@ -9,7 +9,7 @@ applies-to: lifecycle/Spec — the method the punch-spec prompt activates; not p
 ## In Punch
 
 This is the **method** the [`punch-spec`](../../prompts/punch-spec.prompt.md) prompt
-activates (agent `punch-architect-readonly`). Where the generic examples below
+activates (agent `punch-architect`). Where the generic examples below
 conflict with Punch, **Punch wins**:
 
 - **Stack:** Docker-first, Python stdlib orchestrator, k6 tests — never host
@@ -113,7 +113,7 @@ Hand off to Build: the matching `punch-build-*` prompt + builder agent, driven b
 
 - **Update when decisions change** — change the spec first, then implement.
 - **Commit the spec** if persisted (e.g. `docs/architecture/specs/<topic>.md`);
-  `punch-architect-readonly` writes it only when the user asks.
+  `punch-architect` writes it only when the user asks.
 - **Reference the spec in the PR** — link the section each task implements.
 
 ## Common Rationalizations

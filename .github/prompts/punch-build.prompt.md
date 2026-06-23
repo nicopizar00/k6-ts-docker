@@ -26,13 +26,16 @@ Always:
 
 - [`incremental-implementation`](../skills/incremental-implementation/SKILL.md) — one verifiable slice at a time.
 - [`test-driven-development`](../skills/test-driven-development/SKILL.md) — RED → GREEN → REFACTOR for behavior changes.
+- [`source-driven-development`](../skills/source-driven-development/SKILL.md) — verify against actual source / runtime behavior, never assumptions.
+- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — load repo / cross-file context before editing.
 
 When the task needs it:
 
 - [`planning-and-task-breakdown`](../skills/planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
-- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — when repo / cross-file context is needed before editing.
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
 - [`doubt-driven-development`](../skills/doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
+- [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers + bounded cavecrew workers (depth-1, tool-subset).
+- [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface.
 
 cavecrew (vendor) is the **execution/delegation optimization** layer, not a
 replacement for these skills.
@@ -74,8 +77,12 @@ terse style must not strip required verification evidence.
 
 ## Comms
 
-Builder speaks caveman **`full`** to humans; it briefs the engineer in
-**`wenyan-lite`**. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+Builder → humans: caveman **`ultra`** (Build phase voice); briefs the engineer in
+**`wenyan-lite`**. The two engineers brief **cavecrew** in **`wenyan-full`**; any
+other sub-agent nesting → cavecrew uses **`wenyan-ultra`**. cavecrew reports are
+**non-guarded (lazy)** — use the artifact as-is. Evidence stays verbatim
+regardless of level. Canon:
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## Validation gate
 

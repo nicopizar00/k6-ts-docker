@@ -11,12 +11,12 @@ See `.github/prompts/` for prompt bodies.
 
 | Prompt | Lifecycle phase | Mode | Agent | Use when |
 |---|---|---|---|---|
-| [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask (writes spec doc) | `punch-architect-readonly` | Request need clarifying (former Define) then specifying into goals / non-goals / acceptance criteria. |
-| [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | Plan | Ask (Plan discipline) | `punch-planner` | Have Spec, need scoped tasks with allowed/read-only/forbidden paths. |
+| [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask (writes spec doc) | `punch-architect` | Request need clarifying (former Define) then specifying into goals / non-goals / acceptance criteria. |
+| [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | Plan | Ask (Plan discipline) | `punch-architect` | Have Spec, need scoped tasks with allowed/read-only/forbidden paths. |
 | [`punch-build`](../../.github/prompts/punch-build.prompt.md) | Build | Agent (scoped, via dispatch) | `punch-builder` | Approved Plan task need implementing; dispatcher routes to runtime or performance-test engineer. |
 | [`punch-test`](../../.github/prompts/punch-test.prompt.md) | Test | Agent / Ask | `punch-test-engineer` | Prove change RED→GREEN at k6 check/threshold level via `./bin/punch`; produce `reports/state/punch-run.json` evidence; final PASS/FAIL gate. |
-| [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-reviewer` | Test passed; audit diff before Ship. |
-| [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-reviewer` | Review approved; commit, push, open PR. **Never merges.** |
+| [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-code-reviewer` | Test passed; audit diff before Ship. |
+| [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `release-captain` | Review approved; commit, push, open PR. **Never merges.** |
 | [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Retire doc debt in waves: map with `/graphify`, then keep / merge / rewrite / archive / delete / promote. |
 | [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (one-time bootstrap) | Agent (runs `./bin/punch init`) | `punch-ai-governance` (enforced) | Bootstrap repo for Punch: scan Copilot assets + docs readiness, guard pending adoption items, hand off to `/punch-document`. |
 

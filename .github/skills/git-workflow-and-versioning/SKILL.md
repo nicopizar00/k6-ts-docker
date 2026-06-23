@@ -1,7 +1,7 @@
 ---
 name: git-workflow-and-versioning
 description: Structures git workflow — atomic commits, short-lived branches, descriptive conventional messages. Use when committing or branching. Stack-neutral discipline; Punch's Ship mechanics (mechanical, human-gated) override the commit-loop.
-applies-to: lifecycle/Ship — the method behind punch-ship + punch-reviewer; not path-scoped
+applies-to: lifecycle/Ship — the method behind punch-ship + release-captain; not path-scoped
 ---
 
 # Git Workflow and Versioning
@@ -9,7 +9,7 @@ applies-to: lifecycle/Ship — the method behind punch-ship + punch-reviewer; no
 ## In Punch
 
 This is the **method** behind the Ship phase
-([`punch-ship`](../../prompts/punch-ship.prompt.md) + the `punch-reviewer` agent).
+([`punch-ship`](../../prompts/punch-ship.prompt.md) + the `release-captain` agent).
 Punch overrides the generic loop:
 
 - **Ship is mechanical and human-gated.** The agent stages in-scope files, commits

@@ -1,7 +1,7 @@
 ---
 name: punch-test-engineer
 description: Independent Test-phase QA gate for Punch. Runs the official Punch test contract (`./bin/punch doctor`, `./bin/punch run …`), judges k6 checks/thresholds RED→GREEN, analyzes coverage gaps, and returns a final PASS | FAIL | BLOCKED verdict. Does not fix product code — failures hand back to Build/Plan. Adapts upstream agent-skills `test-engineer`. Invoked by `/punch-test` (and fan-out from `/punch-ship`); also user-invocable.
-tools: ['search', 'execute/runInTerminal', 'execute/getTerminalOutput', 'read/terminalLastCommand', 'read/terminalSelection', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'changes', 'execute/runInTerminal', 'execute/getTerminalOutput', 'read/terminalLastCommand', 'read/terminalSelection', 'agent']
 agents: ['cavecrew-investigator']
 user-invocable: true
 ---
@@ -86,12 +86,14 @@ Method: [`test-driven-development`](../skills/test-driven-development/SKILL.md)
 
 ## Handoff rules
 
-- PASS → Review ([`punch-reviewer`](punch-reviewer.agent.md)).
-- Implementation FAIL → Plan ([`punch-planner`](punch-planner.agent.md)) → Build.
+- PASS → Review ([`punch-code-reviewer`](punch-code-reviewer.agent.md)).
+- Implementation FAIL → Plan ([`punch-architect`](punch-architect.agent.md)) → Build.
 - Environment / pre-existing FAIL → human triage; don't block the PR for a flake.
 
 ## Comms
 
-Caveman **`full`** to humans; **`wenyan`** to sub-agents. Evidence (RED/GREEN
-output, commands, `reports/state/punch-run.json`) verbatim. Canon:
+Caveman **`ultra`** to humans (Test phase voice); briefs **cavecrew** (any other
+sub-agent nesting) in **`wenyan-ultra`**. `cavecrew-investigator` reports are
+**non-guarded (lazy)** — this engine may use the artifact as-is. Evidence
+(RED/GREEN output, commands, `reports/state/punch-run.json`) verbatim. Canon:
 [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

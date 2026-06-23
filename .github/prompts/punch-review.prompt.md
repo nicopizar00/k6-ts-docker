@@ -1,6 +1,6 @@
 ---
-agent: punch-reviewer
-description: Phase 6 — Review. Read-only critique of the diff against the Plan before Ship.
+agent: punch-code-reviewer
+description: Phase 6 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict; cavecrew allowed only as a bounded pre-scan.
 ---
 # Punch — Review
 
@@ -9,15 +9,16 @@ description: Phase 6 — Review. Read-only critique of the diff against the Plan
 **Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for simplicity axis);
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
 diff touches `.github/` or `docs/ai/`; else matching domain skill
-**Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
+**Required skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Brief cavecrew (any other sub-agent nesting) in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
 Test passed. Before open or merge PR, audit diff for
 correctness, simplicity, scope discipline, boundary compliance,
 lifecycle hygiene. Dedicated security pass on diffs touching
-`src/services/**`, env, or `docker/**` → invoke `@security-auditor`.
+`src/services/**`, env, or `docker/**` → invoke `@punch-security-auditor`.
 
 ## Inputs
 
@@ -64,15 +65,17 @@ Review report with:
 
 ## Delegation (bounded workers only)
 
-`punch-reviewer` is the Review coordinator. It may spawn **read-only** cavecrew
-leaf workers (depth-1) for bounded passes over a large diff:
+`punch-code-reviewer` is the Review coordinator. cavecrew is allowed **only as a
+bounded, optional pre-scan** — it never replaces the five-axis review. It may
+spawn **read-only** cavecrew leaf workers (depth-1) over a large diff:
 [`cavecrew-investigator`](../agents/cavecrew-investigator.agent.md) (locate the
 diff's touched defs / tests) and
 [`cavecrew-reviewer`](../agents/cavecrew-reviewer.agent.md) (compact per-file
 diff smoke check). **Not** `cavecrew-builder` — reviewer has no edit tool, so an
-editing worker is not ⊆ its scope. Workers inherit reviewer's read-only scope by
-injected brief; findings feed the review — the Approve / Request Changes
-**verdict stays the reviewer's own**.
+editing worker is not ⊆ its scope. Workers inherit the coordinator's read-only
+scope by injected brief (`wenyan-ultra`) and report **non-guarded (lazy)**; the
+coordinator may use their findings as-is. Findings feed the review — the
+Approve / Request Changes **verdict stays punch-code-reviewer's own**.
 
 ## Validation gate
 
