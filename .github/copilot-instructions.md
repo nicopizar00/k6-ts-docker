@@ -32,7 +32,11 @@ CI/CD **external** to Punch — does not own GitHub Actions workflows.
 
 Custom agents bounded at runtime by shared
 [`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
-phases, approval-before-write, depth-1 delegation).
+phases, approval-before-write). Build delegates via the Punch Builder → engineer
+→ cavecrew chain (the engineer, or the coordinator directly, spawns bounded
+cavecrew leaf workers — **nested**, `chat.subagents.allowInvocationsFromSubagents:
+true`, lazy default) on GitHub Copilot's default sub-agent behavior. Depth is
+roster-bounded: cavecrew workers carry no `agents:`.
 
 - **Never broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
@@ -46,7 +50,7 @@ phases, approval-before-write, depth-1 delegation).
 - **Never change service names, artifact paths, or public commands**
   without updating docs + dependents (see [`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md)).
 - **Prefer small diffs.** One scoped task per Build call.
-- **Prefer explicit validation commands.** Verify uses
+- **Prefer explicit validation commands.** Test uses
   `./bin/punch doctor` and `./bin/punch run …` — not ad-hoc shell.
 - **Preserve DX**: low-noise terminal output plus complete logs +
   artifacts under `reports/`.
@@ -61,7 +65,7 @@ phases, approval-before-write, depth-1 delegation).
 ## Engineering Principles
 
 6. **Lifecycle-driven work.** Every change goes Spec → Plan →
-   Build → Verify → Review → Ship (Spec absorbs former Define step).
+   Build → Test → Review → Ship (Spec absorbs former Define step).
    Use matching prompt in `.github/prompts/`.
 7. **Mode discipline.** Read-only requests (audits, reviews,
    explanations) stay **Ask Mode**. Planning stays **Ask Mode**
@@ -79,15 +83,17 @@ phases, approval-before-write, depth-1 delegation).
 | Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect-readonly` |
 | Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
 | Build    | [`punch-build`](prompts/punch-build.prompt.md)                  | Agent (scoped, via dispatch) | `punch-builder` → one engineer |
-| Verify   | [`punch-verify`](prompts/punch-verify.prompt.md) / [`punch-test`](prompts/punch-test.prompt.md) | Agent / Ask | `punch-verifier` |
+| Test     | [`punch-test`](prompts/punch-test.prompt.md)                  | Agent / Ask              | `punch-test-engineer` |
 | Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
 | Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
 
 Spec absorbs former Define phase (opens with clarify/refine step).
-Build = single `punch-build` prompt bound to `punch-builder` dispatcher,
-which classifies approved Plan task and delegates (depth-1) to
+Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
+classifies the approved Plan task and delegates the complete build to
 `punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
-(k6 + TS bundle). `punch-test` = TDD/Prove-It companion to Verify.
+(k6 + TS bundle); engineers (or the Builder directly) may invoke bounded cavecrew
+workers — nested. `punch-test` (TDD/Prove-It)
+is the verification phase — done proven by `reports/state/punch-run.json`.
 
 **Orthogonal phases (both via `punch-ai-governance`, enforced):**
 [`punch-init`](prompts/punch-init.prompt.md) — one-time bootstrap/adoption guard
@@ -135,18 +141,14 @@ Type `/graphify` in Copilot Chat to build or update the graph.
 
 ## Caveman (concise comms — default `lite`)
 
-Caveman compresses assistant **prose only**; project default **`lite`**.
-Per-phase canon: Document/Spec **`lite`** · Plan/Review/Ship **`full`** · Build/Test
-**`ultra`** (both enforced); **sub-agent reports `wenyan`** every level. **Wenyan
-forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills,
-prompts, registries, handoffs, `reports/**`) — sub-agent reports only; persisted
-docs use `lite`/`full`, `ultra` for status/terminal only. **Never** compress code,
-commands, paths, logs, errors, exit codes, thresholds, k6/Compose output,
-JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or
-next-action — quote verbatim. Priority: correctness > evidence > maintainability >
-brevity. Drop to normal prose for security/irreversible/ambiguous/architecture
-content; `/caveman lite|full|ultra|wenyan-*`, `stop caveman` reverts. Caveman =
-output style only — never changes tools, access, or delegation. Critical Rules
-above take precedence. Full canon (per-phase table, depth policy, evidence list):
-[`punch-build-caveman`](skills/punch-build-caveman/SKILL.md)
-+ [ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md).
+Caveman compresses assistant **prose only**; repo default **`lite`**, every
+Copilot session. Per-phase voice: Spec **`lite`** · Plan **`full`** · Build (to
+humans) **`full`** · Review/Ship **`full`** · Document **`lite`** · Test
+**`ultra`**. Build execution sub-agents speak **`wenyan-lite`**; when an engineer
+or coordinator invokes **cavecrew**, the brief is **`wenyan-full`** and cavecrew workers report
+**`wenyan-ultra`**. **Wenyan lives only in sub-agent reports — never in persistent
+artifacts** (docs, ADRs, specs, plans, skills, prompts, registries). Drop to
+normal prose for security/irreversible/ambiguous/architecture content. Caveman =
+output style only;
+never changes tools, access, or delegation. Critical Rules above take precedence.
+Canon: [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md).

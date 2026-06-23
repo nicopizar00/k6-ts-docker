@@ -5,7 +5,7 @@ For **rules** about what code may look like, see `CLAUDE.md` and
 path-specific instructions under `.github/instructions/`.
 
 (Was `operating-protocol.md`. Rename part of redesigned
-lifecycle: Spec → Plan → Build → Verify → Review → Ship — Spec absorb
+lifecycle: Spec → Plan → Build → Test → Review → Ship — Spec absorb
 former Define clarify step.)
 
 ## Foundational principle
@@ -24,7 +24,7 @@ Single sentence whole operating model shaped around.
 | Spec     | Clarify/refine request (former Define), then translate into goals, non-goals, constraints | Ask | Only spec doc, if requested |
 | Plan     | Produce scoped tasks with allowed / read-only / forbidden paths | Ask (Plan discipline) | Only plan doc, if requested |
 | Build    | Implement one approved task within declared scope | Agent (scoped) | Yes — only allowed paths |
-| Verify   | Run official Punch commands, confirm evidence (`punch-test` for RED→GREEN) | Agent / Ask | Only if patching change |
+| Test     | Run official Punch commands, confirm evidence (`punch-test` RED→GREEN) | Agent / Ask | Only if patching change |
 | Review   | Read-only critique of diff against plan | Ask | No |
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
@@ -58,7 +58,7 @@ by shared [`agent-guards.md`](agent-guards.md) discipline.
   artifact. Build refuse to edit files outside plan's allowed list.
 - **Build is scoped.** Each Build prompt declares allowed / read-only /
   forbidden paths. Scope expansion → stop, return to Plan.
-- **Verify uses official Punch commands.** No ad-hoc `docker run`. No host
+- **Test uses official Punch commands.** No ad-hoc `docker run`. No host
   `k6` or `npm`. See [`docs/architecture/punch-boundaries.md`](../architecture/punch-boundaries.md).
 - **Ship is mechanical only.** Commits, push, `gh pr create`. No merges, no
   tags, no force pushes, no skipping hooks.
@@ -71,8 +71,8 @@ Change cannot advance until gate met.
 |---|---|
 | Spec → Plan | Clear, narrowed problem statement (former Define gate), then goals, non-goals, acceptance criteria documented. |
 | Plan → Build | Plan approved by human; allowed paths listed. |
-| Build → Verify | Focused diff inside plan's allowed paths. |
-| Verify → Review | `reports/state/punch-run.json` with `passed: true` (or equivalent named artifact for non-test changes). |
+| Build → Test | Focused diff inside plan's allowed paths. |
+| Test → Review | `reports/state/punch-run.json` with `passed: true` (or equivalent named artifact for non-test changes). |
 | Review → Ship | Review verdict = Approve. |
 | Ship → done | Human-merged PR. |
 
@@ -84,7 +84,7 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
    Begin by enforcing "no Build without Plan" for one sprint.
 2. **One persona per role, not one agent per ticket.** Agents in
    `.github/agents/` (core personas, `punch-builder` dispatcher + its two
-   engineers, on-demand specialists like `security-auditor` and
+   engineers, on-demand specialists like `security-auditor`, `code-reviewer` and
    `punch-ai-governance` maintainer) reusable across all work. Resist adding
    new core persona without killing one.
 3. **Promote prompts, not prose.** When you paste same
@@ -107,12 +107,12 @@ enforced by *function*, not *count*:
   Not subject to domain cap, but each must name unique method, avoid
   duplicating domain skill or path-instruction, and be registered when added.
   Phase prompt *activates* lifecycle skill; phase does not become one.
-- Each **agent** is **core persona** (architect-readonly, planner, verifier,
-  reviewer), **`punch-builder` dispatcher** or one of its two **engineers**
-  (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
-  domain, depth-1), or on-demand **specialist persona** (`security-auditor`,
-  `punch-ai-governance`). New core persona should require killing one;
-  specialists each name unique on-demand lens.
+- Each **agent** is **core persona** (architect-readonly, planner,
+  `punch-test-engineer`, reviewer), **`punch-builder` dispatcher** or one of its
+  two **engineers** (`punch-runtime-engineer`, `punch-performance-test-engineer` —
+  split by Build domain), or on-demand **specialist persona** (`security-auditor`,
+  `code-reviewer`, `punch-ai-governance`). New core persona should require killing
+  one; specialists each name unique on-demand lens.
 - Each **prompt** is single lifecycle phase (Build's per-domain scope lives in
   engineers, not extra prompts). New prompts must show why existing one
   cannot stretch.

@@ -1,22 +1,22 @@
 ---
 name: debugging-and-error-recovery
 description: Guides systematic root-cause debugging. Use when a ./bin/punch run fails, a build breaks, behavior doesn't match expectations, or any unexpected error appears. The triage method is stack-neutral; Punch's failure classification and commands apply.
-applies-to: lifecycle/Verify (+ Build) — the method behind punch-verify failure handling; not path-scoped
+applies-to: lifecycle/Test (+ Build) — the method behind punch-test failure handling; not path-scoped
 ---
 
 # Debugging and Error Recovery
 
 ## In Punch
 
-This is the **method** behind Verify's failure handling
-([`punch-verify`](../../prompts/punch-verify.prompt.md) + the `punch-verifier`
+This is the **method** behind Test's failure handling
+([`punch-test`](../../prompts/punch-test.prompt.md) + the `punch-test-engineer`
 agent), which classifies every failure as **implementation-related /
 environment-related / pre-existing**. Punch specifics:
 
 - **Reproduce and verify only through `./bin/punch`** (`doctor`, `run …`) — never
   host `k6`/`npm`/`docker run`. Evidence is `reports/state/punch-run.json`; full
   logs land in `reports/logs/` (with `--collect-logs`).
-- **Verify does not fix.** A confirmed implementation failure returns to **Plan**
+- **Test does not fix.** A confirmed implementation failure returns to **Plan**
   for a corrective task, then Build — the verifier classifies, it doesn't patch.
 - **Layers to localize across:** k6 test · service (gateway/catalog/orders) ·
   Compose runtime · Python orchestrator · reporting.

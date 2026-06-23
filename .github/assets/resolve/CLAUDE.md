@@ -10,7 +10,7 @@
 
 - **Docker First**：build / run / validate 皆居 Docker。Host 唯需 Docker + stdlib Python 3。無 Node、無 k6、無 pip。
 - **執行鏈（execution chain）**：TS 源 → esbuild(builder stage) → Docker image → k6 run → reports(JSON / HTML / state)。勿斷、勿繞。
-- **生命週期**：Spec → Plan → Build → Verify → Review → Ship。各階一 prompt(`.github/prompts/`),守其 mode。
+- **生命週期**：Spec → Plan → Build → Test → Review → Ship。各階一 prompt(`.github/prompts/`),守其 mode。
 - **戒**：小步可審 · 無冗依賴 · 無早抽象 · 存證為憑(改未驗不為成)。
 - **驗證憑**：`reports/state/punch-run.json` 記 Verify run,方為「成」。
 

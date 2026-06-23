@@ -66,7 +66,7 @@ Most "why did this go wrong?" answers map to a boundary crossing.
 
 ## Common anti-patterns
 
-The redesigned lifecycle (Define → Spec → Plan → Build → Verify → Review →
+The redesigned lifecycle (Define → Spec → Plan → Build → Test → Review →
 Ship) is designed to catch these before merge.
 
 1. **k6 owning orchestration.** A test file that starts containers, polls

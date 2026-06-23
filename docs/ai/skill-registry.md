@@ -35,6 +35,9 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 | recording a decision (ADR) | `documentation-and-adrs` |
 | a high-stakes / irreversible decision | `doubt-driven-development` |
 | coding against a k6/Docker/Postgres API | `source-driven-development` |
+| a gate/journey threshold regressed | `performance-optimization` (+ `punch-k6-testing`) |
+| instrumenting a service (logs/events) | `observability-and-instrumentation` (+ `punch-data-harvest`) |
+| writing a k6 Browser test (Plan task) | `browser-testing-with-devtools` (+ `punch-k6-testing`) |
 | auditing AI config | `punch-ai-governance` |
 
 ## Domain skills (six — capped)
@@ -94,9 +97,9 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`idea-refine`](../../.github/skills/idea-refine/SKILL.md) | Refine raw idea before Spec (divergent → convergent) | invoked within Spec (no standalone prompt) | `.github/skills/idea-refine/SKILL.md` |
 | [`spec-driven-development`](../../.github/skills/spec-driven-development/SKILL.md) | Spec before code — surface assumptions, reframe as success criteria | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | `.github/skills/spec-driven-development/SKILL.md` |
 | [`planning-and-task-breakdown`](../../.github/skills/planning-and-task-breakdown/SKILL.md) | Decompose spec into scoped, verifiable tasks | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | `.github/skills/planning-and-task-breakdown/SKILL.md` |
-| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Verify runs, Ship commits | [`punch-build`](../../.github/prompts/punch-build.prompt.md) + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
+| [`incremental-implementation`](../../.github/skills/incremental-implementation/SKILL.md) | Thin vertical slices; Build edits, Test runs, Ship commits | [`punch-build`](../../.github/prompts/punch-build.prompt.md) + builder agents | `.github/skills/incremental-implementation/SKILL.md` |
 | [`test-driven-development`](../../.github/skills/test-driven-development/SKILL.md) | RED→GREEN via k6 checks/thresholds + `punch-run.json`; Prove-It for bugs | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-build` (via `punch-performance-test-engineer`) | `.github/skills/test-driven-development/SKILL.md` |
-| [`debugging-and-error-recovery`](../../.github/skills/debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-verify`](../../.github/prompts/punch-verify.prompt.md), `punch-verifier` | `.github/skills/debugging-and-error-recovery/SKILL.md` |
+| [`punch-debugging-and-error-recovery`](../../.github/skills/punch-debugging-and-error-recovery/SKILL.md) | Root-cause triage: reproduce → localize → fix → guard | [`punch-test`](../../.github/prompts/punch-test.prompt.md), `punch-test-engineer` | `.github/skills/punch-debugging-and-error-recovery/SKILL.md` |
 | [`code-review-and-quality`](../../.github/skills/code-review-and-quality/SKILL.md) | Five-axis review before merge; AI-config axis → `punch-ai-governance` | [`punch-review`](../../.github/prompts/punch-review.prompt.md), `punch-reviewer` | `.github/skills/code-review-and-quality/SKILL.md` |
 | [`code-simplification`](../../.github/skills/code-simplification/SKILL.md) | Reduce complexity without changing behavior (Chesterton's Fence) | Review simplicity axis + Build Rule 0 | `.github/skills/code-simplification/SKILL.md` |
 | [`git-workflow-and-versioning`](../../.github/skills/git-workflow-and-versioning/SKILL.md) | Atomic commits, short-lived branches, conventional messages | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md), `punch-reviewer` | `.github/skills/git-workflow-and-versioning/SKILL.md` |
@@ -104,14 +107,17 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`security-and-hardening`](../../.github/skills/security-and-hardening/SKILL.md) | Threat-model + harden Punch surfaces (gateway input, Postgres, secrets, supply chain) | Review security axis; future `security-auditor` | `.github/skills/security-and-hardening/SKILL.md` |
 | [`doubt-driven-development`](../../.github/skills/doubt-driven-development/SKILL.md) | Fresh-context adversarial review of non-trivial/high-stakes decisions | Plan + Build (on-demand) | `.github/skills/doubt-driven-development/SKILL.md` |
 | [`source-driven-development`](../../.github/skills/source-driven-development/SKILL.md) | Ground framework code (k6/Docker/Postgres) in official docs + cite | Build (on-demand) | `.github/skills/source-driven-development/SKILL.md` |
+| [`performance-optimization`](../../.github/skills/performance-optimization/SKILL.md) | Measure-first k6 perf work; threshold-RED → fix backend bottleneck → re-run → guard | Build/Test (on threshold regression) | `.github/skills/performance-optimization/SKILL.md` |
+| [`observability-and-instrumentation`](../../.github/skills/observability-and-instrumentation/SKILL.md) | Structured service logs + RED read from k6 run; feeds `reports/logs/**` (pairs with `punch-data-harvest`) | Build (adding service/route/query) | `.github/skills/observability-and-instrumentation/SKILL.md` |
+| [`browser-testing-with-devtools`](../../.github/skills/browser-testing-with-devtools/SKILL.md) | Method for k6 Browser tests via `./bin/punch` (placeholder stays deferred until a Plan task) | Build/Test (k6 Browser task only) | `.github/skills/browser-testing-with-devtools/SKILL.md` |
 
 Phase 3 of [absorption plan](history/agent-skills-absorption-plan.md) (Tier-A +
 P3 set) **complete** — every lifecycle skill above absorbed and registered.
-**Phase 6 folded** Tier-B method skills into existing domain skills
-(`context-engineering`→`punch-context-engineering`, `observability-and-instrumentation`→`punch-data-harvest`,
-`performance-optimization`→`punch-k6-testing`) and **excluded** web/CI-only
-skills — see *Deferred / excluded* below. No standalone lifecycle skill added
-for these.
+**Phase 6 originally folded** `context-engineering`→`punch-context-engineering`
+(still folded); `performance-optimization` and `observability-and-instrumentation`
+were folded then **promoted back to standalone** lifecycle skills (per owner
+direction) and `browser-testing-with-devtools` **adopted** — all three adapted to
+Punch (k6/Docker, no frontend). See *Deferred / excluded* below for what stays out.
 
 ## Adopted upstream skills (tool axis)
 
@@ -123,8 +129,9 @@ cross-reference) — refresh from upstream, never hand-edit.
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation; runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
-| `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Project default `lite`; per-phase canon — Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (execution sub-agents `wenyan`). Wenyan forbidden in persistent artifacts; depth-1 delegation (depth-2-lazy canon ceiling, off). Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
+| `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec/Document `lite`, Plan/Build/Review/Ship `full`, Test `ultra`. Build execution sub-agents `wenyan-lite`; engineer→cavecrew `wenyan-full`; cavecrew workers `wenyan-ultra`. Wenyan forbidden in persistent artifacts. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `graphify` gated through [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -135,9 +142,10 @@ wiki/SVG/GraphML/obsidian exports). Pristine upstream stays in
 `.ai-upstream/graphify/`; leaned skill **authored — subject to governance
 checks** (no longer refresh-verbatim).
 Canonical `.agents/skills/caveman/` install upstream-maintained (adopted —
-exempt from authored-canon checks); auxiliary upstream packs default installer
-also fetched (`caveman-compress` with host Python scripts, `cavecrew`,
-`caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep install
+exempt from authored-canon checks). **`cavecrew` retained** alongside `caveman`:
+the Build engineers invoke it to spawn workers with caveman compression. Other
+auxiliary upstream packs (`caveman-compress` with host Python scripts,
+`caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep the install
 Copilot-scoped and Docker-First-minimal.
 
 ### `punch-build-caveman` — governance metadata
@@ -145,15 +153,15 @@ Copilot-scoped and Docker-First-minimal.
 | Field | Value |
 |---|---|
 | Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
-| Status | **project default `lite`** · per-phase canon · **Build+Test enforced** · never compresses evidence · Wenyan forbidden in persistent artifacts |
-| Scope | Per-phase canon: Document/Spec `lite`, Plan/Review/Ship `full`, Build/Test `ultra` (enforced). Execution sub-agents (`punch-runtime-engineer`, `punch-performance-test-engineer`, `punch-verifier`) `wenyan`; all sub-agent reports `wenyan`-compatible. Non-Build/Test agents lead with normal prose for judgment-heavy work. Delegation depth governed by `agent-guards.md` (depth-1; depth-2-lazy canon ceiling, off) — Caveman is output style only |
+| Status | **repo default `lite`** · per-phase voice · never compresses evidence · Wenyan forbidden in persistent artifacts |
+| Scope | Per-phase voice: Spec/Document `lite`, Plan/Build/Review/Ship `full`, Test `ultra`. Build delegation: Builder→humans `full`, Builder→engineer `wenyan-lite`, engineer→cavecrew `wenyan-full`, cavecrew→workers `wenyan-ultra`. All sub-agent reports keep evidence verbatim. Caveman is output style only |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
-| Default mode | project **`lite`**; per-phase overrides (Plan/Review/Ship `full`, Build/Test `ultra`); execution sub-agents `wenyan` (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
+| Default mode | repo **`lite`**; per-phase overrides (Plan/Build/Review/Ship `full`, Test `ultra`); Build execution tiers `wenyan-lite` / `wenyan-full` / `wenyan-ultra` (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
 | Governed by | `punch-ai-governance` (refresh + drift) |
-| Decision | [ADR 0003](decisions/0003-caveman-build-comms.md) |
-| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · inspected 2026-06-18 · pristine snapshot `0.1.0` in [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) (gitignored local staging); canonical install in `.agents/skills/caveman/` |
-| Install method | **official installer run, Copilot-scoped:** `curl -fsSL .../install.sh \| bash -s -- --only copilot --with-init`. Non-Copilot artifacts + auxiliary skill packs removed afterward (see [ADR 0003 Revision](decisions/0003-caveman-build-comms.md)) |
-| Files changed by installer | added `.agents/skills/caveman/` (kept); appended to `.github/copilot-instructions.md` + `AGENTS.md` (both reconciled by hand); created `.cursor`/`.windsurf`/`.clinerules`/`.opencode` + extra skill packs + `skills-lock.json` (all **removed**) |
+| Decision | live policy = this skill + the Build chain (`punch-build` → `punch-builder` → engineer → cavecrew); no standalone ADR |
+| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · required-asset manifest [`.github/.ai-upstream/README.md`](../../.github/.ai-upstream/README.md) |
+| Install method | **manual, Copilot-scoped** (see manifest): `npx -y skills add JuliusBrussee/caveman --skill caveman\|cavecrew --agent github-copilot --yes`. Do **not** run `install.sh --with-init` (appends always-on rules + parallel rule files) |
+| Files changed by installer | added `.agents/skills/caveman/` + `.agents/skills/cavecrew/` (both kept); appended to `.github/copilot-instructions.md` + `AGENTS.md` (both reconciled by hand); created `.cursor`/`.windsurf`/`.clinerules`/`.opencode` + other skill packs + `skills-lock.json` (all **removed**) |
 | Copilot instruction file edited manually | yes — two duplicated caveman blocks merged into one canonical Copilot-scoped section *below* Critical Rules (no Critical Rule altered) |
 
 `punch-build-caveman` **adapter** Punch-authored, therefore **subject** to
@@ -169,9 +177,9 @@ install and pristine `.ai-upstream/caveman/` snapshot upstream-maintained,
 | `punch-monitoring` / `punch-injectables` | No real monitoring or fault-injection use case yet. Premature. Layer slot reserved in `punch-boundaries.md`. |
 | `punch-documentation` | `documentation.instructions.md` path file enough. Skill would only restate it. |
 | `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — never create `punch-<phase>` skill. Phase prompt may *activate* lifecycle method skill (e.g. `punch-spec` → `spec-driven-development`); phase stays prompt+agent, method is skill. |
-| `context-engineering`, `observability-and-instrumentation`, `performance-optimization` (upstream) | **Folded, not standalone** — transferable method lives in `punch-context-engineering`, `punch-data-harvest`, `punch-k6-testing` respectively (Phase 6). |
+| `context-engineering` (upstream) | **Folded** — transferable method lives in `punch-context-engineering`. (`observability-and-instrumentation` + `performance-optimization` were folded but are now **standalone** — see Lifecycle table.) |
 | `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD external to Punch (`punch-architecture.instructions.md`); npm/Prisma/Playwright stack doesn't fit. |
-| `frontend-ui-engineering`, `browser-testing-with-devtools`, `webperf` (upstream) | **Excluded** — Punch has no frontend; k6 Browser deferred and distinct from Chrome-DevTools web testing. |
+| `frontend-ui-engineering`, `webperf`, `web-performance-auditor` (upstream) | **Excluded** — Punch has no frontend. (`browser-testing-with-devtools` is **adopted**, adapted to k6 Browser — see Lifecycle table.) |
 | `interview-me` (upstream) | **Deferred** — overlaps `idea-refine`, which already owns pre-Spec intent extraction. Second "refine" skill would split one decision domain (absorption matrix §A, P3). |
 | `shipping-and-launch` (upstream) | **Deferred** — name and deploy/rollback model clash with Punch's deliberately mechanical, human-gated `punch-ship`; go/no-go decision lives in Review phase (`code-review-and-quality`), not a skill. |
 | `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is gateway/orders HTTP contract, already governed by `punch-compose-runtime` + `security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |

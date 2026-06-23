@@ -1,11 +1,11 @@
-# Ship — health-smoke as the canonical Verify gate
+# Ship — health-smoke as the canonical Test gate
 
 > **Golden artifact (filled, real).** Phase 6. Pattern source:
 > `.github/prompts/punch-ship.prompt.md`. Caveman `full`. Mechanical only; humans merge.
 
 ```
 Summary: Establishes the health smoke (`./bin/punch run smoke`) as the smallest
-re-runnable Verify gate and captures its real, anonymized evidence as the canonical
+re-runnable Test gate and captures its real, anonymized evidence as the canonical
 golden-lifecycle worked example. No product code changed; documentation only.
 
 Completed tasks:
@@ -26,7 +26,7 @@ Operational impact:
 Documentation status: updated (golden-lifecycle set + lifecycle templates added)
 
 Recommendation: ship
-  Reason: green Verify evidence; documentation-only; canon-ready template set.
+  Reason: green Test evidence; documentation-only; canon-ready template set.
 ```
 
-**Gate:** open PR with this summary; CI re-runs Verify; human merges. ✅
+**Gate:** open PR with this summary; CI re-runs Test; human merges. ✅

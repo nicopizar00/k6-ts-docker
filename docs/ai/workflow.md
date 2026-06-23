@@ -5,7 +5,7 @@ Practical walkthrough of six phases. For *why* model shaped this way, read [`ope
 ## The six phases at a glance
 
 ```
-Spec ─▶ Plan ─▶ Build ─▶ Verify ─▶ Review ─▶ Ship
+Spec ─▶ Plan ─▶ Build ─▶ Test ─▶ Review ─▶ Ship
   │       │       │         │         │        │
   Ask     Ask    Agent   Agent/Ask    Ask    Agent (mech.)
  spec    plan    one      run         no    git + gh
@@ -27,7 +27,7 @@ Clarify request into clean problem statement — read broad, trace execution cha
 - Goal · Non-goals · Functional requirements · Technical constraints.
 - Affected architectural layers (from [`punch-boundaries.md`](../architecture/punch-boundaries.md)).
 - Artifact / log / reporting implications (explicit, even if "none").
-- Acceptance criteria — conditions Verify will check.
+- Acceptance criteria — conditions Test will check.
 
 **Gate:** goals and acceptance criteria agreed.
 
@@ -46,7 +46,7 @@ Convert spec into one or more scoped tasks. Each task = smallest unit Build exec
 - **Read-only context paths** (Build may read, not edit).
 - **Forbidden paths** (Build refuses to touch).
 - Expected diff size.
-- Validation commands (run by Verify).
+- Validation commands (run by Test).
 - Rollback notes.
 - Human checkpoint.
 - Which engineer `punch-builder` routes to (`punch-runtime-engineer` for orchestrator / compose / data-harvest; `punch-performance-test-engineer` for k6 http / browser).
@@ -68,10 +68,10 @@ Implement **one** task from approved plan. Edit **only** allowed paths. If chang
 
 **Gate:** diff stays inside plan's allowed paths.
 
-## Phase 4 — Verify
+## Phase 4 — Test
 
-**Prompts:** [`punch-verify`](../../.github/prompts/punch-verify.prompt.md) (full evidence gate) and [`punch-test`](../../.github/prompts/punch-test.prompt.md) (TDD/Prove-It companion — confirm a check/threshold goes RED→GREEN).
-**Agent:** `punch-verifier`
+**Prompt:** [`punch-test`](../../.github/prompts/punch-test.prompt.md) — the verification phase (TDD/Prove-It; confirm a check/threshold goes RED→GREEN, produce `reports/state/punch-run.json`).
+**Agent:** `punch-test-engineer`
 
 Run official Punch commands. No invented shortcuts, no k6 on host. Failures classified (implementation-related, environment-related, pre-existing); do not silently patch.
 
@@ -147,7 +147,7 @@ Build via:   punch-build → punch-builder → punch-runtime-engineer
 
 Run `punch-build` (dispatcher `punch-builder` → `punch-runtime-engineer`) with task O-01. Edit only `src/punch/__main__.py`. Report diff.
 
-### Phase 4 — Verify
+### Phase 4 — Test
 
 ```
 ./bin/punch doctor
@@ -160,11 +160,11 @@ Confirm `reports/state/punch-run.json` shows `passed: true`.
 
 ### Phase 5 — Review
 
-Diff touches only `src/punch/__main__.py`. No new imports. Boundary check passes. Verify evidence present. Approve.
+Diff touches only `src/punch/__main__.py`. No new imports. Boundary check passes. Test evidence present. Approve.
 
 ### Phase 6 — Ship
 
-Commit `feat(orchestrator): add --quiet flag to bin/punch run`, push, open PR with Verify evidence link in test plan. Human merges.
+Commit `feat(orchestrator): add --quiet flag to bin/punch run`, push, open PR with Test evidence link in test plan. Human merges.
 
 ## Phase rename map (for navigating older PRs)
 
@@ -176,7 +176,7 @@ Lifecycle restructured. Old PRs and commits may use previous names — map as fo
 | Shape | Spec **+** Plan (split into two phases) |
 | Define (separate phase) | Folded into **Spec** (its opening clarify/refine step) |
 | Build (single `punch-build-slice` prompt) | Build (five domain prompts + five builder agents) |
-| Verify | Verify (+ `punch-test` companion) |
+| Verify | Test (`punch-test`) |
 | Review | Review (unchanged) |
 | Ship | Ship (unchanged) |
 

@@ -167,7 +167,7 @@ Python CLI reaches feature parity):
   (`.claude/skills/guard/SKILL.md`) — it reuses the `.github/` prompts/agents/
   skills via the `.claude/commands/*` wraps (`/spec … /document`); it never
   forks or overrides them ([ADR 0004](docs/ai/decisions/0004-claude-code-guard-bridge.md)).
-- The operating model is **Spec → Plan → Build → Verify → Review →
+- The operating model is **Spec → Plan → Build → Test → Review →
   Ship** (Spec absorbs the former Define clarify step). Use the matching
   prompt in `.github/prompts/` and stay in the declared mode (Ask vs
   Agent). Build is a single `punch-build` prompt; the `punch-builder`
@@ -187,7 +187,7 @@ Python CLI reaches feature parity):
 - `src/punch/` is the Python orchestrator. Stdlib only — no pip
   dependencies, ever.
 - A change is not "done" until `reports/state/punch-run.json` records the
-  Verify run. See `docs/workflows/validation.md`.
+  Test run. See `docs/workflows/validation.md`.
 - Propose changes in small, reviewable steps. Do not implement a full feature
   in one pass unless explicitly asked.
 - When in doubt, ask.

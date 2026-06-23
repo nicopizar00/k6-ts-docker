@@ -18,7 +18,7 @@ asking the wrong question.
 It owns:
 
 - A pointer-list to the canonical docs (no duplication of their content).
-- The current lifecycle (Spec → Plan → Build → Verify → Review → Ship, where
+- The current lifecycle (Spec → Plan → Build → Test → Review → Ship, where
   Spec absorbs the former Define clarify step) and where each phase's prompt lives.
 - The ownership boundaries and the "scope discipline" principle.
 

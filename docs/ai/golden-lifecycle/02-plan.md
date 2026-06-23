@@ -1,4 +1,4 @@
-# Plan — health-smoke as the canonical Verify gate
+# Plan — health-smoke as the canonical Test gate
 
 > **Golden artifact (filled, real).** Phase 2. Pattern source:
 > `.github/prompts/punch-plan.prompt.md`. Caveman `full`.

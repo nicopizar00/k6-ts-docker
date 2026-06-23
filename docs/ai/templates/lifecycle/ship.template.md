@@ -28,4 +28,4 @@ Recommendation: ship | hold
   Reason: <one sentence>
 ```
 
-**Gate:** human review PR, merge. CI re-run Verify. Ship done when human merge.
+**Gate:** human review PR, merge. CI re-run Test. Ship done when human merge.

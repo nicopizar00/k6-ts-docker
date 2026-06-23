@@ -9,13 +9,14 @@ applies-to: src/tests/**, lifecycle/Test+Build — backs punch-test and the punc
 ## In Punch
 
 This is the **method** behind [`punch-test`](../../prompts/punch-test.prompt.md)
-(the RED→GREEN companion to Verify, agent `punch-verifier`) and the `punch-build`
+(the RED→GREEN Test/verification phase, agent `punch-test-engineer`) and the `punch-build`
 prompt (k6 tasks → `punch-performance-test-engineer`). Punch redefines "test":
 
 - A **test = a k6 `check()` or a threshold** in `src/tests/*.ts`, run via
   `./bin/punch run <test>`; **proof = `reports/state/punch-run.json`
   (`passed: true`)** — never `npm test`. Authoring the check is a Build task;
-  running and judging it is `punch-test` / Verify.
+  running and judging it is the `punch-test` gate (`punch-test-engineer`); the
+  builder may lazy-load this skill while building but is not the final authority.
 - **Test levels** are Punch's k6 categories: **smoke** (health), **gate** (perf
   threshold), **journey** (create→read→validate). Unit tests are a *complement,
   not a replacement* for runtime-contract validation (`copilot-instructions.md`).

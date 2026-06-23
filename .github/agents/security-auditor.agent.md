@@ -87,4 +87,4 @@ Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipl
 
 ## Caveman comms
 
-Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only.

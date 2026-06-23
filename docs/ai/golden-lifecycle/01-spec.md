@@ -1,10 +1,10 @@
-# Spec — health-smoke as the canonical Verify gate
+# Spec — health-smoke as the canonical Test gate
 
 > **Golden artifact (filled, real).** Phase 1 of worked lifecycle.
 > Pattern source: `.github/prompts/punch-spec.prompt.md`. Caveman `lite`.
 
 - **Goal** — Confirm reference stack health smoke pass via
-  `./bin/punch run smoke`. Establish smallest re-runnable Verify gate that
+  `./bin/punch run smoke`. Establish smallest re-runnable Test gate that
   emit trackable evidence.
 - **Non-goals**
   - No add, rename, alter any k6 test or threshold.

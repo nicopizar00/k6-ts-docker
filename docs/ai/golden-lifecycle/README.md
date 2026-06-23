@@ -1,6 +1,6 @@
 # Golden lifecycle — a real, verifiable worked example 🟢
 
-Complete **real** pass through **Spec → Plan → Build → Verify → Review → Ship**,
+Complete **real** pass through **Spec → Plan → Build → Test → Review → Ship**,
 one trackable artifact per phase, anchored to genuine anonymized evidence. Canon "golden test" teams copy when adopting Punch. Blank skeletons:
 [`../templates/lifecycle/`](../templates/lifecycle/README.md).
 
@@ -14,8 +14,8 @@ path; also shows Build as documented no-op).
 |---|---|---|---|---|
 | 1 | Spec   | [`01-spec.md`](01-spec.md)     | `punch-spec`   | `lite` |
 | 2 | Plan   | [`02-plan.md`](02-plan.md)     | `punch-plan`   | `full` |
-| 3 | Build  | [`03-build.md`](03-build.md)   | `punch-build`  | `ultra` |
-| 4 | Verify | [`04-verify.md`](04-verify.md) | `punch-verify` | evidence verbatim |
+| 3 | Build  | [`03-build.md`](03-build.md)   | `punch-build`  | `ultra` (engineers `wenyan-lite`) |
+| 4 | Test   | [`04-test.md`](04-test.md)     | `punch-test`   | `ultra`; evidence verbatim |
 | 5 | Review | [`05-review.md`](05-review.md) | `punch-review` | `full` |
 | 6 | Ship   | [`06-ship.md`](06-ship.md)     | `punch-ship`   | `full` |
 
@@ -34,7 +34,7 @@ punch-run.json → passed: true   smoke.json → checkPassRate: 1, errorRate: 0
 1. **Spec/Plan** — copy `spec.template.md` / `plan.template.md` into
    `docs/architecture/specs/`; fill Goal, Acceptance criteria, scoped task contracts.
 2. **Build** — run `punch-build` per task ID (may be documented no-op).
-3. **Verify** — `./bin/punch run <test>` must leave `reports/state/punch-run.json`
+3. **Test** — `./bin/punch run <test>` must leave `reports/state/punch-run.json`
    `passed: true`; quote verbatim.
 4. **Review → Ship** — read-only critique, then mechanical git/gh; **human merges**.
 

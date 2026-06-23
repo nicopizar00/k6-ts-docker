@@ -41,16 +41,27 @@ The `.claude/commands/*` wraps are **thin pointers**; this table is the contract
 |---|---|---|---|
 | `/spec`     | `.github/prompts/punch-spec.prompt.md`     | `punch-architect-readonly` | `lite` |
 | `/plan`     | `.github/prompts/punch-plan.prompt.md`     | `punch-planner`            | `full` |
-| `/build`    | `.github/prompts/punch-build.prompt.md`    | `punch-builder` → engineer | `ultra` (sub: `wenyan`) |
-| `/test`     | `.github/prompts/punch-test.prompt.md`     | `punch-verifier`           | `ultra` (sub: `wenyan`) |
+| `/build`    | `.github/prompts/punch-build.prompt.md`    | `punch-builder` → engineer | `full` (sub: `wenyan-lite`) |
+| `/test`     | `.github/prompts/punch-test.prompt.md`     | `punch-test-engineer`      | `ultra` (sub: `wenyan`) |
 | `/review`   | `.github/prompts/punch-review.prompt.md`   | `punch-reviewer`           | `full` |
 | `/ship`     | `.github/prompts/punch-ship.prompt.md`     | `punch-reviewer`           | `full` |
 | `/document` | `.github/prompts/punch-document.prompt.md` | `punch-ai-governance`      | `lite` (`ultra` status only) |
 | `/init`     | `.github/prompts/punch-init.prompt.md`     | `punch-ai-governance` (enforced) | `lite` |
 
-`/verify` (`.github/prompts/punch-verify.prompt.md`, `punch-verifier`) and
 `@punch-ai-governance` audits are reachable the same way — load the prompt/agent
 and obey it; a dedicated command wrap is optional.
+
+## Stop & hand off to `/punch-plan`
+
+Guard (and only Guard) stops the current flow and hands off to `/punch-plan` in
+exactly two cases:
+
+- **A — a user decision is required** (ambiguity Guard cannot resolve from the
+  request, code, or `.github/` canon).
+- **B — human-facing output would be in `wenyan`** (wenyan is sub-agent-only;
+  leaking it to a human is a violation — stop, don't emit it).
+
+Do not hard-overwrite the global caveman config to handle either case.
 
 ## No-break rules (preserve Copilot First)
 

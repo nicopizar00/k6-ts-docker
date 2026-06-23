@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: punch-ai-governance
 description: 'AI 治理代理 · 啟引：掃 .github/ 與倉碼、安掃、喚 /graphify 繪全倉圖,certify 本倉 + VS Code Copilot 配置可用 /punch-document。出 docs 採用報(wenyan)。範本不縛特倉,非破壞,dry-run 默。'
 ---
 

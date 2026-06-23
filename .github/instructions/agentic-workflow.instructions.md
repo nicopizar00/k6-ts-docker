@@ -15,7 +15,7 @@ Walkthrough: [`docs/ai/workflow.md`](../../docs/ai/workflow.md).
 | Spec     | Ask | spec doc only (if any) | broad |
 | Plan     | Ask (Plan discipline) | plan doc only (if any) | broad |
 | Build    | Agent (scoped) | allowed paths only | allowed + read-only |
-| Verify   | Agent / Ask | only patches in scope | narrow |
+| Test     | Agent / Ask | only patches in scope | narrow |
 | Review   | Ask | none | the diff + plan |
 | Ship     | Agent (mechanical only) | git + gh only | the diff |
 
@@ -28,9 +28,9 @@ Spec absorbs former Define phase (opens with clarify/refine step).
 - **Build is edit-limited.** Every Build prompt declares allowed /
   read-only / forbidden paths. Agent refuses touch anything
   outside `allowed`.
-- **Verify runs project commands.** Prefer `./bin/punch` over ad-hoc
+- **Test runs project commands.** Prefer `./bin/punch` over ad-hoc
   `docker run` or host `k6`. See
-  [`punch-verify`](../prompts/punch-verify.prompt.md).
+  [`punch-test`](../prompts/punch-test.prompt.md).
 - **Review evaluates risk, correctness, boundary violations.**
   Read-only critique against Plan. Activates
   [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)

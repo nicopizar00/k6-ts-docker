@@ -19,7 +19,7 @@ Punch use **Ask** and **Agent** as primary modes, treat **Plan** as Ask-Mode dis
 | Spec   | Ask | `punch-architect-readonly` | Clarify (former Define) + write spec doc. |
 | Plan   | Ask (Plan discipline) | `punch-planner` | Output is plan, not product edits. |
 | Build  | Agent | matching `punch-builder-*` | One scoped task, autonomous edit. |
-| Verify | Agent (run) or Ask (interpret) | `punch-verifier` | Run `./bin/punch` need Agent; read result is Ask. |
+| Test   | Agent (run) or Ask (interpret) | `punch-test-engineer` | Run `./bin/punch` need Agent; read result is Ask. |
 | Review | Ask | `punch-reviewer` | Read-only critique. |
 | Ship   | Agent (mechanical) | `punch-reviewer` | git + gh commands only — no logic edits. |
 

@@ -10,11 +10,11 @@ description: Phase 6 — Review. Read-only critique of the diff against the Plan
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
 diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment; diff, evidence, verdict verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
-Verify passed. Before open or merge PR, audit diff for
+Test passed. Before open or merge PR, audit diff for
 correctness, simplicity, scope discipline, boundary compliance,
 lifecycle hygiene. Dedicated security pass on diffs touching
 `src/services/**`, env, or `docker/**` → invoke `@security-auditor`.
@@ -23,7 +23,7 @@ lifecycle hygiene. Dedicated security pass on diffs touching
 
 - Diff (working tree, branch vs `main`, or PR URL).
 - Plan task(s) that drove change.
-- Verify report.
+- Test report.
 
 ## What to do
 
@@ -57,10 +57,22 @@ Review report with:
 - **Files changed** — list.
 - **Boundary compliance** — pass or specific violations.
 - **Risk assessment** — one paragraph.
-- **Validation coverage** — Verify evidence link + pass/fail.
+- **Validation coverage** — Test evidence link + pass/fail.
 - **Unintended coupling** — none, or specifics.
 - **Missing docs** — none, or specifics.
 - **Required follow-ups** — none, or numbered list.
+
+## Delegation (bounded workers only)
+
+`punch-reviewer` is the Review coordinator. It may spawn **read-only** cavecrew
+leaf workers (depth-1) for bounded passes over a large diff:
+[`cavecrew-investigator`](../agents/cavecrew-investigator.agent.md) (locate the
+diff's touched defs / tests) and
+[`cavecrew-reviewer`](../agents/cavecrew-reviewer.agent.md) (compact per-file
+diff smoke check). **Not** `cavecrew-builder` — reviewer has no edit tool, so an
+editing worker is not ⊆ its scope. Workers inherit reviewer's read-only scope by
+injected brief; findings feed the review — the Approve / Request Changes
+**verdict stays the reviewer's own**.
 
 ## Validation gate
 

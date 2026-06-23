@@ -1,7 +1,7 @@
-# Verify — <topic>
+# Test — <topic>
 
-> **Template.** Verify report. Pattern source:
-> `.github/prompts/punch-verify.prompt.md`. **Evidence quoted verbatim;** prose `lite`.
+> **Template.** Test report. Pattern source:
+> `.github/prompts/punch-test.prompt.md`. **Evidence quoted verbatim;** prose `lite`.
 
 - **Commands run** — <each with exit code>
   - `./bin/punch doctor` → exit <N>

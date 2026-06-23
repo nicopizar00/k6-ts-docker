@@ -24,6 +24,12 @@ It owns:
 - Cross-reference health: every link in `prompt-registry.md`,
   `skill-registry.md`, `AGENTS.md`, and `copilot-instructions.md`
   resolves; every asset referenced exists.
+- Delegation-depth integrity: every `agents:` roster stays depth-1 — only a
+  phase coordinator (`punch-builder` / `punch-reviewer` / `punch-test-engineer`)
+  lists sub-agents; engineers and `cavecrew-*` workers carry empty / absent
+  `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
+  coordinator that lists it (so `cavecrew-builder`'s `edit/editFiles` keeps it
+  Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
 
 It does **not** own:
@@ -96,9 +102,9 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
      read-only, and forbidden paths.
    - Every agent file lists allowed and forbidden behavior.
 4. **Lifecycle alignment.**
-   - Each lifecycle phase (Spec, Plan, Verify, Review, Ship) has
-     exactly one prompt (Spec absorbs the former Define; `punch-test` is a
-     Verify companion).
+   - Each lifecycle phase (Spec, Plan, Test, Review, Ship) has
+     exactly one prompt (Spec absorbs the former Define; `punch-test` is the
+     Test/verification phase, agent `punch-test-engineer` — no separate Verify).
   - Build has a single `punch-build` prompt and a dispatcher that routes to domain engineers.
    - Every prompt's "Owner skill" line points at an existing skill.
    - Every prompt's "Agent" line points at an existing agent.

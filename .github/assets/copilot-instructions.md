@@ -17,7 +17,7 @@
 
 ## 生命週期（lifecycle）
 
-Spec → Plan → Build → Verify → Review → Ship。各階用 `prompts/` 對應 prompt，守其 mode（Ask 唯讀；Agent 方寫）。
+Spec → Plan → Build → Test → Review → Ship。各階用 `prompts/` 對應 prompt，守其 mode（Ask 唯讀；Agent 方寫）。
 
 ## Hub-Spoke
 

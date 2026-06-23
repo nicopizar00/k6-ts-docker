@@ -12,8 +12,8 @@
 - **倉構**：`src/services/`(reference 服務) · `src/tests/`(k6 TS) · `src/punch/`(編排) · `docker/` · `.github/`(workflows / prompts / skills / instructions / agents)。
 - **Docker First**：build / test 皆居 Docker;勿假設 host 有 node / k6。
 - **執行鏈**：TS → esbuild(Docker 內) → k6 image → run → `reports/`。
-- **生命週期**：Spec → Plan → Build → Verify → Review → Ship。一階一 prompt(`.github/prompts/`) + 一 agent(`.github/agents/`);Build 由 `punch-builder` dispatcher 派 `punch-runtime-engineer` / `punch-performance-test-engineer`。
-- **驗證**：每 Verify run 出 `reports/state/punch-run.json`。
+- **生命週期**：Spec → Plan → Build → Test → Review → Ship。一階一 prompt(`.github/prompts/`) + 一 agent(`.github/agents/`);Build 由 `punch-builder` dispatcher 派 `punch-runtime-engineer` / `punch-performance-test-engineer`。
+- **驗證**：每 Test run 出 `reports/state/punch-run.json`。
 
 正源(hub)= `.github/copilot-instructions.md`。
 

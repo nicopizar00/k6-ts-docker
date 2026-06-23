@@ -23,7 +23,7 @@ this agent's output literally defines what Build is allowed to touch.
 
 - Spec — that is the architect-readonly persona's territory.
 - Build — this agent does not implement.
-- Verify / Review / Ship — wrong persona.
+- Test / Review / Ship — wrong persona.
 
 ## Allowed behavior
 
@@ -44,7 +44,7 @@ this agent's output literally defines what Build is allowed to touch.
 - Producing tasks that cross architectural layers without flagging them
   as **integration tasks** and naming the layer order.
 - Producing tasks without a validation command. Every task must say how
-  Verify will confirm it works.
+  Test will confirm it works.
 
 ## Plan output contract
 
@@ -58,8 +58,8 @@ For each task:
 | Read-only context paths | glob list |
 | Forbidden paths | glob list (must include any layer the task does not own) |
 | Expected diff size | rough line count |
-| Validation commands | the official Punch commands Verify will run |
-| Rollback notes | how to undo if Verify fails |
+| Validation commands | the official Punch commands Test will run |
+| Rollback notes | how to undo if Test fails |
 | Human checkpoint | "human approval required before Build" |
 | Build prompt | which of the 5 build-* prompts handles it |
 
@@ -88,4 +88,4 @@ Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipl
 
 ## Caveman comms
 
-Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman **privileged** — lead with normal prose for judgment-heavy work; see [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only.

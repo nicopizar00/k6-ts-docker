@@ -12,7 +12,7 @@
   - <...>
 - **Affected layers** — <which `docs/architecture/punch-boundaries.md` layer(s) own this>
 - **Artifact / log / reporting implications** — <explicit, even if "none">
-- **Acceptance criteria** — <conditions Verify assert>
+- **Acceptance criteria** — <conditions Test assert>
   1. <...>
 
 **Gate:** approved when Goal, Non-goals, Acceptance criteria agreed → Plan.

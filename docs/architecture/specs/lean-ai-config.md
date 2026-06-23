@@ -22,7 +22,7 @@ prompts" references in always-on memory, `copilot-instructions.md` bloat, and
 See the active plan. Summary: make `punch-build-caveman/SKILL.md` the canonical
 source; collapse every restatement to a pointer; set `/punch-build` + `/punch-test`
 default `ultra` with build/test **execution sub-agents** at `wenyan`; add an
-enforced Operating-comms section to `/punch-test`; reconcile ADR 0003 + registries.
+enforced Operating-comms section to `/punch-test`; reconcile registries.
 
 ## Wave 2 — Fix stale architecture (factual)
 
@@ -66,9 +66,9 @@ non-graph evidence (host `graphify` not required) — **clean**:
 
 - Frontmatter completeness · registry parity (skills/prompts/agents) · cross-
   reference & link integrity · no phase-named skills — all pass.
-- Caveman guidance is **single-source**: the full never-compress evidence list
-  lives only in `punch-build-caveman/SKILL.md`; prompts, agents,
-  `copilot-instructions.md`, and ADR 0003 carry pointers / short summaries.
+- Caveman guidance is **single-source**: the policy lives only in
+  `punch-build-caveman/SKILL.md`; prompts, agents, and `copilot-instructions.md`
+  carry pointers / short summaries.
 - Accepted (not drift): `punch-builder` declares boundaries via Routing/Delegation
   rules rather than Allowed/Forbidden headings (dispatcher shape).
 

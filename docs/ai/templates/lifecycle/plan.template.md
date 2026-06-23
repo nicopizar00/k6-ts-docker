@@ -13,8 +13,8 @@
 - **Read-only context paths** — <globs>
 - **Forbidden paths** — <globs; must list every layer task not own>
 - **Expected diff size** — <~N lines>
-- **Validation commands** — <official `./bin/punch …` commands Verify run>
-- **Rollback notes** — <how undo if Verify fail>
+- **Validation commands** — <official `./bin/punch …` commands Test run>
+- **Rollback notes** — <how undo if Test fail>
 - **Human checkpoint** — human approval needed before Build
 - **Build prompt** — `punch-build`
 

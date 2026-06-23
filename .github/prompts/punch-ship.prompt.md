@@ -10,7 +10,7 @@ description: Phase 7 — Ship. Mechanical finalization; human approves merge.
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
 **Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Git/`gh` commands, commit/PR text, Verify evidence verbatim; ship-readiness summary persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Ship-readiness summary persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -20,7 +20,19 @@ Review approved change. Ship handles mechanical steps: commit, push, open PR, **
 
 - Approved Review report.
 - Branch + target base branch (default `main`).
-- Verify evidence path.
+- Test evidence path.
+
+## Pre-ship fan-out (parallel, read-only)
+
+Before any git step, fan out **in parallel** to the trio for a final gate:
+
+- [`code-reviewer`](../agents/code-reviewer.agent.md) — 5-dimension diff review.
+- [`security-auditor`](../agents/security-auditor.agent.md) — secrets/PII/input/supply-chain pass.
+- [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — independent test verdict (`./bin/punch run`).
+
+Each returns its own verdict. **Any REQUEST CHANGES / FAIL → stop, do not commit**,
+return findings (→ Plan/Build). Ship proceeds only when all three clear (or a human
+explicitly overrides). The trio are leaves here — they report, they don't act.
 
 ## What to do
 
@@ -34,7 +46,7 @@ Review approved change. Ship handles mechanical steps: commit, push, open PR, **
 4. `git commit` — signing/hooks intact (never `--no-verify`).
 5. `git push -u origin <branch>` if branch local.
 6. `gh pr create` using `.github/PULL_REQUEST_TEMPLATE.md` checklist
-   literally. Test plan section points at Verify evidence.
+   literally. Test plan section points at Test evidence.
 7. Produce **ship-readiness summary** (see below), include
    in PR description or chat reply.
 8. Return PR URL.
@@ -51,6 +63,7 @@ Completed tasks:
 Validation status:
   - reports/state/punch-run.json: passed: <bool>
   - Tests run: <list>
+  - Pre-ship fan-out: code-reviewer <APPROVE|CHANGES> · security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
 
 Known risks:
   - <one-liner or "none">
@@ -77,5 +90,5 @@ Recommendation: ship | hold
 
 ## Validation gate
 
-Pipeline (GitHub Actions) re-runs Verify in CI. Human reviews PR
+Pipeline (GitHub Actions) re-runs Test in CI. Human reviews PR
 and merges. Ship complete when PR merged by human.

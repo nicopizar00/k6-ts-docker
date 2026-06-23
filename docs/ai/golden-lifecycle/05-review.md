@@ -1,4 +1,4 @@
-# Review — health-smoke as the canonical Verify gate
+# Review — health-smoke as the canonical Test gate
 
 > **Golden artifact (filled, real).** Phase 5. Pattern source:
 > `.github/prompts/punch-review.prompt.md`. Caveman `full`.
@@ -11,7 +11,7 @@
 - **Risk assessment** — Minimal. Verification-only task, no mutation; only risk
   environmental (Docker down) — would classify run as *environment*, not code
   failure. Run green.
-- **Validation coverage** — Verify evidence [`04-verify.md`](04-verify.md) +
+- **Validation coverage** — Test evidence [`04-test.md`](04-test.md) +
   [`evidence/punch-run.json`](evidence/punch-run.json): `passed: true`,
   `checkPassRate: 1`, `errorRate: 0`.
 - **Unintended coupling** — none.

@@ -1,7 +1,7 @@
-# Verify — health-smoke as the canonical Verify gate
+# Test — health-smoke as the canonical Test gate
 
 > **Golden artifact (filled, real).** Phase 4 — evidence anchor.
-> Source: `punch-verify.prompt.md`. Evidence verbatim; curated/anonymized.
+> Source: `punch-test.prompt.md`. Evidence verbatim; curated/anonymized.
 
 - **Commands run** — `./bin/punch doctor` → exit `0`; `./bin/punch run smoke` → exit `0`
 - **Artifacts produced** — [`evidence/punch-run.json`](evidence/punch-run.json) ·

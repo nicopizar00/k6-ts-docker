@@ -8,7 +8,7 @@
 - **Files changed** — <list>
 - **Boundary compliance** — pass | <specific violations vs `punch-boundaries.md`>
 - **Risk assessment** — <one paragraph>
-- **Validation coverage** — <link to Verify evidence + pass/fail>
+- **Validation coverage** — <link to Test evidence + pass/fail>
 - **Unintended coupling** — none | <specifics>
 - **Missing docs** — none | <specifics>
 - **Required follow-ups** — none | <numbered list>

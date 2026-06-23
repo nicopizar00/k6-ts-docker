@@ -11,7 +11,7 @@ description: Spec — clarify and refine the request, then convert it into goals
 + [`idea-refine`](../skills/idea-refine/SKILL.md) (clarify step, when idea vague)
 + matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect-readonly`](../agents/punch-architect-readonly.agent.md)
-**Operating comms:** Caveman **`lite`** (per-phase canon). Spec docs persistent — no Wenyan; goals/constraints/acceptance criteria verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`lite`** (per-phase canon). Spec docs persistent — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -40,12 +40,12 @@ problem statement. Then specify:
    [`punch-boundaries.md`](../../docs/architecture/punch-boundaries.md)).
 6. Call out artifact / log / reporting implications. Any artifact path or
    schema change? Terminal noise change? Update reporting contract if so.
-7. Define acceptance criteria — conditions Verify will check.
+7. Define acceptance criteria — conditions Test will check.
 
 ## Expected output
 
-Spec doc (in chat, or written to `docs/` if user requests persistence).
-Contains:
+Spec doc written to `docs/architecture/specs/<topic>.md`, following
+[`spec.template.md`](../../docs/ai/templates/lifecycle/README.md). Contains:
 
 - **Goal** — one sentence.
 - **Non-goals** — bullet list.
@@ -53,7 +53,7 @@ Contains:
 - **Technical constraints** — what implementation must respect.
 - **Affected layers** — which boundary(ies) own this.
 - **Artifact / log / reporting implications** — explicit, even if "none".
-- **Acceptance criteria** — what Verify will assert.
+- **Acceptance criteria** — what Test will assert.
 
 ## Validation gate
 
@@ -61,6 +61,6 @@ Spec approved when goal, non-goals, acceptance criteria agreed. Plan = next phas
 
 ## Edits permitted
 
-Only spec doc itself, when user explicitly asks persist it
-(e.g. under `docs/architecture/specs/<topic>.md`). Else this prompt produces
-prose only.
+Only the spec doc at `docs/architecture/specs/<topic>.md` (from
+`spec.template.md`). No product code. This doc is later read by Plan and the
+Build agents.

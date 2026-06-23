@@ -12,8 +12,7 @@ description: Init — one-time, non-destructive bootstrap scan that guards repo 
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) — **enforced**.
 Phase runs **only** under that agent's full admin over `.github/` and
 `docs/` (incl. write target `docs/ai/governance/init/`). No other agent runs Init.
-**Operating comms:** Caveman **`lite`**; evidence (readiness, exit codes,
-generated maps) quoted verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`lite`**. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -47,13 +46,20 @@ item resolved or explicitly deferred by human:
   (worked example: [`docs/ai/golden-lifecycle/`](../../docs/ai/golden-lifecycle/README.md)).
 - ⚠️ **assets marked `adapt`/`review`/`duplicate`** — rebind `punch-*` → local key
   / human-review before use (via `/punch-document`, not here).
+- ⚠️ **caveman/cavecrew vendor skills missing** — Build comms + the engineer→
+  cavecrew delegation chain need them installed (manual). Required Punch assets +
+  install command: [`.github/.ai-upstream/README.md`](../.ai-upstream/README.md).
+- ⚠️ **VS Code sub-agent setting off** — the engineer→cavecrew→worker chain needs
+  `chat.subagents.allowInvocationsFromSubagents: true` in VS Code settings.
+  Markdown cannot set it; warn the user. If off, the `wenyan-full`/`wenyan-ultra`
+  tiers do not fire — Build still runs (Builder → one engineer, no sub-spawn).
 - ℹ️ **Graphify readiness** — optional; never blocks Init.
 - ℹ️ **doc/tracking debt candidates** — queue for `/punch-document`.
 
 ## Expected output
 
 - Init readiness summary: governance key + source, `overall.status`,
-  readiness table, exit code — verbatim.
+  readiness table, exit code.
 - **pending guard list** above with each item state (resolved / deferred).
 - One next command: `/punch-document` (reconcile) or first lifecycle phase
   (`/punch-spec`) once `adoption_ready`/`document_ready`.

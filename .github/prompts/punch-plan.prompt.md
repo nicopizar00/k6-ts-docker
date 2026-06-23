@@ -10,7 +10,7 @@ description: Phase 3 — Plan. Convert a Spec into scoped tasks with explicit al
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + matching domain skill(s);
 on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 **Agent:** [`punch-planner`](../agents/punch-planner.agent.md)
-**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs persistent — no Wenyan; task contracts/paths/validation commands verbatim. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs persistent — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -33,8 +33,8 @@ Have approved Spec, need partition into tasks Build executes one at a time. Plan
    - **Read-only context paths** — globs.
    - **Forbidden paths** — globs (must include every layer task does not own).
    - **Expected diff size** — rough line count.
-   - **Validation commands** — official Punch commands Verify runs.
-   - **Rollback notes** — how to undo if Verify fails.
+   - **Validation commands** — official Punch commands Test runs.
+   - **Rollback notes** — how to undo if Test fails.
    - **Human checkpoint** — "human approval required before Build".
    - **Build prompt** — which of 5 build-* prompts handles it.
 
@@ -44,7 +44,9 @@ Have approved Spec, need partition into tasks Build executes one at a time. Plan
 
 ## Expected output
 
-Plan document (in chat, or written to `docs/` if requested) with every task contract plus top-level summary:
+Plan document written to `docs/architecture/specs/plan-<topic>.md`, following
+[`plan.template.md`](../../docs/ai/templates/lifecycle/README.md), with every task
+contract plus top-level summary:
 
 - **Goal** (from Spec).
 - **Tasks** — full per-task contract.
@@ -58,4 +60,6 @@ Plan approved when human confirms. Build prompts refuse to run without approved 
 
 ## Edits permitted
 
-Only plan doc itself, when user explicitly asks to persist. This prompt produces prose by default.
+Only the plan doc at `docs/architecture/specs/plan-<topic>.md` (from
+`plan.template.md`). No product code. This doc is the contract Build executes and
+the Build agents read.

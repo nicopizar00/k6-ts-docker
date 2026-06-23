@@ -1,14 +1,14 @@
 ---
-agent: punch-verifier
-description: Test phase — drive a change with the Prove-It / TDD discipline at the k6 check & threshold level, executed through ./bin/punch.
+agent: punch-test-engineer
+description: Test phase — the canonical, independent test gate for the current change. Prove-It / TDD at the k6 check & threshold level via ./bin/punch; returns PASS | FAIL | BLOCKED.
 ---
 # Punch — Test
 
-**Lifecycle phase:** Test (TDD/Prove-It companion to Verify)
+**Lifecycle phase:** Test (TDD/Prove-It; the verification phase — addyosmani `/test`)
 **Mode:** Agent (runs `./bin/punch`; no code authoring)
 **Owner skill:** [`test-driven-development`](../skills/test-driven-development/SKILL.md) (method)
 + [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md) (k6 domain)
-**Agent:** [`punch-verifier`](../agents/punch-verifier.agent.md)
+**Agent:** [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — the independent test gate; the only final PASS/FAIL authority. Builder may lazy-load `test-driven-development` while building, but does not own this gate.
 
 ## When to use
 
@@ -35,26 +35,34 @@ Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-p
 
 ## Expected output
 
-- Test (check/threshold) used.
-- RED evidence (command + failing result) and, after Build, GREEN evidence.
-- `reports/state/punch-run.json` `passed:` value.
-- One sentence next step (continue to Verify/Review, or return to Plan).
+- **Verdict: PASS | FAIL | BLOCKED.**
+- Test (check/threshold) used; commands run with exit codes.
+- RED evidence (command + failing result) and, after Build, GREEN evidence;
+  `reports/state/punch-run.json` `passed:` value.
+- Failures with file/check/threshold references; missing coverage (or "none").
+- Handoff: Review on PASS · Plan/Build if product code must change · human on
+  environment/pre-existing failure.
+
+## Delegation (bounded worker)
+
+`punch-test-engineer` is the Test coordinator. It may spawn one **read-only**
+cavecrew leaf worker (depth-1),
+[`cavecrew-investigator`](../agents/cavecrew-investigator.agent.md), to locate
+the change's `src/tests/*.ts` checks/thresholds and coverage gaps. It only
+*locates*: the **PASS | FAIL | BLOCKED verdict stays this gate's own**, never
+delegated.
 
 ## Validation gate
 
-Clean RED→GREEN transition with `reports/state/punch-run.json` recording passing run. Full end-to-end evidence = [`punch-verify`](punch-verify.prompt.md).
+Clean RED→GREEN transition with `reports/state/punch-run.json` recording the passing run — the end-to-end evidence gate.
 
 ## Boundary rules
 
 - Never run `docker run`/`docker compose` directly or k6 on host — `./bin/punch` only.
 - Never edit source to pass test — authoring/fixing = Build task.
 
-## Operating comms (enforced)
+## Operating comms
 
-Caveman enforced for Test. Activate `caveman` Agent Skill **once** on entering phase (per `using-agent-skills`), then rely on persistence:
-
-- **Governance tier** (this prompt + `punch-verifier` judge): **`ultra`**.
-- **Execution tier** (test-execution sub-agent path): **`wenyan`** — max efficiency.
-- **Evidence never compressed** — RED/GREEN output, commands, `reports/state/punch-run.json` values quoted verbatim in any mode.
-
-Full policy (tiers, modes, evidence list, Auto-Clarity, priority order) lives in [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md) + [ADR 0003](../../docs/ai/decisions/0003-caveman-build-comms.md) — not restated here.
+Caveman **`ultra`** for Test; execution sub-agents `wenyan`. Evidence (RED/GREEN
+output, commands, `reports/state/punch-run.json`) verbatim. Canon:
+[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
