@@ -28,16 +28,16 @@ Init **certifies readiness**; it does **not** reconcile — doc/asset reconcilia
 Read the live Copilot assets, then grade each check **PASS / WARN / BLOCKED**.
 Source of truth for the required set: the Copilot asset layout itself plus the
 registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
-[`skill-registry.md`](../../docs/ai/skill-registry.md),
-[`AGENTS.md`](../../AGENTS.md)) — read inventory, do not hard-code counts.
+[`skill-registry.md`](../../docs/ai/skill-registry.md)) plus the
+[`.github/agents/`](../agents/) roster — read inventory, do not hard-code counts.
 
 1. **Prompt commands.** Every lifecycle + orthogonal command exists in
    `.github/prompts/` with the **`punch-` prefix** and valid frontmatter
    (`agent:` + `description:`). Required: `punch-spec`, `punch-plan`,
    `punch-build`, `punch-test`, `punch-review`, `punch-ship`, `punch-document`,
    `punch-init`. Missing / non-prefixed / no-frontmatter → **BLOCKED**.
-2. **Agents.** Every agent in the `AGENTS.md` roster exists in `.github/agents/`
-   with `name:` + `description:`; the `cavecrew-*` workers are present. Init is
+2. **Agents.** Every `.github/agents/*.agent.md` has `name:` + `description:`;
+   the `cavecrew-*` workers are present. Init is
    owned solely by `punch-ai-governance` (`disable-model-invocation: true`).
    Any agent introduced **for Init** outside that ownership → **BLOCKED**.
 3. **Skills.** Every `skill-registry.md` row maps to a `.github/skills/*/SKILL.md`
@@ -65,8 +65,9 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    config, a non-Copilot agent tool) → **BLOCKED**.
 7. **No external runtime canon.** No asset may declare `CLAUDE.md`, Claude Code,
    Cloud Code, a Python runtime, or any external config as **canonical for Punch**.
-   Any such declaration → **BLOCKED**. (`CLAUDE.md` / `.claude/**` may exist as a
-   *reuse bridge*, never as Punch's source of truth.)
+   Any such declaration → **BLOCKED**. The GitHub Copilot asset layout
+   (`.github/**` + `docs/ai/**`) is Punch's only source of truth; non-native
+   files belong in `.github/assets/resolve/`, not referenced as canon.
 8. **Allowed-dependency rule.** Any dependency outside the Copilot asset layout
    (`.github/**`) must come through the **accepted AI-Ingest path** and its rules
    (`.ai-upstream` manifest, Copilot-scoped, kept verbatim). A dependency outside
@@ -113,9 +114,9 @@ one-line reason — then:
   broad fixer. Scripts under the repo are **not** mutable Init assets — Init does
   not embed or edit Python, shell, `setup.py`, or launchers.
 - **Copilot-first.** Checks only the assets Punch needs to operate through VS Code
-  GitHub Copilot. External tools (Claude Code, Cloud Code, graphify, the vendor
-  pack) are in scope **only** via the accepted AI-Ingest path — never as Punch's
-  canonical runtime.
+  GitHub Copilot. Vendor tools (graphify, the Caveman/cavecrew pack) are in scope
+  **only** via the accepted AI-Ingest path; non-Copilot agent runtimes (Claude
+  Code, Cloud Code) are out of scope entirely.
 - **Lifecycle preserved.** Init certifies; it does not alter the Spec → Plan →
   Build → Test → Review → Ship → Document lifecycle it gates.
 

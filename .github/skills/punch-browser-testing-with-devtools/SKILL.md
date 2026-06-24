@@ -12,7 +12,7 @@ evidence (`reports/state/punch-run.json`, `reports/<test>.{json,html}`) as the H
 suite. They stay **separate** from HTTP abstractions.
 
 > **Deferred.** `src/tests/browser-smoke.ts.example` is a placeholder — **do not
-> build it** until a Plan task activates k6 Browser ([CLAUDE.md](../../../CLAUDE.md)).
+> build it** until a Plan task activates k6 Browser ([`.github/copilot-instructions.md`](../../copilot-instructions.md)).
 > This skill is the method for *when* that task lands.
 
 ## When to use

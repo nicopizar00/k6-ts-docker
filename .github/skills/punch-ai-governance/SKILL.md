@@ -1,7 +1,7 @@
 ---
 name: punch-ai-governance
 description: Audits AI configuration — instructions, prompts, skills, agents, lifecycle docs — for boundary compliance, scope discipline, handoff hygiene, frontmatter contracts, and cross-reference drift.
-applies-to: .github/**, docs/**, AGENTS.md, CLAUDE.md, README.md
+applies-to: .github/**, docs/**, README.md
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -22,7 +22,7 @@ It owns:
 - Handoff hygiene: each prompt's "Owner skill" and agent line up; each
   agent's allowed/forbidden behavior matches the prompts that activate it.
 - Cross-reference health: every link in `prompt-registry.md`,
-  `skill-registry.md`, `AGENTS.md`, and `copilot-instructions.md`
+  `skill-registry.md`, and `copilot-instructions.md`
   resolves; every asset referenced exists.
 - Delegation-depth integrity: every `agents:` roster stays depth-1 — only a
   phase coordinator (`punch-builder` / `punch-code-reviewer` / `punch-test-engineer`
@@ -40,8 +40,8 @@ It does **not** own:
 
 - Repository code (Python, TS, Docker) — that is the domain skills'
   territory.
-- The architecture itself — that lives in `CLAUDE.md` and
-  `docs/architecture/`.
+- The architecture itself — that lives in `punch-architecture.instructions.md`
+  and `docs/architecture/`.
 
 ## Replaces
 
@@ -52,9 +52,10 @@ hygiene* on a deliberately larger asset set (domain + lifecycle skills, the
 agent roster, and the lifecycle prompts — **live inventory in the registries**,
 not hard-coded here). The justification for lifting the cap, and the current
 counts, live in
-[`docs/ai/skill-registry.md`](../../../docs/ai/skill-registry.md),
-[`docs/ai/prompt-registry.md`](../../../docs/ai/prompt-registry.md), and
-[`AGENTS.md`](../../../AGENTS.md).
+[`docs/ai/skill-registry.md`](../../../docs/ai/skill-registry.md) and
+[`docs/ai/prompt-registry.md`](../../../docs/ai/prompt-registry.md); the agent
+roster lives in [`.github/agents/`](../../agents/) and the
+[`copilot-instructions.md`](../../copilot-instructions.md) lifecycle table.
 
 It also **subsumes the upstream `scripts/validate-skills.js`** (a Node frontmatter
 validator): its checks — valid `name`/`description`, frontmatter completeness,
@@ -67,7 +68,7 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 - The Review phase runs against a diff that includes AI configuration.
 - Periodic governance review (quarterly cadence recommended).
 
-**Not for:** product code (Python/TS/Docker — the domain skills) or the architecture itself (`CLAUDE.md`, `docs/architecture/`).
+**Not for:** product code (Python/TS/Docker — the domain skills) or the architecture itself (`punch-architecture.instructions.md`, `docs/architecture/`).
 
 ## Inputs expected
 
@@ -99,7 +100,8 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
      `docs/ai/skill-registry.md`, and vice versa.
    - Every file in `.github/prompts/*.prompt.md` has a row in
      `docs/ai/prompt-registry.md`, and vice versa.
-   - Every file in `.github/agents/*.agent.md` is listed in `AGENTS.md`.
+   - Every file in `.github/agents/*.agent.md` is referenced in the
+     `copilot-instructions.md` lifecycle table or `docs/ai/prompt-registry.md`.
 3. **Boundary declarations.**
    - Every Build prompt
      (`.github/prompts/punch-build.prompt.md`) lists allowed,
@@ -117,7 +119,7 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
      reference resolves to an existing file.
 6. **Duplication / conflict.**
    - No verbatim rule appears in two files.
-   - No path instruction contradicts `CLAUDE.md`,
+   - No path instruction contradicts `.github/copilot-instructions.md`,
      `punch-architecture.instructions.md`, or
      `agentic-workflow.instructions.md`.
 7. **Mode discipline.**
@@ -185,8 +187,8 @@ drift — see findings"**.
   need a Plan, a registry entry, and a `punch-ai-governance` pass
   before merge.
 - **Cross-link, don't duplicate.** Any rule that already exists in
-  `CLAUDE.md`, `punch-architecture.instructions.md`, or another file is
-  referenced, not restated.
+  `.github/copilot-instructions.md`, `punch-architecture.instructions.md`, or
+  another file is referenced, not restated.
 
 ## Why this is a separate skill
 

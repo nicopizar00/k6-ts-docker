@@ -1,5 +1,5 @@
 ---
-applyTo: ".github/**,docs/ai/**,CLAUDE.md,AGENTS.md"
+applyTo: ".github/**,docs/ai/**"
 description: How the six-phase agentic lifecycle is enforced in this repo.
 ---
 # Agentic Workflow — Path Instructions
@@ -69,5 +69,4 @@ If question 1 or 2 unanswerable concretely, answer is "don't add it".
 
 ## When this file activates
 
-Always — for any change under `.github/`, `docs/ai/`, `CLAUDE.md`, or
-`AGENTS.md`.
+Always — for any change under `.github/` or `docs/ai/`.

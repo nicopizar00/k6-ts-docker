@@ -103,7 +103,7 @@ transferable method:
 - **Backend bottlenecks that apply here:** N+1 or unbounded queries in `orders` →
   Postgres; missing pagination on list endpoints; synchronous heavy work in a hot
   path. Profile the slow path — don't relax the threshold (see
-  [`debugging-and-error-recovery`](../debugging-and-error-recovery/SKILL.md)).
+  [`punch-debugging-and-error-recovery`](../punch-debugging-and-error-recovery/SKILL.md)).
 - **The threshold is the performance budget** and the regression gate — keep it
   visible at the top of the test and meaningful.
 

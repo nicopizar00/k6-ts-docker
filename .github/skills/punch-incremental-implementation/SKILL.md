@@ -79,8 +79,8 @@ investing in the dependent slices.
 ### Rule 0 — Simplicity first
 
 Before writing code: "what is the simplest thing that could work?" After: can this
-be fewer lines? Are the abstractions earning their complexity? This is `CLAUDE.md`'s
-"no premature abstraction / three similar lines beat a clever helper" — implement
+be fewer lines? Are the abstractions earning their complexity? This is the repo's
+"no premature abstraction / three similar lines beat a clever helper" convention — implement
 the naive, obviously-correct version first.
 
 ### Rule 0.5 — Scope discipline

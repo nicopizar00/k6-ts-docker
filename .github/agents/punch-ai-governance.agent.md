@@ -49,9 +49,7 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 ```
 Allowed:    .github/** (ALL configs — skills, prompts, agents, instructions,
             copilot-instructions; complete admin), docs/** (all documentation,
-            incl. docs/ai/**), AGENTS.md, CLAUDE.md, README.md,
-            .claude/skills/guard/** + .claude/commands/** (Claude Code reuse
-            bridge — wiring map only; ADR 0004)
+            incl. docs/ai/**), README.md
 Read-only:  source / runtime, for context only — src/**, docker/**,
             docker-compose.yml, reports/**, graphify-out/** (read, never edit)
 Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit)
@@ -91,7 +89,7 @@ that is the engineers' domain via `punch-builder`.
 
 - Editing product/runtime code or running any command.
 - Adding a skill/prompt/agent/instruction without a registry row in the same step.
-- Restating a rule already in `CLAUDE.md` or an instruction file — cross-link instead.
+- Restating a rule already in `.github/copilot-instructions.md` or an instruction file — cross-link instead.
 
 ## Documentation mode (`/punch-document`)
 

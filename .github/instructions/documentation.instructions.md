@@ -1,17 +1,17 @@
 ---
-applyTo: "docs/**,README.md,CLAUDE.md"
+applyTo: "docs/**,README.md"
 description: Behavior rules for repository documentation.
 ---
 # Documentation — Path Instructions
 
-Scope: `README.md`, `CLAUDE.md`, everything under `docs/`.
+Scope: `README.md`, everything under `docs/`.
 
 ## Rules
 
 - **README is a doorway, not a manual.** Explain what Punch is, shortest local
   run, link into `docs/`. Detail go elsewhere.
-- **`CLAUDE.md` is the project constitution.** Changes need Plan + one-line note
-  in `docs/ai/operating-model.md` if rule moves.
+- **The always-on rules live in `.github/copilot-instructions.md`.** A doc change
+  that moves a rule needs a Plan + one-line note in `docs/ai/operating-model.md`.
 - **No duplication.**
   - Architecture: `docs/architecture.md` (folder map + execution chain) +
     `docs/architecture/punch-boundaries.md` (ownership layers).

@@ -1,6 +1,6 @@
 ---
 agent: punch-ai-governance
-description: Documentate — own and reconcile ALL of docs/ (+ .github config, AGENTS.md, CLAUDE.md, README.md) in waves. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / rewrite / archive / delete / promote.
+description: Documentate — own and reconcile ALL of docs/ (+ .github config, README.md) in waves. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / rewrite / archive / delete / promote.
 ---
 # Punch — Documentate
 
@@ -26,7 +26,7 @@ and `docs/`) owns and reconciles **entire** documentation surface:
 
 - **All human docs** — `README.md`, `docs/**` (incl. `docs/architecture/**`,
   `docs/workflows/**`, `docs/validation/**`, top-level `docs/*.md`), ADRs.
-- **All AI-facing docs** — `AGENTS.md`, `CLAUDE.md`, `docs/ai/**`, and
+- **All AI-facing docs** — `docs/ai/**` and
   `.github/` instructions / prompts / skills / agents + registries.
 
 Frozen/upstream zones (`docs/ai/history/**`, `.ai-upstream/**`, adopted-upstream

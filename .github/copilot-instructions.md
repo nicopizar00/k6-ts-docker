@@ -9,9 +9,9 @@ Rules apply **every** Copilot session this repo. Deliberately short. Detail in
 Violate = break reproducibility, safety, or trust. Stop and ask
 before bending.
 
-1. **Docker First execution** — canonical: [`CLAUDE.md` §Rules](../CLAUDE.md#rules). Never propose host-side `npm`, `k6`, or `pip` commands.
+1. **Docker First execution** — Docker is the only host requirement (plus stdlib Python 3). Never propose host-side `npm`, `k6`, or `pip` commands. Always-on contract: [`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md).
 2. **Python orchestration façade** — `bin/punch` stdlib-only Python (same source as #1). No host-side Node, npm, k6, or pip-installed package.
-3. **Validation evidence mandatory** — see [`CLAUDE.md` §For AI assistants](../CLAUDE.md#for-ai-assistants) and [`docs/workflows/validation.md`](../docs/workflows/validation.md). Change not "done" until `reports/state/punch-run.json` records run.
+3. **Validation evidence mandatory** — a change is not "done" until `reports/state/punch-run.json` records the run. Artifact + evidence contract: [`artifacts-reporting.instructions.md`](instructions/artifacts-reporting.instructions.md).
 4. **Human approves Ship.** Agent Mode MUST stop after opening PR. Merge, release, push tags = human-only.
    *WHY:* irreversible + externally visible. PR boundary = where human judgment enters.
 5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use env vars for any external base URL.
@@ -74,7 +74,7 @@ roster-bounded: cavecrew workers carry no `agents:`.
    [`docs/ai/copilot-mode-mapping.md`](../docs/ai/copilot-mode-mapping.md).
 8. **No duplication of AI guidance.** New instructions, prompts,
    skills, or agents must not restate content already in `docs/ai/` or
-   `CLAUDE.md`. Link instead.
+   another instruction file. Link instead.
 
 ## Lifecycle entry points
 

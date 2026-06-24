@@ -1,7 +1,7 @@
 ---
 name: punch-documentation-and-adrs
 description: Records decisions and documentation — the why, not just the what. Use when making an architectural decision, changing a public command/contract, or shipping a change future engineers and agents must understand. Stack-neutral; Punch conventions live in documentation.instructions.md.
-applies-to: docs/**, CLAUDE.md, CHANGELOG.md — invoked when a change makes a decision or alters a contract; not phase-bound
+applies-to: docs/**, CHANGELOG.md — invoked when a change makes a decision or alters a contract; not phase-bound
 ---
 
 # Documentation and ADRs
@@ -19,8 +19,8 @@ Punch specifics:
   change must update both the doc and every consumer.
 - Record **decisions** as ADRs under `docs/decisions/`; the spec/plan artifacts
   for in-flight work live under `docs/architecture/specs/` (see `punch-spec-driven-development`).
-- **Docs for agents** are first-class: `CLAUDE.md` (the constitution), `docs/ai/**`
-  (operating model + registries), and `AGENTS.md` must stay accurate.
+- **Docs for agents** are first-class: `.github/copilot-instructions.md` (the
+  always-on hub) and `docs/ai/**` (operating model + registries) must stay accurate.
 
 ## Overview
 
@@ -99,7 +99,7 @@ Document known gotchas where they bite (e.g. "the k6 image ships no Chromium —
 
 ## Documentation for Agents
 
-- `CLAUDE.md` — project conventions (the constitution); keep current.
+- `.github/copilot-instructions.md` — always-on rules (the hub); keep current.
 - `docs/ai/**` — operating model, registries, model selection; update in the same
   PR that adds/removes an AI asset (the registries are the governance contract).
 - ADRs — so agents understand *why* past decisions were made and don't re-litigate them.
@@ -118,11 +118,11 @@ Document known gotchas where they bite (e.g. "the k6 image ships no Chromium —
 - An architectural decision (runtime, schema, contract) with no written rationale.
 - A changed public command / artifact path with no doc + maintenance-matrix update.
 - Commented-out code instead of deletion; weeks-old TODOs.
-- `CLAUDE.md` / `docs/ai/**` drifted from the actual config.
+- `.github/copilot-instructions.md` / `docs/ai/**` drifted from the actual config.
 
 ## Verification
 
 - [ ] ADRs exist (under `docs/decisions/`) for significant, hard-to-reverse decisions.
 - [ ] `README.md` / `CHANGELOG.md` updated for public command or behavior changes.
 - [ ] The maintenance matrix cascade is honored for any contract change.
-- [ ] `CLAUDE.md` and `docs/ai/**` are current; no commented-out code left behind.
+- [ ] `.github/copilot-instructions.md` and `docs/ai/**` are current; no commented-out code left behind.

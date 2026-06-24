@@ -43,7 +43,7 @@ if imperfect. Don't block because it isn't how you'd have written it.
 ### 2. Readability & simplicity
 - Names clear and consistent with project conventions?
 - **Could this be fewer lines?** Are abstractions earning their complexity?
-  (`CLAUDE.md`: three similar lines beat a premature helper.)
+  (repo convention: three similar lines beat a premature helper.)
 - Dead code, no-op shims, `// removed` comments?
 
 ### 3. Architecture
@@ -71,7 +71,7 @@ if imperfect. Don't block because it isn't how you'd have written it.
 ~1000 lines → too large — split it
 ```
 
-Aligns with `CLAUDE.md` "small, reviewable steps". **Separate refactoring from
+Aligns with the repo's "small, reviewable steps" convention. **Separate refactoring from
 behavior change** — submit them as separate tasks. For Punch, a cross-layer change
 is an *integration task* = one Build call per layer (see `scoped-build-policy.md`).
 

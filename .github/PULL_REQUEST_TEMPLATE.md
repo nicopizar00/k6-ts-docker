@@ -18,7 +18,7 @@ Describe the change and why it is needed.
 - [ ] Artifacts produced in `reports/`, with `reports/state/punch-run.json` recording `passed: true`
 - [ ] If `src/tests/` changed: dist bundles and CI steps updated
 - [ ] If schema or DB changed: migration/seed steps included
-- [ ] Docs updated (README / AGENTS.md / CHANGELOG.md) when behavior or public interfaces change
+- [ ] Docs updated (README / CHANGELOG.md) when behavior or public interfaces change
 - [ ] Change is small and focused (one feature / fix per PR)
 
 ## Notes for reviewers

@@ -33,7 +33,7 @@ lifecycle hygiene. Dedicated security pass on diffs touching
 2. **Boundary check.** Diff respects layer ownership in
    [`punch-boundaries.md`](../../docs/architecture/punch-boundaries.md)?
    Flag cross-layer changes Plan did not authorize.
-3. **Rule check.** Diff respects `CLAUDE.md`,
+3. **Rule check.** Diff respects `.github/copilot-instructions.md`,
    `punch-architecture.instructions.md`, and path-specific
    instructions?
 4. **Duplication check.** Any AI asset, doc, or helper

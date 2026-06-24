@@ -1,6 +1,6 @@
 ---
 name: punch-code-simplification
-description: Simplifies code for clarity without changing behavior. Use during Review (the readability/simplicity axis) or Build (simplicity-first) when code works but is harder to read or extend than it should be. Stack-neutral method; CLAUDE.md is the canonical "no premature abstraction" rule.
+description: Simplifies code for clarity without changing behavior. Use during Review (the readability/simplicity axis) or Build (simplicity-first) when code works but is harder to read or extend than it should be. Stack-neutral method applying the repo's "no premature abstraction" convention.
 applies-to: lifecycle/Review + Build — invoked by punch-code-review-and-quality and punch-incremental-implementation; not path-scoped
 ---
 
@@ -13,8 +13,8 @@ This is the **method** behind the simplicity/readability axis of
 of [`punch-incremental-implementation`](../punch-incremental-implementation/SKILL.md) (Build).
 There is no dedicated prompt — it runs inside Review or Build. Punch specifics:
 
-- `CLAUDE.md` is the canonical rule ("no premature abstraction; three similar lines
-  beat a clever helper") — this skill is the *procedure* for applying it.
+- The repo convention ("no premature abstraction; three similar lines
+  beat a clever helper") is the rule — this skill is the *procedure* for applying it.
 - **Verify behavior is unchanged** by re-running `./bin/punch run <test>` —
   `reports/state/punch-run.json` must stay `passed: true` with no test edits.
 - **Scope discipline:** simplify only what the task touched (the allowed paths);
@@ -41,7 +41,7 @@ to rewrite the module anyway.
 1. **Preserve behavior exactly.** Same inputs/outputs/side-effects/errors. If unsure
    a change preserves behavior, don't make it. All existing checks must still pass
    without modification.
-2. **Follow project conventions.** Read `CLAUDE.md` and neighboring code; match its
+2. **Follow project conventions.** Read the repo conventions and neighboring code; match their
    style. Simplification that breaks consistency is churn, not improvement.
 3. **Prefer clarity over cleverness.** Explicit beats compact when compact needs a
    mental pause to parse.
@@ -129,12 +129,12 @@ regression at 2am.)
 - A "simplification" that requires editing checks/thresholds to pass (you changed behavior).
 - "Simplified" code that's longer or harder to follow than the original.
 - Removing error handling because it "looks cleaner".
-- Renaming to personal preference rather than `CLAUDE.md` conventions.
+- Renaming to personal preference rather than repo conventions.
 - Refactoring outside the task's scope without being asked.
 
 ## Verification
 
 - [ ] `./bin/punch run <test>` still `passed: true` with **no** check/threshold edits.
 - [ ] Each simplification is an incremental, reviewable change.
-- [ ] Follows `CLAUDE.md` conventions; no error handling weakened; no dead code left.
+- [ ] Follows repo conventions; no error handling weakened; no dead code left.
 - [ ] The diff is clean — no unrelated changes mixed in.

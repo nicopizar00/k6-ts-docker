@@ -24,7 +24,7 @@ It owns:
 
 It does **not** own:
 
-- The architecture itself (lives in `CLAUDE.md` and
+- The architecture itself (lives in `punch-architecture.instructions.md` and
   `docs/architecture/punch-boundaries.md`).
 - Domain rules (those live in the per-domain skills below).
 - Governance enforcement (lives in `punch-ai-governance`).
@@ -45,7 +45,7 @@ None. This skill is a primer, not a tool.
 
 ## Procedure
 
-1. Read [`CLAUDE.md`](../../../CLAUDE.md) — the constitution.
+1. Read [`.github/copilot-instructions.md`](../../copilot-instructions.md) — the always-on hub.
 2. Read [`docs/architecture/punch-boundaries.md`](../../../docs/architecture/punch-boundaries.md)
    — the ownership map.
 3. Read [`docs/ai/operating-model.md`](../../../docs/ai/operating-model.md)
@@ -82,7 +82,7 @@ Feed the agent the right context at the right time — too little and it
 hallucinates, too much and it loses focus. Punch's context hierarchy, most
 persistent first:
 
-1. `CLAUDE.md` (the constitution) + `.github/copilot-instructions.md` — always.
+1. `.github/copilot-instructions.md` (the always-on hub) — always.
 2. `docs/architecture/punch-boundaries.md` + `docs/ai/operating-model.md` — per session.
 3. The **one** domain skill + Build prompt for the task's layer — per task.
 4. The diff / run output / `reports/state/punch-run.json` — per iteration.
@@ -134,7 +134,7 @@ Output is **compact** — a short oriented summary, never a graph dump. Host
 
 ## References
 
-- `CLAUDE.md`
+- `.github/copilot-instructions.md`
 - `docs/architecture/punch-boundaries.md`
 - `docs/ai/operating-model.md`
 - `docs/ai/workflow.md`

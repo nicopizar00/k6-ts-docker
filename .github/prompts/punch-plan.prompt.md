@@ -19,7 +19,7 @@ Have approved Spec, need partition into tasks Build executes one at a time. Plan
 ## Inputs
 
 - Approved Spec.
-- Constraint set: relevant files in `CLAUDE.md`, applicable path instructions, execution chain, maintenance matrix ([`docs/ai/maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md)).
+- Constraint set: relevant always-on rules in `.github/copilot-instructions.md`, applicable path instructions, execution chain, maintenance matrix ([`docs/ai/maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md)).
 
 ## What to do
 
