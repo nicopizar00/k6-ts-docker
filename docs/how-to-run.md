@@ -4,6 +4,21 @@
 
 Docker only. No Node, no k6 on the host.
 
+## Adopting Punch in a repository
+
+`./bin/punch init` runs a one-time, non-destructive first-wave scan that maps the
+repo's GitHub Copilot assets and documentation readiness for Punch adoption. It
+*prepares* the repo for `/document`; it does **not** reconcile docs.
+
+```bash
+./bin/punch init              # scan + print readiness; writes nothing (default)
+./bin/punch init --write      # persist disposable bootstrap reports to docs/ai/governance/init/
+```
+
+Exit codes: `0` ready, `1` blocking readiness issues, `2` invalid repo (missing
+Graphify never fails the command). See the generated `next-actions.md` for the
+adoption path.
+
 ## Local execution
 
 ### 1. Build all images

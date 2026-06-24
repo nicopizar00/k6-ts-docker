@@ -51,7 +51,8 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     │   │       └── report.ts             # shared HTML report builder
     │   └── punch/                        # Python orchestrator (stdlib only)
     │       ├── __init__.py
-    │       └── __main__.py               # argparse CLI; streams docker compose
+    │       ├── __main__.py               # argparse CLI; streams docker compose
+    │       └── init_scan.py              # `punch init` bootstrap scanner / readiness mapper
     ├── dist/                             # bundled k6-ready JS (gitignored)
     ├── reports/                          # k6 output (gitignored)
     │   ├── state/                        # machine-readable state files
@@ -139,6 +140,11 @@ Anything not listed here needs justification before being added.
 Preferred entry point (Python orchestrator):
 
 - `./bin/punch doctor` — confirm host prerequisites.
+- `./bin/punch init` — one-time, non-destructive first-wave scan that maps the
+  repo's Copilot assets + docs readiness for Punch adoption (Punch = template
+  origin; resolves a local governance key). Dry-run by default; `--write` to
+  persist the disposable bootstrap reports under `docs/ai/governance/init/`. It
+  prepares the repo for `/document`; it does **not** reconcile docs.
 - `./bin/punch run smoke` — run health smoke test; results in `reports/`.
 - `./bin/punch run gate` — run catalog performance gate.
 - `./bin/punch run journey` — run order create-read journey.
@@ -156,7 +162,12 @@ Python CLI reaches feature parity):
 - Read this file first, then `docs/ai/operating-model.md`,
   `docs/architecture.md`, `docs/architecture/punch-boundaries.md`,
   and `docs/ai-context.md`.
-- The operating model is **Spec → Plan → Build → Verify → Review →
+- **GitHub Copilot is the primary host;** `.github/` is the single source of
+  truth for AI config. In **Claude Code**, activate the `guard` skill
+  (`.claude/skills/guard/SKILL.md`) — it reuses the `.github/` prompts/agents/
+  skills via the `.claude/commands/*` wraps (`/spec … /document`); it never
+  forks or overrides them ([ADR 0004](docs/ai/decisions/0004-claude-code-guard-bridge.md)).
+- The operating model is **Spec → Plan → Build → Test → Review →
   Ship** (Spec absorbs the former Define clarify step). Use the matching
   prompt in `.github/prompts/` and stay in the declared mode (Ask vs
   Agent). Build is a single `punch-build` prompt; the `punch-builder`
@@ -176,7 +187,7 @@ Python CLI reaches feature parity):
 - `src/punch/` is the Python orchestrator. Stdlib only — no pip
   dependencies, ever.
 - A change is not "done" until `reports/state/punch-run.json` records the
-  Verify run. See `docs/workflows/validation.md`.
+  Test run. See `docs/workflows/validation.md`.
 - Propose changes in small, reviewable steps. Do not implement a full feature
   in one pass unless explicitly asked.
 - When in doubt, ask.

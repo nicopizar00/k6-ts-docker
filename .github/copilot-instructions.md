@@ -1,133 +1,154 @@
 # GitHub Copilot — Repository Instructions (always-on)
 
-These rules apply to **every** Copilot session in this repository. They
-are deliberately short. Detailed guidance lives in
-`docs/ai/operating-model.md` and the path-specific files under
+Rules apply **every** Copilot session this repo. Deliberately short. Detail in
+`docs/ai/operating-model.md` + path-specific files under
 `.github/instructions/`.
 
 ## Critical Rules
 
-Violating these breaks reproducibility, safety, or trust. Stop and ask
-before bending one.
+Violate = break reproducibility, safety, or trust. Stop and ask
+before bending.
 
-1. **Docker First execution** — canonical: [`CLAUDE.md` §Rules](../CLAUDE.md#rules). Never propose host-side `npm`, `k6`, or `pip` commands.
-2. **Python orchestration façade** — `bin/punch` is stdlib-only Python (same source as #1). Do not introduce host-side Node, npm, k6, or any pip-installed package.
-3. **Validation evidence is mandatory** — see [`CLAUDE.md` §For AI assistants](../CLAUDE.md#for-ai-assistants) and [`docs/workflows/validation.md`](../docs/workflows/validation.md). A change is not "done" until `reports/state/punch-run.json` records the run.
-4. **Human approves Ship.** Agent Mode MUST stop after opening a PR. Merging, releasing, and pushing tags are human-only actions.
-   *WHY:* these actions are irreversible and visible externally. The PR boundary is where human judgment must enter.
-5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use environment variables for any external base URL.
+1. **Docker First execution** — Docker is the only host requirement (plus stdlib Python 3). Never propose host-side `npm`, `k6`, or `pip` commands. Always-on contract: [`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md).
+2. **Python orchestration façade** — `bin/punch` stdlib-only Python (same source as #1). No host-side Node, npm, k6, or pip-installed package.
+3. **Validation evidence mandatory** — a change is not "done" until `reports/state/punch-run.json` records the run. Artifact + evidence contract: [`artifacts-reporting.instructions.md`](instructions/artifacts-reporting.instructions.md).
+4. **Human approves Ship.** Agent Mode MUST stop after opening PR. Merge, release, push tags = human-only.
+   *WHY:* irreversible + externally visible. PR boundary = where human judgment enters.
+5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use env vars for any external base URL.
 
 ## Architecture ownership
 
-Each layer owns one decision domain; Build prompts refuse to cross layers without
-an approved Plan. Layers: Bash wrapper · Python orchestrator (`src/punch/**`) ·
+Each layer owns one decision domain; Build prompts refuse cross-layer without
+approved Plan. Layers: Bash wrapper · Python orchestrator (`src/punch/**`) ·
 Docker Compose · Dockerfiles · k6 tests (`src/tests/**`) · Artifacts (`reports/**`).
-The full ownership table + Review anti-patterns live in the always-on
+Full ownership table + Review anti-patterns in always-on
 [`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md)
 (`applyTo: **`) and [`docs/architecture/punch-boundaries.md`](../docs/architecture/punch-boundaries.md)
 — not restated here.
 
-CI/CD is **external** to Punch — it does not own GitHub Actions workflows.
+CI/CD **external** to Punch — does not own GitHub Actions workflows.
 
 ## Agentic-coding rules
 
-Custom agents are bounded at runtime by the shared
+Custom agents bounded at runtime by shared
 [`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
-phases, approval-before-write, depth-1 delegation).
+phases, approval-before-write). Build delegates via the Punch Builder → engineer
+→ cavecrew chain (the engineer, or the coordinator directly, spawns bounded
+cavecrew leaf workers — **nested**, `chat.subagents.allowInvocationsFromSubagents:
+true`, lazy default) on GitHub Copilot's default sub-agent behavior. Depth is
+roster-bounded: cavecrew workers carry no `agents:`.
 
-- **Never make broad edits during Build.** Each Build prompt declares
+- **Never broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
 - **Never modify Python orchestration, Docker Compose, and k6 tests in
-  one task** unless explicitly planned as an integration task with
+  one task** unless explicitly planned as integration task with
   multiple per-layer Build calls.
 - **Never bypass Docker Compose** by running local `k6` or
-  `docker run` directly unless the user explicitly asks.
+  `docker run` directly unless user explicitly asks.
 - **Never introduce CI/CD ownership into Punch** unless explicitly
-  requested. `.github/workflows/` is outside Build scope by default.
+  requested. `.github/workflows/` outside Build scope by default.
 - **Never change service names, artifact paths, or public commands**
-  without updating docs and dependents (see [`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md)).
+  without updating docs + dependents (see [`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md)).
 - **Prefer small diffs.** One scoped task per Build call.
-- **Prefer explicit validation commands.** Verify uses
+- **Prefer explicit validation commands.** Test uses
   `./bin/punch doctor` and `./bin/punch run …` — not ad-hoc shell.
-- **Preserve DX**: low-noise terminal output plus complete logs and
+- **Preserve DX**: low-noise terminal output plus complete logs +
   artifacts under `reports/`.
 
 ## Default verification
 
 - Use official Punch commands when available (`./bin/punch …`).
 - Use Docker Compose **through** Punch when possible.
-- Use unit tests only as a complement, not a replacement for runtime
+- Unit tests only complement, not replace runtime
   contract validation.
 
 ## Engineering Principles
 
-6. **Lifecycle-driven work.** Every change goes through Spec → Plan →
-   Build → Verify → Review → Ship (Spec absorbs the former Define step).
-   Use the matching prompt in `.github/prompts/`.
+6. **Lifecycle-driven work.** Every change goes Spec → Plan →
+   Build → Test → Review → Ship (Spec absorbs former Define step).
+   Use matching prompt in `.github/prompts/`.
 7. **Mode discipline.** Read-only requests (audits, reviews,
-   explanations) stay in **Ask Mode**. Planning stays in **Ask Mode**
-   with Plan discipline. Edits happen only in **Agent Mode** within a
-   scoped Plan task. Phase→mode mapping reference:
+   explanations) stay **Ask Mode**. Planning stays **Ask Mode**
+   with Plan discipline. Edits only in **Agent Mode** within
+   scoped Plan task. Phase→mode mapping:
    [`docs/ai/copilot-mode-mapping.md`](../docs/ai/copilot-mode-mapping.md).
 8. **No duplication of AI guidance.** New instructions, prompts,
    skills, or agents must not restate content already in `docs/ai/` or
-   `CLAUDE.md`. Link instead.
+   another instruction file. Link instead.
 
 ## Lifecycle entry points
 
 | Phase | Prompt | Mode | Agent |
 |---|---|---|---|
-| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect-readonly` |
-| Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-planner` |
+| Spec     | [`punch-spec`](prompts/punch-spec.prompt.md)                   | Ask (writes spec doc)    | `punch-architect` |
+| Plan     | [`punch-plan`](prompts/punch-plan.prompt.md)                   | Ask (Plan discipline)    | `punch-architect` |
 | Build    | [`punch-build`](prompts/punch-build.prompt.md)                  | Agent (scoped, via dispatch) | `punch-builder` → one engineer |
-| Verify   | [`punch-verify`](prompts/punch-verify.prompt.md) / [`punch-test`](prompts/punch-test.prompt.md) | Agent / Ask | `punch-verifier` |
-| Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-reviewer` |
-| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (mechanical only)  | `punch-reviewer` |
+| Test     | [`punch-test`](prompts/punch-test.prompt.md)                  | Agent / Ask              | `punch-test-engineer` |
+| Review   | [`punch-review`](prompts/punch-review.prompt.md)               | Ask                      | `punch-code-reviewer` |
+| Ship     | [`punch-ship`](prompts/punch-ship.prompt.md)                   | Agent (gate + mechanical) | `punch-release-captain` |
 
-Spec absorbs the former Define phase (it opens with the clarify/refine step).
-Build is a single `punch-build` prompt bound to the `punch-builder` dispatcher,
-which classifies the approved Plan task and delegates (depth-1) to
+Spec absorbs former Define phase (opens with clarify/refine step).
+Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
+classifies the approved Plan task and delegates the complete build to
 `punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
-(k6 + TS bundle). `punch-test` is the TDD/Prove-It companion to Verify.
+(k6 + TS bundle); engineers (or the Builder directly) may invoke bounded cavecrew
+workers — nested. `punch-test` (TDD/Prove-It)
+is the verification phase — done proven by `reports/state/punch-run.json`.
+
+**Orthogonal phases (both via `punch-ai-governance`, enforced):**
+[`punch-init`](prompts/punch-init.prompt.md) — read-only GitHub Copilot asset
+enablement sweep (on-demand) gating repo into lifecycle; and
+[`punch-document`](prompts/punch-document.prompt.md) — recurring documentation
+reconciliation. Init prepares; Document reconciles.
 
 ## Change cascade (when X changes, update Y)
 
-When a change touches one area, several others usually need updating in
-lockstep. The full file-level cascade lives in
+When change touches one area, several others usually need update in
+lockstep. Full file-level cascade in
 [`docs/ai/maintenance-matrix.md`](../docs/ai/maintenance-matrix.md) —
-consult it during Plan and Review.
+consult during Plan + Review.
 
 ## PR description
 
-Copy the checklist from [`PULL_REQUEST_TEMPLATE.md`](PULL_REQUEST_TEMPLATE.md)
-literally — don't paraphrase or invent extra items. If criteria change,
-update the template, not this file.
+Copy checklist from [`PULL_REQUEST_TEMPLATE.md`](PULL_REQUEST_TEMPLATE.md)
+literally — don't paraphrase or invent extra items. Criteria change →
+update template, not this file.
 
 ## When in doubt
 
-Refer to `docs/ai/operating-model.md`, `docs/ai/workflow.md`, and the
-instruction fragments under `.github/instructions/`. When proposing
-changes that touch multiple matrix rows, document the verification plan
-in the PR description.
+Refer to `docs/ai/operating-model.md`, `docs/ai/workflow.md`, and
+instruction fragments under `.github/instructions/`. Proposing
+changes touching multiple matrix rows → document verification plan
+in PR description.
 
-## graphify (optional documentation mapping)
+## graphify
 
-`graphify` maps the repo into a knowledge graph (`graphify-out/`) — **optional**
-evidence, never canonical; **Context Engineering owns when it runs**. Prefer
-`graphify query|path|explain`; `/graphify .` only for a missing/stale graph. Full
-gate, install, and the Rule-1 host exception live in the
-[`punch-context-engineering`](skills/punch-context-engineering/SKILL.md) Graphify
-gate + [ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md) — not restated here.
+For any question about this repo's architecture, structure, components, or how to add/modify/find
+code, your first action should be `graphify query "<question>"` when `graphify-out/graph.json`
+exists. Use `graphify path "<A>" "<B>"` for relationship questions and `graphify explain "<concept>"`
+for focused-concept questions. These return a scoped subgraph, usually much smaller than the full
+report or raw grep output.
 
-## Caveman (concise comms)
+Triggers: "how do I…", "where is…", "what does … do", "add/modify a <component>",
+"explain the architecture", or anything that depends on how files or classes relate.
 
-Caveman compresses assistant **prose only**. `/punch-build` + `/punch-test` enforce
-it: governance voice **`ultra`**, build/test execution sub-agents **`wenyan`**;
-**privileged** elsewhere (lead with normal prose for judgment-heavy work). **Never**
-compress code, commands, paths, logs, errors, exit codes, k6/Compose output,
-JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, or risk notes —
-quote verbatim. Priority: correctness > evidence > maintainability > brevity. Drop
-to normal prose for security/irreversible/ambiguous/architecture content;
-`/caveman lite|full|ultra|wenyan-*`, `stop caveman` reverts. Critical Rules above
-take precedence. Full policy: [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md)
-+ [ADR 0003](../docs/ai/decisions/0003-caveman-build-comms.md).
+If `graphify-out/wiki/index.md` exists, use it for broad navigation. Read `graphify-out/GRAPH_REPORT.md`
+only for broad architecture review or when query/path/explain do not surface enough context. Only read
+source files when (a) modifying/debugging specific code, (b) the graph lacks the needed detail, or
+(c) the graph is missing or stale.
+
+Type `/graphify` in Copilot Chat to build or update the graph.
+
+## Caveman (concise comms — default `lite`)
+
+Caveman compresses assistant **prose only**; repo default **`lite`**, every
+Copilot session. Per-phase voice: Spec **`lite`** · Plan **`full`** · Build (to
+humans) **`ultra`** · Review/Ship **`full`** · Document **`lite`** · Test
+**`ultra`**. Sub-agent briefs: `punch-builder`→engineer **`wenyan-lite`**; the two
+engineers→**cavecrew** **`wenyan-full`**; any other sub-agent nesting→cavecrew
+**`wenyan-ultra`**; cavecrew worker reports are **non-guarded (lazy)**. Wenyan
+stays mainly in sub-agent reports — **avoid it in committed docs/registries**. Drop to
+normal prose for security/irreversible/ambiguous/architecture content. Caveman =
+output style only;
+never changes tools, access, or delegation. Critical Rules above take precedence.
+Canon: [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md).

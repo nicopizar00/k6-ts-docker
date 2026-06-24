@@ -1,66 +1,81 @@
 ---
-agent: punch-reviewer
-description: Phase 6 — Review. Read-only critique of the diff against the Plan before Ship.
+agent: punch-code-reviewer
+description: Phase 6 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict; cavecrew allowed only as a bounded pre-scan.
 ---
-
 # Punch — Review
 
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
-**Owner skill:** [`code-review-and-quality`](../skills/code-review-and-quality/SKILL.md) (the five-axis method, with [`code-simplification`](../skills/code-simplification/SKILL.md) for the simplicity axis);
-[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when the
-diff touches `.github/` or `docs/ai/`; otherwise the matching domain skill
-**Agent:** [`punch-reviewer`](../agents/punch-reviewer.agent.md)
+**Owner skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five-axis method, with [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md) for simplicity axis);
+[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
+diff touches `.github/` or `docs/ai/`; else matching domain skill
+**Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
+**Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Brief cavecrew (any other sub-agent nesting) in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
-Verify has passed. Before opening or merging a PR, audit the diff for
-correctness, simplicity, scope discipline, boundary compliance, and
-lifecycle hygiene. For a dedicated security pass on diffs touching
-`src/services/**`, env, or `docker/**`, invoke `@security-auditor`.
+Test passed. Before open or merge PR, audit diff for
+correctness, simplicity, scope discipline, boundary compliance,
+lifecycle hygiene. Dedicated security pass on diffs touching
+`src/services/**`, env, or `docker/**` → invoke `@punch-security-auditor`.
 
 ## Inputs
 
-- The diff (working tree, branch vs `main`, or PR URL).
-- The Plan task(s) that drove the change.
-- The Verify report.
+- Diff (working tree, branch vs `main`, or PR URL).
+- Plan task(s) that drove change.
+- Test report.
 
 ## What to do
 
-1. **Scope check.** Are all changed files within the Plan's allowed
-   paths? Flag any out-of-scope edits.
-2. **Boundary check.** Does the diff respect the layer ownership in
+1. **Scope check.** All changed files within Plan's allowed
+   paths? Flag out-of-scope edits.
+2. **Boundary check.** Diff respects layer ownership in
    [`punch-boundaries.md`](../../docs/architecture/punch-boundaries.md)?
-   Flag cross-layer changes that the Plan did not authorize.
-3. **Rule check.** Does the diff respect `CLAUDE.md`,
-   `punch-architecture.instructions.md`, and the path-specific
+   Flag cross-layer changes Plan did not authorize.
+3. **Rule check.** Diff respects `.github/copilot-instructions.md`,
+   `punch-architecture.instructions.md`, and path-specific
    instructions?
-4. **Duplication check.** Did any AI asset, doc, or helper get
+4. **Duplication check.** Any AI asset, doc, or helper
    duplicated?
-5. **Evidence check.** Does `reports/state/punch-run.json` exist and
-   show `passed: true`?
-6. **Simplicity check.** Did the diff introduce premature abstraction,
-   unnecessary dependencies, or speculative configuration?
-7. **Ownership check.** Does the change respect each layer's domain?
-8. **Governance check** (when `.github/` or `docs/ai/` is touched).
+5. **Evidence check.** `reports/state/punch-run.json` exists and
+   shows `passed: true`?
+6. **Simplicity check.** Diff introduced premature abstraction,
+   unneeded dependencies, or speculative config?
+7. **Ownership check.** Change respects each layer's domain?
+8. **Governance check** (when `.github/` or `docs/ai/` touched).
    Activate [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md):
-   frontmatter complete, registries match files, agents and skills are
+   frontmatter complete, registries match files, agents and skills
    referenced consistently.
-9. **Doc check.** Are docs and the maintenance matrix updated for any
+9. **Doc check.** Docs and maintenance matrix updated for any
    contract change?
 
 ## Expected output
 
-A Review report with:
+Review report with:
 
 - **Verdict** — Approve / Request Changes.
 - **Files changed** — list.
 - **Boundary compliance** — pass or specific violations.
 - **Risk assessment** — one paragraph.
-- **Validation coverage** — Verify evidence link + pass/fail.
+- **Validation coverage** — Test evidence link + pass/fail.
 - **Unintended coupling** — none, or specifics.
 - **Missing docs** — none, or specifics.
 - **Required follow-ups** — none, or numbered list.
+
+## Delegation (bounded workers only)
+
+`punch-code-reviewer` is the Review coordinator. cavecrew is allowed **only as a
+bounded, optional pre-scan** — it never replaces the five-axis review. It may
+spawn **read-only** cavecrew leaf workers (depth-1) over a large diff:
+[`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) (locate the
+diff's touched defs / tests) and
+[`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) (compact per-file
+diff smoke check). **Not** `punch-cavecrew-builder` — reviewer has no edit tool, so an
+editing worker is not ⊆ its scope. Workers inherit the coordinator's read-only
+scope by injected brief (`wenyan-ultra`) and report **non-guarded (lazy)**; the
+coordinator may use their findings as-is. Findings feed the review — the
+Approve / Request Changes **verdict stays punch-code-reviewer's own**.
 
 ## Validation gate
 

@@ -1,15 +1,15 @@
 # Upstream Agent Skills — Inventory
 
-> **Reconciled 2026-06-17 (post-restructure).** Parts of the "relevance to Punch"
-> notes below are superseded by the executed restructure: prompts are now
+> **Reconciled 2026-06-17 (post-restructure).** Some "relevance to Punch"
+> notes below superseded by executed restructure: prompts now
 > command-mapped (`punch-define`/`punch-refine` deleted; `idea-refine` runs inside
-> `punch-spec`), the lifecycle is **6 phases** (Spec absorbs Define),
+> `punch-spec`), lifecycle now **6 phases** (Spec absorbs Define),
 > `punch-builder-scoped` became **5 builder agents** (9 agents total), and —
 > verified against VS Code docs — prompt frontmatter is **`agent:`**, not `mode:`.
 > Canonical record: [`agent-skills-absorption-plan.md` § Execution status](agent-skills-absorption-plan.md).
-> The upstream asset inventory itself is unchanged and still accurate.
+> Upstream asset inventory itself unchanged, still accurate.
 
-> **Status:** Review artifact (no runtime AI config changed). Produced
+> **Status:** Review artifact (no runtime AI config changed). Made
 > 2026-06-16 on branch `feat/agent-skills`. Companion to
 > [`punch-ai-config-inventory.md`](punch-ai-config-inventory.md),
 > [`skill-absorption-matrix.md`](skill-absorption-matrix.md),
@@ -17,8 +17,8 @@
 > [`copilot-adaptation-plan.md`](copilot-adaptation-plan.md), and
 > [`recommended-target-ai-architecture.md`](recommended-target-ai-architecture.md).
 
-This is **Core B** in the absorption model: the upstream lifecycle skill set
-that should generally prevail for *methodology*, subject to Punch's
+This **Core B** in absorption model: upstream lifecycle skill set
+that should generally win for *methodology*, subject to Punch's
 architecture constraints.
 
 ## Upstream root path
@@ -27,10 +27,10 @@ architecture constraints.
 .ai-upstream/agent-skills/
 ```
 
-Tracked in git (appears in `git ls-files` top-level dirs). It is a
-near-verbatim copy of the public `agent-skills` package (the docs reference
+Tracked in git (appears in `git ls-files` top-level dirs). Near-verbatim
+copy of public `agent-skills` package (docs reference
 `https://github.com/addyosmani/agent-skills`). Evidence: `docs/getting-started.md`
-clone instructions and the `agent-skills:<skill>` invocation namespace used by
+clone instructions and `agent-skills:<skill>` invocation namespace used by
 every file in `commands/`.
 
 ## Asset categories found
@@ -48,19 +48,19 @@ every file in `commands/`.
 ## Upstream skills (24)
 
 Frontmatter `name` / `description` verified by reading each `SKILL.md`.
-**Tier** is this review's initial relevance judgment to Punch (see filtering
-logic in the task brief and the [absorption matrix](skill-absorption-matrix.md)).
+**Tier** = this review's initial relevance judgment to Punch (see filtering
+logic in task brief and [absorption matrix](skill-absorption-matrix.md)).
 
 | # | Skill | Lines | Tier | Initial relevance to Punch |
 |---|---|--:|:--:|---|
-| 1 | `spec-driven-development` | 200 | A | Spec phase core. Adapt: strips "this is a web application" default + `npm` commands. |
+| 1 | `spec-driven-development` | 200 | A | Spec phase core. Adapt: strip "this is a web application" default + `npm` commands. |
 | 2 | `planning-and-task-breakdown` | 223 | A | Plan phase core. Adapt to Punch allowed/read-only/forbidden path model. |
-| 3 | `incremental-implementation` | 245 | A | Build phase core. Vertical slices inside a scoped allow-list. |
+| 3 | `incremental-implementation` | 245 | A | Build phase core. Vertical slices inside scoped allow-list. |
 | 4 | `test-driven-development` | 383 | A | Verify/Build. **Heavy adapt**: Punch "tests" are k6 + `punch-run.json`, not jest/vitest. |
 | 5 | `debugging-and-error-recovery` | 300 | A | Verify failure handling. Mostly generic; light adapt. |
 | 6 | `code-review-and-quality` | 347 | A | Review phase core. Reconcile with `punch-reviewer` + `punch-governance-review`. |
 | 7 | `code-simplification` | 331 | A | Aligns with Punch "no premature abstraction". New `punch-simplify` prompt. |
-| 8 | `documentation-and-adrs` | 278 | A | Docs phase. ADRs are new to Punch; adapt to `docs/` conventions. |
+| 8 | `documentation-and-adrs` | 278 | A | Docs phase. ADRs new to Punch; adapt to `docs/` conventions. |
 | 9 | `git-workflow-and-versioning` | 300 | A | Ship phase. Align with Punch "mechanical only / humans merge". |
 | 10 | `security-and-hardening` | 461 | A | Review/security. Adapt: Punch has gateway/orders/Postgres but no web auth. |
 | 11 | `shipping-and-launch` | 309 | A→Review | **Semantic clash**: maps to Punch *Review* go/no-go, NOT Punch *Ship* (mechanical). |
@@ -71,42 +71,42 @@ logic in the task brief and the [absorption matrix](skill-absorption-matrix.md))
 | 16 | `ci-cd-and-automation` | 390 | C | **Conflicts** "CI/CD is external to Punch". npm/Prisma/Playwright stack. Exclude from core. |
 | 17 | `api-and-interface-design` | 294 | B | Punch services expose HTTP APIs. Selective, low priority. |
 | 18 | `source-driven-development` | 194 | B | "Ground code in official docs" (k6/Docker/Postgres). Light adapt, low priority. |
-| 19 | `context-engineering` | 289 | B | Overlaps `punch-context` skill. Merge concept; do not duplicate. |
+| 19 | `context-engineering` | 289 | B | Overlaps `punch-context` skill. Merge concept; no duplicate. |
 | 20 | `deprecation-and-migration` | 206 | B | Relevant (retire legacy `bin/*`; schema migration). Low priority. |
 | 21 | `doubt-driven-development` | 243 | B | Adversarial review of high-stakes decisions. Aligns with Punch "stop and ask". |
 | 22 | `frontend-ui-engineering` | 328 | C | **Exclude** — Punch has no frontend. |
 | 23 | `browser-testing-with-devtools` | 304 | C | **Exclude/defer** — Chrome DevTools MCP; distinct from deferred k6-browser. |
-| 24 | `using-agent-skills` | 189 | Meta | Discovery meta-skill (task→skill flowchart). Adapt into a Punch skill index; do not duplicate the lifecycle table. |
+| 24 | `using-agent-skills` | 189 | Meta | Discovery meta-skill (task→skill flowchart). Adapt into Punch skill index; no duplicate of lifecycle table. |
 
-Notes from reading the skills:
-- The `using-agent-skills` lifecycle map (`SKILL.md:138-159`) is **nearly
-  isomorphic** to Punch's Define→Spec→Plan→Build→Verify→Review→Ship — the
-  strongest argument that absorption is natural rather than grafted.
-- Several Tier-A skills carry **web/Node defaults** in their examples
-  (`spec-driven-development/SKILL.md:42-47` assumes a web app; `ci-cd` and
-  `performance-optimization` are npm/React-centric). The *workflow* is reusable;
-  the *examples* must yield to Punch's path-instructions.
-- `idea-refine` ships a `scripts/idea-refine.sh` that references the claude.ai
+Notes from reading skills:
+- `using-agent-skills` lifecycle map (`SKILL.md:138-159`) **nearly
+  isomorphic** to Punch's Define→Spec→Plan→Build→Verify→Review→Ship — strongest
+  argument absorption natural, not grafted.
+- Several Tier-A skills carry **web/Node defaults** in examples
+  (`spec-driven-development/SKILL.md:42-47` assumes web app; `ci-cd` and
+  `performance-optimization` npm/React-centric). *Workflow* reusable;
+  *examples* must yield to Punch's path-instructions.
+- `idea-refine` ships `scripts/idea-refine.sh` referencing claude.ai
   runtime path `/mnt/skills/user/idea-refine/...` — inert under Punch's
   Docker-first model.
 
 ## Upstream agents (4 personas)
 
-Plain `.md` (not `.agent.md`). Each has `name` + `description` frontmatter and a
+Plain `.md` (not `.agent.md`). Each has `name` + `description` frontmatter and
 "Composition" block. **GitHub Copilot requires `*.agent.md`** (upstream's own
 `docs/copilot-setup.md:22-25`), so all four need renaming on adaptation.
 
 | Agent | Lines | Role | Punch mapping |
 |---|--:|---|---|
-| `code-reviewer.md` | 97 | Five-axis reviewer | Overlaps `punch-reviewer`. **Merge/augment**, do not duplicate persona. |
+| `code-reviewer.md` | 97 | Five-axis reviewer | Overlaps `punch-reviewer`. **Merge/augment**, no duplicate persona. |
 | `security-auditor.md` | 112 | Vulnerability/threat review | **New persona** Punch lacks. Adapt scope to Punch surfaces. |
-| `test-engineer.md` | 95 | Test strategy/coverage | Overlaps `punch-verifier`. Punch has no unit suite — likely **exclude as persona**, keep "Prove-It" in the TDD skill. |
+| `test-engineer.md` | 95 | Test strategy/coverage | Overlaps `punch-verifier`. Punch has no unit suite — likely **exclude as persona**, keep "Prove-It" in TDD skill. |
 | `web-performance-auditor.md` | 184 | Core Web Vitals audit | **Exclude** — frontend/CWV only. |
 
 ## Upstream commands (8 slash commands)
 
-These are **thin wrappers** (15–72 lines) that invoke a skill — exactly the
-"prompt = thin entry point" shape Punch's prompts should move toward. Claude
+These **thin wrappers** (15–72 lines) that invoke a skill — exactly the
+"prompt = thin entry point" shape Punch prompts should move toward. Claude
 Code format: `Invoke the agent-skills:<skill> skill`, `$ARGUMENTS`, subagent
 fan-out.
 
@@ -145,16 +145,16 @@ fan-out.
 ## Headline observations
 
 1. **Philosophical match.** Upstream's three layers — Skills (*how*),
-   Personas (*who*), Commands (*when*) (`docs/agents.md:13-23`) — are the same
+   Personas (*who*), Commands (*when*) (`docs/agents.md:13-23`) — same
    taxonomy Punch already uses (Skills/Agents/Prompts in
-   `docs/ai/operating-model.md:36-50`). Absorption is a *reconciliation*, not a
+   `docs/ai/operating-model.md:36-50`). Absorption a *reconciliation*, not
    transplant.
-2. **Skill-first vs prompt-first.** Upstream is skill-first and mandates "if a
-   task matches a skill, you MUST invoke it" (`AGENTS.md:16`). Punch is
-   prompt-first and **caps skills at 6 domains**, explicitly stating "lifecycle
+2. **Skill-first vs prompt-first.** Upstream skill-first, mandates "if a
+   task matches a skill, you MUST invoke it" (`AGENTS.md:16`). Punch
+   prompt-first, **caps skills at 6 domains**, explicitly states "lifecycle
    phases are prompts and agents, not skills"
-   (`docs/ai/skill-registry.md:60`). This is the central conflict — see the
+   (`docs/ai/skill-registry.md:60`). Central conflict — see
    [conflict report](ai-config-conflict-report.md).
-3. **Stack mismatch in examples.** The lifecycle *workflows* are stack-neutral;
-   the *examples* assume web/Node. Punch's `.github/instructions/**` must win
+3. **Stack mismatch in examples.** Lifecycle *workflows* stack-neutral;
+   *examples* assume web/Node. Punch's `.github/instructions/**` must win
    on stack specifics (Decision policy #1).

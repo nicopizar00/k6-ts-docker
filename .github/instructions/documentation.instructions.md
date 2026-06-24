@@ -1,48 +1,45 @@
 ---
-applyTo: "docs/**,README.md,CLAUDE.md"
+applyTo: "docs/**,README.md"
 description: Behavior rules for repository documentation.
 ---
-
 # Documentation — Path Instructions
 
-Scope: `README.md`, `CLAUDE.md`, and everything under `docs/`.
+Scope: `README.md`, everything under `docs/`.
 
 ## Rules
 
-- **README is a doorway, not a manual.** It explains what Punch is, the
-  shortest local run, and links into `docs/`. Detail goes elsewhere.
-- **`CLAUDE.md` is the project constitution.** Changes to it require a Plan
-  and a one-line note in `docs/ai/operating-model.md` if a rule moves.
+- **README is a doorway, not a manual.** Explain what Punch is, shortest local
+  run, link into `docs/`. Detail go elsewhere.
+- **The always-on rules live in `.github/copilot-instructions.md`.** A doc change
+  that moves a rule needs a Plan + one-line note in `docs/ai/operating-model.md`.
 - **No duplication.**
-  - Architecture lives in `docs/architecture.md` (folder map + execution
-    chain) and `docs/architecture/punch-boundaries.md` (ownership layers).
-  - Lifecycle walkthrough lives in `docs/ai/workflow.md`.
-  - Operating model lives in `docs/ai/operating-model.md`.
-  - Scoped build policy lives in `docs/ai/scoped-build-policy.md`.
-  - Model selection guidance lives in `docs/ai/model-selection.md`.
-  - AI mode mapping lives in `docs/ai/copilot-mode-mapping.md`.
-  - Skill catalogue lives in `docs/ai/skill-registry.md`.
-  - Prompt catalogue lives in `docs/ai/prompt-registry.md`.
+  - Architecture: `docs/architecture.md` (folder map + execution chain) +
+    `docs/architecture/punch-boundaries.md` (ownership layers).
+  - Lifecycle walkthrough: `docs/ai/workflow.md`.
+  - Operating model: `docs/ai/operating-model.md`.
+  - Scoped build policy: `docs/ai/scoped-build-policy.md`.
+  - Model selection guidance: `docs/ai/model-selection.md`.
+  - AI mode mapping: `docs/ai/copilot-mode-mapping.md`.
+  - Skill catalogue: `docs/ai/skill-registry.md`.
+  - Prompt catalogue: `docs/ai/prompt-registry.md`.
   If you'd repeat content, link instead.
-- **AI-friendly structure.** Use tables for catalogs, headings for navigation,
-  and explicit file paths so an LLM can resolve references without guessing.
-- **No essays.** Prefer terse lists over paragraphs. If a section grows past
-  ~40 lines, consider whether it should split.
-- **No marketing language.** Describe what the project does, not how great
-  it is.
+- **AI-friendly structure.** Tables for catalogs, headings for navigation,
+  explicit file paths so LLM resolve references without guessing.
+- **No essays.** Terse lists over paragraphs. Section past ~40 lines, consider
+  split.
+- **No marketing language.** Describe what project does, not how great it is.
 
 ## When adding a new doc
 
-- Place it under the right subtree (`architecture/`, `ai/`, `workflows/`,
+- Place under right subtree (`architecture/`, `ai/`, `workflows/`,
   `validation/`).
-- Add one line to the relevant registry (skill, prompt) or to `README.md`'s
-  pointer section.
-- Delete or merge the doc it is replacing in the same change.
+- Add one line to relevant registry (skill, prompt) or `README.md` pointer
+  section.
+- Delete or merge replaced doc in same change.
 
 ## Build prompt
 
 Doc-only changes typically use [`punch-build`](../prompts/punch-build.prompt.md)
-(routed to `punch-runtime-engineer`) when they change an artifact contract,
-otherwise no Build prompt is
-needed — a doc edit can go straight from Plan to PR if it does not affect
-runtime behavior.
+(routed to `punch-runtime-engineer`) when they change artifact contract.
+Otherwise no Build prompt needed — doc edit go straight Plan to PR if no runtime
+behavior change.
