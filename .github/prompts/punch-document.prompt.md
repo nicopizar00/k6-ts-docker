@@ -48,9 +48,9 @@ Every doc this phase writes or rewrites is:
 ## Canon output patterns
 
 Lifecycle artifacts (spec / plan / build / verify / review / ship) follow
-**canon templates** in [`docs/ai/templates/lifecycle/`](../../docs/ai/templates/lifecycle/README.md);
+**canon templates** in `docs/ai/templates/lifecycle/`;
 filled, real worked example is
-[`docs/ai/golden-lifecycle/`](../../docs/ai/golden-lifecycle/README.md). This phase
+`docs/ai/golden-lifecycle/`. This phase
 **maintains those patterns as canon** — reconcile new specs/plans/reports toward
 them, keep lean, never let drift from `.github/prompts/` Expected-
 output shapes (prompts stay behavior source of truth). `/punch-init` reports
@@ -59,7 +59,7 @@ their presence as `lifecycle_templates` readiness signal.
 ## Pre-conditions
 
 - Host `graphify` installed (`uv tool install graphifyy`; scoped Rule-1
-  exception — [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)). If
+  exception — ADR 0002). If
   CLI absent, `punch-context-engineering` gate shows **Graphify
   Team Setup** message and wave proceeds with non-graph evidence.
 - Map runs **in IDE session** — active model does semantic extraction,
@@ -70,7 +70,7 @@ their presence as `lifecycle_templates` readiness signal.
 **Graphify provides map; `punch-ai-governance` makes every decision.**
 Graph is *evidence* for reconciliation, never canonical source. Nothing under
 `graphify-out/` promoted to canonical without governance decision, and
-never committed (gitignored — [ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)).
+never committed (gitignored — ADR 0002).
 
 ## Inputs
 
@@ -92,7 +92,7 @@ whole project, and **track** across waves:
   `/graphify . --update` (re-extract only new/changed files); after doc-writing
   waves, run manual `--update` so authored docs re-enter graph.
 - Still **evidence, never canonical** — `graphify-out/` gitignored and never
-  promoted without governance decision ([ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)).
+  promoted without governance decision (ADR 0002).
 
 ## What to do
 
