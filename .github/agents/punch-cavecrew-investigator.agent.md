@@ -1,11 +1,11 @@
 ---
-name: cavecrew-investigator
+name: punch-cavecrew-investigator
 description: Read-only cavecrew worker for the Punch Build phase. Locates definitions, references, call sites, imports, tests; returns a compact file:line map. Not user-facing; invoked by punch-builder (or an engineer) for a bounded locate packet. Suggests no fixes, makes no architecture calls.
 tools: ['search/codebase', 'search', 'read/problems', 'changes']
 user-invocable: false
 ---
 
-# Agent: cavecrew-investigator
+# Agent: punch-cavecrew-investigator
 
 Read-only locator. Bounded **leaf** worker (`agents:` empty — spawns nothing).
 Not user-facing — invoked for one locate packet by a phase **coordinator**

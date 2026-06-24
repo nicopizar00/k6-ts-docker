@@ -68,10 +68,10 @@ Review report with:
 `punch-code-reviewer` is the Review coordinator. cavecrew is allowed **only as a
 bounded, optional pre-scan** — it never replaces the five-axis review. It may
 spawn **read-only** cavecrew leaf workers (depth-1) over a large diff:
-[`cavecrew-investigator`](../agents/cavecrew-investigator.agent.md) (locate the
+[`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) (locate the
 diff's touched defs / tests) and
-[`cavecrew-reviewer`](../agents/cavecrew-reviewer.agent.md) (compact per-file
-diff smoke check). **Not** `cavecrew-builder` — reviewer has no edit tool, so an
+[`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) (compact per-file
+diff smoke check). **Not** `punch-cavecrew-builder` — reviewer has no edit tool, so an
 editing worker is not ⊆ its scope. Workers inherit the coordinator's read-only
 scope by injected brief (`wenyan-ultra`) and report **non-guarded (lazy)**; the
 coordinator may use their findings as-is. Findings feed the review — the

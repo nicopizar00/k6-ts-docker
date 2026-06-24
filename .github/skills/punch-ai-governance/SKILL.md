@@ -26,10 +26,10 @@ It owns:
   resolves; every asset referenced exists.
 - Delegation-depth integrity: every `agents:` roster stays depth-1 — only a
   phase coordinator (`punch-builder` / `punch-code-reviewer` / `punch-test-engineer`
-  / `punch-security-auditor`) lists sub-agents; engineers and `cavecrew-*` workers
+  / `punch-security-auditor`) lists sub-agents; engineers and `punch-cavecrew-*` workers
   carry empty / absent
   `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
-  coordinator that lists it (so `cavecrew-builder`'s `edit/editFiles` keeps it
+  coordinator that lists it (so `punch-cavecrew-builder`'s `edit/editFiles` keeps it
   Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
@@ -84,7 +84,7 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 > completeness, cross-reference, naming, duplication, and stale-asset checks below.
 > `.agents/skills/caveman` is still **registered** (parity) in `skill-registry.md`
 > but is upstream-maintained — refresh from upstream, never hand-edit.
-> `.github/skills/graphify/**` is now a **Punch-leaned adaptation** (trimmed to the
+> `.github/skills/punch-graphify/**` is now a **Punch-leaned adaptation** (trimmed to the
 > in-IDE build/update/query subset; pristine upstream kept in
 > `.ai-upstream/graphify/`) — like `.github/skills/punch-build-caveman/**` it is
 > **authored and subject to all checks**. These record point-in-time / external

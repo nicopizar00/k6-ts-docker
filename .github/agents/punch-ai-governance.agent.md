@@ -54,7 +54,7 @@ Read-only:  source / runtime, for context only — src/**, docker/**,
             docker-compose.yml, reports/**, graphify-out/** (read, never edit)
 Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit)
 Handle with care (admin allowed; convention, not an access block):
-            .github/skills/graphify/** + .agents/skills/** (adopted upstream —
+            .github/skills/punch-graphify/** + .agents/skills/** (adopted upstream —
             prefer refresh from upstream over hand-edit);
             docs/ai/history/** (frozen record — append, don't rewrite)
 ```
@@ -81,7 +81,7 @@ that is the engineers' domain via `punch-builder`.
 - Run the audit procedure in the `punch-ai-governance` skill (frontmatter
   completeness, registry↔disk parity, no-phase-named-skills, cross-reference
   resolution, duplication, leakage grep), exempting `docs/ai/history/**`,
-  `.ai-upstream/**`, and `.github/skills/graphify/**` (adopted upstream).
+  `.ai-upstream/**`, and `.github/skills/punch-graphify/**` (adopted upstream).
 - On approval, apply scoped fixes and update the matching registry row in the
   same step.
 

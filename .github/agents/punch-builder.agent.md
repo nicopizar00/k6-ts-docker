@@ -3,7 +3,7 @@ name: punch-builder
 description: Primary Build router for the Punch repository. Classifies an approved Plan task, selects the right engineer sub-agent, delegates execution, and returns verifiable evidence. Use for implementing/verifying Punch changes across Python orchestration, Docker Compose runtime, k6 HTTP/Browser performance tests, and runtime data harvest.
 argument-hint: "<approved Plan task: goal, files, task ID>"
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/getTerminalOutput', 'execute/runTask', 'agent']
-agents: ['punch-runtime-engineer', 'punch-performance-test-engineer', 'cavecrew-investigator', 'cavecrew-builder', 'cavecrew-reviewer']
+agents: ['punch-runtime-engineer', 'punch-performance-test-engineer', 'punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
 handoffs:
   - label: Runtime Engineering
     agent: punch-runtime-engineer
@@ -62,16 +62,16 @@ a non-spawning leaf — one level deep, no sub-agent calls its own sub-agent:
 
 | Worker | Use for | Hard limit |
 |---|---|---|
-| [`cavecrew-investigator`](cavecrew-investigator.agent.md) | locate defs/refs/call-sites/imports/tests; read-only map | no fixes, **no architecture calls** |
-| [`cavecrew-builder`](cavecrew-builder.agent.md) | known-location edit, 1-2 files, mechanical/surgical | **refuse 3+ files / cross-cut refactor** |
-| [`cavecrew-reviewer`](cavecrew-reviewer.agent.md) | compact diff review before commit; bug/risk/nit | **not** the `/review` gate |
+| [`punch-cavecrew-investigator`](punch-cavecrew-investigator.agent.md) | locate defs/refs/call-sites/imports/tests; read-only map | no fixes, **no architecture calls** |
+| [`punch-cavecrew-builder`](punch-cavecrew-builder.agent.md) | known-location edit, 1-2 files, mechanical/surgical | **refuse 3+ files / cross-cut refactor** |
+| [`punch-cavecrew-reviewer`](punch-cavecrew-reviewer.agent.md) | compact diff review before commit; bug/risk/nit | **not** the `/review` gate |
 
 **Warnings:**
 
-- `cavecrew-builder` not for new features spanning 3+ files or cross-cutting
+- `punch-cavecrew-builder` not for new features spanning 3+ files or cross-cutting
   refactors — route those to the engineer.
-- `cavecrew-reviewer` never replaces `/review`. In-build smoke check only.
-- `cavecrew-investigator` not for architecture recommendations — use normal
+- `punch-cavecrew-reviewer` never replaces `/review`. In-build smoke check only.
+- `punch-cavecrew-investigator` not for architecture recommendations — use normal
   exploration / main builder context.
 - cavecrew's terse `wenyan-ultra` must never strip required verification
   evidence. Evidence > brevity (canon

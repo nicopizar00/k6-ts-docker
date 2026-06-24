@@ -13,7 +13,7 @@ gitignored (see `.gitignore`).
 | Asset | Why Punch needs it |
 |---|---|
 | `caveman` | Concise assistant-prose comms (per-phase voice; canon in [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md)) |
-| `cavecrew` | Bounded leaf workers spawned by a phase **coordinator** (`punch-builder` / `punch-reviewer` / `punch-test-engineer`) at depth-1, with caveman-compressed output. Punch's Copilot adaptation are the `.github/agents/cavecrew-*.agent.md` personas (vendor skill defines no Copilot `tools`) |
+| `cavecrew` | Bounded leaf workers spawned by a phase **coordinator** (`punch-builder` / `punch-reviewer` / `punch-test-engineer`) at depth-1, with caveman-compressed output. Punch's Copilot adaptation are the `.github/agents/punch-cavecrew-*.agent.md` personas (vendor skill defines no Copilot `tools`) |
 
 The installer places both in the Copilot skills dir (`.agents/skills/caveman/`,
 `.agents/skills/cavecrew/`). Keep an optional verbatim provenance snapshot under

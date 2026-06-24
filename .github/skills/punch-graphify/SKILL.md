@@ -1,6 +1,7 @@
 ---
-name: graphify
+name: punch-graphify
 description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns a code/docs tree into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools. (Punch-leaned: in-IDE build/update/query only.)"
+applies-to: repo orientation / mapping — gated through punch-context-engineering; used in Context Engineering + Document; not path-scoped
 ---
 
 # /graphify

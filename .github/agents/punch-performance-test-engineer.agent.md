@@ -2,7 +2,7 @@
 name: punch-performance-test-engineer
 description: Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
-agents: ['cavecrew-investigator', 'cavecrew-builder', 'cavecrew-reviewer']
+agents: ['punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
 user-invocable: true
 ---
 
@@ -68,7 +68,7 @@ Domain: [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
 Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
 proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
 Delegation: may invoke bounded **cavecrew** leaf workers
-(`cavecrew-investigator` / `cavecrew-builder` / `cavecrew-reviewer`) directly —
+(`punch-cavecrew-investigator` / `punch-cavecrew-builder` / `punch-cavecrew-reviewer`) directly —
 **nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,
 lazy default). They inherit this engineer's loaded skills + scope by **lineage**;
 their `tools` are a subset of this engineer. Workers are leaves (`agents:` empty)

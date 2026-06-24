@@ -2,7 +2,7 @@
 name: punch-code-reviewer
 description: Review-phase verdict owner for Punch. Vendor agent-skills `code-reviewer` adopted and adapted to Punch — a five-dimension diff review (correctness, readability, architecture, security, performance) over the Plan. Read-only; may use cavecrew workers for bounded passes. Owns the final Approve / Request Changes verdict for /punch-review. Does not write code.
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'agent']
-agents: ['cavecrew-investigator', 'cavecrew-reviewer']
+agents: ['punch-cavecrew-investigator', 'punch-cavecrew-reviewer']
 user-invocable: true
 ---
 
@@ -68,12 +68,12 @@ code. The Approve / Request Changes verdict is **its own** and is never delegate
 As the Review coordinator, may spawn **read-only** cavecrew leaf workers for
 bounded passes over a large diff:
 
-- [`cavecrew-investigator`](cavecrew-investigator.agent.md) — locate the diff's
+- [`punch-cavecrew-investigator`](punch-cavecrew-investigator.agent.md) — locate the diff's
   touched defs / call sites / tests.
-- [`cavecrew-reviewer`](cavecrew-reviewer.agent.md) — compact per-file diff smoke
+- [`punch-cavecrew-reviewer`](punch-cavecrew-reviewer.agent.md) — compact per-file diff smoke
   check; findings feed the review, never replace the verdict.
 
-**Not** [`cavecrew-builder`](cavecrew-builder.agent.md): this agent has no
+**Not** [`punch-cavecrew-builder`](punch-cavecrew-builder.agent.md): this agent has no
 `edit/editFiles`, so an editing worker is **not** ⊆ its scope — forbidden. Workers
 inherit this scope by injected brief; their `tools` are a subset. cavecrew never
 replaces the five-axis review or owns the verdict.

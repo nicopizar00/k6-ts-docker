@@ -37,7 +37,7 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    `punch-build`, `punch-test`, `punch-review`, `punch-ship`, `punch-document`,
    `punch-init`. Missing / non-prefixed / no-frontmatter → **BLOCKED**.
 2. **Agents.** Every `.github/agents/*.agent.md` has `name:` + `description:`;
-   the `cavecrew-*` workers are present. Init is
+   the `punch-cavecrew-*` workers are present. Init is
    owned solely by `punch-ai-governance` (`disable-model-invocation: true`).
    Any agent introduced **for Init** outside that ownership → **BLOCKED**.
 3. **Skills.** Every `skill-registry.md` row maps to a `.github/skills/*/SKILL.md`
@@ -54,7 +54,7 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
      AI-Ingest path** ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)),
      scoped to `github-copilot`, at `.agents/skills/caveman/` + `.agents/skills/cavecrew/`,
-     with the `cavecrew-*` Copilot personas in `.github/agents/`. Not installed →
+     with the `punch-cavecrew-*` Copilot personas in `.github/agents/`. Not installed →
      **WARN** (user installs manually; Build still runs without the nested chain).
    - Optional [canon adopt-adapt parity](../skills/punch-ai-governance/SKILL.md)
      against `.ai-upstream/` flags any `.github/skills` adaptation still owing a

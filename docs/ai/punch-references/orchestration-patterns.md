@@ -120,17 +120,17 @@ A slash command or prompt file **owns** the build phase and runs one coordinatin
 
 ```
 /build → builder (coordinator) ──┬─→ engineer (domain build)        ─┐
-                                 ├─→ cavecrew-investigator (locate) ─┤→ builder merges
-                                 ├─→ cavecrew-builder (1-2 file edit)─┤   + verifies
-                                 └─→ cavecrew-reviewer (diff check)  ─┘   → handoff
+                                 ├─→ punch-cavecrew-investigator (locate) ─┤→ builder merges
+                                 ├─→ punch-cavecrew-builder (1-2 file edit)─┤   + verifies
+                                 └─→ punch-cavecrew-reviewer (diff check)  ─┘   → handoff
 ```
 
-**Examples in this repo:** `/build` → [`punch-builder`](../../../.github/agents/punch-builder.agent.md), delegating to `punch-runtime-engineer` / `punch-performance-test-engineer` and the bounded `cavecrew-*` workers.
+**Examples in this repo:** `/build` → [`punch-builder`](../../../.github/agents/punch-builder.agent.md), delegating to `punch-runtime-engineer` / `punch-performance-test-engineer` and the bounded `punch-cavecrew-*` workers.
 
 **Same pattern at other phases (read-only workers only).** The coordinator need not be the builder — any phase persona pinned by its prompt's `agent:` field may coordinate bounded workers whose `tools` are a **subset** of its own:
 
-- `/review` → `punch-code-reviewer` (the Review verdict owner, adapted from vendor `code-reviewer`) may spawn `cavecrew-investigator` + `cavecrew-reviewer` (read-only) as a bounded pre-scan. Not `cavecrew-builder` — reviewer has no edit tool, so an editing worker is not ⊆ its scope.
-- `/test` → `punch-test-engineer` may spawn `cavecrew-investigator` only (locate checks/coverage). The PASS/FAIL verdict is never delegated.
+- `/review` → `punch-code-reviewer` (the Review verdict owner, adapted from vendor `code-reviewer`) may spawn `punch-cavecrew-investigator` + `punch-cavecrew-reviewer` (read-only) as a bounded pre-scan. Not `punch-cavecrew-builder` — reviewer has no edit tool, so an editing worker is not ⊆ its scope.
+- `/test` → `punch-test-engineer` may spawn `punch-cavecrew-investigator` only (locate checks/coverage). The PASS/FAIL verdict is never delegated.
 - `/ship` keeps Pattern 3 (parallel fan-out), not this pattern.
 
 **Capability bound (verifiable):** a coordinator may dispatch a worker only when the worker's `tools` ⊆ the coordinator's `tools`; leaf workers carry no `agents:`; skill parity is by **injected brief** (VS Code custom agents have no skills frontmatter field). `punch-ai-governance` checks the subset relation.
@@ -147,9 +147,9 @@ A slash command or prompt file **owns** the build phase and runs one coordinatin
 
 **Worker warnings:**
 
-- Don't use `cavecrew-builder` for new features spanning 3+ files or cross-cutting refactors — route those to the engineer.
-- Don't use `cavecrew-reviewer` as a replacement for `/review`. It is an in-build smoke check, not the gate.
-- Don't use `cavecrew-investigator` when architectural recommendations are needed; use normal exploration or the main builder context.
+- Don't use `punch-cavecrew-builder` for new features spanning 3+ files or cross-cutting refactors — route those to the engineer.
+- Don't use `punch-cavecrew-reviewer` as a replacement for `/review`. It is an in-build smoke check, not the gate.
+- Don't use `punch-cavecrew-investigator` when architectural recommendations are needed; use normal exploration or the main builder context.
 - Don't let cavecrew's terse style remove required verification evidence. Evidence outranks brevity.
 
 **Why this is not Anti-pattern A (router persona):** the router persona is a pure routing layer that *decides which lifecycle persona to call* and adds no domain value. The builder here is the **command-owned coordinator for an already-selected phase** — `/build` chose it; it does not pick arbitrary lifecycle flow. It owns real Build work (scope, ordering, verification, handoff), and the user keeps every cross-phase checkpoint because the builder never invokes `/test`, `/review`, or `/ship` for them. Depth stays at most 1: `/build → builder → bounded leaf workers`, with the merge in the builder's context.

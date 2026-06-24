@@ -35,7 +35,7 @@ When the task needs it:
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
 - [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
 - [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers + bounded cavecrew workers (depth-1, tool-subset).
-- [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface.
+- [`punch-graphify`](../skills/punch-graphify/SKILL.md) — when a repo dependency map helps locate the change surface.
 
 cavecrew (vendor) is the **execution/delegation optimization** layer, not a
 replacement for these skills.
@@ -62,11 +62,11 @@ replacement for these skills.
 lifecycle router. It delegates the complete build to one engineer, and may hand
 **bounded, independently verifiable** packets to vendor cavecrew leaf workers:
 
-- [`cavecrew-investigator`](../agents/cavecrew-investigator.agent.md) — read-only
+- [`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) — read-only
   locate / call-site map. Not for architecture recommendations.
-- [`cavecrew-builder`](../agents/cavecrew-builder.agent.md) — known-location 1-2
+- [`punch-cavecrew-builder`](../agents/punch-cavecrew-builder.agent.md) — known-location 1-2
   file edit. Not for 3+ files or cross-cutting refactors.
-- [`cavecrew-reviewer`](../agents/cavecrew-reviewer.agent.md) — compact in-build
+- [`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) — compact in-build
   diff review. **Not** the `/review` gate.
 
 Do **not** delegate: product direction, architecture, the `/test` verdict, the

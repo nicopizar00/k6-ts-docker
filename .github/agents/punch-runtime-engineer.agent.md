@@ -2,7 +2,7 @@
 name: punch-runtime-engineer
 description: Build/Test engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
-agents: ['cavecrew-investigator', 'cavecrew-builder', 'cavecrew-reviewer']
+agents: ['punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
 user-invocable: true
 ---
 
@@ -68,7 +68,7 @@ Domain: [`punch-python-orchestration`](../skills/punch-python-orchestration/SKIL
 Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
 proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
 Delegation: may invoke bounded **cavecrew** leaf workers
-(`cavecrew-investigator` / `cavecrew-builder` / `cavecrew-reviewer`) directly —
+(`punch-cavecrew-investigator` / `punch-cavecrew-builder` / `punch-cavecrew-reviewer`) directly —
 **nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,
 lazy default). They inherit this engineer's loaded skills + scope by **lineage**;
 their `tools` are a subset of this engineer. Workers are leaves (`agents:` empty)

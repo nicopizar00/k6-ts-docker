@@ -11,7 +11,7 @@ Want way to manage **documentation debt** — duplicated, stale, partial, orphan
 
 Pristine upstream snapshot (v0.8.41) may live in `.ai-upstream/graphify/` with provenance in its `UPSTREAM.md`. Note: `.ai-upstream/` = **gitignored local staging area** (see `.ai-upstream/.gitkeep`), not version-controlled — canonical Punch adaptation lives in `.github/` (`punch-document` prompt + `punch-ai-governance` Documentation mode). Snapshot = local drift baseline; re-fetch (`uv tool install graphifyy`, re-copy installed skill) when absent.
 
-**Leaned for Copilot plug-in (2026-06-18).** In-repo `.github/skills/graphify/` skill trimmed to Punch **in-IDE subset** (build / `--update` / `--cluster-only` / query / path / explain / add+watch / hooks). Removed: remote-repo clone & cross-repo merge, media transcription (Whisper), external-DB push (Neo4j/FalkorDB, incl. credential examples), MCP server, wiki/SVG/GraphML/obsidian exports — none used by Punch. Skill therefore **authored Punch-leaned adaptation** (subject to governance checks), not verbatim upstream copy; pristine upstream stays drift baseline in `.ai-upstream/graphify/`.
+**Leaned for Copilot plug-in (2026-06-18).** In-repo `.github/skills/punch-graphify/` skill trimmed to Punch **in-IDE subset** (build / `--update` / `--cluster-only` / query / path / explain / add+watch / hooks). Removed: remote-repo clone & cross-repo merge, media transcription (Whisper), external-DB push (Neo4j/FalkorDB, incl. credential examples), MCP server, wiki/SVG/GraphML/obsidian exports — none used by Punch. Skill therefore **authored Punch-leaned adaptation** (subject to governance checks), not verbatim upstream copy; pristine upstream stays drift baseline in `.ai-upstream/graphify/`.
 
 ## Decision
 
