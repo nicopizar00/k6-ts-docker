@@ -47,8 +47,8 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    `/punch-document`). Missing required skill → **BLOCKED**.
 4. **Instructions.** Every `.github/instructions/*.instructions.md` has
    `applyTo:` + `description:`. Missing required instruction or bad frontmatter → **BLOCKED**.
-5. **AI Skills (Caveman + cavecrew — Punch-adapted vendor set).** Treat Caveman as
-   a **Punch-adapted AI Skill**, checked as part of the Punch skill set:
+5. **AI Skills (Caveman + cavecrew + graphify — Punch-adapted vendor set).** Treat
+   these as **Punch-adapted AI Skills**, checked as part of the Punch skill set:
    - The Punch adaptation [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md)
      exists and is the comms canon. Missing → **BLOCKED**.
    - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
@@ -56,6 +56,14 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
      scoped to `github-copilot`, at `.agents/skills/caveman/` + `.agents/skills/cavecrew/`,
      with the `punch-cavecrew-*` Copilot personas in `.github/agents/`. Not installed →
      **WARN** (user installs manually; Build still runs without the nested chain).
+   - The Punch-leaned adaptation [`punch-graphify`](../skills/punch-graphify/SKILL.md)
+     exists with valid frontmatter (`name:` / `description:` / `applies-to:`) and is
+     gated through [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
+     Missing skill → **BLOCKED**. Its host CLI (PyPI `graphifyy`, host `graphify`) is the
+     **recommended install** for the `/punch-document` mapping subagent —
+     `uv tool install graphifyy` ([ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)).
+     CLI not on PATH → **WARN** (optional, off the evidence/execution path; Init never
+     shells out to it — `/punch-document` only — and the lifecycle still runs without it).
    - Optional [canon adopt-adapt parity](../skills/punch-ai-governance/SKILL.md)
      against `.ai-upstream/` flags any `.github/skills` adaptation still owing a
      `punch-` rename. Canon snapshot absent → note `canon-unavailable` (never BLOCKED).
