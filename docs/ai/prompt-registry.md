@@ -18,7 +18,7 @@ See `.github/prompts/` for prompt bodies.
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-code-reviewer` | Test passed; audit diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-release-captain` | Review approved; commit, push, open PR. **Never merges.** |
 | [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Retire doc debt in waves: map with `/graphify`, then keep / merge / rewrite / archive / delete / promote. |
-| [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (one-time bootstrap) | Agent (runs `./bin/punch init`) | `punch-ai-governance` (enforced) | Bootstrap repo for Punch: scan Copilot assets + docs readiness, guard pending adoption items, hand off to `/punch-document`. |
+| [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (bootstrap, on-demand) | Ask (read-only asset sweep) | `punch-ai-governance` (enforced) | Certify the GitHub Copilot asset set (prompts, agents, skills, instructions + AI-Ingest Caveman/cavecrew) is present, `punch-`prefixed, and Copilot-compatible. Reports PASS/WARN/BLOCKED; hands reconciliation to `/punch-document`. No runtime, no Python. |
 
 ## One prompt per phase
 

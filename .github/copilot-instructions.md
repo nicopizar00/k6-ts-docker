@@ -96,8 +96,8 @@ workers — nested. `punch-test` (TDD/Prove-It)
 is the verification phase — done proven by `reports/state/punch-run.json`.
 
 **Orthogonal phases (both via `punch-ai-governance`, enforced):**
-[`punch-init`](prompts/punch-init.prompt.md) — one-time bootstrap/adoption guard
-(`./bin/punch init`) gating repo into lifecycle; and
+[`punch-init`](prompts/punch-init.prompt.md) — read-only GitHub Copilot asset
+enablement sweep (on-demand) gating repo into lifecycle; and
 [`punch-document`](prompts/punch-document.prompt.md) — recurring documentation
 reconciliation. Init prepares; Document reconciles.
 

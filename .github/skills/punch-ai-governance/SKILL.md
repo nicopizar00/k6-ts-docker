@@ -137,8 +137,9 @@ the `.ai-upstream/agent-skills/skills/` canon and recommends prefixing; it
 **never renames, edits, or deletes**. The mechanical comparison runs read-only
 under the AI Governance agent's terminal
 (`git diff --no-index <canon> <adapted>` / `diff -rq`); decision authority is
-this skill. Wired as a hard step in
-[`/punch-init`](../../prompts/punch-init.prompt.md).
+this skill. Surfaced as the optional canon-parity sub-check of the AI-Skills
+step in [`/punch-init`](../../prompts/punch-init.prompt.md) (canon absent →
+`canon-unavailable`, never a block).
 
 **Precondition (user-required).** `.ai-upstream/**` is gitignored local upstream
 staging and may be absent. This report **does not** fetch or refresh it —

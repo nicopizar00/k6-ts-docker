@@ -1,98 +1,126 @@
 ---
 agent: punch-ai-governance
-description: Init — one-time, non-destructive bootstrap scan that guards repo readiness for the Punch lifecycle. Runs `./bin/punch init`, surfaces every pending adoption item, reconciles what is in governance scope, and hands the rest to /punch-document. Never reconciles docs itself.
+description: Init — on-demand, read-only asset enablement sweep that certifies the Punch GitHub Copilot asset set (prompts, agents, skills, instructions + the AI-Ingest vendor skills Caveman/cavecrew) is present, punch-prefixed, and Copilot-compatible before the lifecycle runs. Re-runnable anytime. Reports PASS / WARN / BLOCKED. Never reconciles docs, never runs a runtime.
 ---
-# Punch — Init (bootstrap & adoption guard)
+# Punch — Init (GitHub Copilot asset enablement sweep)
 
-**Lifecycle phase:** Init (one-time bootstrap; precedes Spec → Ship, orthogonal to it)
-**Mode:** Agent — runs `./bin/punch init` (read-only scan; `--write` persists maps)
-**Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
-(decision authority) + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-(Graphify readiness)
+**Lifecycle phase:** Init (bootstrap; precedes Spec → Ship, orthogonal to it; first
+run at adoption, re-runnable on demand after drift)
+**Target:** VS Code **GitHub Copilot** only. Punch is an AI abstraction layer over
+Copilot — Init checks the assets Punch needs to operate **through Copilot**, nothing else.
+**Mode:** Ask — **read-only** sweep of the Copilot asset layout (Read / Grep / Glob).
+No runtime, no Python, no installer, no doctor.
+**Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (decision authority).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) — **enforced**.
-Phase runs **only** under that agent's full admin over `.github/` and
-`docs/` (incl. write target `docs/ai/governance/init/`). No other agent runs Init.
+Init runs **only** under that agent. No other agent runs Init; Init introduces no agent.
 **Operating comms:** Caveman **`lite`**. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
-Once, when repo first adopts Punch (or after major drift), to learn
-whether it can safely run lifecycle. Init **prepares**; not reconcile —
-ongoing doc work is [`/punch-document`](punch-document.prompt.md).
+First when a repo adopts Punch for VS Code GitHub Copilot, and re-run on demand
+anytime after (e.g. after drift), to certify the Copilot asset set is installed,
+correctly named, and Copilot-compatible.
+Init **certifies readiness**; it does **not** reconcile — doc/asset reconciliation is
+[`/punch-document`](punch-document.prompt.md).
 
-## What to do
+## What to check (the sweep)
 
-1. **Scan.** Run `./bin/punch init --dry-run` (default) to read readiness
-   summary, then `./bin/punch init --write` to persist six bootstrap maps under
-   `docs/ai/governance/init/` (gitignored, disposable). `--with-graphify` for
-   optional availability marker.
-2. **Canon adopt-adapt report** (read-only, **required**) — run the canon
-   parity pass from
-   [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md): classify
-   every `.github/skills/*` against the `.ai-upstream` canon and emit the parity
-   table + recommendations. Flag each **adapted-in-place** skill that diffs from
-   canon yet keeps an agnostic name (owes `punch-`), and list **unadopted** canon
-   skills. **Report only** — never rename or adopt here. `.ai-upstream` absent →
-   `canon-unavailable`; refreshing it is a user action (does not block Init).
-3. **Guard pending** (see gate below) — surface every unresolved item.
-4. **Reconcile in scope** — only what safely governance agent's to settle
-   now (record governance key, confirm `lifecycle_templates` present). Each
-   write surfaced for approval first (agent guard).
-5. **Hand off** — route doc debt, feature claims, asset adaptation (incl.
-   `punch-` renames + canon adoptions from step 2) to `/punch-document`; never
-   do that reconciliation here.
+Read the live Copilot assets, then grade each check **PASS / WARN / BLOCKED**.
+Source of truth for the required set: the Copilot asset layout itself plus the
+registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
+[`skill-registry.md`](../../docs/ai/skill-registry.md),
+[`AGENTS.md`](../../AGENTS.md)) — read inventory, do not hard-code counts.
 
-## Guard the pending (block before the lifecycle runs)
+1. **Prompt commands.** Every lifecycle + orthogonal command exists in
+   `.github/prompts/` with the **`punch-` prefix** and valid frontmatter
+   (`agent:` + `description:`). Required: `punch-spec`, `punch-plan`,
+   `punch-build`, `punch-test`, `punch-review`, `punch-ship`, `punch-document`,
+   `punch-init`. Missing / non-prefixed / no-frontmatter → **BLOCKED**.
+2. **Agents.** Every agent in the `AGENTS.md` roster exists in `.github/agents/`
+   with `name:` + `description:`; the `cavecrew-*` workers are present. Init is
+   owned solely by `punch-ai-governance` (`disable-model-invocation: true`).
+   Any agent introduced **for Init** outside that ownership → **BLOCKED**.
+3. **Skills.** Every `skill-registry.md` row maps to a `.github/skills/*/SKILL.md`
+   (and vice versa) with `name:` / `description:` / `applies-to:`. Each skill
+   adapted from canon carries the **`punch-` prefix**; native skills may stay
+   agnostic. Adapted-in-place skill missing the prefix → **WARN** (rename via
+   `/punch-document`). Missing required skill → **BLOCKED**.
+4. **Instructions.** Every `.github/instructions/*.instructions.md` has
+   `applyTo:` + `description:`. Missing required instruction or bad frontmatter → **BLOCKED**.
+5. **AI Skills (Caveman + cavecrew — Punch-adapted vendor set).** Treat Caveman as
+   a **Punch-adapted AI Skill**, checked as part of the Punch skill set:
+   - The Punch adaptation [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md)
+     exists and is the comms canon. Missing → **BLOCKED**.
+   - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
+     AI-Ingest path** ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)),
+     scoped to `github-copilot`, at `.agents/skills/caveman/` + `.agents/skills/cavecrew/`,
+     with the `cavecrew-*` Copilot personas in `.github/agents/`. Not installed →
+     **WARN** (user installs manually; Build still runs without the nested chain).
+   - Optional [canon adopt-adapt parity](../skills/punch-ai-governance/SKILL.md)
+     against `.ai-upstream/` flags any `.github/skills` adaptation still owing a
+     `punch-` rename. Canon snapshot absent → note `canon-unavailable` (never BLOCKED).
+6. **Reference integrity.** Every prompt/skill/instruction/agent cross-reference
+   resolves to a real file in the Copilot asset layout. A reference that points
+   at an **unsupported external dependency** (a runtime, a host script, a cloud
+   config, a non-Copilot agent tool) → **BLOCKED**.
+7. **No external runtime canon.** No asset may declare `CLAUDE.md`, Claude Code,
+   Cloud Code, a Python runtime, or any external config as **canonical for Punch**.
+   Any such declaration → **BLOCKED**. (`CLAUDE.md` / `.claude/**` may exist as a
+   *reuse bridge*, never as Punch's source of truth.)
+8. **Allowed-dependency rule.** Any dependency outside the Copilot asset layout
+   (`.github/**`) must come through the **accepted AI-Ingest path** and its rules
+   (`.ai-upstream` manifest, Copilot-scoped, kept verbatim). A dependency outside
+   both the asset layout and the AI-Ingest path → **BLOCKED**.
+9. **Docs orientation.** AI-facing docs, architecture notes, and boundaries docs
+   must not misdirect Copilot away from Punch's GitHub-Copilot-first design (e.g.
+   telling Copilot the runtime or an external tool is the entry point for Punch
+   asset work). Misdirection → **WARN** (fix via `/punch-document`).
 
-Init = **adoption gate**. No green-light Spec → Ship until each pending
-item resolved or explicitly deferred by human:
+## Grading
 
-- ⛔ **`overall.status: not_ready`** (exit 1) — repo lacks structure; block adoption.
-- ⚠️ **governance key `needs_confirmation`** — confirm local key (Punch stays
-  template origin, never active identity).
-- ⚠️ **`lifecycle_templates` missing/partial** — adopt canon from
-  [`docs/ai/templates/lifecycle/`](../../docs/ai/templates/lifecycle/README.md)
-  (worked example: [`docs/ai/golden-lifecycle/`](../../docs/ai/golden-lifecycle/README.md)).
-- ⚠️ **assets marked `adapt`/`review`/`duplicate`** — rebind `punch-*` → local key
-  / human-review before use (via `/punch-document`, not here).
-- ⚠️ **adapted-in-place skills missing `punch-` prefix** — canon adopt-adapt
-  report (step 2) flags any `.github/skills` adaptation that diffs from
-  `.ai-upstream` canon yet keeps an agnostic name; rename via `/punch-document`,
-  not here.
-- ℹ️ **canon snapshot refresh / adopt** — `.ai-upstream` sync and adopt/decline
-  of unadopted canon skills are **user actions**; report degrades to
-  `canon-unavailable` when absent — never blocks Init.
-- ⚠️ **caveman/cavecrew vendor skills missing** — Build comms + the engineer→
-  cavecrew delegation chain need them installed (manual). Required Punch assets +
-  install command: [`.github/.ai-upstream/README.md`](../.ai-upstream/README.md).
-- ⚠️ **VS Code sub-agent setting off** — the engineer→cavecrew→worker chain needs
-  `chat.subagents.allowInvocationsFromSubagents: true` in VS Code settings.
-  Markdown cannot set it; warn the user. If off, the `wenyan-full`/`wenyan-ultra`
-  tiers do not fire — Build still runs (Builder → one engineer, no sub-spawn).
-- ℹ️ **Graphify readiness** — optional; never blocks Init.
-- ℹ️ **doc/tracking debt candidates** — queue for `/punch-document`.
+- **PASS** — present, `punch-`prefixed where required, valid frontmatter,
+  Copilot-compatible, references resolve, no external-runtime canon.
+- **WARN** — present but misnamed / non-prefixed / unfilled placeholder /
+  needs adapt; or a vendor AI Skill not yet installed; or a doc misdirection.
+  Adoption may proceed once a human reviews each WARN.
+- **BLOCKED** — a required asset is missing or has broken frontmatter; an asset
+  is not Copilot-compatible; a reference points at an unsupported external
+  dependency; or an asset declares an external runtime/config as Punch canon.
 
-## Expected output
+**Asset existence is not enough** — an asset that exists but is not
+Copilot-compatible (wrong frontmatter, external-only references) grades **BLOCKED**,
+not PASS. Any **BLOCKED** → overall `not_ready`; Spec → Ship and `/punch-document`
+stay closed until it clears.
 
-- Init readiness summary: governance key + source, `overall.status`,
-  readiness table, exit code.
-- **canon adopt-adapt parity** verdict (clean / N owe `punch-` prefix) +
-  unadopted-canon list (or `canon-unavailable`).
-- **pending guard list** above with each item state (resolved / deferred).
-- One next command: `/punch-document` (reconcile) or first lifecycle phase
-  (`/punch-spec`) once `adoption_ready`/`document_ready`.
+## Report (concise)
 
-## Boundary rules (non-destructive)
+Emit a short table — one row per check (1–9) → **PASS / WARN / BLOCKED** + a
+one-line reason — then:
 
-- Init **never** renames, deletes, or rewrites existing files; only writes its
-  own disposable maps under output dir.
-- **Not** doc reconciliation, full feature classification, or lean
-  cleanup — those are `/punch-document`.
-- Runs **read-only** `./bin/punch init` only — never Punch runtime
-  (`./bin/punch run`, Docker, k6).
+- **Missing / misnamed / non-prefixed** assets, each with its path.
+- **Externally dependent / Copilot-incompatible** assets, each with its path.
+- **Overall verdict:** `adoption_ready` (all PASS/WARN, human cleared WARNs) or
+  `not_ready` (≥1 BLOCKED).
+- **One next command:** `adoption_ready` → `/punch-document` (reconcile) or the
+  first lifecycle phase (`/punch-spec`); `not_ready` → fix the BLOCKED rows first.
+
+## Boundary rules
+
+- **Read-only.** Never renames, deletes, rewrites, or creates assets; never
+  rewrites unrelated docs. Findings hand off to `/punch-document`.
+- **No runtime, no repair.** Never executes or repairs Python; never runs
+  `./bin/punch`, Docker, or k6; never acts as a doctor, installer, migrator, or
+  broad fixer. Scripts under the repo are **not** mutable Init assets — Init does
+  not embed or edit Python, shell, `setup.py`, or launchers.
+- **Copilot-first.** Checks only the assets Punch needs to operate through VS Code
+  GitHub Copilot. External tools (Claude Code, Cloud Code, graphify, the vendor
+  pack) are in scope **only** via the accepted AI-Ingest path — never as Punch's
+  canonical runtime.
+- **Lifecycle preserved.** Init certifies; it does not alter the Spec → Plan →
+  Build → Test → Review → Ship → Document lifecycle it gates.
 
 ## Validation gate
 
-Init succeeds when `./bin/punch init` exits `0` and six maps generated.
-`overall.status: not_ready` (exit 1) **blocks** adoption until pending items
-resolved.
+Init succeeds when every check grades **PASS** (or **WARN** a human has cleared)
+and the report names every gap. Any **BLOCKED** row keeps the repo `not_ready` and
+blocks adoption until resolved.

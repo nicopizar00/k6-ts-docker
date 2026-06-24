@@ -1,6 +1,5 @@
 ---
-description: Punch Init / bootstrap-adoption guard (Claude Code wrap → canonical GitHub Copilot asset)
-argument-hint: <optional: --write | --with-graphify | --output DIR>
+description: Punch Init / Copilot asset enablement sweep (Claude Code wrap → canonical GitHub Copilot asset)
 ---
 
 Activate the `guard` skill, then run Punch's **Init** phase by loading and obeying
@@ -11,6 +10,7 @@ the canonical Copilot asset — do not re-author or paraphrase it:
   complete admin over `.github/` + `docs/`; only this agent runs Init)
 - Caveman: `lite` (canon: `.github/skills/punch-build-caveman/SKILL.md`)
 
-Runs the read-only `./bin/punch init` scan, guards pending adoption items, and
-hands documentation reconciliation to `/document`. Non-destructive; never runs the
-Punch runtime. Follow that prompt exactly. Input: $ARGUMENTS
+Runs a read-only sweep of the GitHub Copilot asset set (prompts, agents, skills,
+instructions + the AI-Ingest Caveman/cavecrew vendor skills), reports
+PASS / WARN / BLOCKED, and hands reconciliation to `/document`. Non-destructive;
+no runtime, no Python. Follow that prompt exactly. Input: $ARGUMENTS
