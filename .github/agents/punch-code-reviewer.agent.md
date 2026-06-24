@@ -1,7 +1,7 @@
 ---
 name: punch-code-reviewer
 description: Review-phase verdict owner for Punch. Vendor agent-skills `code-reviewer` adopted and adapted to Punch — a five-dimension diff review (correctness, readability, architecture, security, performance) over the Plan. Read-only; may use cavecrew workers for bounded passes. Owns the final Approve / Request Changes verdict for /punch-review. Does not write code.
-tools: ['search/codebase', 'search', 'read/problems', 'changes', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
 agents: ['punch-cavecrew-investigator', 'punch-cavecrew-reviewer']
 user-invocable: true
 ---

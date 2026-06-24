@@ -1,7 +1,7 @@
 ---
 name: punch-cavecrew-reviewer
 description: Compact diff reviewer for the Punch Build phase. Reviews the current build diff before commit and returns one line per finding — bug/risk/nit only, severity-tagged, no praise. Not user-facing; invoked by punch-builder (or an engineer) for a bounded in-build check. Does NOT replace the independent /review gate.
-tools: ['search/codebase', 'search', 'read/problems', 'changes']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes']
 user-invocable: false
 ---
 

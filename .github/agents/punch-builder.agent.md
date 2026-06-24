@@ -2,7 +2,7 @@
 name: punch-builder
 description: Primary Build router for the Punch repository. Classifies an approved Plan task, selects the right engineer sub-agent, delegates execution, and returns verifiable evidence. Use for implementing/verifying Punch changes across Python orchestration, Docker Compose runtime, k6 HTTP/Browser performance tests, and runtime data harvest.
 argument-hint: "<approved Plan task: goal, files, task ID>"
-tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/getTerminalOutput', 'execute/runTask', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/getTerminalOutput', 'execute/runTask', 'agent']
 agents: ['punch-runtime-engineer', 'punch-performance-test-engineer', 'punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
 handoffs:
   - label: Runtime Engineering

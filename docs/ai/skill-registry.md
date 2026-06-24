@@ -28,7 +28,7 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 | editing compose / Dockerfiles | `punch-compose-runtime` + `punch-incremental-implementation` |
 | writing / changing a k6 test | `punch-k6-testing` + `punch-test-driven-development` + `punch-incremental-implementation` |
 | changing an artifact / report | `punch-data-harvest` + `punch-incremental-implementation` |
-| a run failed | `debugging-and-error-recovery` |
+| a run failed | `punch-debugging-and-error-recovery` |
 | proving a fix RED→GREEN | `punch-test-driven-development` |
 | reviewing a diff | `punch-code-review-and-quality` (+ `punch-code-simplification`, `punch-security-and-hardening`) |
 | committing / shipping | `punch-git-workflow-and-versioning` |

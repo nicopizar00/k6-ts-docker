@@ -1,7 +1,7 @@
 ---
 name: punch-performance-test-engineer
 description: Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
-tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
 agents: ['punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
 user-invocable: true
 ---

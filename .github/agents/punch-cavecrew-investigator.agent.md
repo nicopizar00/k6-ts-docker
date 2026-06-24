@@ -1,7 +1,7 @@
 ---
 name: punch-cavecrew-investigator
 description: Read-only cavecrew worker for the Punch Build phase. Locates definitions, references, call sites, imports, tests; returns a compact file:line map. Not user-facing; invoked by punch-builder (or an engineer) for a bounded locate packet. Suggests no fixes, makes no architecture calls.
-tools: ['search/codebase', 'search', 'read/problems', 'changes']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes']
 user-invocable: false
 ---
 

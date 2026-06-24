@@ -1,7 +1,7 @@
 ---
 name: punch-test-engineer
 description: Independent Test-phase QA gate for Punch. Runs the official Punch test contract (`./bin/punch doctor`, `./bin/punch run …`), judges k6 checks/thresholds RED→GREEN, analyzes coverage gaps, and returns a final PASS | FAIL | BLOCKED verdict. Does not fix product code — failures hand back to Build/Plan. Adapts upstream agent-skills `test-engineer`. Invoked by `/punch-test` (and fan-out from `/punch-ship`); also user-invocable.
-tools: ['search/codebase', 'search', 'read/problems', 'changes', 'execute/runInTerminal', 'execute/getTerminalOutput', 'read/terminalLastCommand', 'read/terminalSelection', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'execute/runInTerminal', 'execute/getTerminalOutput', 'read/terminalLastCommand', 'read/terminalSelection', 'agent']
 agents: ['punch-cavecrew-investigator']
 user-invocable: true
 ---

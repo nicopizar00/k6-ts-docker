@@ -1,7 +1,7 @@
 ---
 name: punch-cavecrew-builder
 description: Surgical cavecrew worker for the Punch Build phase. Applies known-location edits touching 1-2 files — typo fixes, single-function rewrites, mechanical renames, format-preserving tweaks. Hard-refuses 3+ file scope and cross-cutting refactors. Not user-facing; invoked by punch-builder (or an engineer) for one bounded edit packet. Returns a diff receipt.
-tools: ['search/codebase', 'search', 'read/problems', 'changes', 'edit/editFiles']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles']
 user-invocable: false
 ---
 

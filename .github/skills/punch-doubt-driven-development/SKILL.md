@@ -117,7 +117,7 @@ surface substantive issues, that's information — surface it; don't keep loopin
   for a behavioral claim.
 - `punch-source-driven-development` — verifies framework *facts*; doubt-driven verifies
   *your reasoning* about the artifact.
-- `debugging-and-error-recovery` — when the reviewer surfaces a real failure mode,
+- `punch-debugging-and-error-recovery` — when the reviewer surfaces a real failure mode,
   drop into it to localize and fix.
 
 ## Verification

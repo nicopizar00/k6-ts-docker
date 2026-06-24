@@ -48,7 +48,7 @@ Task arrives
     ├── Committing / branching? ──────────→ punch-git-workflow-and-versioning
     ├── Logs / metrics / events? ─────────→ punch-observability-and-instrumentation
     ├── Recording a decision (ADR)? ──────→ punch-documentation-and-adrs
-    └── Doc map / graph? ─────────────────→ graphify
+    └── Doc map / graph? ─────────────────→ punch-graphify
 ```
 
 ## Build delegation (cavecrew)
@@ -157,4 +157,4 @@ verification because "looks right".
 | Ship | punch-git-workflow-and-versioning | Atomic commits, clean history |
 | Ship | punch-documentation-and-adrs | Document the why, not just the what |
 | Ship | punch-observability-and-instrumentation | Structured logs, metrics, alerts |
-| Document | graphify | Doc/dependency map (host tool, off evidence path) |
+| Document | punch-graphify | Doc/dependency map (host tool, off evidence path) |
