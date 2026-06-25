@@ -8,6 +8,14 @@ applies-to: repo orientation / mapping — gated through punch-context-engineeri
 
 Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.
 
+> **Punch adaptation.** This is `punch-graphify` — the canonical Punch-leaned
+> replacement for upstream graphify, not the upstream skill verbatim. It runs **only**
+> when a Punch prompt routes through the `punch-context-engineering` Graphify gate or
+> `/punch-document` — never as an autonomous default. Install is **CLI-only**
+> (`uv tool install graphifyy`); the official skill-install, `graphify claude install`
+> (which writes an always-on `CLAUDE.md` section), and the post-commit auto-rebuild
+> hook are **not used** ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)).
+
 ## Usage
 
 ```
@@ -18,8 +26,6 @@ Turn any folder of files into a navigable knowledge graph with community detecti
 /graphify <path> --directed                  # directed graph (preserves edge direction: source→target)
 /graphify <path> --cluster-only              # rerun clustering on the existing graph
 /graphify <path> --no-viz                    # skip HTML, just report + JSON
-/graphify <path> --watch                     # watch folder, auto-rebuild on changes (no LLM)
-/graphify add <url>                          # fetch a URL into the corpus, update graph
 /graphify query "<question>"                 # BFS traversal — broad context
 /graphify query "<question>" --dfs           # DFS — trace a specific path
 /graphify query "<question>" --budget 1500   # cap answer at N tokens
@@ -523,7 +529,7 @@ The graph is the map. Your job after the pipeline is to be the guide.
 
 ## Interpreter guard for subcommands
 
-Before running any subcommand below (`--update`, `--cluster-only`, `query`, `path`, `explain`, `add`), check that `.graphify_python` exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the interpreter first:
+Before running any subcommand below (`--update`, `--cluster-only`, `query`, `path`, `explain`), check that `.graphify_python` exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the interpreter first:
 
 ```bash
 if [ ! -f graphify-out/.graphify_python ]; then
@@ -557,18 +563,6 @@ Before traversal, expand the question against the graph's own vocabulary so a wo
 
 ---
 
-## For /graphify add and --watch
-
-Neither is part of the default build. When the user runs `/graphify add <url>` to fetch a URL into the corpus, or passes `--watch` to auto-rebuild on file changes, see `references/add-watch.md`.
-
----
-
-## For the commit hook and native CLAUDE.md integration
-
-When the user asks to install the post-commit auto-rebuild hook or wire graphify into a project's CLAUDE.md, see `references/hooks.md`.
-
----
-
 ## Honesty Rules
 
 - Never invent an edge. If unsure, use AMBIGUOUS.
@@ -576,3 +570,90 @@ When the user asks to install the post-commit auto-rebuild hook or wire graphify
 - Always show token cost in the report.
 - Never hide cohesion scores behind symbols - show the raw number.
 - Never run HTML viz on a graph with more than 5,000 nodes without warning the user.
+
+---
+
+## Team Share
+
+Governance policy for committing `graphify-out/` artifacts as shared team context.
+Policy authority: `punch-ai-governance`. Rationale: [ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md).
+
+### Committed artifacts (allowlist)
+
+Only these two files may be committed. All others stay local and gitignored.
+
+| File | Status | Notes |
+|---|---|---|
+| `graphify-out/graph.json` | **Committed** (after validation) | Shared team graph |
+| `graphify-out/GRAPH_REPORT.md` | **Committed** (after validation) | Human-readable report |
+| `graphify-out/graph.html` | Gitignored | Large; may contain local paths in JS |
+| `graphify-out/cost.json` | Gitignored | Token/cost tracking — never shared |
+| `graphify-out/.graphify_python` | Gitignored | Machine-specific interpreter path |
+| `graphify-out/.graphify_root` | Gitignored | Machine-specific absolute path |
+| `graphify-out/.graphify_labels.json` | Gitignored | Rebuild from graph |
+| `graphify-out/cache/` | Gitignored | Local extraction cache |
+
+The committed graph is a **team baseline** — a starting point for queries, not a source
+of truth. Punch prompts and the source files remain authoritative. `punch-ai-governance`
+makes every decision; the graph informs, never decides.
+
+### Validation checklist (run before every commit)
+
+All six checks must pass. `punch-ai-governance` runs these and confirms before the commit.
+
+```bash
+# 1. Absolute path check — must return 0 matches
+grep -rE '/(Users|home)/[^/]+/' graphify-out/graph.json graphify-out/GRAPH_REPORT.md
+
+# 2. Venv / interpreter path check — must return 0 matches
+grep -rE '(\.venv|\.pyenv|\.local/lib|site-packages|python3\.[0-9]+)' \
+    graphify-out/graph.json graphify-out/GRAPH_REPORT.md
+
+# 3. Hostname / machine-specific check — must return 0 matches
+grep -rE '(MacBook|\.local$)' graphify-out/graph.json graphify-out/GRAPH_REPORT.md
+
+# 4. JSON validity
+python3 -c "import json; json.load(open('graphify-out/graph.json'))" && echo "JSON: OK"
+
+# 5. Node ID relative-path sanity — must print "none — OK"
+python3 -c "
+import json
+g = json.load(open('graphify-out/graph.json'))
+bad = [n['id'] for n in g.get('nodes', []) if n['id'].startswith('/')]
+print('Absolute node IDs:', bad if bad else 'none — OK')
+"
+
+# 6. No cost / token data in shared artifacts — must print nothing
+grep -l 'input_tokens\|output_tokens\|total_cost' \
+    graphify-out/graph.json graphify-out/GRAPH_REPORT.md \
+    && echo "WARNING: cost data found — do not commit"
+```
+
+### Rebuild guidance
+
+- **Fresh clone with committed graph:** skip the build step. Run `graphify query "<question>"` directly against the committed `graph.json`. Do not rebuild unless coverage is missing.
+- **Designated updater (updating the shared graph):** rebuild locally (`graphify .`), run the full validation checklist above, get `punch-ai-governance` sign-off, then commit `graph.json` + `GRAPH_REPORT.md`.
+- **Local personal rebuild:** any team member may rebuild at any time for personal orientation — this does not update the shared graph.
+- **Update trigger:** rebuild the shared graph when a major codebase shape change lands (new service, major refactor, structural rename). Minor edits do not require an update.
+
+Corpus scope for the shared graph: **code + Markdown/project docs only** (MVP). Expanding the corpus is an explicit opt-in (see Forbidden commands below).
+
+### Forbidden commands (never run by default)
+
+These require an explicit team decision and `punch-ai-governance` sign-off. They are never invoked autonomously and never through the `punch-context-engineering` gate without prior approval.
+
+| Command / feature | Reason |
+|---|---|
+| `graphify vscode install` | Injects always-on entries into `.vscode/` or assistant config |
+| `graphify claude install` | Writes an always-on `## graphify` section into `CLAUDE.md` |
+| `graphify copilot install` | Same — always-on assistant hook |
+| `graphify agents install` | Same |
+| `graphify hook install` | Post-commit auto-rebuild; hidden automation |
+| `--watch` | Background daemon; hidden rebuild |
+| `--mcp` | MCP server; network exposure |
+| `graphify add <url>` | External URL fetch into corpus |
+| PDF / image / video extraction | Requires `pip install 'graphifyy[video]'`; expands corpus scope |
+| `GEMINI_API_KEY` / cloud backends | Semantic extraction leaves the machine |
+| Neo4j / FalkorDB push | External graph DB write |
+| Cross-repo / remote-repo clone | Data exfiltration risk |
+| `graphify export wiki` / SVG / GraphML | Non-canonical outputs |

@@ -32,9 +32,7 @@
         "kind": "leaned-fork",
         "asset_hashes": {
           "SKILL.md": null,
-          "references/add-watch.md": null,
           "references/extraction-spec.md": null,
-          "references/hooks.md": null,
           "references/query.md": null,
           "references/update.md": null
         }

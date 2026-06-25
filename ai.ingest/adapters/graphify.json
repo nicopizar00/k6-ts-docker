@@ -37,9 +37,11 @@
       "remote-repo clone + cross-repo merge (references/github-and-merge.md)",
       "media transcription / Whisper (references/transcribe.md)",
       "external exports: wiki/SVG/GraphML/obsidian, Neo4j/FalkorDB push (references/exports.md)",
-      "MCP server"
+      "MCP server",
+      "/graphify add <url> and --watch daemon — external URL fetch + background auto-rebuild (references/add-watch.md)",
+      "graphify claude install — always-on CLAUDE.md integration + post-commit auto-rebuild hook (references/hooks.md)"
     ],
-    "expected_absent_references": ["exports.md", "github-and-merge.md", "transcribe.md"]
+    "expected_absent_references": ["exports.md", "github-and-merge.md", "transcribe.md", "add-watch.md", "hooks.md"]
   },
   "governance": {
     "adr": "docs/ai/decisions/0002-graphify-host-tool.md",

@@ -101,6 +101,11 @@ persistent first:
 Context Engineering may use Graphify to orient — and **owns the decision of
 whether it runs**. Not every sub-agent runs Graphify.
 
+Graphify is a **tool-backed context adapter**: installed locally
+(`uv tool install graphifyy` — ADR 0002), invoked **only** here and by
+`/punch-document`, never as an autonomous default. Its `graphify-out/` graph is
+reusable local state to orient from, not a canonical source.
+
 0. **Graphify not installed** (`graphify` CLI absent) → do not fail; show the
    user this message and continue without it:
 
@@ -131,6 +136,31 @@ whether it runs**. Not every sub-agent runs Graphify.
 Output is **compact** — a short oriented summary, never a graph dump. Host
 `graphify` is a scoped Rule-1 exception ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md));
 `graphify-out/` is throwaway evidence, never canonical.
+
+Adapter drift is auditable **read-only** via `python3 ai.ingest/compare.py graphify`
+(version · upstream · adaptation axes) — optional governance awareness, never a run
+blocker; field reference in [`ai.ingest/README.md`](../../../ai.ingest/README.md).
+
+### Team Bootstrap
+
+When `graphify-out/graph.json` is a committed repo artifact (team has opted into
+shared graph — see [`punch-graphify` Team Share](../punch-graphify/SKILL.md#team-share)):
+
+- **Fresh clone:** The committed graph is the team baseline. Skip step 1 (build).
+  Run `graphify query "<question>"` directly. Do not rebuild unless: (a) codebase
+  shape has changed significantly since the committed graph was built, (b) you are
+  the designated updater for this change, or (c) the gate signals missing coverage.
+- **Local personal rebuild:** Any team member may rebuild at any time for personal
+  orientation. This does not update the shared graph and requires no sign-off.
+- **Updating the shared graph:** Run the validation checklist in the
+  [`punch-graphify` Team Share section](../punch-graphify/SKILL.md#team-share), get
+  `punch-ai-governance` sign-off, then commit `graph.json` + `GRAPH_REPORT.md`.
+- **Stale signal:** If the committed graph predates a major structural change (new
+  service, significant refactor, structural rename), flag it as stale context for the
+  designated updater — do not treat it as authoritative for that change.
+
+The committed graph is evidence, not a source of truth. Source files validate; tests
+confirm. `punch-ai-governance` makes every governance decision.
 
 ## References
 
