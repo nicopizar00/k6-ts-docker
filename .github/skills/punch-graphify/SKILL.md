@@ -134,12 +134,7 @@ Then act on it:
 
 This step has two parts: **structural extraction** (deterministic, free) and **semantic extraction** (LLM, costs tokens).
 
-**Before dispatching subagents:** check whether `GEMINI_API_KEY` or `GOOGLE_API_KEY` is set. If neither is set, print this one-liner to the user:
-> Tip: set `GEMINI_API_KEY` or `GOOGLE_API_KEY` to use Gemini for semantic extraction (`pip install 'graphifyy[gemini]'`).
-
-Print it once, then continue. If `GEMINI_API_KEY` or `GOOGLE_API_KEY` IS set, use `graphify.llm.extract_corpus_parallel(files, backend="gemini")` for semantic extraction instead of dispatching Claude subagents. The default Gemini model is `gemini-3-flash-preview`; set `GRAPHIFY_GEMINI_MODEL` or pass `--model` in headless CLI flows to override it.
-
-> **No other API keys are read.** If `GEMINI_API_KEY`/`GOOGLE_API_KEY` are unset, fall straight through to Claude Code subagent dispatch (Part B below) — the host session itself is the LLM. graphify does **not** read `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or any other provider key from the environment. If a host agent prompts the user for `ANTHROPIC_API_KEY` to run extraction, that prompt is a misread of this skill — ignore it and dispatch subagents as written.
+> **Cloud backends are forbidden in Punch.** Semantic extraction runs in-IDE using the current Claude session — no external API key. Do not set `GEMINI_API_KEY` or `GOOGLE_API_KEY` (ADR 0002 Forbidden commands). Proceed directly to subagent dispatch (Part B below).
 
 **Run Part A (AST) and Part B (semantic) in parallel. Dispatch all semantic subagents AND start AST extraction in the same message. Both can run simultaneously since they operate on different file types. Merge results in Part C as before.**
 
@@ -586,6 +581,7 @@ Only these two files may be committed. All others stay local and gitignored.
 |---|---|---|
 | `graphify-out/graph.json` | **Committed** (after validation) | Shared team graph |
 | `graphify-out/GRAPH_REPORT.md` | **Committed** (after validation) | Human-readable report |
+| `.graphifyignore` | **Committed** (shared corpus filter) | Changes require `punch-ai-governance` sign-off; affects query coverage for all team members |
 | `graphify-out/graph.html` | Gitignored | Large; may contain local paths in JS |
 | `graphify-out/cost.json` | Gitignored | Token/cost tracking — never shared |
 | `graphify-out/.graphify_python` | Gitignored | Machine-specific interpreter path |
@@ -623,16 +619,22 @@ bad = [n['id'] for n in g.get('nodes', []) if n['id'].startswith('/')]
 print('Absolute node IDs:', bad if bad else 'none — OK')
 "
 
-# 6. No cost / token data in shared artifacts — must print nothing
-grep -l 'input_tokens\|output_tokens\|total_cost' \
-    graphify-out/graph.json graphify-out/GRAPH_REPORT.md \
-    && echo "WARNING: cost data found — do not commit"
+# 6a. No raw cost / token keys in graph.json — must print nothing
+grep -El 'input_tokens|output_tokens|total_cost' graphify-out/graph.json \
+    && echo "WARNING: cost data in graph.json — do not commit"
+# 6b. GRAPH_REPORT.md: raw keys must be absent; human-readable "Token cost:" summary line is accepted
+#     (non-sensitive: rounded totals only, no user data — see ADR 0002 check 6b note)
+grep -El 'input_tokens|output_tokens|total_cost' graphify-out/GRAPH_REPORT.md \
+    && echo "WARNING: raw cost keys in GRAPH_REPORT.md — do not commit"
+grep -c 'Token cost:' graphify-out/GRAPH_REPORT.md \
+    && echo "INFO: Token cost summary present in GRAPH_REPORT.md — accepted (non-sensitive, see ADR 0002)"
 ```
 
 ### Rebuild guidance
 
 - **Fresh clone with committed graph:** skip the build step. Run `graphify query "<question>"` directly against the committed `graph.json`. Do not rebuild unless coverage is missing.
 - **Designated updater (updating the shared graph):** rebuild locally (`graphify .`), run the full validation checklist above, get `punch-ai-governance` sign-off, then commit `graph.json` + `GRAPH_REPORT.md`.
+- **Shared graph is always undirected (default).** Never rebuild with `--directed` for the shared graph — it changes query behavior and is incompatible with the undirected baseline. Use `--directed` for local personal orientation only.
 - **Local personal rebuild:** any team member may rebuild at any time for personal orientation — this does not update the shared graph.
 - **Update trigger:** rebuild the shared graph when a major codebase shape change lands (new service, major refactor, structural rename). Minor edits do not require an update.
 

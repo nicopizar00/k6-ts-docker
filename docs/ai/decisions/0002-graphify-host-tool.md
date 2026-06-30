@@ -24,6 +24,12 @@ Graphify adopted as **scoped host-tool exception** to Docker First, used **only*
 - **Outputs evidence, not canonical.** Everything under `graphify-out/` = audit **evidence** — never canonical docs. `CLAUDE.md`, `docs/`, registries stay authoritative; nothing promoted to canonical without governance decision. `graph.json` and `GRAPH_REPORT.md` may be committed as shared team artifacts after passing the leakage validation checklist (see **Team Sharing** below); all other `graphify-out/` contents remain gitignored.
 - **No other surface.** No other agent, command, contributor workflow gains host-graphify dependence; execution chain unchanged.
 
+## Host tooling (`ai.ingest/`)
+
+`ai.ingest/` is host-side stdlib Python tooling — not a Copilot asset and not inside `.github/`. It is **owned by the user**; `punch-ai-governance` does not audit it. The `ai.ingest/README.md` is the authority on its schema and usage. Drift reports from `python3 ai.ingest/compare.py` are governance-awareness only, never a blocker.
+
+Baseline asset hashes in `ai.ingest/adopt.lock.json` are `null` (seed state) until the `adopt` command (deferred) is implemented. Until then only the version axis reports live data; asset axes report `baseline-not-recorded`. This is the documented MVP state — no false drift, no silent failure.
+
 ## Consequences
 
 - **Positive:** documentation debt gets lean, wave-based reconciliation phase backed by graph evidence — **no new skill, no new agent** (logic folds into existing `punch-ai-governance` agent + one prompt).
@@ -47,6 +53,7 @@ default) plus a narrow committed-artifact allowlist for team context sharing.
 |---|---|---|
 | `graphify-out/graph.json` | **Committed** (after validation) | Shared team query baseline |
 | `graphify-out/GRAPH_REPORT.md` | **Committed** (after validation) | Human-readable audit trail |
+| `.graphifyignore` | **Committed** (shared corpus filter) | Controls which files enter the shared graph; changes require `punch-ai-governance` sign-off |
 | All other `graphify-out/` contents | Gitignored (local only) | Machine-specific or noisy |
 
 `.gitignore` uses `graphify-out/*` (wildcard) + `!` un-ignore lines rather than the
@@ -61,9 +68,9 @@ former `graphify-out/` directory rule, which would have blocked negation.
 3. No hostname / machine-specific strings (`MacBook`, `.local`) in either file.
 4. `graph.json` parses as valid JSON.
 5. All node IDs in `graph.json` are relative paths (none start with `/`).
-6. No cost / token data (`input_tokens`, `output_tokens`) in shared files.
+6. No raw cost / token keys (`input_tokens`, `output_tokens`, `total_cost`) in either file (6a: `graph.json`; 6b: `GRAPH_REPORT.md`). `GRAPH_REPORT.md` may contain the human-readable summary line `Token cost: N input · N output` — accepted as non-sensitive (rounded totals only, no user data). Any raw JSON key in either file is a blocker.
 
-Full checklist text lives in `.github/skills/punch-graphify/SKILL.md` (Team Share section).
+Full checklist text (with commands) lives in `.github/skills/punch-graphify/SKILL.md` (Team Share section).
 
 ### Forbidden by default
 
@@ -79,5 +86,6 @@ agents / hook), `--watch`, `--mcp`, `graphify add <url>`, cloud semantic backend
 - **Negative / watch:** committed graph can go stale after major codebase shape
   changes. The designated updater for a structural change is responsible for
   updating and validating the shared graph before merging.
+- **Graph mode is always undirected (default).** Never rebuild the shared graph with `--directed` — it changes query behavior and is incompatible with the undirected baseline. Use `--directed` only for local personal orientation.
 - **Guardrail:** `punch-ai-governance` owns the validation gate on every shared-graph
   commit. No graph update merges without the six-check sign-off.

@@ -19,7 +19,7 @@ graph: graphify-out/graph.json (560 nodes · 819 edges · 51 communities)
 |---|---|
 | **Classification** | stale-risk · hidden maintenance coupling |
 | **Severity** | medium — silent drift, no runtime failure |
-| **Status** | ⚠️ open — queued for reconciliation (Step 3) |
+| **Status** | ✅ closed — comment added `src/punch/init_scan.py:L70` (mirrors `punch-document.prompt.md` Step 2 classify vocabulary) |
 
 ### What the graph found
 
