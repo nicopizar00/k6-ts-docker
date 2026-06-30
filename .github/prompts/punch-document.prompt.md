@@ -64,13 +64,18 @@ their presence as `lifecycle_templates` readiness signal.
   Team Setup** message and wave proceeds with non-graph evidence.
 - Map runs **in IDE session** — active model does semantic extraction,
   **no API key**. Headless `graphify extract --backend` path not used in-IDE.
+- **Adopt Adapt drift (optional, read-only).** Gated via [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) (single source). Surface any `drift detected` / `baseline incomplete` as a governance finding for the wave — never a hard block.
+- **Shared graph (if committed).** If `graphify-out/graph.json` is a committed repo artifact, team members may run `graphify query "<question>"` directly without rebuilding. Before updating the committed graph in a wave: run the validation checklist in the [`punch-graphify` Team Share section](../skills/punch-graphify/SKILL.md#team-share) and get `punch-ai-governance` sign-off before committing `graph.json` + `GRAPH_REPORT.md`.
 
 ## How it works (boundary)
 
 **Graphify provides map; `punch-ai-governance` makes every decision.**
 Graph is *evidence* for reconciliation, never canonical source. Nothing under
-`graphify-out/` promoted to canonical without governance decision, and
-never committed (gitignored — ADR 0002).
+`graphify-out/` promoted to canonical without governance decision. `graph.json`
+and `GRAPH_REPORT.md` may be committed as shared team artifacts after passing
+the leakage validation checklist ([`punch-graphify` Team Share](../skills/punch-graphify/SKILL.md#team-share),
+[ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)); all other
+`graphify-out/` contents remain gitignored.
 
 ## Inputs
 
@@ -91,8 +96,9 @@ whole project, and **track** across waves:
 - **Track incrementally:** between waves, keep current with
   `/graphify . --update` (re-extract only new/changed files); after doc-writing
   waves, run manual `--update` so authored docs re-enter graph.
-- Still **evidence, never canonical** — `graphify-out/` gitignored and never
-  promoted without governance decision (ADR 0002).
+- Still **evidence, never canonical** — `graphify-out/` contents never promoted
+  without governance decision; `graph.json` + `GRAPH_REPORT.md` may be committed
+  as shared team artifacts after validation (ADR 0002, Team Share).
 
 ## What to do
 

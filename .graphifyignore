@@ -1,15 +1,37 @@
 # Punch repository-level Graphify config — shared Context Engineering behavior.
 # Excludes noisy / generated / vendored paths from the knowledge-graph corpus
 # so `graphify .` maps the source of truth, not build output.
-node_modules/
+
+# Build / generated output
 dist/
 build/
+reports/
+artifacts/
+graphify-out/
+
+# Dependencies / vendored
+node_modules/
 coverage/
+
+# Version control + environment
 .git/
 .venv/
 __pycache__/
+*.pyc
+
+# Noise files
 *.log
 *.tmp
-graphify-out/cache/
-reports/
-artifacts/
+*.lock
+package-lock.json
+
+# Deferred corpus — explicit opt-in only (ADR 0002, Team Sharing)
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp4
+*.mp3
+*.docx
+*.xlsx

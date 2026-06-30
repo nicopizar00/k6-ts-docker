@@ -67,6 +67,8 @@ DEBT_TOKENS = [
     "copilot", "prompt", "skill", "agent",
 ]
 
+# Vocabulary mirrors the classify step in .github/prompts/punch-document.prompt.md.
+# If that prompt's classify vocabulary changes, update these queries in sync.
 GRAPHIFY_QUERIES = [
     "Which markdown files describe implemented features?",
     "Which markdown files describe planned or in-progress features?",
