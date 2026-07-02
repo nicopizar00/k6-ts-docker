@@ -45,7 +45,7 @@ The `.claude/commands/*` wraps are **thin pointers**; this table is the contract
 | `/test`     | `.github/prompts/punch-test.prompt.md`     | `punch-test-engineer`      | `ultra` (sub: `wenyan`) |
 | `/review`   | `.github/prompts/punch-review.prompt.md`   | `punch-reviewer`           | `full` |
 | `/ship`     | `.github/prompts/punch-ship.prompt.md`     | `punch-reviewer`           | `full` |
-| `/document` | `.github/prompts/punch-document.prompt.md` | `punch-ai-governance`      | `lite` (`ultra` status only) |
+| `/document` | `.github/prompts/punch-document.prompt.md` | `punch-ai-governance`      | `lite` persisted (`full` working) |
 | `/init`     | `.github/prompts/punch-init.prompt.md`     | `punch-ai-governance` (enforced) | `lite` |
 
 `@punch-ai-governance` audits are reachable the same way — load the prompt/agent

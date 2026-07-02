@@ -1,23 +1,33 @@
 ---
 agent: punch-ai-governance
-description: Documentate — own and reconcile ALL of docs/ (+ .github config, README.md) in waves. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / rewrite / archive / delete / promote.
+description: Documentate — documentation-debt remediation + AI-artifact lifecycle over ALL of docs/ (+ .github config, README.md), in waves. Inherited docs and prior AI artifacts (specs, plans, maps, temp scripts, reports) untrusted until verified. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / compact / convert / promote / archive / delete / review.
 ---
 # Punch — Documentate
 
 **Lifecycle phase:** Documentate (recurring maintenance; orthogonal to Spec → Ship)
 **Mode:** Ask / Agent — reconciliation edits via `punch-ai-governance`
 **Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
-(decision authority) + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-(Graphify gate) + [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
-(writing method). Structural map delegated to existing `/graphify` skill.
+(decision authority). Delegates — not competitors:
+[`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
+(Graphify gate) · [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
+(writing method) · [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md)
+(on demand — compacting script-/code-bearing assets). Structural map delegated to
+existing `/graphify` skill. Legacy retirement / migration follows
+`punch-documentation-and-adrs` + `punch-git-workflow-and-versioning` (upstream
+`deprecation-and-migration` stays deferred — [skill registry](../../docs/ai/skill-registry.md)).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
-**Operating comms:** Caveman **`lite`** for persistent docs; **`ultra` only for terminal/status summary**. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. `/graphify` map fork (1-deep) returns `wenyan`-compatible report; evidence consumed, never written verbatim into docs. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. `/graphify` map fork (1-deep) returns `wenyan`-compatible report; evidence consumed, never written verbatim into docs. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
 Periodically, or after feature lands and docs drift, to retire documentation
-debt — duplicated, stale, partial, orphaned knowledge — across **all of `docs/`**
-and config/doc surface this prompt owns. Run **one wave at a time**; defer rest.
+debt — duplicated, stale, partial, orphaned knowledge — **plus inherited AI
+artifacts**: prior specs / plans, bootstrap + wave reports, graph maps, temporary
+scripts, prompt/instruction text — across **all of `docs/`** and config/doc
+surface this prompt owns. Run **one wave at a time**; defer rest.
+
+**Not** a generic doc-writing prompt — new-feature docs belong to the change
+that ships them ([`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)).
 
 ## Scope — resolves all `docs/`
 
@@ -28,6 +38,9 @@ and `docs/`) owns and reconciles **entire** documentation surface:
   `docs/workflows/**`, `docs/validation/**`, top-level `docs/*.md`), ADRs.
 - **All AI-facing docs** — `docs/ai/**` and
   `.github/` instructions / prompts / skills / agents + registries.
+- **AI working artifacts** — `docs/architecture/specs/**` (prior specs / plans),
+  `docs/ai/governance/**` (init bootstrap + wave reports), committed graph
+  artifacts, leftover temporary scripts/assets inside the owned surface.
 
 Frozen/upstream zones (`docs/ai/history/**`, `.ai-upstream/**`, adopted-upstream
 skills) follow convention in agent's *Handle with care* scope: refresh /
@@ -69,12 +82,16 @@ their presence as `lifecycle_templates` readiness signal.
 
 ## How it works (boundary)
 
+**Inherited artifacts untrusted by default.** Old docs and AI-generated
+artifacts are claims, not facts — verify against code / runtime / git history
+before `keep` or `promote`; unverifiable → classify `review`, never silently keep.
+
 **Graphify provides map; `punch-ai-governance` makes every decision.**
 Graph is *evidence* for reconciliation, never canonical source. Nothing under
 `graphify-out/` promoted to canonical without governance decision. `graph.json`
 and `GRAPH_REPORT.md` may be committed as shared team artifacts after passing
 the leakage validation checklist ([`punch-graphify` Team Share](../skills/punch-graphify/SKILL.md#team-share),
-[ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)); all other
+[ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)); all other
 `graphify-out/` contents remain gitignored.
 
 ## Inputs
@@ -110,10 +127,12 @@ whole project, and **track** across waves:
    and targeted `query|path|explain|affected` as duplication / orphan / stale
    signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
-   canonical-candidate.
-3. **Reconcile** in ≤3-file steps — keep / merge / rewrite / archive / delete /
-   promote. Update matching registry row in same step. Surface each
-   intended change and wait for approval before writing.
+   unverified · canonical-candidate. Inherited / AI-generated artifacts start
+   untrusted — verify before any `keep` / `promote`.
+3. **Reconcile** in ≤3-file steps — keep / merge / compact / convert / promote /
+   archive / delete / review (unverified → human decision). Update matching
+   registry row in same step. Surface each intended change and wait for approval
+   before writing.
 4. **Record** wave outcome: findings closed, and what queued for next
    wave.
 

@@ -136,7 +136,8 @@ Type `/graphify` in Copilot Chat to build or update the graph (gated, not automa
 
 Caveman compresses assistant **prose only**; repo default **`lite`**, every
 Copilot session. Per-phase voice: Spec **`lite`** · Plan **`full`** · Build (to
-humans) **`ultra`** · Review/Ship **`full`** · Document **`lite`** · Test
+humans) **`ultra`** · Review/Ship **`full`** · Document **`lite`** persisted
+(**`full`** working comms) · Test
 **`ultra`**. Sub-agent briefs: `punch-builder`→engineer **`wenyan-lite`**; the two
 engineers→**cavecrew** **`wenyan-full`**; any other sub-agent nesting→cavecrew
 **`wenyan-ultra`**; cavecrew worker reports are **non-guarded (lazy)**. Wenyan
