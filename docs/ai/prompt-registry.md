@@ -17,7 +17,7 @@ See `.github/prompts/` for prompt bodies.
 | [`punch-test`](../../.github/prompts/punch-test.prompt.md) | Test | Agent / Ask | `punch-test-engineer` | Prove change RED→GREEN at k6 check/threshold level via `./bin/punch`; produce `reports/state/punch-run.json` evidence; final PASS/FAIL gate. |
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-code-reviewer` | Test passed; audit diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-release-captain` | Review approved; commit, push, open PR. **Never merges.** |
-| [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Retire doc debt in waves: map with `/graphify`, then keep / merge / rewrite / archive / delete / promote. |
+| [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Remediate doc debt + AI-artifact lifecycle in waves: map with `/graphify`, verify inherited artifacts (untrusted by default), then keep / merge / compact / convert / promote / archive / delete / review. |
 | [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (bootstrap, on-demand) | Ask (read-only asset sweep) | `punch-ai-governance` (enforced) | Certify the GitHub Copilot asset set (prompts, agents, skills, instructions + AI-Ingest Caveman/cavecrew) is present, `punch-`prefixed, and Copilot-compatible. Reports PASS/WARN/BLOCKED; hands reconciliation to `/punch-document`. No runtime, no Python. |
 
 ## One prompt per phase
