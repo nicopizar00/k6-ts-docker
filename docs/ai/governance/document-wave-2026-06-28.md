@@ -124,7 +124,7 @@ Top cross-community bridges from this graph:
 
 | ID | Classification | File(s) | Description | Proposed action |
 |---|---|---|---|---|
-| F-008 | partial (registry coverage) | `.github/agents/punch-cavecrew-builder.agent.md` · `punch-cavecrew-investigator` · `punch-cavecrew-reviewer` · `punch-security-auditor` | Sub-agents referenced only in coordinator rosters + `punch-review` prompt — absent from the two spots the audit skill checks (copilot-instructions lifecycle table, prompt-registry) | Refine `punch-ai-governance` SKILL step 2 to accept roster references, **or** add one sub-agent roster line to `copilot-instructions.md` |
-| F-009 | partial (vocabulary variance) | several `.github/agents/*.agent.md` | Boundaries expressed via `## Scope` / `## Boundary` / `## Guards (per agent-guards.md)` sections, not literal Allowed/Forbidden; audit skill step 3 wording assumes the latter | Align skill step-3 wording with the `agent-guards.md` convention (cross-link, don't duplicate), **or** standardize agent section names |
+| F-008 | partial (registry coverage) | `.github/agents/punch-cavecrew-builder.agent.md` · `punch-cavecrew-investigator` · `punch-cavecrew-reviewer` · `punch-security-auditor` | Sub-agents referenced only in coordinator rosters + `punch-review` prompt — absent from the two spots the audit skill checks (copilot-instructions lifecycle table, prompt-registry) | Refine `punch-ai-governance` SKILL step 2 to accept roster references, **or** add one sub-agent roster line to `copilot-instructions.md` — ✅ closed wave-2026-07-02 (step-2 wording aligned) |
+| F-009 | partial (vocabulary variance) | several `.github/agents/*.agent.md` | Boundaries expressed via `## Scope` / `## Boundary` / `## Guards (per agent-guards.md)` sections, not literal Allowed/Forbidden; audit skill step 3 wording assumes the latter | Align skill step-3 wording with the `agent-guards.md` convention (cross-link, don't duplicate), **or** standardize agent section names — ✅ closed wave-2026-07-02 (step-3 wording aligned) |
 
-Both require a `punch-ai-governance` decision before any edit.
+✅ Both closed — see [document-wave-2026-07-02.md](document-wave-2026-07-02.md).
