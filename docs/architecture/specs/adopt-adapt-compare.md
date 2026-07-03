@@ -1,10 +1,9 @@
 # Spec — Adopt Adapt `compare` command (increment)
 
-> Increment on approved Spec [`adopt-adapt.md`](adopt-adapt.md). Unblocks task
-> **A-02** in [`plan-adopt-adapt.md`](plan-adopt-adapt.md).
+> Increment on approved Spec [`adopt-adapt.md`](adopt-adapt.md).
 > Pattern source: `.github/prompts/punch-spec.prompt.md` (Caveman `lite`).
 
-**Status:** Spec — awaiting approval. Re-plan A-02 = next phase.
+**Status:** shipped — ai.ingest/compare.py
 
 ## Problem
 

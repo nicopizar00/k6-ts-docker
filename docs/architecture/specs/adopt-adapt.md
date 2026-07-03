@@ -5,7 +5,7 @@
 > Seed artifacts already created: `ai.ingest/adopt.lock.json`,
 > `ai.ingest/adapters/graphify.json`, `ai.ingest/README.md`.
 
-**Status:** Spec — awaiting approval. Plan = next phase.
+**Status:** shipped — base MVP (ai.ingest/ data model); active increment: graphify (`feat/adopt-adapt-graphify-mvp`)
 
 ## Problem
 
