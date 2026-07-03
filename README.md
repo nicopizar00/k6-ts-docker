@@ -85,7 +85,6 @@ Domain + lifecycle skills and the agent personas support the lifecycle —
 see the registries below for the live inventory.
 
 - Operating model: [`docs/ai/operating-model.md`](docs/ai/operating-model.md)
-- Lifecycle walkthrough: [`docs/ai/workflow.md`](docs/ai/workflow.md)
 - Scoped-build policy: [`docs/ai/scoped-build-policy.md`](docs/ai/scoped-build-policy.md)
 - Model selection: [`docs/ai/model-selection.md`](docs/ai/model-selection.md)
 - Mode mapping: [`docs/ai/copilot-mode-mapping.md`](docs/ai/copilot-mode-mapping.md)
@@ -93,12 +92,6 @@ see the registries below for the live inventory.
 - Prompt registry: [`docs/ai/prompt-registry.md`](docs/ai/prompt-registry.md)
 - Layered architecture: [`docs/architecture/punch-boundaries.md`](docs/architecture/punch-boundaries.md)
 - Validation contract: [`docs/workflows/validation.md`](docs/workflows/validation.md)
-
-## Next steps
-
-- Track A roadmap: [`docs/roadmap-track-a-performance-gate.md`](docs/roadmap-track-a-performance-gate.md)
-- Track B roadmap: [`docs/roadmap-track-b-reference-app.md`](docs/roadmap-track-b-reference-app.md)
-- [`docs/architecture/specs/bff-checkout-journey-implementation.md`](docs/architecture/specs/bff-checkout-journey-implementation.md)
 - Contribution rules: [`CLAUDE.md`](CLAUDE.md)
 
 ## Contributing

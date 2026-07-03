@@ -30,4 +30,4 @@ Thanks for wanting to contribute. Follow these lightweight rules to keep changes
 
 ## Contact
 
-For questions about the AI lifecycle or prompts, see [`docs/ai/operating-model.md`](docs/ai/operating-model.md), [`docs/ai/workflow.md`](docs/ai/workflow.md), and the prompts under [`.github/prompts/`](.github/prompts).
+For questions about the AI lifecycle or prompts, see [`docs/ai/operating-model.md`](docs/ai/operating-model.md) and the prompts under [`.github/prompts/`](.github/prompts).

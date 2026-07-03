@@ -73,7 +73,7 @@ Delegation: may invoke bounded **cavecrew** leaf workers
 lazy default). They inherit this engineer's loaded skills + scope by **lineage**;
 their `tools` are a subset of this engineer. Workers are leaves (`agents:` empty)
 — they do not spawn further, so depth is roster-bounded. Canon:
-[`orchestration-patterns.md`](../../docs/ai/punch-references/orchestration-patterns.md).
+[`agent-guards.md`](../../docs/ai/agent-guards.md).
 
 ## Evidence
 

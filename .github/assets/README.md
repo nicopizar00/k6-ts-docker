@@ -1,45 +1,60 @@
-# `.github/assets` — GitHub Copilot Chat 匯出範本（VS Code · Hub-Spoke）
+# `.github/assets` — GitHub Copilot Chat export template (VS Code · Hub-Spoke)
 
-最小範本,使 `.github` GitHub Copilot 資產可作 VS Code GitHub Copilot Chat 範本匯出。匯出 = copy-paste `.github/` + `docs/ai/`。唯一標的 = **GitHub Copilot VS Code**。
+Minimal template that makes the `.github` GitHub Copilot assets exportable as a
+VS Code GitHub Copilot Chat template. Export = copy-paste `.github/` +
+`docs/ai/`. Sole target = **GitHub Copilot VS Code**.
 
-## ⚠ 警（caveman ultra）
+## ⚠ Warnings
 
-> ⚠ TEMPLATE only. Human adapt before use. No ship as-is.
-> ⚠ Target = GitHub Copilot VS Code Chat ONLY. Other tool (Claude/Codex/agent) NOT in scope.
-> ⚠ resolve/ stub = link-fix only, NOT real content. Human fill on adopt.
-> ⚠ Prose = wenyan. Copilot may misread classical Chinese. Team review first.
+> ⚠ TEMPLATE only. Human adapts before use. Never ship as-is.
+> ⚠ Target = GitHub Copilot VS Code Chat ONLY. Other tools (Claude/Codex/agents) NOT in scope.
+> ⚠ `resolve/` stubs = link-fix only, NOT real content. Human fills on adopt.
+> ⚠ `resolve/` stub prose = wenyan snapshots. Copilot may misread classical Chinese. Team review before adopting.
 
-## 內容（essentials）
+## Contents (essentials)
 
-### Copilot Chat native 資產
+### Copilot Chat native assets
 
-| 範本 | 真位（adopt 後） |
+| Template | Real location (after adopt) |
 |------|------------------|
-| `copilot-instructions.md` | `.github/copilot-instructions.md`（中樞 hub） |
-| `instructions/governance.instructions.md` | `.github/instructions/`（輻,`applyTo: '**'`） |
-| `prompts/punch-init.prompt.md` | `.github/prompts/`（AI 治理代理） |
+| `copilot-instructions.md` | `.github/copilot-instructions.md` (the hub) |
+| `instructions/governance.instructions.md` | `.github/instructions/` (spoke, `applyTo: '**'`) |
+| `prompts/punch-init.prompt.md` | `.github/prompts/` (AI governance agent) |
 
-### `resolve/` — 倉內出域文鏈鏡照 snapshot（self-resolutive）
+### `resolve/` — snapshot mirrors of out-of-bundle repo docs (self-resolutive)
 
-匯出時,`.github/` + `docs/ai/` 之外被引之倉內文 → 斷。`resolve/` 鏡真路、補之,使 bundle **自解(self-resolutive)、韌(resilient)**:bundle 唯需 `.github/` · `docs/ai/` · `.ai-upstream/` · `resolve/`,不外伸。鏡照乃 **caveman-wenyan 最小 snapshot**(非真文,人於 adopt 時填 / 換)。`/punch-init` certify 此鏡照覆全出域鏈(見 `prompts/punch-init.prompt.md` 之 resolve gate)。
+On export, repo docs referenced from outside `.github/` + `docs/ai/` break.
+`resolve/` mirrors those paths so the bundle stays **self-resolutive and
+resilient**: the bundle needs only `.github/` · `docs/ai/` · `.ai-upstream/` ·
+`resolve/`, nothing external. Mirrors are **minimal caveman-wenyan snapshots**
+(not real content; humans fill / replace on adopt). `/punch-init` certifies this
+mirror set covers every out-of-bundle link (see the resolve gate in
+`prompts/punch-init.prompt.md`).
 
-| 出域標的（引處數） | resolve/ 鏡照 snapshot |
+| Out-of-bundle target (ref count) | resolve/ snapshot |
 |--------------------|------------------------|
-| `docs/architecture/punch-boundaries.md`（7） | `resolve/docs/architecture/punch-boundaries.md` |
-| `docs/workflows/validation.md`（2） | `resolve/docs/workflows/validation.md` |
-| `CLAUDE.md`（2 · 倉根戒律源） | `resolve/CLAUDE.md` |
-| `AGENTS.md`（1 · AI 代理導覽） | `resolve/AGENTS.md` |
+| `docs/architecture/punch-boundaries.md` (7) | `resolve/docs/architecture/punch-boundaries.md` |
+| `docs/workflows/validation.md` (2) | `resolve/docs/workflows/validation.md` |
+| `CLAUDE.md` (2 · repo-root rule source) | `resolve/CLAUDE.md` |
+| `AGENTS.md` (1 · AI agent guide) | `resolve/AGENTS.md` |
 
 ## Hub-Spoke
 
-中樞(hub)= `.github/copilot-instructions.md`,唯載戒律與連。輻載細則。改則改輻,勿復述。
+Hub = `.github/copilot-instructions.md`; carries only rules + links. Spokes
+carry detail. Change the spoke, never restate.
 
-## 範圍外（out of scope · 不入範本 · 不 certify）
+## Out of scope (not in template · not certified)
 
-範本唯涵 **VS Code GitHub Copilot** 相關、已定之資產。下類**不入範本、`/punch-init` 不計、不 certify**:
+Template covers only **VS Code GitHub Copilot** assets in settled state. These
+classes are **excluded from the template, not counted by `/punch-init`, not
+certified**:
 
-- **WIP / 草稿 / history 文**：如 `docs/ai/history/**`、未定 plan / draft。凍區,不鏡、不解、不修。(故 `docs/ai/history/agent-skills-absorption-plan.md:59` 之 off-by-one 斷鏈 **不入範本範圍** —— history 文,源頭維護自理。)
-- **他工具文**：root `CODEX.md` 及他 LLM 專屬(非 Copilot)。
-- **外部工具 snapshot**：`.ai-upstream/` 之 caveman / graphify —— 外部,官方指南,人自裝於本機。
+- **WIP / draft docs** — unsettled plans and drafts. Not mirrored, not
+  resolved, not fixed.
+- **Other-tool docs** — LLM-specific files that are not Copilot-native.
+- **External-tool snapshots** — caveman / graphify under `.ai-upstream/`;
+  external, official guides apply, humans install locally.
 
-> ⚠ 此三類之斷鏈於匯出時留懸,**by design**,非範本缺陷。`/punch-init` resolve gate 唯 certify 上方 `resolve/` 表之出域鏈。
+> ⚠ Broken links in these classes stay unresolved on export **by design** — not
+> a template defect. The `/punch-init` resolve gate certifies only the
+> out-of-bundle links in the `resolve/` table above.

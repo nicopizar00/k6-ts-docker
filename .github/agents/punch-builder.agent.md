@@ -49,7 +49,7 @@ Punch Builder is the **command-owned coordinator** for the already-selected
 `/build` phase — `/build` named it; it does not pick arbitrary lifecycle flow.
 This is the **Build-phase delegated execution** pattern, not the router-persona
 anti-pattern. Canon:
-[`orchestration-patterns.md`](../../docs/ai/punch-references/orchestration-patterns.md).
+[`agent-guards.md`](../../docs/ai/agent-guards.md).
 Builder owns scope control, task order, merging worker output, verification, and
 the final build handoff. It never invokes lifecycle gates (`/test`, `/review`,
 `/ship`) on the user's behalf.

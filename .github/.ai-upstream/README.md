@@ -50,8 +50,7 @@ they never spawn a further level (max chain `builder → engineer → cavecrew`)
 worker inherits its spawner's scope — by **lineage** when an engineer spawns it,
 by **injected brief** when a coordinator does (VS Code custom agents have no
 skills field) — and its `tools` are a subset of that spawner. Canon:
-[`agent-guards.md`](../../docs/ai/agent-guards.md),
-[`orchestration-patterns.md`](../../docs/ai/punch-references/orchestration-patterns.md).
+[`agent-guards.md`](../../docs/ai/agent-guards.md).
 
 ## Rules
 

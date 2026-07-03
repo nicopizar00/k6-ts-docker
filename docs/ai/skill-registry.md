@@ -6,7 +6,7 @@ Punch skills sit on **two independent axes**:
   needs killing one.
 - **Lifecycle skills** — engineering *methods* adapted from upstream
   `agent-skills` set. Separate axis, **not** under domain cap; admitted in
-  batches by [absorption plan](history/agent-skills-absorption-plan.md).
+  batches (absorption plan retired — see git history).
 
 Each entry below: responsibility + why earns separate skill. "Deferred"
 section lists candidates intentionally **not** created.
@@ -112,7 +112,7 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`punch-browser-testing-with-devtools`](../../.github/skills/punch-browser-testing-with-devtools/SKILL.md) | Method for k6 Browser tests via `./bin/punch` (placeholder stays deferred until a Plan task) | Build/Test (k6 Browser task only) | `.github/skills/punch-browser-testing-with-devtools/SKILL.md` |
 | [`punch-using-agent-skills`](../../.github/skills/punch-using-agent-skills/SKILL.md) | The *agents* canon: how a coordinator delegates to engineers + bounded `punch-cavecrew-*` workers (depth-1, tool-subset, lazy nesting) | [`punch-build`](../../.github/prompts/punch-build.prompt.md), `punch-builder` | `.github/skills/punch-using-agent-skills/SKILL.md` |
 
-Phase 3 of [absorption plan](history/agent-skills-absorption-plan.md) (Tier-A +
+Phase 3 of the absorption plan (Tier-A +
 P3 set) **complete** — every lifecycle skill above absorbed and registered.
 **Phase 6 originally folded** `context-engineering`→`punch-context-engineering`
 (still folded); `punch-performance-optimization` and `punch-observability-and-instrumentation`
