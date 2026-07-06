@@ -54,10 +54,13 @@ default) plus a narrow committed-artifact allowlist for team context sharing.
 | `graphify-out/graph.json` | **Committed** (after validation) | Shared team query baseline |
 | `graphify-out/GRAPH_REPORT.md` | **Committed** (after validation) | Human-readable audit trail |
 | `.graphifyignore` | **Committed** (shared corpus filter) | Controls which files enter the shared graph; changes require `punch-ai-governance` sign-off |
-| All other `graphify-out/` contents | Gitignored (local only) | Machine-specific or noisy |
+| All other root `graphify-out/` contents | Gitignored (local only) | Machine-specific or noisy |
+| Nested or renamed `graphify-out*` directories | Gitignored + CI-blocked | Prevents duplicate shared graphs outside the canonical root output |
 
-`.gitignore` uses `graphify-out/*` (wildcard) + `!` un-ignore lines rather than the
-former `graphify-out/` directory rule, which would have blocked negation.
+`.gitignore` uses wildcard file rules (`graphify-out/*`, `**/graphify-out/*`,
+`graphify-out-*/*`, `graphify-out_*/*`) plus `!` un-ignore lines for the two
+canonical files rather than the former `graphify-out/` directory rule, which
+would have blocked negation.
 
 ### Validation gate (required before every commit)
 
@@ -69,6 +72,7 @@ former `graphify-out/` directory rule, which would have blocked negation.
 4. `graph.json` parses as valid JSON.
 5. All node IDs in `graph.json` are relative paths (none start with `/`).
 6. No raw cost / token keys (`input_tokens`, `output_tokens`, `total_cost`) in either file (6a: `graph.json`; 6b: `GRAPH_REPORT.md`). `GRAPH_REPORT.md` may contain the human-readable summary line `Token cost: N input · N output` — accepted as non-sensitive (rounded totals only, no user data). Any raw JSON key in either file is a blocker.
+7. No tracked rogue Graphify output paths: only root `graphify-out/graph.json` and root `graphify-out/GRAPH_REPORT.md` may be committed. Nested `*/graphify-out/*` and renamed `graphify-out-*/*` / `graphify-out_*/*` outputs fail CI.
 
 Full checklist text (with commands) lives in `.github/skills/punch-graphify/SKILL.md` (Team Share section).
 

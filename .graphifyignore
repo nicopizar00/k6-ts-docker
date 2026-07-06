@@ -8,6 +8,11 @@ build/
 reports/
 artifacts/
 graphify-out/
+**/graphify-out/
+graphify-out-*/
+**/graphify-out-*/
+graphify-out_*/
+**/graphify-out_*/
 
 # Dependencies / vendored
 node_modules/

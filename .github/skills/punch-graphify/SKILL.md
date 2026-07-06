@@ -589,13 +589,18 @@ Only these two files may be committed. All others stay local and gitignored.
 | `graphify-out/.graphify_labels.json` | Gitignored | Rebuild from graph |
 | `graphify-out/cache/` | Gitignored | Local extraction cache |
 
+Nested or renamed Graphify output directories are never shared. The canonical
+root output is the only accepted location; tracked paths like
+`docs/graphify-out/graph.json` or `graphify-out-copy/graph.json` fail the
+repository guard.
+
 The committed graph is a **team baseline** — a starting point for queries, not a source
 of truth. Punch prompts and the source files remain authoritative. `punch-ai-governance`
 makes every decision; the graph informs, never decides.
 
 ### Validation checklist (run before every commit)
 
-All six checks must pass. `punch-ai-governance` runs these and confirms before the commit.
+All seven checks must pass. `punch-ai-governance` runs these and confirms before the commit.
 
 ```bash
 # 1. Absolute path check — must return 0 matches
@@ -628,6 +633,9 @@ grep -El 'input_tokens|output_tokens|total_cost' graphify-out/GRAPH_REPORT.md \
     && echo "WARNING: raw cost keys in GRAPH_REPORT.md — do not commit"
 grep -c 'Token cost:' graphify-out/GRAPH_REPORT.md \
     && echo "INFO: Token cost summary present in GRAPH_REPORT.md — accepted (non-sensitive, see ADR 0002)"
+
+# 7. Committed artifact location guard — must print "Graphify share validation OK"
+python3 ai.ingest/validate_graphify_share.py
 ```
 
 ### Rebuild guidance
