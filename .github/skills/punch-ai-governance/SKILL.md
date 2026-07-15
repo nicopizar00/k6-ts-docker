@@ -35,6 +35,10 @@ It owns:
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
   still owe a `punch-` rename (read-only; see procedure below).
+- **Sole Graphify write-rights** across the repo — build, `--update`, and full
+  regeneration run only via `/punch-document`; every other consumer
+  (`punch-context-engineering`, Spec/`punch-architect`, Build/Test/Review/Ship)
+  may query an existing graph but never write it (see *Documentation mode* below).
 
 It does **not** own:
 
@@ -67,8 +71,32 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 - A PR touches `.github/` or `docs/ai/`.
 - The Review phase runs against a diff that includes AI configuration.
 - Periodic governance review (quarterly cadence recommended).
+- `/punch-document` — reconcile documentation debt in waves (see
+  **Documentation mode** below).
 
 **Not for:** product code (Python/TS/Docker — the domain skills) or the architecture itself (`punch-architecture.instructions.md`, `docs/architecture/`).
+
+## Documentation mode (`/punch-document`)
+
+This is the **sole Graphify write-rights owner** — build, `--update`, and
+full regeneration run only through `/punch-document`; every other consumer
+(`punch-context-engineering`, Spec/`punch-architect`, Build/Test/Review/Ship)
+may query an existing graph but never write it (see
+[`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
+and [`punch-graphify`](../punch-graphify/SKILL.md)).
+
+Reconciliation runs at two grains, both first-class:
+
+- **Localized** — a single file, subsystem, or user-named target (the
+  free-form instruction input on the prompt). No full-surface rebuild implied.
+- **Full-surface** — the periodic wave across all of `docs/` + `.github/`
+  this skill has complete admin over (see *Responsibility* above).
+
+Procedure (map → classify → reconcile → record) and the graph
+query/incremental-update/full-regenerate decision rule live in
+[`punch-document`](../../prompts/punch-document.prompt.md) and this skill's
+agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agent.md)
+(Documentation mode) — not restated here.
 
 ## Inputs expected
 

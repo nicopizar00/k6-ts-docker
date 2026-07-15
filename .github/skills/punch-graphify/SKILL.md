@@ -1,7 +1,7 @@
 ---
 name: punch-graphify
 description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns a code/docs tree into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools. (Punch-leaned: in-IDE build/update/query only.)"
-applies-to: repo orientation / mapping — gated through punch-context-engineering; used in Context Engineering + Document; not path-scoped
+applies-to: repo orientation / mapping — query/path/explain gated through punch-context-engineering (read-only); build/--update/full-regenerate gated through punch-document only (sole writer); not path-scoped
 ---
 
 # /graphify
@@ -9,9 +9,14 @@ applies-to: repo orientation / mapping — gated through punch-context-engineeri
 Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.
 
 > **Punch adaptation.** This is `punch-graphify` — the canonical Punch-leaned
-> replacement for upstream graphify, not the upstream skill verbatim. It runs **only**
-> when a Punch prompt routes through the `punch-context-engineering` Graphify gate or
-> `/punch-document` — never as an autonomous default. Install is **CLI-only**
+> replacement for upstream graphify, not the upstream skill verbatim. **Write**
+> subcommands (build, `--update`, `--cluster-only`, full regenerate) run **only**
+> when routed through `/punch-document` — the sole Graphify write owner.
+> **Read** subcommands (`query`/`path`/`explain`) may additionally run through the
+> `punch-context-engineering` Graphify gate — never as an autonomous default either
+> way. Graphify executes what it is asked; it never decides what is canonical or
+> what to write into docs — that decision belongs to `punch-ai-governance` (see
+> [Team Share](#team-share)). Install is **CLI-only**
 > (`uv tool install graphifyy`); the official skill-install, `graphify claude install`
 > (which writes an always-on `CLAUDE.md` section), and the post-commit auto-rebuild
 > hook are **not used** ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)).

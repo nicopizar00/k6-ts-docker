@@ -21,6 +21,11 @@ conflict with Punch, **Punch wins**:
   `reports/state/punch-run.json`, not "tests pass".
 - **Clarify first:** when the request is still a vague idea, run
   [`punch-idea-refine`](../punch-idea-refine/SKILL.md) before specifying.
+- **Graph & doc boundary:** Spec may query existing docs/graph evidence via
+  [`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
+  (read-only); it never cleans, regenerates, or updates docs/graph. A
+  documentation or graph gap found during Spec goes into the spec's
+  Non-goals/Constraints as a queued item for `/punch-document` — not fixed inline.
 
 ## Overview
 

@@ -96,12 +96,14 @@ persistent first:
 
 ## Graphify gate
 
-Context Engineering may use Graphify to orient — and **owns the decision of
-whether it runs**. Not every sub-agent runs Graphify.
+Context Engineering may use Graphify to **orient — read-only, only**. It
+decides whether a query runs and whether the current graph is missing or
+stale; it never decides whether Graphify builds or writes. That decision
+belongs solely to `/punch-document` (see
+[`punch-ai-governance`](../punch-ai-governance/SKILL.md#documentation-mode-punch-document)).
 
 Graphify is a **tool-backed context adapter**: installed locally
-(`uv tool install graphifyy` — ADR 0002), invoked **only** here and by
-`/punch-document`, never as an autonomous default. Its `graphify-out/` graph is
+(`uv tool install graphifyy` — ADR 0002). Its `graphify-out/` graph is
 reusable local state to orient from, not a canonical source.
 
 0. **Graphify not installed** (`graphify` CLI absent) → do not fail; show the
@@ -113,23 +115,24 @@ reusable local state to orient from, not a canonical source.
    > uv tool install graphifyy
    > ```
 
-1. **No `graphify-out/graph.json`** → run `/graphify .`. The skill runs **in the
-   IDE session** — the active model does semantic extraction, **no API key**. Do
-   **not** use headless `graphify extract --backend` in-IDE (it throws
-   `no LLM API key found`); that path is for off-IDE / CI only.
-2. **Graph exists** → do not rebuild by default. Prefer targeted queries:
-   `graphify query "<question>"`, `graphify path "<A>" "<B>"`,
-   `graphify explain "<node>"`.
-3. **Rebuild / `graphify update`** only when the task is broad, architectural,
-   cross-cutting, or prompt/agent/skill governance. Then widen the corpus to
-   include live documentation, temporal spec/plan files, and other VS Code Copilot
-   outputs.
+1. **No `graphify-out/graph.json`** → do not build it. Note that graph
+   evidence is unavailable, continue the task without it, and — if the task
+   needs graph coverage — recommend running `/punch-document`.
+2. **Graph exists** → query it. Use targeted `graphify query "<question>"`,
+   `graphify path "<A>" "<B>"`, `graphify explain "<node>"`.
+3. **Graph looks stale** (predates a broad/architectural/cross-cutting change,
+   or a prompt/agent/skill governance edit) → flag it as stale evidence for
+   this task and recommend `/punch-document` to refresh it. Do **not** run
+   `--update`, `--cluster-only`, or any rebuild here.
 4. **Not the source of truth.** Graphify only orients; **source files validate,
    tests confirm.**
-5. **Single gate.** Punch decides when Context Engineering is needed; Context
-   Engineering decides whether Graphify runs; implementation sub-agents **consume**
-   the resulting context and validate against source before editing — they do not
-   run Graphify independently.
+5. **Single gate, query-only.** Punch decides when Context Engineering is
+   needed; Context Engineering decides whether a query runs and surfaces
+   staleness. It never invokes `graphify` build, `--update`,
+   `--cluster-only`, or any other write subcommand, under any trigger
+   condition — that is `/punch-document`'s sole authority. Implementation
+   sub-agents **consume** the resulting context and validate against source
+   before editing — they do not run Graphify independently.
 
 Output is **compact** — a short oriented summary, never a graph dump. Host
 `graphify` is a scoped Rule-1 exception ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md));
@@ -144,18 +147,23 @@ blocker; field reference in [`ai.ingest/README.md`](../../../ai.ingest/README.md
 When `graphify-out/graph.json` is a committed repo artifact (team has opted into
 shared graph — see [`punch-graphify` Team Share](../punch-graphify/SKILL.md#team-share)):
 
-- **Fresh clone:** The committed graph is the team baseline. Skip step 1 (build).
-  Run `graphify query "<question>"` directly. Do not rebuild unless: (a) codebase
-  shape has changed significantly since the committed graph was built, (b) you are
-  the designated updater for this change, or (c) the gate signals missing coverage.
-- **Local personal rebuild:** Any team member may rebuild at any time for personal
-  orientation. This does not update the shared graph and requires no sign-off.
-- **Updating the shared graph:** Run the validation checklist in the
-  [`punch-graphify` Team Share section](../punch-graphify/SKILL.md#team-share), get
-  `punch-ai-governance` sign-off, then commit `graph.json` + `GRAPH_REPORT.md`.
+- **Fresh clone:** The committed graph is the team baseline. Query it directly
+  (`graphify query "<question>"`) — do not build. If codebase shape has
+  changed significantly since the committed graph was built, or the gate
+  signals missing coverage, flag it as stale and recommend `/punch-document`
+  — the designated updater runs that flow, not this gate.
+- **Local personal rebuild (human-initiated, outside any Punch prompt):** Any
+  team member may rebuild manually at any time for personal orientation,
+  outside of Context Engineering. This does not update the shared graph and
+  requires no sign-off.
+- **Updating the shared graph:** Sole path is `/punch-document` — it runs the
+  validation checklist in the
+  [`punch-graphify` Team Share section](../punch-graphify/SKILL.md#team-share),
+  gets `punch-ai-governance` sign-off, then commits `graph.json` +
+  `GRAPH_REPORT.md`. This gate never performs that update.
 - **Stale signal:** If the committed graph predates a major structural change (new
-  service, significant refactor, structural rename), flag it as stale context for the
-  designated updater — do not treat it as authoritative for that change.
+  service, significant refactor, structural rename), flag it as stale context and
+  recommend `/punch-document` — do not treat it as authoritative for that change.
 
 The committed graph is evidence, not a source of truth. Source files validate; tests
 confirm. `punch-ai-governance` makes every governance decision.

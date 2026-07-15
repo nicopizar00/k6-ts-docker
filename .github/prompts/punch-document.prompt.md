@@ -86,6 +86,13 @@ their presence as `lifecycle_templates` readiness signal.
 artifacts are claims, not facts — verify against code / runtime / git history
 before `keep` or `promote`; unverifiable → classify `review`, never silently keep.
 
+**This prompt is the only entry point that may build, update, or regenerate
+the graph.** No other Punch prompt, skill, or agent invokes a Graphify write
+subcommand — `punch-context-engineering` and every other consumer may only
+query an existing graph (see its Graphify gate). If a consumer flags the
+graph missing or stale, that is a recommendation to run `/punch-document`,
+never an instruction it acts on itself.
+
 **Graphify provides map; `punch-ai-governance` makes every decision.**
 Graph is *evidence* for reconciliation, never canonical source. Nothing under
 `graphify-out/` promoted to canonical without governance decision. `graph.json`
@@ -96,9 +103,15 @@ the leakage validation checklist ([`punch-graphify` Team Share](../skills/punch-
 
 ## Inputs
 
+- **Explicit free-form instruction** — user may name exact files, a single
+  localized cleanup, a reconciliation target, or leave scope implicit
+  (defaults to next queued wave item from the prior run's Record). A
+  free-form instruction always overrides default wave-selection.
 - **Wave scope** — slice of full surface above: AI-config (`.github/` +
-  `docs/ai/`) · human docs (`README.md`, `docs/**`) · single subsystem.
-  *Ownership* is all of `docs/`; *wave* is slice worked this pass.
+  `docs/ai/`) · human docs (`README.md`, `docs/**`) · single subsystem ·
+  or the single file/localized target named by the instruction above.
+  *Ownership* is all of `docs/`; *wave* is slice worked this pass — a wave
+  may be as narrow as one file.
 - **Global Graphify repository track** (see below) — existing
   `graphify-out/` if present, else Map step builds it.
 
@@ -117,15 +130,27 @@ whole project, and **track** across waves:
   without governance decision; `graph.json` + `GRAPH_REPORT.md` may be committed
   as shared team artifacts after validation (ADR 0002, Team Share).
 
+**Decision rule — query vs incremental update vs full regenerate:**
+
+- **Query** (`graphify query|path|explain`) — graph exists, this wave's
+  target is narrow/localized, no doc-writing wave has run since the last build.
+- **Incremental update** (`--update`) — after this prompt's own doc-writing
+  wave (so authored docs re-enter the graph), or drift since last build is
+  moderate (a handful of changed files).
+- **Full regenerate** (`/graphify .` fresh) — only when no graph exists yet,
+  or a major structural change landed (new service, large refactor,
+  structural rename). See [`punch-graphify` Rebuild guidance](../skills/punch-graphify/SKILL.md#rebuild-guidance)
+  for the exact commands — not restated here.
+
 ## What to do
 
-1. **Map & gather (via Context Engineering).** Follow `punch-context-engineering`'s
-   Graphify gate to build, query, or update graph for this wave's scope —
-   reconciliation broad/governance task, so `update` usually warranted.
-   Delegate to existing `/graphify` skill (1-deep, inheriting IDE session
-   model — no key); never re-implement extraction. Consume native outputs (`graphify-out/graph.json`, `GRAPH_REPORT.md`)
-   and targeted `query|path|explain|affected` as duplication / orphan / stale
-   signals.
+1. **Map & gather.** Apply the Decision rule above (query / incremental
+   update / full regenerate) — this prompt decides, not Context Engineering's
+   gate (query-only, see its Graphify gate). Delegate execution to the
+   existing `/graphify` skill (1-deep, inheriting IDE session model — no
+   key); never re-implement extraction. Consume native outputs
+   (`graphify-out/graph.json`, `GRAPH_REPORT.md`) and targeted
+   `query|path|explain|affected` as duplication / orphan / stale signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts start
    untrusted — verify before any `keep` / `promote`.

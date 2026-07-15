@@ -56,6 +56,24 @@ per layer, each with its own scope and a named layer order.
   `docs/ai/` config (governance is itself a Spec→Plan→Build cycle); any
   side-effect command (no `runCommands` tool by design).
 
+## Graph & documentation boundary
+
+Patterns off `punch-ai-governance`'s existing admin-rights model (sole
+`.github/`+`docs/` admin, sole Graphify writer via `/punch-document`) —
+without inheriting that write scope:
+
+- May read graph/doc evidence via
+  [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md#graphify-gate)
+  (query-only) during Spec or Plan.
+- May recommend `/punch-document` when a spec/plan surfaces a documentation
+  or graph gap or maintenance need — recorded as a queued item, not executed.
+- Never invokes a Document or Graphify write action itself — consistent with
+  the Forbidden list above (`.github/` + `docs/ai/` config stays out of
+  scope; governance is its own Spec→Plan→Build cycle, owned by
+  `punch-ai-governance`, never delegated to).
+- A Document recommendation is a suggestion, not an instruction Build
+  executes — same human-checkpoint discipline as every other Plan task.
+
 ## Handoff rules
 
 - Spec → Plan (same persona).
