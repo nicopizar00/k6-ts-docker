@@ -6,7 +6,6 @@ description: How the six-phase agentic lifecycle is enforced in this repo.
 
 Scope: every file defining or describing how AI assistants work in this
 repo. Operating-model details: [`docs/ai/operating-model.md`](../../docs/ai/operating-model.md).
-Walkthrough: [`docs/ai/workflow.md`](../../docs/ai/workflow.md).
 
 ## Phase mode discipline
 

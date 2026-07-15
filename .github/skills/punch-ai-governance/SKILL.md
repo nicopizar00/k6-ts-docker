@@ -101,12 +101,16 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
    - Every file in `.github/prompts/*.prompt.md` has a row in
      `docs/ai/prompt-registry.md`, and vice versa.
    - Every file in `.github/agents/*.agent.md` is referenced in the
-     `copilot-instructions.md` lifecycle table or `docs/ai/prompt-registry.md`.
+     `copilot-instructions.md` lifecycle table, `docs/ai/prompt-registry.md`,
+     or a phase coordinator's `agents:` roster (sub-agents: cavecrew workers,
+     on-demand specialists). Referenced nowhere → orphan agent, flag it.
 3. **Boundary declarations.**
    - Every Build prompt
      (`.github/prompts/punch-build.prompt.md`) lists allowed,
      read-only, and forbidden paths.
-   - Every agent file lists allowed and forbidden behavior.
+   - Every agent file declares its boundary — literal Allowed/Forbidden
+     sections, or `Scope`/`Boundary` + `Guards (per agent-guards.md)`
+     ([`agent-guards.md`](../../../docs/ai/agent-guards.md) is canon).
 4. **Lifecycle alignment.**
    - Each lifecycle phase (Spec, Plan, Test, Review, Ship) has
      exactly one prompt (Spec absorbs the former Define; `punch-test` is the

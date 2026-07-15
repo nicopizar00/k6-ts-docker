@@ -6,7 +6,7 @@ Punch skills sit on **two independent axes**:
   needs killing one.
 - **Lifecycle skills** — engineering *methods* adapted from upstream
   `agent-skills` set. Separate axis, **not** under domain cap; admitted in
-  batches by [absorption plan](history/agent-skills-absorption-plan.md).
+  batches (absorption plan retired — see git history).
 
 Each entry below: responsibility + why earns separate skill. "Deferred"
 section lists candidates intentionally **not** created.
@@ -112,7 +112,7 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`punch-browser-testing-with-devtools`](../../.github/skills/punch-browser-testing-with-devtools/SKILL.md) | Method for k6 Browser tests via `./bin/punch` (placeholder stays deferred until a Plan task) | Build/Test (k6 Browser task only) | `.github/skills/punch-browser-testing-with-devtools/SKILL.md` |
 | [`punch-using-agent-skills`](../../.github/skills/punch-using-agent-skills/SKILL.md) | The *agents* canon: how a coordinator delegates to engineers + bounded `punch-cavecrew-*` workers (depth-1, tool-subset, lazy nesting) | [`punch-build`](../../.github/prompts/punch-build.prompt.md), `punch-builder` | `.github/skills/punch-using-agent-skills/SKILL.md` |
 
-Phase 3 of [absorption plan](history/agent-skills-absorption-plan.md) (Tier-A +
+Phase 3 of the absorption plan (Tier-A +
 P3 set) **complete** — every lifecycle skill above absorbed and registered.
 **Phase 6 originally folded** `context-engineering`→`punch-context-engineering`
 (still folded); `punch-performance-optimization` and `punch-observability-and-instrumentation`
@@ -132,7 +132,7 @@ cross-reference) — refresh from upstream, never hand-edit.
 | [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation; runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
 | `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec/Document `lite`, Plan/Review/Ship `full`, Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
 `punch-graphify` gated through [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
 Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -155,7 +155,7 @@ Copilot-scoped and Docker-First-minimal.
 |---|---|
 | Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
 | Status | **repo default `lite`** · per-phase voice · never compresses evidence · Wenyan forbidden in persistent artifacts |
-| Scope | Per-phase voice: Spec/Document `lite`, Plan/Review/Ship `full`, Build/Test `ultra`. Delegation: Builder→humans `ultra`, Builder→engineer `wenyan-lite`, the two engineers→cavecrew `wenyan-full`, any other nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). All sub-agent reports keep evidence verbatim. Caveman is output style only |
+| Scope | Per-phase voice: Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Delegation: Builder→humans `ultra`, Builder→engineer `wenyan-lite`, the two engineers→cavecrew `wenyan-full`, any other nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). All sub-agent reports keep evidence verbatim. Caveman is output style only |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
 | Default mode | repo **`lite`**; per-phase overrides (Plan/Review/Ship `full`, Build/Test `ultra`); delegation tiers `wenyan-lite` / `wenyan-full` / `wenyan-ultra` (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
 | Governed by | `punch-ai-governance` (refresh + drift) |

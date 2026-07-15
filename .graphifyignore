@@ -8,10 +8,19 @@ build/
 reports/
 artifacts/
 graphify-out/
+**/graphify-out/
+graphify-out-*/
+**/graphify-out-*/
+graphify-out_*/
+**/graphify-out_*/
 
 # Dependencies / vendored
 node_modules/
 coverage/
+
+# Gitignored local-only staging — absent on fresh clones; never in the shared graph
+.ai-upstream/
+.copilot/
 
 # Version control + environment
 .git/

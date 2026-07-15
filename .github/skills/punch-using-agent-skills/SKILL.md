@@ -60,7 +60,7 @@ bounded, independently-verifiable packets to vendor cavecrew leaf workers
 (`punch-cavecrew-investigator`, `punch-cavecrew-builder`, `punch-cavecrew-reviewer`). cavecrew is
 an execution/delegation optimization — **not** a replacement for the skills
 above. Workers are one level deep; they do not spawn sub-agents. Canon:
-[`orchestration-patterns.md`](../../../docs/ai/punch-references/orchestration-patterns.md),
+[`agent-guards.md`](../../../docs/ai/agent-guards.md),
 voice [`punch-build-caveman`](../punch-build-caveman/SKILL.md).
 
 ## Core operating behaviors (non-negotiable, all phases)

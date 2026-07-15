@@ -104,9 +104,10 @@ agent makes every decision.
    skill (a single fork, 1-deep, inheriting this agent's terminal — ADR 0002);
    never re-implement extraction.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
-   canonical-candidate.
-3. **Reconcile** in ≤3-file steps — keep / merge / rewrite / archive / delete /
-   promote — each with its registry update, each after approval.
+   unverified · canonical-candidate. Inherited / AI-generated artifacts (prior
+   specs, plans, maps, temp scripts, reports) untrusted until verified.
+3. **Reconcile** in ≤3-file steps — keep / merge / compact / convert / promote /
+   archive / delete / review — each with its registry update, each after approval.
 4. **Record** the wave: what closed, what is queued for the next wave.
 
 `graphify-out/**` is throwaway evidence — never promoted verbatim, never committed.
@@ -126,4 +127,4 @@ method).
 
 ## Caveman comms
 
-Caveman default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`lite`** for persistent docs, **`ultra` only for the terminal/status summary**, **Wenyan forbidden** in docs/maps/registries/handoffs (the `/graphify` fork's `wenyan` report is consumed, never written into docs). See [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`full`** for wave working comms (diagnosis / classification / planning), **`lite`** for every persisted artifact (docs, prompt text, instructions, reports — no AI-narrative filler), **Wenyan forbidden** in docs/maps/registries/handoffs (the `/graphify` fork's `wenyan` report is consumed, never written into docs). See [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

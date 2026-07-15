@@ -1,6 +1,14 @@
 dist/
 reports/
+# Graphify shared-artifact policy:
+# - only root graphify-out/graph.json and graphify-out/GRAPH_REPORT.md may be tracked
+# - nested or renamed graphify output folders stay local-only
 graphify-out/*
+**/graphify-out/*
+graphify-out-*/*
+**/graphify-out-*/*
+graphify-out_*/*
+**/graphify-out_*/*
 # Allowlist: committed shared artifacts only (validated, no local paths — ADR 0002)
 !graphify-out/graph.json
 !graphify-out/GRAPH_REPORT.md

@@ -1,6 +1,6 @@
 ---
 name: punch-build-caveman
-description: "Canonical Punch Caveman policy (single source). Repo default `lite`; per-phase voice — Spec/Document `lite`, Plan/Review/Ship `full`, Build/Test `ultra`. `punch-builder` → engineer briefs `wenyan-lite`; the two engineers → cavecrew brief `wenyan-full`; any other sub-agent nesting → cavecrew briefs `wenyan-ultra`. cavecrew reports are non-guarded (lazy) — any `wenyan` tier; a coordinator may use the worker artifact as-is. Wenyan stays mainly in sub-agent reports — avoid it in committed docs/registries. Evidence follows the producing agent's caveman level. Other files link here instead of restating."
+description: "Canonical Punch Caveman policy (single source). Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. `punch-builder` → engineer briefs `wenyan-lite`; the two engineers → cavecrew brief `wenyan-full`; any other sub-agent nesting → cavecrew briefs `wenyan-ultra`. cavecrew reports are non-guarded (lazy) — any `wenyan` tier; a coordinator may use the worker artifact as-is. Wenyan stays mainly in sub-agent reports — avoid it in committed docs/registries. Evidence follows the producing agent's caveman level. Other files link here instead of restating."
 applies-to: lifecycle/Build+Test — assistant-prose communication (punch-build & punch-test prompts + punch-builder/punch-test-engineer + the engineers); not path-scoped
 ---
 
@@ -34,7 +34,7 @@ phase overrides it with the voice below.
 | Test (`punch-test`) | `/test` | **`ultra`**; evidence verbatim (the verification phase) |
 | Review (`punch-review`) | `/review` | **`full`** |
 | Ship (`punch-ship`) | `/ship` | **`full`** |
-| Document (`punch-document`) | `/document` | **`lite`** persisted; **`ultra` terminal/status only**; evidence verbatim |
+| Document (`punch-document`) | `/document` | **`lite`** persisted (docs/reports); **`full`** wave working comms (diagnose/classify/plan); evidence verbatim |
 
 **Build delegation tiers** (compression deepens per tier):
 
@@ -97,7 +97,8 @@ plans, context maps, skills, prompts, registries, handoffs, and `reports/**`. It
 allowed **only** in sub-agent reports. Persisted documentation uses **`lite`** or
 **`full`**; **`ultra` is avoided in persisted docs — status-/terminal-only**, never
 inside a doc body. `/document` (the `punch-document` reconciliation phase) writes
-persistent docs in `lite` and may use `ultra` only for its terminal/status summary.
+persistent docs/reports in `lite` and uses `full` for wave working comms
+(diagnosis / classification / planning) — no AI-narrative filler in persisted assets.
 **Emoji carve-out:** emojis / ASCII emoticons (✅ ⚠️ ❌ `:)`) are **permitted in
 persisted docs** when they aid scannability or signal status — an explicit
 `/document` exception to the no-decorative-emoji rule.

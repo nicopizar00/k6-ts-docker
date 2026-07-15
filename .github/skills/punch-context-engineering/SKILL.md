@@ -50,9 +50,7 @@ None. This skill is a primer, not a tool.
    — the ownership map.
 3. Read [`docs/ai/operating-model.md`](../../../docs/ai/operating-model.md)
    — the lifecycle and asset taxonomy.
-4. Read [`docs/ai/workflow.md`](../../../docs/ai/workflow.md) — the
-   walkthrough with a worked example.
-5. Identify which layer the current task touches; that picks the matching
+4. Identify which layer the current task touches; that picks the matching
    domain skill (orchestration, compose, k6 performance, data harvest) and
    the matching Build prompt.
 6. Honor scope discipline: read broadly, edit narrowly, return to Plan on
@@ -167,6 +165,5 @@ confirm. `punch-ai-governance` makes every governance decision.
 - `.github/copilot-instructions.md`
 - `docs/architecture/punch-boundaries.md`
 - `docs/ai/operating-model.md`
-- `docs/ai/workflow.md`
 - `docs/ai/scoped-build-policy.md`
 - The five domain skills below this one in the registry.

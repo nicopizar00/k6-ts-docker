@@ -6,7 +6,7 @@ A didactic performance testing playground for k6 written in TypeScript, packaged
 
 Show how to build and run a Docker First k6 test suite against a realistic (but minimal) multi-service target, from local execution through GitHub Actions artifact collection.
 
-Long-term goal: evolve into a reusable GitHub Actions-based performance gate that other service teams can consume without owning the pipeline internals. See the roadmap docs for the planned evolution path.
+Long-term goal: evolve into a reusable GitHub Actions-based performance gate that other service teams can consume without owning the pipeline internals.
 
 ## Execution chain
 
@@ -74,25 +74,18 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
     │   ├── test-suite
     │   └── clean
     ├── docs/
-    │   ├── architecture.md               # existing — folder map, execution chain
-    │   ├── ai-context.md                 # existing — project philosophy
-    │   ├── how-to-run.md                 # existing — run commands
     │   ├── architecture/
     │   │   └── punch-boundaries.md       # layered ownership map
-    │   ├── ai/                           # AI lifecycle docs + agent-skills absorption review/plan
+    │   ├── ai/                           # AI lifecycle docs
     │   │   ├── operating-model.md
-    │   │   ├── workflow.md
     │   │   ├── scoped-build-policy.md
     │   │   ├── model-selection.md
     │   │   ├── copilot-mode-mapping.md
     │   │   ├── maintenance-matrix.md
     │   │   ├── skill-registry.md
     │   │   └── prompt-registry.md
-    │   ├── workflows/
-    │   │   ├── lifecycle.md
-    │   │   └── validation.md
-    │   └── validation/
-    │       └── README.md                 # how to read reports/
+    │   └── workflows/
+    │       └── validation.md
     └── .github/
         ├── copilot-instructions.md       # always-on global Copilot rules
         ├── instructions/                 # path-specific behavior rules
@@ -159,9 +152,7 @@ Python CLI reaches feature parity):
 
 ## For AI assistants
 
-- Read this file first, then `docs/ai/operating-model.md`,
-  `docs/architecture.md`, `docs/architecture/punch-boundaries.md`,
-  and `docs/ai-context.md`.
+- Read this file first, then `docs/ai/operating-model.md` and `docs/architecture/punch-boundaries.md`.
 - **GitHub Copilot is the primary host;** `.github/` is the single source of
   truth for AI config. In **Claude Code**, activate the `guard` skill
   (`.claude/skills/guard/SKILL.md`) — it reuses the `.github/` prompts/agents/

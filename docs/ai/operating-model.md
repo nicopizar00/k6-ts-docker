@@ -29,8 +29,7 @@ Single sentence whole operating model shaped around.
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
 Each phase has matching prompt under `.github/prompts/`. See
-[`prompt-registry.md`](prompt-registry.md) for what each does and
-[`workflow.md`](workflow.md) for walkthrough.
+[`prompt-registry.md`](prompt-registry.md) for what each does.
 
 ## Four kinds of AI asset
 
@@ -119,9 +118,8 @@ enforced by *function*, not *count*:
   cannot stretch.
 
 `punch-ai-governance` skill checks new additions against this rule
-during Review. Skill axes and absorption process detailed in
-[`skill-registry.md`](skill-registry.md) and
-[`agent-skills-absorption-plan.md`](history/agent-skills-absorption-plan.md).
+during Review. Skill axes detailed in
+[`skill-registry.md`](skill-registry.md).
 
 ## Where this differs from a generic agent setup
 
