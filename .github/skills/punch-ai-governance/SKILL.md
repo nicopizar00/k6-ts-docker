@@ -35,10 +35,7 @@ It owns:
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
   still owe a `punch-` rename (read-only; see procedure below).
-- **Sole Graphify write-rights** across the repo — build, `--update`, and full
-  regeneration run only via `/punch-document`; every other consumer
-  (`punch-context-engineering`, Spec/`punch-architect`, Build/Test/Review/Ship)
-  may query an existing graph but never write it (see *Documentation mode* below).
+- **Sole Graphify write-rights** across the repo (see *Documentation mode* below).
 
 It does **not** own:
 
@@ -81,9 +78,10 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 This is the **sole Graphify write-rights owner** — build, `--update`, and
 full regeneration run only through `/punch-document`; every other consumer
 (`punch-context-engineering`, Spec/`punch-architect`, Build/Test/Review/Ship)
-may query an existing graph but never write it (see
+may query an existing graph but never write it. Enforced at
 [`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
-and [`punch-graphify`](../punch-graphify/SKILL.md)).
+(query-only gate) and [`punch-graphify`](../punch-graphify/SKILL.md) (executes
+write subcommands only when this prompt invokes them).
 
 Reconciliation runs at two grains, both first-class:
 

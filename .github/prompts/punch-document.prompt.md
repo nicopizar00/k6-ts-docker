@@ -138,9 +138,9 @@ whole project, and **track** across waves:
   wave (so authored docs re-enter the graph), or drift since last build is
   moderate (a handful of changed files).
 - **Full regenerate** (`/graphify .` fresh) — only when no graph exists yet,
-  or a major structural change landed (new service, large refactor,
-  structural rename). See [`punch-graphify` Rebuild guidance](../skills/punch-graphify/SKILL.md#rebuild-guidance)
-  for the exact commands — not restated here.
+  or per the trigger + commands in
+  [`punch-graphify` Rebuild guidance](../skills/punch-graphify/SKILL.md#rebuild-guidance)
+  — not restated here.
 
 ## What to do
 

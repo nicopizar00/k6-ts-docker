@@ -67,10 +67,7 @@ without inheriting that write scope:
   (query-only) during Spec or Plan.
 - May recommend `/punch-document` when a spec/plan surfaces a documentation
   or graph gap or maintenance need — recorded as a queued item, not executed.
-- Never invokes a Document or Graphify write action itself — consistent with
-  the Forbidden list above (`.github/` + `docs/ai/` config stays out of
-  scope; governance is its own Spec→Plan→Build cycle, owned by
-  `punch-ai-governance`, never delegated to).
+- Never invokes a Document or Graphify write action itself — see Forbidden above.
 - A Document recommendation is a suggestion, not an instruction Build
   executes — same human-checkpoint discipline as every other Plan task.
 
