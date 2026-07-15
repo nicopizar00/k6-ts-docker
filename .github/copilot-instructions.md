@@ -123,14 +123,19 @@ in PR description.
 
 ## graphify
 
-Graphify is a **tool-backed context adapter**, not an always-on default. It runs
-**only** through Punch prompts: the [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md)
-Graphify gate owns the decision of whether it runs, and [`punch-document`](prompts/punch-document.prompt.md)
-consumes its map as reconciliation evidence. Do **not** invoke `graphify query`/`path`/`explain`
-as a default first action — route through that gate. Outputs under `graphify-out/` are throwaway
+Graphify is a **tool-backed context adapter**, not an always-on default.
+[`punch-document`](prompts/punch-document.prompt.md) is the **only** workflow
+that builds, updates, or regenerates the graph — sole write owner per
+[`punch-ai-governance`](skills/punch-ai-governance/SKILL.md#documentation-mode-punch-document).
+The [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md)
+Graphify gate may only **query** an existing graph (`query`/`path`/`explain`) and
+recommends `/punch-document` when the graph is missing or stale — it never builds
+or writes. Do **not** invoke `graphify query`/`path`/`explain` as a default first
+action — route through that gate. Outputs under `graphify-out/` are throwaway
 evidence, never canonical (scoped Rule-1 exception — [ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md)).
 
-Type `/graphify` in Copilot Chat to build or update the graph (gated, not automatic).
+Typing `/graphify` directly in Copilot Chat is not tool-blocked outside
+`/punch-document`, but is against policy — always route a build/update through it.
 
 ## Caveman (concise comms — default `lite`)
 

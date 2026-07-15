@@ -44,12 +44,12 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 
 | Skill | Owns | Defined in |
 |---|---|---|
-| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; lifecycle; scope-discipline principle; Graphify gate | `.github/skills/punch-context-engineering/SKILL.md` |
+| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; lifecycle; scope-discipline principle; Graphify gate (query-only) | `.github/skills/punch-context-engineering/SKILL.md` |
 | [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
 | [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
 | [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
-| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-ai-governance/SKILL.md` |
+| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene, sole Graphify write owner | `.github/skills/punch-ai-governance/SKILL.md` |
 
 ### Why six, and what each adds
 
@@ -129,7 +129,7 @@ cross-reference) — refresh from upstream, never hand-edit.
 
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
-| [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation; runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
+| [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation (query-only) and `punch-document` (sole write owner); runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
 | `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
 | [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
