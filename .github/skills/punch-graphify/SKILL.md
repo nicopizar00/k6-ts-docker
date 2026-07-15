@@ -20,6 +20,11 @@ Turn any folder of files into a navigable knowledge graph with community detecti
 > (`uv tool install graphifyy`); the official skill-install, `graphify claude install`
 > (which writes an always-on `CLAUDE.md` section), and the post-commit auto-rebuild
 > hook are **not used** ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)).
+> **Never substitute a bare `graphify <path> [--update]` terminal/CLI call for
+> this skill's Steps 1-9 procedure below.** A bare CLI call skips the in-IDE
+> AST + subagent semantic-extraction dispatch and falls through to Graphify's
+> own headless backend, which needs a forbidden cloud API key — it will hit
+> an API-key gate or silently no-op instead of actually updating the graph.
 
 ## Usage
 

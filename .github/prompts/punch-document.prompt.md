@@ -146,9 +146,14 @@ whole project, and **track** across waves:
 
 1. **Map & gather.** Apply the Decision rule above (query / incremental
    update / full regenerate) — this prompt decides, not Context Engineering's
-   gate (query-only, see its Graphify gate). Delegate execution to the
-   existing `/graphify` skill (1-deep, inheriting IDE session model — no
-   key); never re-implement extraction. Consume native outputs
+   gate (query-only, see its Graphify gate). Delegation is **automatic and
+   mandatory**: invoke `/graphify` (or `/graphify <path> --update`) as its own
+   turn and let that skill run its full Steps 1-9 procedure. Do **not**
+   substitute a bare `graphify ... --update` terminal/CLI command for it —
+   that skips the in-IDE semantic-extraction subagent dispatch and falls
+   through to Graphify's own headless backend, which requires a forbidden
+   cloud API key (ADR 0002) and will fail or silently no-op. Never
+   re-implement extraction. Consume native outputs
    (`graphify-out/graph.json`, `GRAPH_REPORT.md`) and targeted
    `query|path|explain|affected` as duplication / orphan / stale signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
