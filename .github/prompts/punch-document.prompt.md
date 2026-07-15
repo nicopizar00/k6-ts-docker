@@ -146,16 +146,18 @@ whole project, and **track** across waves:
 
 1. **Map & gather.** Apply the Decision rule above (query / incremental
    update / full regenerate) — this prompt decides, not Context Engineering's
-   gate (query-only, see its Graphify gate). Delegation is **automatic and
-   mandatory**: invoke `/graphify` (or `/graphify <path> --update`) as its own
-   turn and let that skill run its full Steps 1-9 procedure. Do **not**
-   substitute a bare `graphify ... --update` terminal/CLI command for it —
-   that skips the in-IDE semantic-extraction subagent dispatch and falls
-   through to Graphify's own headless backend, which requires a forbidden
-   cloud API key (ADR 0002) and will fail or silently no-op. Never
-   re-implement extraction. Consume native outputs
-   (`graphify-out/graph.json`, `GRAPH_REPORT.md`) and targeted
-   `query|path|explain|affected` as duplication / orphan / stale signals.
+   gate (query-only, see its Graphify gate). If the rule calls for an update
+   or full regenerate: **stop and ask the user to run `/graphify <path>
+   [--update]` as its own separate chat message.** This prompt cannot invoke
+   another skill mid-turn — a bare `graphify ... --update` terminal/CLI
+   command is not a substitute (skips the in-IDE AST + subagent
+   semantic-extraction dispatch, falls through to Graphify's own headless
+   backend, which requires a forbidden cloud API key — ADR 0002 — and will
+   fail or silently no-op). Resume from its outputs once the user confirms
+   `/graphify` ran. If only a query is needed, run
+   `query|path|explain|affected` directly here — no handoff required. Never
+   re-implement extraction. Consume native outputs (`graphify-out/graph.json`,
+   `GRAPH_REPORT.md`) as duplication / orphan / stale signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts start
    untrusted — verify before any `keep` / `promote`.
