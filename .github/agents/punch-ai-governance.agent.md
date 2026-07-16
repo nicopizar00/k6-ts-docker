@@ -72,9 +72,11 @@ that is the engineers' domain via `punch-builder`.
 - **Approval before write.** Surface the intended `.github`/`docs` change and
   wait for the user's go-ahead before writing to disk.
 - **≤3 files per logical step.** Keep edits small and reviewable.
-- **1-deep delegation.** Forks only the `/graphify` map (one level; VS Code's
-  default keeps subagents from nesting). Spawns no other sub-agent. Stops after
-  2 consecutive failures and returns to the user for an architectural correction.
+- **1-deep delegation.** Loads `/graphify`'s skill body inline (not forked
+  itself) and forks only its Step B2 chunk-extraction subagents — one level;
+  VS Code's default keeps those from nesting further. Spawns no other
+  sub-agent. Stops after 2 consecutive failures and returns to the user for an
+  architectural correction.
 
 ## Allowed behavior
 
@@ -100,9 +102,12 @@ agent makes every decision.
 1. **Map & gather (via Context Engineering).** Follow `punch-context-engineering`'s
    Graphify gate to build / query / update the graph for the wave's scope, and
    consume native outputs (`graphify-out/graph.json`, `GRAPH_REPORT.md`,
-   `query|path|explain|affected`) as evidence. Delegate to the existing `/graphify`
-   skill (a single fork, 1-deep, inheriting this agent's terminal — ADR 0002);
-   never re-implement extraction.
+   `query|path|explain|affected`) as evidence. For build/update, load
+   `.github/skills/punch-graphify/SKILL.md` directly and execute its Steps 1-9
+   procedure inline in this same turn (a skill is an instructions file to
+   follow, not a command to fork) — forking only its own Step B2
+   chunk-extraction subagents, one level, inheriting this agent's terminal
+   (ADR 0002); never re-implement extraction.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts (prior
    specs, plans, maps, temp scripts, reports) untrusted until verified.

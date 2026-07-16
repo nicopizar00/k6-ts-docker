@@ -147,17 +147,23 @@ whole project, and **track** across waves:
 1. **Map & gather.** Apply the Decision rule above (query / incremental
    update / full regenerate) — this prompt decides, not Context Engineering's
    gate (query-only, see its Graphify gate). If the rule calls for an update
-   or full regenerate: **stop and ask the user to run `/graphify <path>
-   [--update]` as its own separate chat message.** This prompt cannot invoke
-   another skill mid-turn — a bare `graphify ... --update` terminal/CLI
-   command is not a substitute (skips the in-IDE AST + subagent
-   semantic-extraction dispatch, falls through to Graphify's own headless
-   backend, which requires a forbidden cloud API key — ADR 0002 — and will
-   fail or silently no-op). Resume from its outputs once the user confirms
-   `/graphify` ran. If only a query is needed, run
-   `query|path|explain|affected` directly here — no handoff required. Never
-   re-implement extraction. Consume native outputs (`graphify-out/graph.json`,
-   `GRAPH_REPORT.md`) as duplication / orphan / stale signals.
+   or full regenerate: **read
+   [`.github/skills/punch-graphify/SKILL.md`](../skills/punch-graphify/SKILL.md)
+   directly and execute its Steps 1-9 procedure inline, in this same turn.**
+   A skill is an instructions file, not a command to dispatch — `/graphify`
+   as a slash-command invocation is unreachable mid-turn (confirmed), but
+   reading the file and following it is ordinary tool use you already have.
+   Use the `agent` tool for the skill's own Step 3 Part B2 parallel
+   chunk-extraction subagent dispatch — the one permitted level of forking
+   (ADR 0002, 1-deep). Do **not** substitute a bare `graphify ... --update`
+   terminal/CLI call for the skill's documented procedure — that skips the
+   in-IDE AST + subagent semantic-extraction dispatch and falls through to
+   Graphify's own headless backend, which requires a forbidden cloud API key
+   and will fail or silently no-op. If only a query is needed, run
+   `query|path|explain|affected` directly here — no full procedure required.
+   Never re-implement extraction. Consume native outputs
+   (`graphify-out/graph.json`, `GRAPH_REPORT.md`) as duplication / orphan /
+   stale signals.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts start
    untrusted — verify before any `keep` / `promote`.

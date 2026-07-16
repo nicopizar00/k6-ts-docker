@@ -19,8 +19,8 @@ Graphify adopted as **scoped host-tool exception** to Docker First, used **only*
 
 - **Reuse, don't fork.** Punch invokes existing `/graphify` skill, consumes its **native outputs** (`graphify-out/graph.json`, `GRAPH_REPORT.md`). No custom AST/indexing skill created.
 - **One governed workflow.** `/punch-document` prompt drives existing [`punch-ai-governance`](../../../.github/agents/punch-ai-governance.agent.md) agent, which reconciles docs in **waves** (keep / merge / rewrite / archive / delete / promote). Graphify gives map; `punch-ai-governance` makes every decision.
-- **VS Code-native delegation.** Agent forks `/graphify` as **single subagent** for structural map, relying on VS Code subagent **tool inheritance**, kept **1-deep** (`chat.subagents.allowInvocationsFromSubagents` stays default — subagents cannot spawn subagents). For this, agent gains `runSubagent` + scoped run-tool surface. *(Implemented with `punch-document` workflow; see that prompt + agent Documentation mode.)*
-- **Guard reworded, not removed.** `punch-ai-governance` still **never runs Punch Docker/k6 runtime or `bin/punch` suite**. Only command surface = forking `/graphify` map subagent.
+- **Inline skill-body execution.** `punch-ai-governance` loads `/graphify`'s skill file directly and executes its Steps 1-9 procedure in its own turn — a skill is an instructions file to read and follow, not a command to dispatch or fork. It forks only the skill's own Step 3 Part B2 chunk-extraction subagents, kept **1-deep** (`chat.subagents.allowInvocationsFromSubagents` stays default — subagents cannot spawn subagents). *(Corrected 2026-07-16 — see "Inline skill-body execution adopted" below. The original claim here, that the agent "forks `/graphify` as single subagent" via a `runSubagent` tool, was never actually wireable: `punch-ai-governance.agent.md` has no `agents:` allowlist field, and `/graphify` is a skill file, not an `.agent.md` persona that could be listed in one.)*
+- **Guard reworded, not removed.** `punch-ai-governance` still **never runs Punch Docker/k6 runtime or `bin/punch` suite**. Only command surface = executing `/graphify`'s skill body inline.
 - **Outputs evidence, not canonical.** Everything under `graphify-out/` = audit **evidence** — never canonical docs. `CLAUDE.md`, `docs/`, registries stay authoritative; nothing promoted to canonical without governance decision. `graph.json` and `GRAPH_REPORT.md` may be committed as shared team artifacts after passing the leakage validation checklist (see **Team Sharing** below); all other `graphify-out/` contents remain gitignored.
 - **No other surface.** No other agent, command, contributor workflow gains host-graphify dependence; execution chain unchanged.
 
@@ -147,17 +147,48 @@ stays on the Forbidden-by-default list (see Team Sharing above) — this finding
 concrete evidence (destructive rewrite of hand-authored content) to the original
 "always-on injection" rationale, not just a missed opportunity.
 
-`/punch-document`'s stop-and-ask-user handoff (`fe1ada7`) stays as the permanent,
-by-design mechanism for triggering a graph build/update — not a temporary
-workaround pending a future fix. Two alternative fixes (inline skill-body execution;
-a new `.agent.md` persona for `/graphify`) were considered and deferred, not
-pursued, in this round.
+`/punch-document`'s stop-and-ask-user handoff (`fe1ada7`) is superseded the same day
+— see "Inline skill-body execution adopted" below. A second alternative (a new
+`.agent.md` persona for `/graphify`) was considered and deferred, not pursued.
 
 ### Consequences
 
 - **Positive:** avoids landing a false "delegation works now" claim in this ADR;
   avoids a destructive command near hand-authored config.
-- **Negative / watch:** the mid-turn dispatch gap remains open. Every
-  `/punch-document` run needing a graph build/update requires a separate
-  human-typed `/graphify` message — accepted as permanent, not a bug to keep
-  reopening.
+- **Negative / watch:** the mid-turn dispatch gap remains open pending the fix
+  below — flagged here rather than left implicit.
+
+## Inline skill-body execution adopted (2026-07-16)
+
+**Status:** Accepted — supersedes `fe1ada7`'s stop-and-ask-user handoff.
+**Deciders:** repository owner + Punch AI Governance work.
+
+### Decision
+
+`/punch-document` (via `punch-ai-governance`) reads
+[`.github/skills/punch-graphify/SKILL.md`](../../../.github/skills/punch-graphify/SKILL.md)
+directly and executes its Steps 1-9 procedure inline, in its own turn, instead of
+attempting to dispatch `/graphify` as a slash command (confirmed unreachable
+mid-turn, `fe1ada7`) or forking it as a subagent (never actually wireable — see
+correction above). A skill is a markdown instructions file; any agent with
+`search/codebase` access can open it and follow the procedure it describes,
+using its own already-declared tools (`execute/runInTerminal` for the bash
+blocks, `edit/editFiles` for writes, `agent` for Step 3 Part B2's chunk-extraction
+subagent fan-out — the one permitted level of forking, 1-deep).
+
+This is lower-risk than the rejected native-install path (see above): it depends
+only on ordinary file-read + already-declared tool use, not on an undocumented or
+misapplied platform mechanism. It has not been exercised end-to-end in a real
+`/punch-document` build/update run yet — first real use should be watched to
+confirm the model follows the inline procedure rather than reverting to a bare
+`graphify` CLI call out of habit.
+
+### Consequences
+
+- **Positive:** closes the mid-turn dispatch gap without a human-handoff detour;
+  no new files, no ADR-reopening install decision.
+- **Negative / watch:** unverified in live use until a real build/update wave
+  runs through it. If the model still substitutes a bare CLI call despite the
+  explicit "not a command to dispatch" framing, the gap reopens and the
+  stop-and-ask-user handoff should be restored rather than re-attempted with
+  stronger wording alone (that already failed once, see `fe1ada7`).
