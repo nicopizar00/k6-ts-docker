@@ -17,7 +17,7 @@ former Define clarify step.)
 
 Single sentence whole operating model shaped around.
 
-## The six phases
+## The six core phases
 
 | Phase | Purpose | Mode | Edits allowed |
 |---|---|---|---|
@@ -28,8 +28,15 @@ Single sentence whole operating model shaped around.
 | Review   | Read-only critique of diff against plan | Ask | No |
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
-Each phase has matching prompt under `.github/prompts/`. See
-[`prompt-registry.md`](prompt-registry.md) for what each does.
+## Orthogonal maintenance prompts
+
+| Prompt | Purpose | Owner |
+|---|---|---|
+| `punch-document` | Reconcile documentation debt and inherited AI artifacts in waves | `punch-ai-governance` |
+| `punch-init` | Read-only Copilot asset enablement sweep before lifecycle adoption | `punch-ai-governance` |
+
+Each phase and maintenance prompt has a matching entry under `.github/prompts/`.
+See [`prompt-registry.md`](prompt-registry.md) for the live inventory.
 
 ## Four kinds of AI asset
 

@@ -178,15 +178,39 @@ subagent fan-out — the one permitted level of forking, 1-deep).
 
 This is lower-risk than the rejected native-install path (see above): it depends
 only on ordinary file-read + already-declared tool use, not on an undocumented or
-misapplied platform mechanism. It has not been exercised end-to-end in a real
-`/punch-document` build/update run yet — first real use should be watched to
-confirm the model follows the inline procedure rather than reverting to a bare
-`graphify` CLI call out of habit.
+misapplied platform mechanism.
+
+### First real-world test (2026-07-16) — inconclusive, secondary gap found
+
+Ran `/punch-document` live in GitHub Copilot / VS Code on a lifecycle-narrative
+drift wave (README.md / operating-model.md vs the actual prompt/agent inventory).
+Transcript showed **zero graphify usage of any kind** — no read of
+`punch-graphify/SKILL.md`, no Steps 1-9, no `query`/`path`/`explain` call, no
+`graphify-out/` reference. The agent reconciled the wave with plain `Read` +
+grep over `.github/prompts/`, `.github/agents/`, and the registries instead.
+
+This does **not** verify or falsify the inline-execution fix — the run never
+reached the "update or full regenerate" branch of the Decision rule
+(`punch-document.prompt.md:133-143`) that the fix lives in, so it was never
+exercised either way. Re-test needed with a forced trigger (delete
+`graphify-out/graph.json`, or a wave that clearly needs `--update`).
+
+Separately notable: this wave — cross-referencing prompt-registry claims against
+actual `.github/prompts/*` files — is exactly the kind of orphan/drift signal
+Graphify's community detection exists to surface, yet the query path wasn't
+consulted either, not just the build path. Open question, not yet root-caused:
+is the Decision rule's "graph unnecessary" threshold too permissive, or is
+`punch-context-engineering`'s gate not being reached before reconciliation work
+starts? Flagged for a follow-up wave — do not assume the inline-execution fix
+is the only gap left.
 
 ### Consequences
 
 - **Positive:** closes the mid-turn dispatch gap without a human-handoff detour;
   no new files, no ADR-reopening install decision.
+- **Unresolved:** neither confirmed working nor confirmed broken as of
+  2026-07-16 — see test note above. A real build/update-triggering run is still
+  needed before this section's "Accepted" status can be called verified.
 - **Negative / watch:** unverified in live use until a real build/update wave
   runs through it. If the model still substitutes a bare CLI call despite the
   explicit "not a command to dispatch" framing, the gap reopens and the
