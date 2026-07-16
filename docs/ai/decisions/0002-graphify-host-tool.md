@@ -93,3 +93,71 @@ agents / hook), `--watch`, `--mcp`, `graphify add <url>`, cloud semantic backend
 - **Graph mode is always undirected (default).** Never rebuild the shared graph with `--directed` — it changes query behavior and is incompatible with the undirected baseline. Use `--directed` only for local personal orientation.
 - **Guardrail:** `punch-ai-governance` owns the validation gate on every shared-graph
   commit. No graph update merges without the six-check sign-off.
+
+## Native install/registration — investigated, rejected (2026-07-16)
+
+**Status:** Rejected.
+**Deciders:** repository owner + Punch AI Governance work.
+
+### Context
+
+`/punch-document`'s graphify delegation cannot actually invoke `/graphify` mid-turn
+— no tool in `punch-ai-governance`'s surface re-enters slash-command dispatch from
+inside a running turn (confirmed by re-test; see `punch-document.prompt.md` history,
+commit `fe1ada7`, which replaced a false "automatic delegation" claim with an
+explicit stop-and-ask-the-user handoff). This ADR's original Decision section above
+also claimed the gap was closed via "VS Code-native delegation... agent forks
+`/graphify` as single subagent... agent gains `runSubagent`... Implemented" — that
+claim is **inaccurate**: `punch-ai-governance.agent.md` has no `agents:` allowlist
+field (every other subagent-forking agent in this repo has one, naming its fork
+targets by name), because `/graphify` is a skill file, not an `.agent.md` persona,
+and `agents:` can only list personas. The mechanism described was never actually
+wireable in that shape.
+
+Native Graphify's own `graphify install --project --platform copilot` command
+(confirmed real, `graphifyy v0.8.41`) was investigated as a fix — the reasoning
+being that a natively-registered project skill might give `punch-document` a real,
+host-provided invocation target instead of Punch's hand-vendored copy.
+
+### Findings (tested directly against this repo)
+
+1. **Wrong location.** `graphify install --project --platform copilot` writes to
+   `<repo>/.copilot/skills/graphify/`. Per GitHub's own docs
+   (`code.visualstudio.com/docs/agent-customization/agent-skills`), `.copilot/skills/`
+   is the **personal** skills path (`~/.copilot/skills`, home-directory, cross-project)
+   — not a project-level directory Copilot's workspace loader reads. The real
+   project-skill directory Copilot recognizes is `.github/skills/` (where
+   `punch-graphify` already lives). The tool has no `--platform` option that targets
+   `.github/skills/`.
+2. **Already gitignored.** `.copilot/` was gitignored in this repo before this
+   investigation (`.gitignore:21`, commit `785237b`). Anything written there never
+   reaches teammates or CI regardless of finding (1).
+3. **Destructive side effect.** `graphify install`/`graphify uninstall` locate and
+   rewrite a `## graphify` heading in `.github/copilot-instructions.md` by name
+   match — `graphify uninstall` deleted a **pre-existing, hand-authored** `##
+   graphify` governance section from that file (not content the tool itself had
+   written), collateral damage from matching purely on heading text. Restored via
+   `git restore`; no lasting damage, but confirms the command is unsafe to run
+   again near this repo's existing hand-authored content.
+
+### Decision
+
+Native install/registration is **not adopted**. `graphify *install` (all platforms)
+stays on the Forbidden-by-default list (see Team Sharing above) — this finding adds
+concrete evidence (destructive rewrite of hand-authored content) to the original
+"always-on injection" rationale, not just a missed opportunity.
+
+`/punch-document`'s stop-and-ask-user handoff (`fe1ada7`) stays as the permanent,
+by-design mechanism for triggering a graph build/update — not a temporary
+workaround pending a future fix. Two alternative fixes (inline skill-body execution;
+a new `.agent.md` persona for `/graphify`) were considered and deferred, not
+pursued, in this round.
+
+### Consequences
+
+- **Positive:** avoids landing a false "delegation works now" claim in this ADR;
+  avoids a destructive command near hand-authored config.
+- **Negative / watch:** the mid-turn dispatch gap remains open. Every
+  `/punch-document` run needing a graph build/update requires a separate
+  human-typed `/graphify` message — accepted as permanent, not a bug to keep
+  reopening.

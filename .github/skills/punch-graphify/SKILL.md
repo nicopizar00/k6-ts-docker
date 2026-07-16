@@ -16,10 +16,12 @@ Turn any folder of files into a navigable knowledge graph with community detecti
 > `punch-context-engineering` Graphify gate — never as an autonomous default either
 > way. Graphify executes what it is asked; it never decides what is canonical or
 > what to write into docs — that decision belongs to `punch-ai-governance` (see
-> [Team Share](#team-share)). Install is **CLI-only**
-> (`uv tool install graphifyy`); the official skill-install, `graphify claude install`
-> (which writes an always-on `CLAUDE.md` section), and the post-commit auto-rebuild
-> hook are **not used** ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md)).
+> [Team Share](#team-share)). Install is **CLI-only, version-pinned**
+> (`uv tool install graphifyy==0.8.41` — see Step 1; not auto-upgraded, refresh the
+> pin deliberately). The official skill-install (`graphify vscode/claude/copilot/
+> agents install`) and the post-commit auto-rebuild hook are **not used** — investigated
+> and found actively unsafe near this repo's hand-authored config, not just against
+> policy ([ADR 0002 native-install finding](../../../docs/ai/decisions/0002-graphify-host-tool.md#native-installregistration--investigated-rejected-2026-07-16)).
 > **Never substitute a bare `graphify <path> [--update]` terminal/CLI call for
 > this skill's Steps 1-9 procedure below.** A bare CLI call skips the in-IDE
 > AST + subagent semantic-extraction dispatch and falls through to Graphify's
@@ -82,12 +84,12 @@ fi
 if [ -z "$PYTHON" ]; then PYTHON="python3"; fi
 if ! "$PYTHON" -c "import graphify" 2>/dev/null; then
     if command -v uv >/dev/null 2>&1; then
-        uv tool install --upgrade graphifyy -q 2>&1 | tail -3
+        uv tool install graphifyy==0.8.41 -q 2>&1 | tail -3
         _UV_PY=$(uv tool run graphifyy python -c "import sys; print(sys.executable)" 2>/dev/null)
         if [ -n "$_UV_PY" ]; then PYTHON="$_UV_PY"; fi
     else
-        "$PYTHON" -m pip install graphifyy -q 2>/dev/null \
-          || "$PYTHON" -m pip install graphifyy -q --break-system-packages 2>&1 | tail -3
+        "$PYTHON" -m pip install graphifyy==0.8.41 -q 2>/dev/null \
+          || "$PYTHON" -m pip install graphifyy==0.8.41 -q --break-system-packages 2>&1 | tail -3
     fi
 fi
 # Write interpreter path for all subsequent steps (persists across invocations)
