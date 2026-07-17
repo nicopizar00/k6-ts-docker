@@ -71,8 +71,8 @@ their presence as `lifecycle_templates` readiness signal.
 
 ## Pre-conditions
 
-- Host `graphify` installed (`uv tool install graphifyy`; scoped Rule-1
-  exception — ADR 0002). If
+- Host `graphify` installed (`uv tool install graphifyy==0.8.41`; scoped
+  Rule-1 exception — ADR 0002). If
   CLI absent, `punch-context-engineering` gate shows **Graphify
   Team Setup** message and wave proceeds with non-graph evidence.
 - Map runs **in IDE session** — active model does semantic extraction,
@@ -133,7 +133,12 @@ whole project, and **track** across waves:
 **Decision rule — query vs incremental update vs full regenerate:**
 
 - **Query** (`graphify query|path|explain`) — graph exists, this wave's
-  target is narrow/localized, no doc-writing wave has run since the last build.
+  target is narrow/localized, no doc-writing wave has run since the last
+  build. Follow `punch-graphify`'s
+  [Query-only contract](../skills/punch-graphify/SKILL.md#query-only-contract)
+  as the **explicit profile** — this is a human-initiated `/punch-document`
+  wave, not `punch-context-engineering`'s automatic orientation gate, so the
+  contract's `save-result` write-back applies here.
 - **Incremental update** (`--update`) — after this prompt's own doc-writing
   wave (so authored docs re-enter the graph), or drift since last build is
   moderate (a handful of changed files).

@@ -54,9 +54,11 @@ Read-only:  source / runtime, for context only — src/**, docker/**,
             docker-compose.yml, reports/**, graphify-out/** (read, never edit)
 Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit)
 Handle with care (admin allowed; convention, not an access block):
-            .github/skills/punch-graphify/** + .agents/skills/** (adopted upstream —
-            prefer refresh from upstream over hand-edit);
-            docs/ai/history/** (frozen record — append, don't rewrite)
+            .agents/skills/** (adopted upstream — prefer refresh from upstream
+            over hand-edit); docs/ai/history/** (frozen record — append, don't
+            rewrite). `.github/skills/punch-graphify/**` is an authored
+            Punch-leaned adaptation, not adopted-as-is — ordinary full admin,
+            subject to the same checks as any other skill (ADR 0002).
 ```
 
 Complete admin over **all configs under `.github/`** and **all docs under
@@ -82,8 +84,9 @@ that is the engineers' domain via `punch-builder`.
 
 - Run the audit procedure in the `punch-ai-governance` skill (frontmatter
   completeness, registry↔disk parity, no-phase-named-skills, cross-reference
-  resolution, duplication, leakage grep), exempting `docs/ai/history/**`,
-  `.ai-upstream/**`, and `.github/skills/punch-graphify/**` (adopted upstream).
+  resolution, duplication, leakage grep), exempting `docs/ai/history/**` and
+  `.ai-upstream/**` (frozen / upstream provenance). `.github/skills/punch-graphify/**`
+  is an authored adaptation — included in the audit, never exempted.
 - On approval, apply scoped fixes and update the matching registry row in the
   same step.
 
@@ -99,15 +102,25 @@ Activated by the [`punch-document`](../prompts/punch-document.prompt.md)
 prompt to retire documentation debt in **waves**. Graphify provides the map; this
 agent makes every decision.
 
-1. **Map & gather (via Context Engineering).** Follow `punch-context-engineering`'s
-   Graphify gate to build / query / update the graph for the wave's scope, and
-   consume native outputs (`graphify-out/graph.json`, `GRAPH_REPORT.md`,
-   `query|path|explain|affected`) as evidence. For build/update, load
+1. **Map & gather.** Apply `punch-document`'s own Decision rule (query /
+   incremental update / full regenerate — see the prompt's Decision rule) to
+   choose the mode; this agent decides directly and does **not** additionally
+   route through `punch-context-engineering`'s gate first. That gate is
+   reserved for *other* agents' automatic repository orientation ([Graphify
+   gate](../skills/punch-context-engineering/SKILL.md#graphify-gate),
+   query-only, never builds or updates) — chaining it in front of this
+   prompt's own already-decided action would risk querying the graph twice
+   for one wave. For **Query**, follow `punch-graphify`'s [Query-only
+   contract](../skills/punch-graphify/SKILL.md#query-only-contract) directly,
+   as the **explicit profile** — `save-result` write-back applies. For
+   **build/update/full-regenerate**, load
    `.github/skills/punch-graphify/SKILL.md` directly and execute its Steps 1-9
    procedure inline in this same turn (a skill is an instructions file to
    follow, not a command to fork) — forking only its own Step B2
    chunk-extraction subagents, one level, inheriting this agent's terminal
-   (ADR 0002); never re-implement extraction.
+   (ADR 0002); never re-implement extraction. Consume native outputs
+   (`graphify-out/graph.json`, `GRAPH_REPORT.md`, `query|path|explain|affected`)
+   as evidence either way.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts (prior
    specs, plans, maps, temp scripts, reports) untrusted until verified.

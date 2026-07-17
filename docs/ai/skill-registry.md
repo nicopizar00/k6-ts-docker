@@ -122,14 +122,15 @@ Punch (k6/Docker, no frontend). See *Deferred / excluded* below for what stays o
 
 ## Adopted upstream skills (tool axis)
 
-External skills reused **as-is** — neither Punch domain nor Punch method.
-Registered here for parity only; content upstream-maintained, **exempt from
-authored-canon checks** (frontmatter completeness, naming, duplication,
-cross-reference) — refresh from upstream, never hand-edit.
+External skills either **reused as-is** (upstream-maintained, registered for
+parity only, **exempt from authored-canon checks**, refresh from upstream —
+never hand-edit) or **leaned/adapted for Punch** (authored content, **subject
+to the full authored-canon checks**, refresh-from-upstream no longer
+applies). Each row states which.
 
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
-| [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation (query-only) and `punch-document` (sole write owner); runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
+| [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation (query-only) and `punch-document` (sole write owner); runs in IDE session (no API key). **Punch-leaned adaptation — authored, subject to checks** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
 | `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
 | [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |

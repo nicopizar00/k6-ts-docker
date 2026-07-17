@@ -103,8 +103,15 @@ belongs solely to `/punch-document` (see
 [`punch-ai-governance`](../punch-ai-governance/SKILL.md#documentation-mode-punch-document)).
 
 Graphify is a **tool-backed context adapter**: installed locally
-(`uv tool install graphifyy` — ADR 0002). Its `graphify-out/` graph is
+(`uv tool install graphifyy==0.8.41` — ADR 0002). Its `graphify-out/` graph is
 reusable local state to orient from, not a canonical source.
+
+This gate is a **routing decision, not the query procedure**: it decides
+*whether* a query is worth running here. The mechanics — vocabulary
+expansion, traversal, and the explicit-vs-automatic write-back split — live
+once in `punch-graphify`'s canonical
+[Query-only contract](../punch-graphify/SKILL.md#query-only-contract). This
+gate invokes that contract; it never restates or reimplements it.
 
 0. **Graphify not installed** (`graphify` CLI absent) → do not fail; show the
    user this message and continue without it:
@@ -112,27 +119,33 @@ reusable local state to orient from, not a canonical source.
    > ## Graphify Team Setup
    > Install Graphify locally using the official recommended method:
    > ```bash
-   > uv tool install graphifyy
+   > uv tool install graphifyy==0.8.41
    > ```
 
 1. **No `graphify-out/graph.json`** → do not build it. Note that graph
    evidence is unavailable, continue the task without it, and — if the task
    needs graph coverage — recommend running `/punch-document`.
-2. **Graph exists** → query it. Use targeted `graphify query "<question>"`,
-   `graphify path "<A>" "<B>"`, `graphify explain "<node>"`.
+2. **Graph exists** → query it via `punch-graphify`'s
+   [Query-only contract](../punch-graphify/SKILL.md#query-only-contract):
+   targeted `graphify query "<question>"`, `graphify path "<A>" "<B>"`,
+   `graphify explain "<node>"`, vocabulary-expanded per that contract.
 3. **Graph looks stale** (predates a broad/architectural/cross-cutting change,
    or a prompt/agent/skill governance edit) → flag it as stale evidence for
    this task and recommend `/punch-document` to refresh it. Do **not** run
    `--update`, `--cluster-only`, or any rebuild here.
 4. **Not the source of truth.** Graphify only orients; **source files validate,
    tests confirm.**
-5. **Single gate, query-only.** Punch decides when Context Engineering is
-   needed; Context Engineering decides whether a query runs and surfaces
-   staleness. It never invokes `graphify` build, `--update`,
+5. **Single gate, query-only, no write-back.** Punch decides when Context
+   Engineering is needed; Context Engineering decides whether a query runs
+   and surfaces staleness. It never invokes `graphify` build, `--update`,
    `--cluster-only`, or any other write subcommand, under any trigger
-   condition — that is `/punch-document`'s sole authority. Implementation
-   sub-agents **consume** the resulting context and validate against source
-   before editing — they do not run Graphify independently.
+   condition — that is `/punch-document`'s sole authority. Within the query
+   call itself it also never runs `save-result` and never writes
+   `graphify-out/.vocab.txt` or anything else under `graphify-out/**` — the
+   contract's automatic profile stops at the answer (see the routing note
+   above). Implementation sub-agents **consume** the resulting context and
+   validate against source before editing — they do not run Graphify
+   independently.
 
 Output is **compact** — a short oriented summary, never a graph dump. Host
 `graphify` is a scoped Rule-1 exception ([ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md));

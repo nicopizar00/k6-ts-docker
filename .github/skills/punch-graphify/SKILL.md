@@ -53,7 +53,7 @@ Point graphify at a code/docs tree and get a queryable knowledge graph. Persiste
 
 If the user invoked `/graphify --help` or `/graphify -h` (with no other arguments), print the contents of the `## Usage` section above verbatim and stop. Do not run any commands, do not detect files, do not default the path to `.`. Just print the Usage block and return.
 
-**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and jump straight to `## For /graphify query`.** Run `graphify query "<question>"` immediately. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
+**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and follow `## Query-only contract` below** — vocabulary expansion still runs before traversal on this fast path, exactly as it does for any other query; do not shortcut straight to a raw `graphify query` call. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
 
 If no path was given, use `.` (current directory). Do not ask the user for a path.
 Punch runs graphify on a **local** path only (in-IDE) — remote-repo cloning and
@@ -534,9 +534,18 @@ The graph is the map. Your job after the pipeline is to be the guide.
 
 ---
 
-## Interpreter guard for subcommands
+## Interpreter guard for `--update` / `--cluster-only`
 
-Before running any subcommand below (`--update`, `--cluster-only`, `query`, `path`, `explain`), check that `.graphify_python` exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the interpreter first:
+These two subcommands are **maintenance-profile** (build-family) — they
+already write under `graphify-out/**`, so persisting the resolved interpreter
+is fine here. `query`/`path`/`explain` are the query-only contract and use
+their **own**, non-persisting resolution instead — see
+[`references/query.md`](references/query.md#resolve-the-interpreter-read-only-never-persisted);
+do not apply this guard to them.
+
+Before running `--update` or `--cluster-only`, check that `.graphify_python`
+exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the
+interpreter first:
 
 ```bash
 if [ ! -f graphify-out/.graphify_python ]; then
@@ -558,15 +567,40 @@ Both are non-default subcommands. `--update` re-extracts only new or changed fil
 
 ---
 
-## For /graphify query
+## Query-only contract
 
-When `graphify-out/graph.json` already exists and the user asks a question about the corpus, answer from the graph rather than rebuilding it:
+This is the **canonical query-only contract** behind `/graphify query`, `path`,
+and `explain` — shared by two callers, never forked or restated elsewhere:
+
+- **Explicit profile** — the user directly runs `/graphify query|path|explain`.
+- **Automatic orientation profile** — `punch-context-engineering`'s Graphify
+  gate, which decides only *whether* a query is useful (see its
+  [Graphify gate](../punch-context-engineering/SKILL.md#graphify-gate)).
+
+Both skip Steps 1-9 above entirely — no detect, extraction, install, or
+rebuild — and answer directly from the existing `graphify-out/graph.json`:
 
 ```bash
 graphify query "<question>"
 ```
 
-Before traversal, expand the question against the graph's own vocabulary so a wording mismatch does not collapse the answer to noise. If the `graphify query` CLI is unavailable, fall back to an inline NetworkX traversal of `graphify-out/graph.json`. Answer using only what the graph output contains, and quote `source_location` when citing a specific fact. For that vocab-expansion step, the BFS/DFS traversal modes, the `--budget` cap, the NetworkX fallback, `save-result` feedback, and the `/graphify path` and `/graphify explain` flows, see `references/query.md`.
+Before traversal, expand the question against the graph's own vocabulary so a
+wording mismatch does not collapse the answer to noise — **required for both
+callers**. If the `graphify query` CLI is unavailable, fall back to an inline
+NetworkX traversal of `graphify-out/graph.json`. Answer using only what the
+graph output contains, and quote `source_location` when citing a specific fact.
+
+**Only the explicit profile** runs the `save-result` write-back at the end of
+each flow. The automatic profile stops at the answer: it never calls
+`save-result` and never writes `graphify-out/.vocab.txt` or anything else
+under `graphify-out/**` — source files stay the authority for its claims.
+Neither profile installs Graphify, checks the corpus, or runs `--update` /
+`--cluster-only` — that stays `/punch-document`'s sole authority (see
+[Team Share](#team-share)).
+
+For the vocab-expansion step, BFS/DFS traversal modes, the `--budget` cap, the
+NetworkX fallback, the explicit-profile-only `save-result` feedback, and the
+`/graphify path` and `/graphify explain` flows, see `references/query.md`.
 
 ---
 

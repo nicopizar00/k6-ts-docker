@@ -216,3 +216,80 @@ is the only gap left.
   explicit "not a command to dispatch" framing, the gap reopens and the
   stop-and-ask-user handoff should be restored rather than re-attempted with
   stronger wording alone (that already failed once, see `fe1ada7`).
+
+## Query-only contract formalized — explicit vs automatic write-back (2026-07-17)
+
+**Status:** Accepted.
+**Deciders:** repository owner + Punch AI Governance work.
+
+### Context
+
+`punch-context-engineering`'s Graphify gate and the explicit `/graphify
+query|path|explain` commands both ran through the same
+`references/query.md` procedure, which unconditionally wrote
+`graphify-out/.vocab.txt` and called `graphify save-result`. Nothing in that
+shared procedure distinguished a human-invoked query from Context
+Engineering's automatic orientation gate — the "read-only, only" gate could
+inherit both write side effects by omission, contradicting its own charter
+(`SKILL.md` Graphify gate intro) and giving `graphify-out/**` a mutation path
+outside `/punch-document`'s sole-writer guarantee (Team Sharing, above).
+
+### Decision
+
+`.github/skills/punch-graphify/SKILL.md` and `references/query.md` now define
+one **query-only contract**, shared by two callers, plus the pre-existing
+**maintenance profile** (`/punch-document`, sole build/`--update`/
+`--cluster-only`/commit owner — unchanged by this decision):
+
+- **Explicit profile** — a human-initiated query: `/graphify query|path|explain`
+  directly, or `/punch-document`'s own query-branch (Decision rule, "Query").
+- **Automatic orientation profile** — `punch-context-engineering`'s Graphify
+  gate, deciding only whether a query is useful.
+
+Both run the same vocabulary-expansion (Step 0) and traversal. Two changes
+close the gap:
+
+- Vocabulary expansion no longer persists `graphify-out/.vocab.txt` — it
+  prints the token list inline and consumes it in the same turn. Vocabulary
+  expansion and traversal never touch disk under `graphify-out/**`, for
+  either caller.
+- `save-result` write-back now runs for the **explicit profile only** —
+  it *does* write under `graphify-out/**` (the mechanism the next `--update`
+  reads to extract the Q&A as a graph node), but only when a human directly
+  triggered the query (`/graphify query|path|explain`, or `/punch-document`'s
+  own query-branch). The **automatic** orientation profile stops at the
+  answer — it never calls `save-result` and never writes anything under
+  `graphify-out/**`, matching its existing "never writes Graphify state"
+  charter in practice, not just in prose.
+
+`punch-context-engineering`'s gate was reworded to invoke `punch-graphify`'s
+`SKILL.md#query-only-contract` by reference instead of narrating `graphify
+query` mechanics inline, and `punch-document.prompt.md`'s Decision rule now
+links the same contract on its Query bullet — closing the duplication gap
+this ADR's original Decision section warned about ("Reuse, don't fork").
+
+### Consequences
+
+- **Positive:** the automatic orientation profile can no longer mutate
+  `graphify-out/**` even by oversight — the write path requires the explicit
+  caller by construction, not by convention alone. One canonical procedure
+  removes the risk of the two call sites drifting apart on vocabulary-
+  expansion behavior.
+- **Negative / watch:** three call sites (`punch-graphify`'s contract,
+  `punch-context-engineering`'s gate, `punch-document`'s decision rule) must
+  stay cross-linked rather than re-diverging; `punch-ai-governance` checks
+  this on every audit pass (duplication + cross-reference checks).
+
+## Installation guidance corrected to the pinned version (2026-07-17)
+
+**Status:** Accepted — clarification, not a new decision.
+
+Current install guidance across `punch-graphify/SKILL.md` (Step 1),
+`punch-context-engineering/SKILL.md` (both the gate's own install note and
+its "Graphify Team Setup" user-facing message), and `punch-document.prompt.md`
+Pre-conditions now uniformly reads `uv tool install graphifyy==0.8.41` — the
+pin `punch-graphify/SKILL.md` Step 1 already used, so nothing here changes
+which version is installed. The unpinned `uv tool install graphifyy` in this
+ADR's original Context (2026-06-18) and first Consequences section above
+predates the pin decision and is left as written — historical record, not
+current guidance. Consult `punch-graphify/SKILL.md` Step 1 for the live pin.
