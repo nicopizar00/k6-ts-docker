@@ -1,4 +1,4 @@
-# Punch repository-level Graphify config — shared Context Engineering behavior.
+# Punch repository-level Graphify config — controls the shared, committed corpus.
 # Excludes noisy / generated / vendored paths from the knowledge-graph corpus
 # so `graphify .` maps the source of truth, not build output.
 

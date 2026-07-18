@@ -35,7 +35,6 @@ It owns:
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
   still owe a `punch-` rename (read-only; see procedure below).
-- **Sole Graphify write-rights** across the repo (see *Documentation mode* below).
 
 It does **not** own:
 
@@ -75,13 +74,11 @@ Node (this skill is read-only: Read/Grep/Glob). Punch does not run host Node.
 
 ## Documentation mode (`/punch-document`)
 
-This is the **sole Graphify write-rights owner** — build, `--update`, and
-full regeneration run only through `/punch-document`; every other consumer
-(`punch-context-engineering`, Spec/`punch-architect`, Build/Test/Review/Ship)
-may query an existing graph but never write it. Enforced at
-[`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
-(query-only gate) and [`punch-graphify`](../punch-graphify/SKILL.md) (executes
-write subcommands only when this prompt invokes them).
+Documentation-debt reconciliation, in waves. Native `/graphify` (if the user
+has run it) is optional supplementary evidence this skill may query
+(`graphify query|path|explain`) — never something this skill or
+`/punch-document` builds, updates, or writes. It is a user-invoked, explicit-
+only skill outside this workflow's ownership.
 
 Reconciliation runs at two grains, both first-class:
 
@@ -90,8 +87,7 @@ Reconciliation runs at two grains, both first-class:
 - **Full-surface** — the periodic wave across all of `docs/` + `.github/`
   this skill has complete admin over (see *Responsibility* above).
 
-Procedure (map → classify → reconcile → record) and the graph
-query/incremental-update/full-regenerate decision rule live in
+Procedure (map → classify → reconcile → record) lives in
 [`punch-document`](../../prompts/punch-document.prompt.md) and this skill's
 agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agent.md)
 (Documentation mode) — not restated here.
@@ -105,16 +101,17 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and `.agents/skills/**` (the canonical Copilot Caveman install) as
-> an adopted-upstream skill: these are **excluded** from the frontmatter-
-> completeness, cross-reference, naming, duplication, and stale-asset checks below.
-> `.agents/skills/caveman` is still **registered** (parity) in `skill-registry.md`
-> but is upstream-maintained — refresh from upstream, never hand-edit.
-> `.github/skills/punch-graphify/**` is now a **Punch-leaned adaptation** (trimmed to the
-> in-IDE build/update/query subset; pristine upstream kept in
-> `.ai-upstream/graphify/`) — like `.github/skills/punch-build-caveman/**` it is
-> **authored and subject to all checks**. These record point-in-time / external
-> state.
+> fresh clone), and `.agents/skills/**` (the canonical Copilot Caveman install) and
+> `.github/skills/graphify/**` (the native Graphify skill) as adopted-upstream
+> skills: these are **excluded** from the frontmatter-completeness,
+> cross-reference, naming, duplication, and stale-asset checks below.
+> `.agents/skills/caveman` and `.github/skills/graphify` are still
+> **registered** (parity) in `skill-registry.md` but are upstream-maintained —
+> refresh from upstream, never hand-edit; only `user-invocable`/
+> `disable-model-invocation` frontmatter fields are Punch additions to
+> `graphify`'s `SKILL.md`.
+> `.github/skills/punch-build-caveman/**` remains an **authored adaptation,
+> subject to all checks**. These record point-in-time / external state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.

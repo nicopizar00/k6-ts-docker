@@ -6,9 +6,8 @@ Guards = **runtime discipline** Punch custom agents inherit. *Adapted per agent 
 
 1. **Restricted tool surface.** Agent use only tools its purpose need.
    Config-maintainer agents do **not** get terminal — one documented
-   exception: `punch-ai-governance` may run host `graphify` for
-   `/punch-document` map ([ADR 0002](decisions/0002-graphify-host-tool.md)),
-   never Punch runtime. Runtime engineers get terminal
+   exception: `punch-ai-governance` may run `./bin/punch init` (read-only
+   scan), never Punch runtime. Runtime engineers get terminal
    (Docker/Punch-mediated only — never host `k6`, host `npm` only where
    documented exception allow, see [`decisions/`](decisions/)).
 2. **Serial phases.** Plan → Implement → Verify, in order. State work plan,
@@ -34,7 +33,7 @@ Guards = **runtime discipline** Punch custom agents inherit. *Adapted per agent 
 | `punch-cavecrew-investigator` (worker) | no — read-only | n/a | bounded locate packet | leaf — no `agents:` |
 | `punch-cavecrew-builder` (worker) | no | before edit | **1-2 files; refuse 3+** | leaf — no `agents:` |
 | `punch-cavecrew-reviewer` (worker) | no — read-only | n/a | bounded diff check | leaf — no `agents:` |
-| `punch-ai-governance` (maintainer) | **scoped** — `./bin/punch init` (read-only scan) + host `graphify` map (ADR 0002); never the Punch runtime | **mandatory** before any `.github`/`docs` write | yes | forks only the `/graphify` map (1-deep); never a sub-agent |
+| `punch-ai-governance` (maintainer) | **scoped** — `./bin/punch init` (read-only scan); never the Punch runtime | **mandatory** before any `.github`/`docs` write | yes | spawns no sub-agent |
 
 ## Depth-1 / no recursion
 
@@ -51,9 +50,8 @@ list `punch-cavecrew-investigator` only; `punch-release-captain` lists the three
 specialists as report-only leaves (which therefore do not spawn cavecrew under
 Ship). The
 `punch-ai-governance` maintainer **never** listed in any `agents:` allowlist
-(`disable-model-invocation: true`), so user-direct only; in Documentation
-mode its single sanctioned delegation = `/graphify` map (1-deep), spawn no
-other sub-agent.
+(`disable-model-invocation: true`), so user-direct only; it spawns no
+sub-agent at all.
 
 ## Worker capability bound (cavecrew ⊆ coordinator)
 

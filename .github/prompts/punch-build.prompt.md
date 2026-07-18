@@ -35,7 +35,7 @@ When the task needs it:
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
 - [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
 - [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers + bounded cavecrew workers (depth-1, tool-subset).
-- [`punch-graphify`](../skills/punch-graphify/SKILL.md) — when a repo dependency map helps locate the change surface.
+- [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface (native, explicit-only; never invoked automatically).
 
 cavecrew (vendor) is the **execution/delegation optimization** layer, not a
 replacement for these skills.

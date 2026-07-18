@@ -20,7 +20,7 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 | You are… | Skill(s) |
 |---|---|
 | new to the repo | `punch-context-engineering` |
-| routing a repo-understanding / cross-file / architecture / governance task (before picking the sub-agent) | `punch-context-engineering` (the Graphify gate) |
+| routing a repo-understanding / cross-file / architecture / governance task (before picking the sub-agent) | `punch-context-engineering` |
 | refining a vague idea | `punch-idea-refine` |
 | writing a spec | `punch-spec-driven-development` |
 | breaking a spec into tasks | `punch-planning-and-task-breakdown` |
@@ -44,12 +44,12 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 
 | Skill | Owns | Defined in |
 |---|---|---|
-| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; lifecycle; scope-discipline principle; Graphify gate (query-only) | `.github/skills/punch-context-engineering/SKILL.md` |
+| [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md) | Pointer-list to canonical docs; lifecycle; scope-discipline principle | `.github/skills/punch-context-engineering/SKILL.md` |
 | [`punch-python-orchestration`](../../.github/skills/punch-python-orchestration/SKILL.md) | `bin/punch` CLI, subprocess streaming, docker compose invocation, exit codes, evidence artifact | `.github/skills/punch-python-orchestration/SKILL.md` |
 | [`punch-compose-runtime`](../../.github/skills/punch-compose-runtime/SKILL.md) | Service contracts, stable service names, healthchecks, multi-stage Dockerfiles, image pins | `.github/skills/punch-compose-runtime/SKILL.md` |
 | [`punch-k6-testing`](../../.github/skills/punch-k6-testing/SKILL.md) | k6 test shape (HTTP + Browser), thresholds, `handleSummary`, shared report builder, k6 image pin, Browser deferral | `.github/skills/punch-k6-testing/SKILL.md` |
 | [`punch-data-harvest`](../../.github/skills/punch-data-harvest/SKILL.md) | Artifact paths and schemas, terminal-vs-file noise discipline, JSON/CSV contracts, HTML report builder | `.github/skills/punch-data-harvest/SKILL.md` |
-| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene, sole Graphify write owner | `.github/skills/punch-ai-governance/SKILL.md` |
+| [`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md) | Frontmatter contracts, registry consistency, boundary compliance, scope discipline, handoff hygiene | `.github/skills/punch-ai-governance/SKILL.md` |
 
 ### Why six, and what each adds
 
@@ -122,26 +122,27 @@ Punch (k6/Docker, no frontend). See *Deferred / excluded* below for what stays o
 
 ## Adopted upstream skills (tool axis)
 
-External skills reused **as-is** — neither Punch domain nor Punch method.
-Registered here for parity only; content upstream-maintained, **exempt from
-authored-canon checks** (frontmatter completeness, naming, duplication,
-cross-reference) — refresh from upstream, never hand-edit.
+External skills either **reused as-is** (upstream-maintained, registered for
+parity only, **exempt from authored-canon checks**, refresh from upstream —
+never hand-edit) or **leaned/adapted for Punch** (authored content, **subject
+to the full authored-canon checks**, refresh-from-upstream no longer
+applies). Each row states which.
 
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
-| [`punch-graphify`](../../.github/skills/punch-graphify/SKILL.md) | Knowledge-graph mapping of repo for Context Engineering orientation (query-only) and `punch-document` (sole write owner); runs in IDE session (no API key). **Punch-leaned adaptation** — trimmed to in-IDE build/update/query subset (no remote-clone/merge, media transcription, external-DB push, MCP/wiki/obsidian exports) | upstream `graphifyy`, leaned for Punch — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/punch-graphify/SKILL.md` |
+| [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of any corpus (code, docs, media) into a queryable graph with community detection — explicit-only (`/graphify`), never auto-loaded. **Native upstream skill — adopted, not Punch-authored**; only `user-invocable`/`disable-model-invocation` frontmatter added | upstream [`Graphify-Labs/graphify`](https://github.com/Graphify-Labs/graphify), installed via `uv tool install graphifyy` — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
 | `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
 | [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
 
-`punch-graphify` gated through [`punch-context-engineering`](../../.github/skills/punch-context-engineering/SKILL.md)
-Graphify gate; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
-**Punch-leaned adaptation** of upstream `graphifyy`, trimmed to in-IDE
-build/update/query subset for Copilot-plug-in-ready footprint (removed:
-remote-clone/cross-repo merge, media transcription, Neo4j/FalkorDB push, MCP server,
-wiki/SVG/GraphML/obsidian exports). Pristine upstream stays in
-`.ai-upstream/graphify/`; leaned skill **authored — subject to governance
-checks** (no longer refresh-verbatim).
+`graphify` is explicit-only (`/graphify`), never auto-loaded for unrelated
+work; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
+**Native upstream skill, adopted as-is** — full upstream `SKILL.md` +
+`references/` committed unchanged, only `user-invocable` /
+`disable-model-invocation` frontmatter added. Pristine upstream snapshot for
+drift comparison stays in `.ai-upstream/graphify/`; the committed skill is
+**exempt from authored-canon checks** (refresh from upstream, never hand-edit),
+like `.agents/skills/caveman/`.
 Canonical `.agents/skills/caveman/` install upstream-maintained (adopted —
 exempt from authored-canon checks). **`cavecrew` retained** alongside `caveman`:
 the Build engineers invoke it to spawn workers with caveman compression. Other

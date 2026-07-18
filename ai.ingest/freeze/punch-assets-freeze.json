@@ -176,7 +176,7 @@
       "notes": "method skill entrypoint (punch-git-workflow-and-versioning)"
     },
     {
-      "path": ".github/skills/punch-graphify/SKILL.md",
+      "path": ".github/skills/graphify/SKILL.md",
       "type": "skill",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -185,10 +185,10 @@
       "lines": 578,
       "words": 3614,
       "status": "frozen",
-      "notes": "domain skill entrypoint (punch-graphify)"
+      "notes": "domain skill entrypoint (graphify)"
     },
     {
-      "path": ".github/skills/punch-graphify/references/add-watch.md",
+      "path": ".github/skills/graphify/references/add-watch.md",
       "type": "skill-reference",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -197,10 +197,10 @@
       "lines": 56,
       "words": 365,
       "status": "frozen",
-      "notes": "reference under punch-graphify"
+      "notes": "reference under graphify"
     },
     {
-      "path": ".github/skills/punch-graphify/references/extraction-spec.md",
+      "path": ".github/skills/graphify/references/extraction-spec.md",
       "type": "skill-reference",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -209,10 +209,10 @@
       "lines": 68,
       "words": 929,
       "status": "frozen",
-      "notes": "reference under punch-graphify"
+      "notes": "reference under graphify"
     },
     {
-      "path": ".github/skills/punch-graphify/references/hooks.md",
+      "path": ".github/skills/graphify/references/hooks.md",
       "type": "skill-reference",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -221,10 +221,10 @@
       "lines": 33,
       "words": 193,
       "status": "frozen",
-      "notes": "reference under punch-graphify"
+      "notes": "reference under graphify"
     },
     {
-      "path": ".github/skills/punch-graphify/references/query.md",
+      "path": ".github/skills/graphify/references/query.md",
       "type": "skill-reference",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -233,10 +233,10 @@
       "lines": 303,
       "words": 1602,
       "status": "frozen",
-      "notes": "reference under punch-graphify"
+      "notes": "reference under graphify"
     },
     {
-      "path": ".github/skills/punch-graphify/references/update.md",
+      "path": ".github/skills/graphify/references/update.md",
       "type": "skill-reference",
       "category": "domain",
       "owner": "punch-ai-governance",
@@ -245,7 +245,7 @@
       "lines": 183,
       "words": 833,
       "status": "frozen",
-      "notes": "reference under punch-graphify"
+      "notes": "reference under graphify"
     },
     {
       "path": ".github/skills/punch-idea-refine/SKILL.md",

@@ -59,15 +59,14 @@ per layer, each with its own scope and a named layer order.
 ## Graph & documentation boundary
 
 Patterns off `punch-ai-governance`'s existing admin-rights model (sole
-`.github/`+`docs/` admin, sole Graphify writer via `/punch-document`) —
-without inheriting that write scope:
+`.github/`+`docs/` admin) — without inheriting that write scope:
 
-- May read graph/doc evidence via
-  [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md#graphify-gate)
-  (query-only) during Spec or Plan.
+- May read native `/graphify` evidence (`graphify-out/graph.json`,
+  `GRAPH_REPORT.md`), if present, during Spec or Plan — query-only, never
+  invoked, built, or written by this agent.
 - May recommend `/punch-document` when a spec/plan surfaces a documentation
   or graph gap or maintenance need — recorded as a queued item, not executed.
-- Never invokes a Document or Graphify write action itself — see Forbidden above.
+- Never invokes a Document or Graphify action itself — see Forbidden above.
 - A Document recommendation is a suggestion, not an instruction Build
   executes — same human-checkpoint discipline as every other Plan task.
 

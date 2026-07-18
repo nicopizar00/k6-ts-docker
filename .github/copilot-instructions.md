@@ -123,19 +123,23 @@ in PR description.
 
 ## graphify
 
-Graphify is a **tool-backed context adapter**, not an always-on default.
-[`punch-document`](prompts/punch-document.prompt.md) is the **only** workflow
-that builds, updates, or regenerates the graph — sole write owner per
-[`punch-ai-governance`](skills/punch-ai-governance/SKILL.md#documentation-mode-punch-document).
-The [`punch-context-engineering`](skills/punch-context-engineering/SKILL.md)
-Graphify gate may only **query** an existing graph (`query`/`path`/`explain`) and
-recommends `/punch-document` when the graph is missing or stale — it never builds
-or writes. Do **not** invoke `graphify query`/`path`/`explain` as a default first
-action — route through that gate. Outputs under `graphify-out/` are throwaway
-evidence, never canonical (scoped Rule-1 exception — [ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md)).
+Native, upstream Graphify Agent Skill ([`.github/skills/graphify/`](skills/graphify/SKILL.md))
+— adopted as-is, no Punch fork (scoped Rule-1 host-tool exception —
+[ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md)). Install, security,
+version, and sharing policy: [`docs/ai/graphify-install.md`](../docs/ai/graphify-install.md).
 
-Typing `/graphify` directly in Copilot Chat is not tool-blocked outside
-`/punch-document`, but is against policy — always route a build/update through it.
+- **Explicit-only.** `/graphify` never auto-loads for unrelated work — invoke
+  it directly when a repo/corpus map or query is wanted. No Punch prompt
+  builds, updates, gates, or owns it.
+- **Local-first by default.** No hooks, watchers, MCP server, URL ingestion,
+  cloud semantic backends, or external graph-database push run
+  automatically — each is a separate, explicit user decision.
+- **Terminal stays approval-gated**, same as every other command — no
+  standing shell pre-approval for `graphify` (the skill does not declare
+  `allowed-tools: shell`/`bash`).
+- Outputs under `graphify-out/` are throwaway evidence, never canonical,
+  except the committed shared baseline (`graph.json`, `GRAPH_REPORT.md`,
+  `.graphifyignore`) after passing the leakage validation checklist.
 
 ## Caveman (concise comms — default `lite`)
 

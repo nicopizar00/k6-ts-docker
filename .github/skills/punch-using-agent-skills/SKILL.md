@@ -48,7 +48,7 @@ Task arrives
     ├── Committing / branching? ──────────→ punch-git-workflow-and-versioning
     ├── Logs / metrics / events? ─────────→ punch-observability-and-instrumentation
     ├── Recording a decision (ADR)? ──────→ punch-documentation-and-adrs
-    └── Doc map / graph? ─────────────────→ punch-graphify
+    └── Doc map / graph? ─────────────────→ graphify (native, explicit-only)
 ```
 
 ## Build delegation (cavecrew)
@@ -139,7 +139,7 @@ verification because "looks right".
 | Spec | punch-spec-driven-development | Requirements + acceptance criteria before code |
 | Plan | punch-planning-and-task-breakdown | Decompose into small verifiable tasks |
 | Build | punch-incremental-implementation | Thin vertical slices, verify each |
-| Build | punch-context-engineering | Right context at the right time (Graphify gate) |
+| Build | punch-context-engineering | Right context at the right time |
 | Build | punch-source-driven-development | Verify against official docs before coding |
 | Build | punch-doubt-driven-development | Adversarial fresh-context review of decisions |
 | Build | punch-python-orchestration | `bin/punch` / `src/punch` CLI + subprocess |
@@ -157,4 +157,4 @@ verification because "looks right".
 | Ship | punch-git-workflow-and-versioning | Atomic commits, clean history |
 | Ship | punch-documentation-and-adrs | Document the why, not just the what |
 | Ship | punch-observability-and-instrumentation | Structured logs, metrics, alerts |
-| Document | punch-graphify | Doc/dependency map (host tool, off evidence path) |
+| Document | graphify | Doc/dependency map (native, user-invoked, off evidence path) |

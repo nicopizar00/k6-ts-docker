@@ -77,12 +77,14 @@ GitHub Actions uploads all of these as the `performance-suite-reports` artifact.
 
 ## AI-assisted operating model
 
-This repo uses a six-phase lifecycle for AI-assisted changes: **Spec →
-Plan → Build → Test → Review → Ship** (Spec absorbs the former Define
-step). Each phase has one prompt; Build is a single `punch-build` prompt
-whose `punch-builder` dispatcher routes to one of two domain engineers.
-Domain + lifecycle skills and the agent personas support the lifecycle —
-see the registries below for the live inventory.
+This repo uses a linear lifecycle for AI-assisted changes — **Spec →
+Plan → Build → Test → Review → Ship** — plus two orthogonal maintenance
+prompts: **punch-document** for recurring documentation reconciliation and
+**punch-init** for one-time Copilot asset adoption checks. Each lifecycle
+phase has one prompt; Build is a single `punch-build` prompt whose
+`punch-builder` dispatcher routes to one of two domain engineers. Domain +
+lifecycle skills and the agent personas support the lifecycle — see the
+registries below for the live inventory.
 
 - Operating model: [`docs/ai/operating-model.md`](docs/ai/operating-model.md)
 - Scoped-build policy: [`docs/ai/scoped-build-policy.md`](docs/ai/scoped-build-policy.md)
