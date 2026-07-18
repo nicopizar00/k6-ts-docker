@@ -293,3 +293,74 @@ which version is installed. The unpinned `uv tool install graphifyy` in this
 ADR's original Context (2026-06-18) and first Consequences section above
 predates the pin decision and is left as written — historical record, not
 current guidance. Consult `punch-graphify/SKILL.md` Step 1 for the live pin.
+
+## Native Graphify skill supersedes the Punch-leaned adaptation (2026-07-17)
+
+**Status:** Accepted — supersedes the Punch-leaned-adaptation model above
+(Decision, Team Sharing, Query-only contract sections) and the native-install
+rejection above. Historical findings above are left as written; this section
+records the new decision.
+
+### Context
+
+A separate Plan (`docs/specs/plan-native-graphify-copilot.md`) replaced the
+large Punch-authored `punch-graphify` adaptation with the native Graphify
+Agent Skill, committed unmodified under `.github/skills/graphify/` (only
+`user-invocable: true` / `disable-model-invocation: true` frontmatter added).
+The prior rationale for a "leaned fork" — trimming upstream features for a
+Copilot-plug-in-ready footprint — no longer applies: the native skill ships
+its full upstream body, including the previously-removed reference files
+(`add-watch.md`, `exports.md`, `github-and-merge.md`, `hooks.md`,
+`transcribe.md`).
+
+### Decision
+
+- **`punch-graphify` deleted.** `.github/skills/graphify/` (native, adopted
+  upstream) is the only committed Graphify skill body.
+- **All custom execution paths removed.** `punch-document`,
+  `punch-context-engineering`, `punch-ai-governance`, and `punch-init` no
+  longer read a skill file inline, execute Steps 1-9 procedures, fork
+  chunk-extraction subagents, or gate query vs. build/update/regenerate
+  decisions. `/graphify` is invoked directly and explicitly by a human (or an
+  agent the human is driving), exactly like any other native Copilot skill —
+  no Punch wrapper stands between the user and the skill.
+- **Sole Graphify write-rights model retired.** `punch-ai-governance` no
+  longer claims exclusive build/update/regenerate rights over
+  `graphify-out/`; there is no Punch-side write gate to hold, because no
+  Punch prompt or agent writes Graphify state at all anymore. Anyone with the
+  CLI installed may run `/graphify . --update` (routine) or `/graphify .`
+  (structural) directly, per the upstream skill's own documented behavior.
+- **Query-only contract retired as Punch-authored text.** The vocabulary-
+  expansion / explicit-vs-automatic write-back split documented above
+  (Query-only contract formalized) described `punch-graphify`'s adapted
+  `references/query.md`; the native skill's own `references/query.md` (now
+  committed verbatim) is authoritative instead. Punch no longer maintains a
+  parallel copy of that procedure.
+- **Team Share validation moves out of this ADR's ownership chain.** The
+  committed-artifact allowlist (`graphify-out/graph.json`,
+  `graphify-out/GRAPH_REPORT.md`, `.graphifyignore`) and its six-check
+  validation gate are unchanged in substance but are now documented in
+  `docs/ai/graphify-install.md` (installation, security, and sharing policy)
+  rather than gated behind `/punch-document`'s prior sole-writer role.
+- **Manual installation unchanged.** `uv tool install graphifyy` (pinned
+  version tracked in `.github/skills/graphify/.graphify_version`) remains the
+  required manual step; no Punch prompt runs `graphify *install` or any
+  auto-install command, consistent with every prior decision in this ADR.
+
+### Consequences
+
+- **Positive:** removes a large, hard-to-verify custom orchestration layer
+  (inline Steps 1-9 execution, chunk-extraction subagent forking, the
+  query/incremental-update/full-regenerate decision rule) in favor of the
+  upstream-maintained skill's own documented behavior. `punch-ai-governance`
+  loses its terminal/forking exception entirely — it is now a pure
+  read/edit maintainer with no scoped host-tool carve-out to audit.
+- **Negative / watch:** the 2026-07-16 "Inline skill-body execution adopted"
+  and 2026-07-17 "Query-only contract formalized" sections above describe a
+  model that no longer runs — they are left unmodified as historical record
+  per this repo's append-don't-rewrite convention for ADR history, not
+  because they still reflect current behavior.
+- **Guardrail:** `CLAUDE.md` Rule #1's exception (b) now reads on the
+  native skill's manual-install/maintenance policy, not on any Punch-executed
+  procedure; `punch-ai-governance` treats this section as the current
+  sanctioned Graphify surface.

@@ -1,65 +1,68 @@
 ---
-name: punch-graphify
-description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns a code/docs tree into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools. (Punch-leaned: in-IDE build/update/query only.)"
-applies-to: repo orientation / mapping — query/path/explain gated through punch-context-engineering (read-only); build/--update/full-regenerate gated through punch-document only (sole writer); not path-scoped
+name: graphify
+description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools."
+user-invocable: true
+disable-model-invocation: true
 ---
 
 # /graphify
 
 Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.
 
-> **Punch adaptation.** This is `punch-graphify` — the canonical Punch-leaned
-> replacement for upstream graphify, not the upstream skill verbatim. **Write**
-> subcommands (build, `--update`, `--cluster-only`, full regenerate) run **only**
-> when routed through `/punch-document` — the sole Graphify write owner.
-> **Read** subcommands (`query`/`path`/`explain`) may additionally run through the
-> `punch-context-engineering` Graphify gate — never as an autonomous default either
-> way. Graphify executes what it is asked; it never decides what is canonical or
-> what to write into docs — that decision belongs to `punch-ai-governance` (see
-> [Team Share](#team-share)). Install is **CLI-only, version-pinned**
-> (`uv tool install graphifyy==0.8.41` — see Step 1; not auto-upgraded, refresh the
-> pin deliberately). The official skill-install (`graphify vscode/claude/copilot/
-> agents install`) and the post-commit auto-rebuild hook are **not used** — investigated
-> and found actively unsafe near this repo's hand-authored config, not just against
-> policy ([ADR 0002 native-install finding](../../../docs/ai/decisions/0002-graphify-host-tool.md#native-installregistration--investigated-rejected-2026-07-16)).
-> **Never substitute a bare `graphify <path> [--update]` terminal/CLI call for
-> this skill's Steps 1-9 procedure below.** A bare CLI call skips the in-IDE
-> AST + subagent semantic-extraction dispatch and falls through to Graphify's
-> own headless backend, which needs a forbidden cloud API key — it will hit
-> an API-key gate or silently no-op instead of actually updating the graph.
-
 ## Usage
 
 ```
-/graphify                                    # build the graph for the current directory
-/graphify <path>                             # build for a specific path
-/graphify <path> --mode deep                 # thorough extraction, richer INFERRED edges
-/graphify <path> --update                    # incremental — re-extract only new/changed files
-/graphify <path> --directed                  # directed graph (preserves edge direction: source→target)
-/graphify <path> --cluster-only              # rerun clustering on the existing graph
-/graphify <path> --no-viz                    # skip HTML, just report + JSON
-/graphify query "<question>"                 # BFS traversal — broad context
-/graphify query "<question>" --dfs           # DFS — trace a specific path
-/graphify query "<question>" --budget 1500   # cap answer at N tokens
-/graphify path "ModuleA" "ModuleB"           # shortest path between two concepts
-/graphify explain "NodeName"                 # plain-language explanation of a node
+/graphify                                             # full pipeline on current directory → Obsidian vault
+/graphify <path>                                      # full pipeline on specific path
+/graphify https://github.com/<owner>/<repo>           # clone repo then run full pipeline on it
+/graphify https://github.com/<owner>/<repo> --branch <branch>  # clone a specific branch
+/graphify <url1> <url2> ...                           # clone multiple repos, build each, merge into one cross-repo graph
+/graphify <path> --mode deep                          # thorough extraction, richer INFERRED edges
+/graphify <path> --update                             # incremental - re-extract only new/changed files
+/graphify <path> --directed                            # build directed graph (preserves edge direction: source→target)
+/graphify <path> --whisper-model medium                # use a larger Whisper model for better transcription accuracy
+/graphify <path> --cluster-only                       # rerun clustering on existing graph
+/graphify <path> --no-viz                             # skip visualization, just report + JSON
+/graphify <path> --html                               # (HTML is generated by default - this flag is a no-op)
+/graphify <path> --svg                                # also export graph.svg (embeds in Notion, GitHub)
+/graphify <path> --graphml                            # export graph.graphml (Gephi, yEd)
+/graphify <path> --neo4j                              # generate graphify-out/cypher.txt for Neo4j
+/graphify <path> --neo4j-push bolt://localhost:7687   # push directly to Neo4j
+/graphify <path> --falkordb                           # generate graphify-out/cypher.txt for FalkorDB
+/graphify <path> --falkordb-push falkordb://localhost:6379   # push directly to FalkorDB
+/graphify <path> --mcp                                # start MCP stdio server for agent access
+/graphify <path> --watch                              # watch folder, auto-rebuild on code changes (no LLM needed)
+/graphify <path> --wiki                               # build agent-crawlable wiki (index.md + one article per community)
+/graphify <path> --obsidian --obsidian-dir ~/vaults/my-project  # write vault to custom path (e.g. existing vault)
+/graphify add <url>                                   # fetch URL, save to ./raw, update graph
+/graphify add <url> --author "Name"                   # tag who wrote it
+/graphify add <url> --contributor "Name"              # tag who added it to the corpus
+/graphify query "<question>"                          # BFS traversal - broad context
+/graphify query "<question>" --dfs                    # DFS - trace a specific path
+/graphify query "<question>" --budget 1500            # cap answer at N tokens
+/graphify path "AuthModule" "Database"                # shortest path between two concepts
+/graphify explain "SwinTransformer"                   # plain-language explanation of a node
 ```
 
 ## What graphify is for
 
-Point graphify at a code/docs tree and get a queryable knowledge graph. Persistent across sessions, honest audit trail (EXTRACTED/INFERRED/AMBIGUOUS), community detection surfaces cross-document connections you wouldn't think to ask about.
+Drop any folder of code, docs, papers, images, or video into graphify and get a queryable knowledge graph. Persistent across sessions, honest audit trail (EXTRACTED/INFERRED/AMBIGUOUS), community detection surfaces cross-document connections you wouldn't think to ask about.
 
 ## What You Must Do When Invoked
 
 If the user invoked `/graphify --help` or `/graphify -h` (with no other arguments), print the contents of the `## Usage` section above verbatim and stop. Do not run any commands, do not detect files, do not default the path to `.`. Just print the Usage block and return.
 
-**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and follow `## Query-only contract` below** — vocabulary expansion still runs before traversal on this fast path, exactly as it does for any other query; do not shortcut straight to a raw `graphify query` call. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
+**Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and jump straight to `## For /graphify query`.** Run `graphify query "<question>"` immediately. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
 
 If no path was given, use `.` (current directory). Do not ask the user for a path.
-Punch runs graphify on a **local** path only (in-IDE) — remote-repo cloning and
-cross-repo merge are out of scope for this leaned skill.
+
+If the path argument starts with `https://github.com/` or `http://github.com/`, treat it as a GitHub URL - run Step 0 before anything else, then continue with the resolved local path.
 
 Follow these steps in order. Do not skip steps.
+
+### Step 0 - GitHub repos and multi-path merge (only if a URL or several paths)
+
+Only when the path is one or more `https://github.com/...` URLs, or several local subfolders to merge. See `references/github-and-merge.md` for the clone, cross-repo merge, and monorepo flow, then continue with the resolved local path. A plain local path skips this step.
 
 ### Step 1 - Ensure graphify is installed
 
@@ -84,12 +87,12 @@ fi
 if [ -z "$PYTHON" ]; then PYTHON="python3"; fi
 if ! "$PYTHON" -c "import graphify" 2>/dev/null; then
     if command -v uv >/dev/null 2>&1; then
-        uv tool install graphifyy==0.8.41 -q 2>&1 | tail -3
+        uv tool install --upgrade graphifyy -q 2>&1 | tail -3
         _UV_PY=$(uv tool run graphifyy python -c "import sys; print(sys.executable)" 2>/dev/null)
         if [ -n "$_UV_PY" ]; then PYTHON="$_UV_PY"; fi
     else
-        "$PYTHON" -m pip install graphifyy==0.8.41 -q 2>/dev/null \
-          || "$PYTHON" -m pip install graphifyy==0.8.41 -q --break-system-packages 2>&1 | tail -3
+        "$PYTHON" -m pip install graphifyy -q 2>/dev/null \
+          || "$PYTHON" -m pip install graphifyy -q --break-system-packages 2>&1 | tail -3
     fi
 fi
 # Write interpreter path for all subsequent steps (persists across invocations)
@@ -138,7 +141,11 @@ Then act on it:
   - For each file, strip the `scan_root` prefix and take the first path component. Files directly in `scan_root` with no subdirectory count as `(root)`.
   - If all files are in `(root)` with no subdirectories, do not ask to narrow — no subfolders exist. Instead suggest `--no-cluster` to skip the expensive clustering step and proceed.
   - Otherwise rank by count, show the top 5 with file counts, then ask which subfolder to run on. Wait for the user's answer before proceeding.
-- Otherwise: proceed directly to Step 3.
+- Otherwise: proceed directly to Step 2.5 if video files were detected, or Step 3 if not.
+
+### Step 2.5 - Video and audio (only if video files detected)
+
+Skip this step entirely if `detect` returned zero `video` files. When the corpus has video or audio, see `references/transcribe.md` to transcribe them to text first, then treat the transcripts as doc files in Step 3.
 
 ### Step 3 - Extract entities and relationships
 
@@ -146,7 +153,12 @@ Then act on it:
 
 This step has two parts: **structural extraction** (deterministic, free) and **semantic extraction** (LLM, costs tokens).
 
-> **Cloud backends are forbidden in Punch.** Semantic extraction runs in-IDE using the current Claude session — no external API key. Do not set `GEMINI_API_KEY` or `GOOGLE_API_KEY` (ADR 0002 Forbidden commands). Proceed directly to subagent dispatch (Part B below).
+**Before dispatching subagents:** check whether `GEMINI_API_KEY` or `GOOGLE_API_KEY` is set. If neither is set, print this one-liner to the user:
+> Tip: set `GEMINI_API_KEY` or `GOOGLE_API_KEY` to use Gemini for semantic extraction (`pip install 'graphifyy[gemini]'`).
+
+Print it once, then continue. If `GEMINI_API_KEY` or `GOOGLE_API_KEY` IS set, use `graphify.llm.extract_corpus_parallel(files, backend="gemini")` for semantic extraction instead of dispatching Claude subagents. The default Gemini model is `gemini-3-flash-preview`; set `GRAPHIFY_GEMINI_MODEL` or pass `--model` in headless CLI flows to override it.
+
+> **No other API keys are read.** If `GEMINI_API_KEY`/`GOOGLE_API_KEY` are unset, fall straight through to Claude Code subagent dispatch (Part B below) — the host session itself is the LLM. graphify does **not** read `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or any other provider key from the environment. If a host agent prompts the user for `ANTHROPIC_API_KEY` to run extraction, that prompt is a misread of this skill — ignore it and dispatch subagents as written.
 
 **Run Part A (AST) and Part B (semantic) in parallel. Dispatch all semantic subagents AND start AST extraction in the same message. Both can run simultaneously since they operate on different file types. Merge results in Part C as before.**
 
@@ -218,31 +230,27 @@ Only dispatch subagents for files listed in `graphify-out/.graphify_uncached.txt
 
 Load files from `graphify-out/.graphify_uncached.txt`. Split into chunks of 20-25 files each. Each image gets its own chunk (vision needs separate context). When splitting, group files from the same directory together so related artifacts land in the same chunk and cross-file relationships are more likely to be extracted.
 
-**Step B2 - Dispatch ALL subagents in a single message**
+**Step B2 - Dispatch subagents and paste their responses**
 
-Call the Agent tool multiple times IN THE SAME RESPONSE - one call per chunk. This is the only way they run in parallel. If you make one Agent call, wait, then make another, you are doing it sequentially and defeating the purpose.
+> **No automated subagent tool:** this host has no parallel Agent/Task API, so
+> extraction is driven by hand. Dispatch a subagent per chunk however the host
+> allows (a fresh conversation, a parallel pane), then paste each response back.
 
-**IMPORTANT - subagent type:** Always use `subagent_type="general-purpose"`. Do NOT use `Explore` - it is read-only and cannot write chunk files to disk, which silently drops extraction results. General-purpose has Write and Bash access which the subagent needs.
+For each chunk of uncached files (20-25 per chunk), give a subagent the extraction prompt below. When it returns, paste its JSON response and write it to that chunk's file so Step B3 can collect it:
 
-Concrete example for 3 chunks:
-```
-[Agent tool call 1: files 1-15, subagent_type="general-purpose"]
-[Agent tool call 2: files 16-30, subagent_type="general-purpose"]
-[Agent tool call 3: files 31-45, subagent_type="general-purpose"]
-```
-All three in one message. Not three separate messages.
-
-Each subagent receives this exact prompt (substitute FILE_LIST, CHUNK_NUM, TOTAL_CHUNKS, DEEP_MODE, and CHUNK_PATH).
-
-CHUNK_PATH must be an **absolute** path — derive it before dispatching:
 ```bash
+# After pasting a subagent's JSON for chunk N, save it (replace N and PASTED_JSON):
 PROJECT_ROOT=$(cat graphify-out/.graphify_root)
-# Then for chunk N: CHUNK_PATH="${PROJECT_ROOT}/graphify-out/.graphify_chunk_0N.json"
+cat > "${PROJECT_ROOT}/graphify-out/.graphify_chunk_0N.json" <<'CHUNK_JSON'
+PASTED_JSON
+CHUNK_JSON
 ```
+
+Repeat for every chunk. Each chunk's JSON must land in its own `graphify-out/.graphify_chunk_NN.json` before Step B3 runs.
 
 Subagent prompt template:
 
-See `references/extraction-spec.md` for the exact subagent prompt (JSON schema, node-ID rules, confidence rubric, frontmatter, hyperedge, and vision rules). Load it only here, only when at least one chunk holds a doc, paper, or image; a pure-code corpus has skipped Part B and never reads it. Pass each subagent that prompt verbatim with FILE_LIST, CHUNK_NUM, TOTAL_CHUNKS, DEEP_MODE, and CHUNK_PATH substituted, and have it write the result to CHUNK_PATH.
+See `references/extraction-spec.md` for the exact subagent prompt (JSON schema, node-ID rules, confidence rubric, hyperedge, and vision rules). Load it only here, only when at least one chunk holds a doc, paper, or image; a pure-code corpus has skipped Part B and never reads it. Pass each subagent that prompt verbatim with FILE_LIST, CHUNK_NUM, TOTAL_CHUNKS, and DEEP_MODE substituted, and write its response to that chunk's file.
 
 **Step B3 - Collect, cache, and merge**
 
@@ -449,7 +457,18 @@ print('Report updated with community labels')
 Replace `LABELS_DICT` with the actual dict you constructed (e.g. `{0: "Attention Mechanism", 1: "Training Pipeline"}`).
 Replace INPUT_PATH with the actual path.
 
-### Step 6 - Generate HTML
+### Step 6 - Generate Obsidian vault (opt-in) + HTML
+
+**Generate HTML always** (unless `--no-viz`). **Obsidian vault only if `--obsidian` was explicitly given** — skip it otherwise, it generates one file per node.
+
+If `--obsidian` was given:
+
+- If `--obsidian-dir <path>` was also given, pass it via `--dir`. Otherwise defaults to `graphify-out/obsidian`.
+
+```bash
+graphify export obsidian
+# or with custom dir: graphify export obsidian --dir ~/vaults/my-project
+```
 
 Generate the HTML graph (always, unless `--no-viz`):
 
@@ -457,6 +476,10 @@ Generate the HTML graph (always, unless `--no-viz`):
 graphify export html  # auto-aggregates to community view if graph > 5000 nodes
 # or: graphify export html --no-viz
 ```
+
+### Steps 6b-8 - Wiki, Neo4j, FalkorDB, SVG, GraphML, MCP, benchmark (only on their flags)
+
+These run only when their flag is present (`--wiki`, `--neo4j`/`--neo4j-push`, `--falkordb`/`--falkordb-push`, `--svg`, `--graphml`, `--mcp`) or, for the token-reduction benchmark, when `total_words` exceeds 5,000. A default run with no export flags skips all of them. See `references/exports.md` for each one. Run any `--wiki` export before Step 9 cleanup so `.graphify_labels.json` is still available.
 
 ---
 
@@ -504,13 +527,14 @@ find graphify-out -maxdepth 1 -name '.graphify_chunk_*.json' -delete 2>/dev/null
 rm -f graphify-out/.needs_update 2>/dev/null || true
 ```
 
-Tell the user:
+Tell the user (omit the obsidian line unless --obsidian was given):
 ```
 Graph complete. Outputs in PATH_TO_DIR/graphify-out/
 
   graph.html            - interactive graph, open in browser
   GRAPH_REPORT.md       - audit report
   graph.json            - raw graph data
+  obsidian/             - Obsidian vault (only if --obsidian was given)
 ```
 
 If graphify saved you time, consider supporting it: https://github.com/sponsors/safishamsi
@@ -534,18 +558,9 @@ The graph is the map. Your job after the pipeline is to be the guide.
 
 ---
 
-## Interpreter guard for `--update` / `--cluster-only`
+## Interpreter guard for subcommands
 
-These two subcommands are **maintenance-profile** (build-family) — they
-already write under `graphify-out/**`, so persisting the resolved interpreter
-is fine here. `query`/`path`/`explain` are the query-only contract and use
-their **own**, non-persisting resolution instead — see
-[`references/query.md`](references/query.md#resolve-the-interpreter-read-only-never-persisted);
-do not apply this guard to them.
-
-Before running `--update` or `--cluster-only`, check that `.graphify_python`
-exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the
-interpreter first:
+Before running any subcommand below (`--update`, `--cluster-only`, `query`, `path`, `explain`, `add`), check that `.graphify_python` exists. If it's missing (e.g. user deleted `graphify-out/`), re-resolve the interpreter first:
 
 ```bash
 if [ ! -f graphify-out/.graphify_python ]; then
@@ -567,40 +582,27 @@ Both are non-default subcommands. `--update` re-extracts only new or changed fil
 
 ---
 
-## Query-only contract
+## For /graphify query
 
-This is the **canonical query-only contract** behind `/graphify query`, `path`,
-and `explain` — shared by two callers, never forked or restated elsewhere:
-
-- **Explicit profile** — the user directly runs `/graphify query|path|explain`.
-- **Automatic orientation profile** — `punch-context-engineering`'s Graphify
-  gate, which decides only *whether* a query is useful (see its
-  [Graphify gate](../punch-context-engineering/SKILL.md#graphify-gate)).
-
-Both skip Steps 1-9 above entirely — no detect, extraction, install, or
-rebuild — and answer directly from the existing `graphify-out/graph.json`:
+When `graphify-out/graph.json` already exists and the user asks a question about the corpus, answer from the graph rather than rebuilding it:
 
 ```bash
 graphify query "<question>"
 ```
 
-Before traversal, expand the question against the graph's own vocabulary so a
-wording mismatch does not collapse the answer to noise — **required for both
-callers**. If the `graphify query` CLI is unavailable, fall back to an inline
-NetworkX traversal of `graphify-out/graph.json`. Answer using only what the
-graph output contains, and quote `source_location` when citing a specific fact.
+Before traversal, expand the question against the graph's own vocabulary so a wording mismatch does not collapse the answer to noise. If the `graphify query` CLI is unavailable, fall back to an inline NetworkX traversal of `graphify-out/graph.json`. Answer using only what the graph output contains, and quote `source_location` when citing a specific fact. For that vocab-expansion step, the BFS/DFS traversal modes, the `--budget` cap, the NetworkX fallback, `save-result` feedback, and the `/graphify path` and `/graphify explain` flows, see `references/query.md`.
 
-**Only the explicit profile** runs the `save-result` write-back at the end of
-each flow. The automatic profile stops at the answer: it never calls
-`save-result` and never writes `graphify-out/.vocab.txt` or anything else
-under `graphify-out/**` — source files stay the authority for its claims.
-Neither profile installs Graphify, checks the corpus, or runs `--update` /
-`--cluster-only` — that stays `/punch-document`'s sole authority (see
-[Team Share](#team-share)).
+---
 
-For the vocab-expansion step, BFS/DFS traversal modes, the `--budget` cap, the
-NetworkX fallback, the explicit-profile-only `save-result` feedback, and the
-`/graphify path` and `/graphify explain` flows, see `references/query.md`.
+## For /graphify add and --watch
+
+Neither is part of the default build. When the user runs `/graphify add <url>` to fetch a URL into the corpus, or passes `--watch` to auto-rebuild on file changes, see `references/add-watch.md`.
+
+---
+
+## For the commit hook and native CLAUDE.md integration
+
+When the user asks to install the post-commit auto-rebuild hook or wire graphify into a project's CLAUDE.md, see `references/hooks.md`.
 
 ---
 
@@ -611,105 +613,3 @@ NetworkX fallback, the explicit-profile-only `save-result` feedback, and the
 - Always show token cost in the report.
 - Never hide cohesion scores behind symbols - show the raw number.
 - Never run HTML viz on a graph with more than 5,000 nodes without warning the user.
-
----
-
-## Team Share
-
-Governance policy for committing `graphify-out/` artifacts as shared team context.
-Policy authority: `punch-ai-governance`. Rationale: [ADR 0002](../../../docs/ai/decisions/0002-graphify-host-tool.md).
-
-### Committed artifacts (allowlist)
-
-Only these two files may be committed. All others stay local and gitignored.
-
-| File | Status | Notes |
-|---|---|---|
-| `graphify-out/graph.json` | **Committed** (after validation) | Shared team graph |
-| `graphify-out/GRAPH_REPORT.md` | **Committed** (after validation) | Human-readable report |
-| `.graphifyignore` | **Committed** (shared corpus filter) | Changes require `punch-ai-governance` sign-off; affects query coverage for all team members |
-| `graphify-out/graph.html` | Gitignored | Large; may contain local paths in JS |
-| `graphify-out/cost.json` | Gitignored | Token/cost tracking — never shared |
-| `graphify-out/.graphify_python` | Gitignored | Machine-specific interpreter path |
-| `graphify-out/.graphify_root` | Gitignored | Machine-specific absolute path |
-| `graphify-out/.graphify_labels.json` | Gitignored | Rebuild from graph |
-| `graphify-out/cache/` | Gitignored | Local extraction cache |
-
-Nested or renamed Graphify output directories are never shared. The canonical
-root output is the only accepted location; tracked paths like
-`docs/graphify-out/graph.json` or `graphify-out-copy/graph.json` fail the
-repository guard.
-
-The committed graph is a **team baseline** — a starting point for queries, not a source
-of truth. Punch prompts and the source files remain authoritative. `punch-ai-governance`
-makes every decision; the graph informs, never decides.
-
-### Validation checklist (run before every commit)
-
-All seven checks must pass. `punch-ai-governance` runs these and confirms before the commit.
-
-```bash
-# 1. Absolute path check — must return 0 matches
-grep -rE '/(Users|home)/[^/]+/' graphify-out/graph.json graphify-out/GRAPH_REPORT.md
-
-# 2. Venv / interpreter path check — must return 0 matches
-grep -rE '(\.venv|\.pyenv|\.local/lib|site-packages|python3\.[0-9]+)' \
-    graphify-out/graph.json graphify-out/GRAPH_REPORT.md
-
-# 3. Hostname / machine-specific check — must return 0 matches
-grep -rE '(MacBook|\.local$)' graphify-out/graph.json graphify-out/GRAPH_REPORT.md
-
-# 4. JSON validity
-python3 -c "import json; json.load(open('graphify-out/graph.json'))" && echo "JSON: OK"
-
-# 5. Node ID relative-path sanity — must print "none — OK"
-python3 -c "
-import json
-g = json.load(open('graphify-out/graph.json'))
-bad = [n['id'] for n in g.get('nodes', []) if n['id'].startswith('/')]
-print('Absolute node IDs:', bad if bad else 'none — OK')
-"
-
-# 6a. No raw cost / token keys in graph.json — must print nothing
-grep -El 'input_tokens|output_tokens|total_cost' graphify-out/graph.json \
-    && echo "WARNING: cost data in graph.json — do not commit"
-# 6b. GRAPH_REPORT.md: raw keys must be absent; human-readable "Token cost:" summary line is accepted
-#     (non-sensitive: rounded totals only, no user data — see ADR 0002 check 6b note)
-grep -El 'input_tokens|output_tokens|total_cost' graphify-out/GRAPH_REPORT.md \
-    && echo "WARNING: raw cost keys in GRAPH_REPORT.md — do not commit"
-grep -c 'Token cost:' graphify-out/GRAPH_REPORT.md \
-    && echo "INFO: Token cost summary present in GRAPH_REPORT.md — accepted (non-sensitive, see ADR 0002)"
-
-# 7. Committed artifact location guard — must print "Graphify share validation OK"
-python3 ai.ingest/validate_graphify_share.py
-```
-
-### Rebuild guidance
-
-- **Fresh clone with committed graph:** skip the build step. Run `graphify query "<question>"` directly against the committed `graph.json`. Do not rebuild unless coverage is missing.
-- **Designated updater (updating the shared graph):** rebuild locally (`graphify .`), run the full validation checklist above, get `punch-ai-governance` sign-off, then commit `graph.json` + `GRAPH_REPORT.md`.
-- **Shared graph is always undirected (default).** Never rebuild with `--directed` for the shared graph — it changes query behavior and is incompatible with the undirected baseline. Use `--directed` for local personal orientation only.
-- **Local personal rebuild:** any team member may rebuild at any time for personal orientation — this does not update the shared graph.
-- **Update trigger:** rebuild the shared graph when a major codebase shape change lands (new service, major refactor, structural rename). Minor edits do not require an update.
-
-Corpus scope for the shared graph: **code + Markdown/project docs only** (MVP). Expanding the corpus is an explicit opt-in (see Forbidden commands below).
-
-### Forbidden commands (never run by default)
-
-These require an explicit team decision and `punch-ai-governance` sign-off. They are never invoked autonomously and never through the `punch-context-engineering` gate without prior approval.
-
-| Command / feature | Reason |
-|---|---|
-| `graphify vscode install` | Injects always-on entries into `.vscode/` or assistant config |
-| `graphify claude install` | Writes an always-on `## graphify` section into `CLAUDE.md` |
-| `graphify copilot install` | Same — always-on assistant hook |
-| `graphify agents install` | Same |
-| `graphify hook install` | Post-commit auto-rebuild; hidden automation |
-| `--watch` | Background daemon; hidden rebuild |
-| `--mcp` | MCP server; network exposure |
-| `graphify add <url>` | External URL fetch into corpus |
-| PDF / image / video extraction | Requires `pip install 'graphifyy[video]'`; expands corpus scope |
-| `GEMINI_API_KEY` / cloud backends | Semantic extraction leaves the machine |
-| Neo4j / FalkorDB push | External graph DB write |
-| Cross-repo / remote-repo clone | Data exfiltration risk |
-| `graphify export wiki` / SVG / GraphML | Non-canonical outputs |

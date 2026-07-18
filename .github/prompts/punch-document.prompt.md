@@ -1,6 +1,6 @@
 ---
 agent: punch-ai-governance
-description: Documentate — documentation-debt remediation + AI-artifact lifecycle over ALL of docs/ (+ .github config, README.md), in waves. Inherited docs and prior AI artifacts (specs, plans, maps, temp scripts, reports) untrusted until verified. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Map with the Global Graphify repository track, then keep / merge / compact / convert / promote / archive / delete / review.
+description: Documentate — documentation-debt remediation + AI-artifact lifecycle over ALL of docs/ (+ .github config, README.md), in waves. Inherited docs and prior AI artifacts (specs, plans, maps, temp scripts, reports) untrusted until verified. Maintain lean, AI-First, minimal-human-readable docs (emojis / ASCII emoticons allowed). Reconcile via keep / merge / compact / convert / promote / archive / delete / review.
 ---
 # Punch — Documentate
 
@@ -9,14 +9,13 @@ description: Documentate — documentation-debt remediation + AI-artifact lifecy
 **Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 (decision authority). Delegates — not competitors:
 [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-(Graphify gate) · [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
+(project primer) · [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
 (writing method) · [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md)
-(on demand — compacting script-/code-bearing assets). Structural map delegated to
-existing `/graphify` skill. Legacy retirement / migration follows
+(on demand — compacting script-/code-bearing assets). Legacy retirement / migration follows
 `punch-documentation-and-adrs` + `punch-git-workflow-and-versioning` (upstream
 `deprecation-and-migration` stays deferred — [skill registry](../../docs/ai/skill-registry.md)).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
-**Operating comms:** Caveman **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. `/graphify` map fork (1-deep) returns `wenyan`-compatible report; evidence consumed, never written verbatim into docs. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
 
 ## When to use
 
@@ -71,14 +70,15 @@ their presence as `lifecycle_templates` readiness signal.
 
 ## Pre-conditions
 
-- Host `graphify` installed (`uv tool install graphifyy==0.8.41`; scoped
-  Rule-1 exception — ADR 0002). If
-  CLI absent, `punch-context-engineering` gate shows **Graphify
-  Team Setup** message and wave proceeds with non-graph evidence.
-- Map runs **in IDE session** — active model does semantic extraction,
-  **no API key**. Headless `graphify extract --backend` path not used in-IDE.
-- **Adopt Adapt drift (optional, read-only).** Gated via [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) (single source). Surface any `drift detected` / `baseline incomplete` as a governance finding for the wave — never a hard block.
-- **Shared graph (if committed).** If `graphify-out/graph.json` is a committed repo artifact, team members may run `graphify query "<question>"` directly without rebuilding. Before updating the committed graph in a wave: run the validation checklist in the [`punch-graphify` Team Share section](../skills/punch-graphify/SKILL.md#team-share) and get `punch-ai-governance` sign-off before committing `graph.json` + `GRAPH_REPORT.md`.
+- **Adopt Adapt drift (optional, read-only).** Available directly via
+  `python3 ai.ingest/compare.py`. Surface any `drift detected` / `baseline
+  incomplete` as a governance finding for the wave — never a hard block.
+- **Native `/graphify` (optional, evidence only).** If the user has already
+  run `/graphify` and `graphify-out/graph.json` is present (committed or
+  local), it may be queried (`graphify query|path|explain`, explicit-only,
+  native skill) as supplementary evidence for duplication/orphan/stale
+  signals. This prompt never installs, builds, updates, or regenerates it —
+  that is entirely the user's own, separate, manual use of the native skill.
 
 ## How it works (boundary)
 
@@ -86,20 +86,13 @@ their presence as `lifecycle_templates` readiness signal.
 artifacts are claims, not facts — verify against code / runtime / git history
 before `keep` or `promote`; unverifiable → classify `review`, never silently keep.
 
-**This prompt is the only entry point that may build, update, or regenerate
-the graph.** No other Punch prompt, skill, or agent invokes a Graphify write
-subcommand — `punch-context-engineering` and every other consumer may only
-query an existing graph (see its Graphify gate). If a consumer flags the
-graph missing or stale, that is a recommendation to run `/punch-document`,
-never an instruction it acts on itself.
-
-**Graphify provides map; `punch-ai-governance` makes every decision.**
-Graph is *evidence* for reconciliation, never canonical source. Nothing under
-`graphify-out/` promoted to canonical without governance decision. `graph.json`
-and `GRAPH_REPORT.md` may be committed as shared team artifacts after passing
-the leakage validation checklist ([`punch-graphify` Team Share](../skills/punch-graphify/SKILL.md#team-share),
-[ADR 0002](../../docs/ai/decisions/0002-graphify-host-tool.md)); all other
-`graphify-out/` contents remain gitignored.
+**`punch-ai-governance` makes every reconciliation decision.** Nothing under
+`docs/` or `.github/` is reconciled without this agent's classification and,
+where a write is involved, the user's approval. Native Graphify output (if
+present) is *evidence*, never canonical — `CLAUDE.md`, `docs/`, and the
+registries stay authoritative. This prompt does not build, update, install,
+or otherwise execute Graphify in any form; that is the native, user-invoked
+`/graphify` skill, entirely outside this prompt's ownership.
 
 ## Inputs
 
@@ -112,63 +105,14 @@ the leakage validation checklist ([`punch-graphify` Team Share](../skills/punch-
   or the single file/localized target named by the instruction above.
   *Ownership* is all of `docs/`; *wave* is slice worked this pass — a wave
   may be as narrow as one file.
-- **Global Graphify repository track** (see below) — existing
-  `graphify-out/` if present, else Map step builds it.
-
-## Graphify — Global repository track
-
-Maintain **one repo-wide ("global") Graphify graph** as standing map of
-whole project, and **track** across waves:
-
-- **Build once, global:** `/graphify .` over repository root — whole tree,
-  not per-wave slices — so cross-doc duplication/orphan/stale signals visible
-  project-wide.
-- **Track incrementally:** between waves, keep current with
-  `/graphify . --update` (re-extract only new/changed files); after doc-writing
-  waves, run manual `--update` so authored docs re-enter graph.
-- Still **evidence, never canonical** — `graphify-out/` contents never promoted
-  without governance decision; `graph.json` + `GRAPH_REPORT.md` may be committed
-  as shared team artifacts after validation (ADR 0002, Team Share).
-
-**Decision rule — query vs incremental update vs full regenerate:**
-
-- **Query** (`graphify query|path|explain`) — graph exists, this wave's
-  target is narrow/localized, no doc-writing wave has run since the last
-  build. Follow `punch-graphify`'s
-  [Query-only contract](../skills/punch-graphify/SKILL.md#query-only-contract)
-  as the **explicit profile** — this is a human-initiated `/punch-document`
-  wave, not `punch-context-engineering`'s automatic orientation gate, so the
-  contract's `save-result` write-back applies here.
-- **Incremental update** (`--update`) — after this prompt's own doc-writing
-  wave (so authored docs re-enter the graph), or drift since last build is
-  moderate (a handful of changed files).
-- **Full regenerate** (`/graphify .` fresh) — only when no graph exists yet,
-  or per the trigger + commands in
-  [`punch-graphify` Rebuild guidance](../skills/punch-graphify/SKILL.md#rebuild-guidance)
-  — not restated here.
 
 ## What to do
 
-1. **Map & gather.** Apply the Decision rule above (query / incremental
-   update / full regenerate) — this prompt decides, not Context Engineering's
-   gate (query-only, see its Graphify gate). If the rule calls for an update
-   or full regenerate: **read
-   [`.github/skills/punch-graphify/SKILL.md`](../skills/punch-graphify/SKILL.md)
-   directly and execute its Steps 1-9 procedure inline, in this same turn.**
-   A skill is an instructions file, not a command to dispatch — `/graphify`
-   as a slash-command invocation is unreachable mid-turn (confirmed), but
-   reading the file and following it is ordinary tool use you already have.
-   Use the `agent` tool for the skill's own Step 3 Part B2 parallel
-   chunk-extraction subagent dispatch — the one permitted level of forking
-   (ADR 0002, 1-deep). Do **not** substitute a bare `graphify ... --update`
-   terminal/CLI call for the skill's documented procedure — that skips the
-   in-IDE AST + subagent semantic-extraction dispatch and falls through to
-   Graphify's own headless backend, which requires a forbidden cloud API key
-   and will fail or silently no-op. If only a query is needed, run
-   `query|path|explain|affected` directly here — no full procedure required.
-   Never re-implement extraction. Consume native outputs
-   (`graphify-out/graph.json`, `GRAPH_REPORT.md`) as duplication / orphan /
-   stale signals.
+1. **Map & gather.** Read the wave's target files/docs directly (Read/Grep/
+   Glob). If a committed `graphify-out/graph.json` / `GRAPH_REPORT.md`
+   exists, consult it via `graphify query|path|explain` as optional
+   supplementary evidence for duplication/orphan/stale signals — this
+   prompt never builds, updates, or regenerates it.
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts start
    untrusted — verify before any `keep` / `promote`.

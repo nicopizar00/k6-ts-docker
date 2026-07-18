@@ -2,56 +2,6 @@
 
 Load this when the user asks a question against an existing graph, or runs `/graphify path` or `/graphify explain`. The core's query stub points here for the full traversal flow. These flows use the `graphify query` CLI when it is available and fall back to an inline NetworkX traversal otherwise.
 
-> **Two callers, one contract.** The user's explicit `/graphify query|path|explain`
-> and `punch-context-engineering`'s automatic orientation gate both follow this
-> file. Vocabulary expansion (Step 0) and traversal are required for both and
-> never touch disk. `save-result` (end of each flow below) runs for the
-> **explicit caller only** — the automatic profile stops at the answer and
-> never writes anything under `graphify-out/**`. Maintenance writes (build,
-> `--update`, `--cluster-only`) belong solely to `/punch-document`.
-
-### Resolve the interpreter (read-only, never persisted)
-
-The NetworkX fallback and `save-result` below need graphify's Python
-environment (for the `networkx` / `graphify` modules). Reuse
-`graphify-out/.graphify_python` if a prior build already wrote one — that's
-just a read. If it's absent (e.g. a fresh clone that only has a committed
-`graphify-out/graph.json`, never a local build), resolve a working
-interpreter fresh instead of failing:
-
-```bash
-if [ -f graphify-out/.graphify_python ]; then
-    QUERY_PYTHON=$(cat graphify-out/.graphify_python)
-else
-    QUERY_PYTHON=""
-    if command -v uv >/dev/null 2>&1; then
-        QUERY_PYTHON=$(uv tool run graphifyy python -c "import sys; print(sys.executable)" 2>/dev/null)
-    fi
-    if [ -z "$QUERY_PYTHON" ]; then
-        GRAPHIFY_BIN=$(which graphify 2>/dev/null)
-        if [ -n "$GRAPHIFY_BIN" ]; then
-            _SHEBANG=$(head -1 "$GRAPHIFY_BIN" | tr -d '#!')
-            case "$_SHEBANG" in
-                *[!a-zA-Z0-9/_.-]*) ;;
-                *) "$_SHEBANG" -c "import graphify" 2>/dev/null && QUERY_PYTHON="$_SHEBANG" ;;
-            esac
-        fi
-    fi
-    if [ -z "$QUERY_PYTHON" ]; then QUERY_PYTHON="python3"; fi
-fi
-echo "$QUERY_PYTHON"
-```
-
-**Never write `graphify-out/.graphify_python` from this file** — persisting
-it is the build pipeline's own Step 1, not part of the query-only contract,
-for either caller. Take the path printed above and substitute it literally
-for every `QUERY_PYTHON` placeholder in the bash blocks below (same
-convention as `QUESTION` / `NODE_A` / `NODE_B` elsewhere in this file) — e.g.
-`QUERY_PYTHON -c "..."` becomes `/path/to/python -c "..."`. The graph-exists
-check and the vocabulary-expansion step just below use plain `python3`
-instead — both are stdlib-only (`pathlib`, `json`, `re`) and don't need
-graphify's environment at all, so they work with zero interpreter resolution.
-
 Two traversal modes - choose based on the question:
 
 | Mode | Flag | Best for |
@@ -61,7 +11,7 @@ Two traversal modes - choose based on the question:
 
 First check the graph exists:
 ```bash
-python3 -c "
+$(cat graphify-out/.graphify_python) -c "
 from pathlib import Path
 if not Path('graphify-out/graph.json').exists():
     print('ERROR: No graph found. Run /graphify <path> first to build the graph.')
@@ -76,11 +26,9 @@ graphify's `query` CLI matches nodes via case-folded substring + IDF — there i
 
 Fix this **without inventing tokens** by expanding the query against the actual graph vocabulary first:
 
-1. Extract the token vocabulary from node labels and print it — a read of
-   `graph.json` only, never a write under `graphify-out/**`. Stdlib only, so
-   plain `python3` — no interpreter resolution needed:
+1. Extract the token vocabulary from node labels:
 ```bash
-python3 -c "
+$(cat graphify-out/.graphify_python) -c "
 import json, re
 from pathlib import Path
 data = json.loads(Path('graphify-out/graph.json').read_text())
@@ -92,13 +40,13 @@ for n in data['nodes']:
             t = p.lower()
             if 3 <= len(t) <= 30:
                 vocab.add(t)
+Path('graphify-out/.vocab.txt').write_text('\n'.join(sorted(vocab)))
 print(f'vocab: {len(vocab)} tokens')
-print('\n'.join(sorted(vocab)))
 "
 ```
 
-2. Read the vocabulary tokens printed above. Then for the user's question, select **up to 12 tokens from this exact list** that semantically match the query intent. Hard constraints:
-   - You MUST pick only tokens present in the printed vocabulary list. Do NOT invent tokens.
+2. Read `graphify-out/.vocab.txt`. Then for the user's question, select **up to 12 tokens from this exact list** that semantically match the query intent. Hard constraints:
+   - You MUST pick only tokens present in the vocabulary file. Do NOT invent tokens.
    - If a query concept has no plausible token in the vocab, skip it — do not substitute a near-synonym from training memory.
    - If **no** vocab tokens match the query at all, output an empty list and tell the user the corpus has no relevant vocabulary for this question. Do not fabricate a search.
    - Translate cross-language: Russian "аутентификация" → look for `auth`, `credential`, `token`, `security` IFF present in vocab.
@@ -129,7 +77,7 @@ If the CLI is unavailable, load `graphify-out/graph.json` and run the traversal 
 5. If the graph lacks enough information, say so - do not hallucinate edges.
 
 ```bash
-QUERY_PYTHON -c "
+$(cat graphify-out/.graphify_python) -c "
 import sys, json
 from networkx.readwrite import json_graph
 import networkx as nx
@@ -217,10 +165,10 @@ print(output)
 
 Replace `QUESTION` with the **expanded** query string, `MODE` with `bfs` or `dfs`, and `BUDGET` with the token budget (default `2000`, or whatever `--budget N` specifies). Then answer based on the subgraph output above, using only what the graph contains.
 
-**Explicit caller only** — skip this step if this procedure is running under `punch-context-engineering`'s automatic orientation gate; that profile never writes Graphify state and stops at the answer above. Otherwise, save the answer back into the graph so it improves future queries. Include the expanded tokens inside the `--answer` text (e.g. `"Expanded from original query via vocab: [tokens]. Then traversed..."`) so the next `--update` extracts the expansion history as a graph node:
+After writing the answer, save it back into the graph so it improves future queries. Include the expanded tokens inside the `--answer` text (e.g. `"Expanded from original query via vocab: [tokens]. Then traversed..."`) so the next `--update` extracts the expansion history as a graph node:
 
 ```bash
-QUERY_PYTHON -m graphify save-result --question "ORIGINAL_QUESTION" --answer "ANSWER" --type query --nodes NODE1 NODE2
+$(cat graphify-out/.graphify_python) -m graphify save-result --question "ORIGINAL_QUESTION" --answer "ANSWER" --type query --nodes NODE1 NODE2
 ```
 
 Replace `ORIGINAL_QUESTION` with the user's verbatim question, `ANSWER` with your full answer text (containing the expanded-token trace), `NODE1 NODE2` with the list of node labels you cited. This closes the feedback loop: the next `--update` will extract this Q&A as a node in the graph.
@@ -238,7 +186,7 @@ graphify path "NODE_A" "NODE_B"
 If the CLI is unavailable, run it inline:
 
 ```bash
-QUERY_PYTHON -c "
+$(cat graphify-out/.graphify_python) -c "
 import json, sys
 import networkx as nx
 from networkx.readwrite import json_graph
@@ -287,10 +235,10 @@ except nx.NodeNotFound as e:
 
 Replace `NODE_A` and `NODE_B` with the actual concept names from the user. Then explain the path in plain language - what each hop means, why it's significant.
 
-**Explicit caller only** — skip if running under the automatic orientation gate. Otherwise, save the explanation back:
+After writing the explanation, save it back:
 
 ```bash
-QUERY_PYTHON -m graphify save-result --question "Path from NODE_A to NODE_B" --answer "ANSWER" --type path_query --nodes NODE_A NODE_B
+$(cat graphify-out/.graphify_python) -m graphify save-result --question "Path from NODE_A to NODE_B" --answer "ANSWER" --type path_query --nodes NODE_A NODE_B
 ```
 
 ---
@@ -306,7 +254,7 @@ graphify explain "NODE_NAME"
 If the CLI is unavailable, run it inline:
 
 ```bash
-QUERY_PYTHON -c "
+$(cat graphify-out/.graphify_python) -c "
 import json, sys
 import networkx as nx
 from networkx.readwrite import json_graph
@@ -348,8 +296,8 @@ for neighbor in G.neighbors(nid):
 
 Replace `NODE_NAME` with the concept the user asked about. Then write a 3-5 sentence explanation of what this node is, what it connects to, and why those connections are significant. Use the source locations as citations.
 
-**Explicit caller only** — skip if running under the automatic orientation gate. Otherwise, save the explanation back:
+After writing the explanation, save it back:
 
 ```bash
-QUERY_PYTHON -m graphify save-result --question "Explain NODE_NAME" --answer "ANSWER" --type explain --nodes NODE_NAME
+$(cat graphify-out/.graphify_python) -m graphify save-result --question "Explain NODE_NAME" --answer "ANSWER" --type explain --nodes NODE_NAME
 ```
