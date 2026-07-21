@@ -14,12 +14,18 @@ folders are gitignored (see `.gitignore`).
 
 | Asset | What it adds |
 |---|---|
-| `caveman` | Concise assistant-prose comms (per-phase voice; canon in [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md)) |
+| `caveman` | Concise assistant-prose comms, VS Code GitHub Copilot Chat only; default `lite` rule lives in [`copilot-instructions.md`](../copilot-instructions.md) |
 | `cavecrew` | Bounded read-only leaf workers spawned by an explicitly authorized non-Build phase **coordinator** (`punch-code-reviewer` / `punch-test-engineer` / `punch-security-auditor`) at depth-1, with caveman-compressed output. Punch's Copilot adaptation is the `.github/agents/punch-cavecrew-{investigator,reviewer}.agent.md` personas (vendor skill defines no Copilot `tools`). Build never spawns cavecrew |
 
 The installer places both in the Copilot skills dir (`.agents/skills/caveman/`,
-`.agents/skills/cavecrew/`). Keep an optional verbatim provenance snapshot under
-`.github/.ai-upstream/<skill>/` for drift diffing (untracked).
+`.agents/skills/cavecrew/`) — it has no notion of `.github/skills/`. Immediately
+after install, relocate `caveman` only: move `.agents/skills/caveman/` to
+`.github/skills/caveman/` (the Copilot project-skill location Punch registers)
+and add `user-invocable: true` + `disable-model-invocation: true` to its
+frontmatter — no other change to the upstream body. Leave `cavecrew` at its
+installer-default location; it is not relocated. Keep an optional verbatim
+provenance snapshot under `.github/.ai-upstream/<skill>/` for drift diffing
+(untracked).
 
 **Do not install** the rest of the upstream pack (`caveman-compress` ships host
 Python scripts vs Punch Docker-First; `caveman-commit`/`-help`/`-review`/`-stats`
@@ -53,7 +59,8 @@ that coordinator. Canon: [`agent-guards.md`](../../docs/ai/agent-guards.md).
 
 ## Rules
 
-- **Keep vendor files verbatim.** Punch's adaptation lives in
-  `.github/skills/punch-comms-policy/`, never here.
-- `punch-ai-governance` excludes installed vendor folders from naming /
+- **Keep vendor files verbatim.** The one-time `caveman` relocate step (above)
+  adds only two frontmatter fields — no other hand-edit, ever.
+- `punch-ai-governance` excludes installed/relocated vendor folders
+  (`.agents/skills/cavecrew/`, `.github/skills/caveman/`) from naming /
   duplication / stale-asset checks.

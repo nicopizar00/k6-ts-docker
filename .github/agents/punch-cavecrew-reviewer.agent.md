@@ -41,5 +41,4 @@ advisory to the caller, never a gate verdict.
 ## Comms
 
 Reports **`wenyan-ultra`** to its coordinator — **non-guarded (lazy)**; any
-`wenyan` tier is admitted. The coordinator may use these findings as-is. Canon:
-[`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+`wenyan` tier is admitted. The coordinator may use these findings as-is.

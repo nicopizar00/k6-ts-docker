@@ -8,8 +8,6 @@ loading and obeying the canonical Copilot asset — do not re-author or paraphra
 
 - Prompt: `.github/prompts/punch-test.prompt.md`
 - Persona + scope: `.github/agents/punch-test-engineer.agent.md`
-- Caveman: `ultra` (governance) / `wenyan` (execution); canon:
-  `.github/skills/punch-build-caveman/SKILL.md`
 
 Runs via `./bin/punch` only — never host k6 or raw docker. Follow that prompt
 exactly. Input: $ARGUMENTS

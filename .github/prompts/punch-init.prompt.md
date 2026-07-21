@@ -13,7 +13,7 @@ No runtime, no Python, no installer, no doctor.
 **Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (decision authority).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) — **enforced**.
 Init runs **only** under that agent. No other agent runs Init; Init introduces no agent.
-**Operating comms:** Caveman **`lite`** (optional). Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+**Operating comms:** Caveman **`lite`** (optional).
 
 ## When to use
 
@@ -52,13 +52,17 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
 5. **AI Skills (Caveman + cavecrew — optional vendor capabilities; graphify — adopted upstream skill).**
    Caveman/cavecrew presence is an **informational capability check only** —
    never a Punch prerequisite:
-   - The optional Punch presentation adapter [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md),
-     if present, is the comms canon for phases that opt into Caveman. Missing →
-     **WARN** (every phase runs entirely in normal prose without it; not a gap).
+   - Caveman's default-`lite` rule for VS Code GitHub Copilot Chat lives directly
+     in [`copilot-instructions.md`](../copilot-instructions.md) — no separate
+     Punch presentation-adapter skill. Every phase runs entirely in normal
+     prose when Caveman is absent or inactive; not a gap.
    - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
      AI-Ingest path** ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)),
-     scoped to `github-copilot`, at `.agents/skills/caveman/` + `.agents/skills/cavecrew/`,
-     with the optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
+     scoped to `github-copilot`. `caveman` is relocated once to
+     `.github/skills/caveman/` (the Copilot project-skill location — installer
+     default is `.agents/skills/caveman/`, which must not remain populated);
+     `cavecrew` stays at its installer-default `.agents/skills/cavecrew/`, with
+     the optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
      Copilot personas in `.github/agents/`. Not installed →
      **WARN** (user installs manually; purely optional — Build never depends on
      cavecrew, and Review/Test/Security lose only the optional bounded-worker

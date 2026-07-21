@@ -102,17 +102,15 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and `.agents/skills/**` (the canonical Copilot Caveman install) and
-> `.github/skills/graphify/**` (the native Graphify skill) as adopted-upstream
-> skills: these are **excluded** from the frontmatter-completeness,
-> cross-reference, naming, duplication, and stale-asset checks below.
-> `.agents/skills/caveman` and `.github/skills/graphify` are still
-> **registered** (parity) in `skill-registry.md` but are upstream-maintained —
-> refresh from upstream, never hand-edit; only `user-invocable`/
-> `disable-model-invocation` frontmatter fields are Punch additions to
-> `graphify`'s `SKILL.md`.
-> `.github/skills/punch-comms-policy/**` remains an **authored adaptation,
-> subject to all checks**. These record point-in-time / external state.
+> fresh clone), and `.agents/skills/cavecrew/**`, `.github/skills/caveman/**`,
+> and `.github/skills/graphify/**` (adopted-upstream skills) as **excluded**
+> from the frontmatter-completeness, cross-reference, naming, duplication, and
+> stale-asset checks below. `.agents/skills/cavecrew`, `.github/skills/caveman`,
+> and `.github/skills/graphify` are still **registered** (parity) in
+> `skill-registry.md` but are upstream-maintained — refresh from upstream,
+> never hand-edit; only `user-invocable`/`disable-model-invocation` frontmatter
+> fields are Punch additions to `caveman`'s and `graphify`'s `SKILL.md`. These
+> record point-in-time / external state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.

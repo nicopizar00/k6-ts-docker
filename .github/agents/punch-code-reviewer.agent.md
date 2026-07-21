@@ -98,4 +98,4 @@ Caveman (optional) **`full`** (Review phase voice) — lead with normal prose fo
 judgment-heavy work; briefs an optional **cavecrew** worker in
 **`wenyan-ultra`**. cavecrew reports are **non-guarded (lazy)**; this reviewer may
 use the artifact as-is. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only. Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+prose only.

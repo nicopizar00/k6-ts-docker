@@ -10,7 +10,7 @@ description: Phase 7 — Ship. punch-release-captain fans out the specialists, d
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
 **Agent:** [`punch-release-captain`](../agents/punch-release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
-**Operating comms:** Caveman **`full`** (per-phase canon, optional). Release decision is a persistent artifact — no Wenyan. Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase, optional). Release decision is a persistent artifact — no Wenyan.
 
 ## When to use
 

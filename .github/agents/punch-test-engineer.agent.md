@@ -95,5 +95,4 @@ Method: [`punch-test-driven-development`](../skills/punch-test-driven-developmen
 Caveman (optional) **`ultra`** to humans (Test phase voice); briefs the optional
 **cavecrew** worker in **`wenyan-ultra`**. `punch-cavecrew-investigator` reports are
 **non-guarded (lazy)** — this engine may use the artifact as-is. Evidence
-(RED/GREEN output, commands, `reports/state/punch-run.json`) verbatim. Canon:
-[`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+(RED/GREEN output, commands, `reports/state/punch-run.json`) verbatim.

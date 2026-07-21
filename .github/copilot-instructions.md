@@ -142,17 +142,22 @@ version, and sharing policy: [`docs/ai/graphify-install.md`](../docs/ai/graphify
   except the committed shared baseline (`graph.json`, `GRAPH_REPORT.md`,
   `.graphifyignore`) after passing the leakage validation checklist.
 
-## Caveman (concise comms — default `lite`, optional)
+## Caveman (concise comms — default `lite`, VS Code GitHub Copilot Chat only)
 
-Caveman compresses assistant **prose only** — a fully **optional**, user-invoked
-convenience; normal prose is the complete fallback when it is absent or
-inactive. Repo default **`lite`** for phases that opt in. Per-phase voice: Spec
-**`lite`** · Plan **`full`** · Review/Ship **`full`** · Document **`lite`**
-persisted (**`full`** working comms) · Test **`ultra`**. **Build never uses
-Caveman or cavecrew** — it is fully decoupled. Review/Test/Security coordinators
-may optionally brief a cavecrew worker in **`wenyan-ultra`**; cavecrew worker
-reports are **non-guarded (lazy)**. Wenyan stays only in sub-agent reports —
-**avoid it in committed docs/registries**. Drop to normal prose for
-security/irreversible/ambiguous/architecture content. Caveman = output style
-only; never changes tools, access, or delegation. Critical Rules above take
-precedence. Canon: [`punch-comms-policy`](skills/punch-comms-policy/SKILL.md).
+Caveman compresses assistant **prose only**, in **VS Code GitHub Copilot Chat**
+— a fully **optional**, user-invoked convenience; normal prose is the complete
+fallback when it is absent or inactive. Default **`lite`** for every Copilot
+Chat response; this default applies without loading the full
+[`caveman`](skills/caveman/SKILL.md) skill. Explicit `/caveman
+lite|full|ultra|wenyan-*` loads the skill and overrides the level for the
+conversation; `stop caveman` / `normal mode` disables it for the conversation.
+**Build never uses Caveman** — it is fully decoupled, always normal prose.
+Caveman never compresses code, commands, paths, logs, errors, exit codes,
+thresholds, JSON/YAML/CSV, acceptance criteria, blockers, next actions, or
+`reports/state/punch-run.json` — those stay verbatim at every level. Drop to
+normal prose for security warnings, irreversible-action confirmations,
+architecture tradeoffs, or any ambiguous content. Caveman is output style
+only — it never changes tools, access, evidence, or delegation. Critical Rules
+above take precedence. Not activated for any other host or config surface
+(Claude Code, Codex, Cursor, Windsurf, Copilot CLI, Copilot coding agent) —
+see [`caveman`](skills/caveman/SKILL.md) for full mode semantics.

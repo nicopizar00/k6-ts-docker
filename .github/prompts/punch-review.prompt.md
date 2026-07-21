@@ -11,7 +11,7 @@ description: Phase 6 — Review. Read-only five-axis critique of the diff agains
 diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
 **Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
-**Operating comms:** Caveman **`full`** (per-phase canon, optional). Lead normal prose for risk/architecture judgment. Brief an optional cavecrew worker in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is. Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase, optional). Lead normal prose for risk/architecture judgment. Brief an optional cavecrew worker in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is.
 
 ## When to use
 

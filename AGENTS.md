@@ -118,7 +118,8 @@ Common Pitfalls
 
 Caveman comms
 
-Caveman compresses concise assistant **prose** (canonical Copilot skill `.agents/skills/caveman/`, Punch single-source policy `.github/skills/punch-comms-policy/`) — fully **optional**; normal prose is the complete fallback when it is absent or inactive. Project default is **`lite`** for phases that opt in, with a per-phase canon: Document/Spec `lite` · Plan/Review/Ship `full` · Test `ultra`. **Build (`punch-build` chain) never uses Caveman or cavecrew** — it is fully decoupled. **Sub-agent reports are `wenyan`** at every level for the phases that use an optional cavecrew worker (Test/Review/Security); **Wenyan is forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills, prompts, registries, handoffs, `reports/**`). Non-Test agents lead with **normal prose** for judgment-heavy work and keep all capabilities/constraints. Caveman is output style only — it never changes tools, access, or delegation. It never compresses code, commands, paths, logs, errors, exit codes, thresholds, k6/Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or next-action. `/caveman lite|full|ultra|wenyan-*`; `stop caveman` reverts. Full canon: `.github/skills/punch-comms-policy/SKILL.md`.
+Caveman is a VS Code GitHub Copilot Chat-only convenience — not active here or
+for any other host. See [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
 Claude Code reuse (Guard bridge)
 

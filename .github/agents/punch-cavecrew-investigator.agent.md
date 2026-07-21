@@ -43,5 +43,4 @@ Read-only tools only. No terminal writes. Does not spawn sub-agents — leaf wor
 ## Comms
 
 Reports **`wenyan-ultra`** to its coordinator — **non-guarded (lazy)**; any
-`wenyan` tier is admitted. The coordinator may use this artifact as-is. Canon:
-[`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
+`wenyan` tier is admitted. The coordinator may use this artifact as-is.
