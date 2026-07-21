@@ -76,13 +76,14 @@ delegated.
 
 ## Skills
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Method: [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md)
+Method (always, no trigger needed): [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md)
 (RED→GREEN) + [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md)
 (failure triage). Required to read evidence:
 [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
 [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md),
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md).
+Trigger-only: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — new
+session, task switch, or cross-file reasoning only, not every task.
 
 ## Handoff rules
 
