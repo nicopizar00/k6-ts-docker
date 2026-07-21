@@ -2,7 +2,7 @@
 name: punch-runtime-engineer
 description: Build/Test engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
-agents: ['punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
+agents: []
 user-invocable: true
 ---
 
@@ -67,24 +67,9 @@ Domain: [`punch-python-orchestration`](../skills/punch-python-orchestration/SKIL
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md).
 Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
 proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
-Delegation: may invoke bounded **cavecrew** leaf workers
-(`punch-cavecrew-investigator` / `punch-cavecrew-builder` / `punch-cavecrew-reviewer`) directly —
-**nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,
-lazy default). They inherit this engineer's loaded skills + scope by **lineage**;
-their `tools` are a subset of this engineer. Workers are leaves (`agents:` empty)
-— they do not spawn further, so depth is roster-bounded. Canon:
-[`agent-guards.md`](../../docs/ai/agent-guards.md).
 
 ## Evidence
 
 `docker compose config`, `./bin/punch doctor`, `./bin/punch run …` →
 `reports/state/punch-run.json` (`passed: true`) + artifact paths.
 Return actionable changes/findings to `punch-builder`.
-
-## Comms
-
-Caveman **`full`** to humans (default); receives **`wenyan-lite`** briefs from
-`punch-builder`. Briefs **cavecrew** in **`wenyan-full`**; cavecrew worker reports
-are **non-guarded (lazy)** — any `wenyan` tier — and the engineer may use the
-artifact as-is. Evidence verbatim. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

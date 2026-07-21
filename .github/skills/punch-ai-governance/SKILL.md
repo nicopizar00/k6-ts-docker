@@ -29,8 +29,9 @@ It owns:
   / `punch-security-auditor`) lists sub-agents; engineers and `punch-cavecrew-*` workers
   carry empty / absent
   `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
-  coordinator that lists it (so `punch-cavecrew-builder`'s `edit/editFiles` keeps it
-  Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
+  coordinator that lists it (both remaining workers are read-only, dispatched
+  only by read-only Review/Test/Security coordinators — never by Build). Canon:
+  [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
@@ -110,7 +111,7 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
 > refresh from upstream, never hand-edit; only `user-invocable`/
 > `disable-model-invocation` frontmatter fields are Punch additions to
 > `graphify`'s `SKILL.md`.
-> `.github/skills/punch-build-caveman/**` remains an **authored adaptation,
+> `.github/skills/punch-comms-policy/**` remains an **authored adaptation,
 > subject to all checks**. These record point-in-time / external state.
 
 1. **Frontmatter completeness.**

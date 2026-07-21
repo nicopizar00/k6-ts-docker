@@ -68,13 +68,13 @@ Available agents
 | punch-security-auditor | Security audit — on-demand specialist | Review security axis |
 | release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
 | punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Init, Document |
-| cavecrew-investigator, cavecrew-builder, cavecrew-reviewer | Leaf workers — locate / 1-2 file edit / diff pre-scan (not user-facing) | Build, Test, Review |
+| cavecrew-investigator, cavecrew-reviewer | Optional leaf workers — locate / diff pre-scan (not user-facing) | Test, Review, Security (never Build) |
 
 Definitions live in .github/agents/*.agent.md.
 
-**Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists its two
-engineers + the three `cavecrew-*`; `punch-code-reviewer` / `punch-test-engineer`
-/ `punch-security-auditor` list read-only cavecrew; `release-captain` (Ship) fans
+**Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists only its
+two engineers — no cavecrew; `punch-code-reviewer` / `punch-test-engineer`
+/ `punch-security-auditor` list optional read-only cavecrew; `release-captain` (Ship) fans
 out to the three specialists as report-only leaves. Engineers + cavecrew carry
 `agents: []` — non-spawning leaves. `punch-ai-governance` is user-direct
 (`disable-model-invocation: true`), in no `agents:` allowlist.
@@ -118,7 +118,7 @@ Common Pitfalls
 
 Caveman comms
 
-Caveman compresses concise assistant **prose** (canonical Copilot skill `.agents/skills/caveman/`, Punch single-source policy `.github/skills/punch-build-caveman/`). Project default is **`lite`**, with a per-phase canon: Document/Spec `lite` · Plan/Review/Ship `full` · Build/Test `ultra` (the enforced phases). **Sub-agent reports are `wenyan`** at every level; **Wenyan is forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills, prompts, registries, handoffs, `reports/**`). Non-Build/Test agents lead with **normal prose** for judgment-heavy work and keep all capabilities/constraints. Caveman is output style only — it never changes tools, access, or delegation. It never compresses code, commands, paths, logs, errors, exit codes, thresholds, k6/Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or next-action. `/caveman lite|full|ultra|wenyan-*`; `stop caveman` reverts. Full canon + depth policy: `.github/skills/punch-build-caveman/SKILL.md`.
+Caveman compresses concise assistant **prose** (canonical Copilot skill `.agents/skills/caveman/`, Punch single-source policy `.github/skills/punch-comms-policy/`) — fully **optional**; normal prose is the complete fallback when it is absent or inactive. Project default is **`lite`** for phases that opt in, with a per-phase canon: Document/Spec `lite` · Plan/Review/Ship `full` · Test `ultra`. **Build (`punch-build` chain) never uses Caveman or cavecrew** — it is fully decoupled. **Sub-agent reports are `wenyan`** at every level for the phases that use an optional cavecrew worker (Test/Review/Security); **Wenyan is forbidden in persistent artifacts** (docs, ADRs, specs, plans, maps, skills, prompts, registries, handoffs, `reports/**`). Non-Test agents lead with **normal prose** for judgment-heavy work and keep all capabilities/constraints. Caveman is output style only — it never changes tools, access, or delegation. It never compresses code, commands, paths, logs, errors, exit codes, thresholds, k6/Docker Compose output, JSON/YAML/CSV, `reports/state/punch-run.json`, acceptance criteria, blockers, or next-action. `/caveman lite|full|ultra|wenyan-*`; `stop caveman` reverts. Full canon: `.github/skills/punch-comms-policy/SKILL.md`.
 
 Claude Code reuse (Guard bridge)
 

@@ -32,11 +32,12 @@ CI/CD **external** to Punch — does not own GitHub Actions workflows.
 
 Custom agents bounded at runtime by shared
 [`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
-phases, approval-before-write). Build delegates via the Punch Builder → engineer
-→ cavecrew chain (the engineer, or the coordinator directly, spawns bounded
-cavecrew leaf workers — **nested**, `chat.subagents.allowInvocationsFromSubagents:
-true`, lazy default) on GitHub Copilot's default sub-agent behavior. Depth is
-roster-bounded: cavecrew workers carry no `agents:`.
+phases, approval-before-write). Build delegates via the Punch Builder → **one of
+its two engineers only** — Build never spawns cavecrew. Review/Test/Security
+coordinators may optionally spawn bounded, read-only cavecrew leaf workers
+directly (`chat.subagents.allowInvocationsFromSubagents: true`, lazy default) on
+GitHub Copilot's default sub-agent behavior. Depth is roster-bounded: cavecrew
+workers carry no `agents:`.
 
 - **Never broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
@@ -91,8 +92,8 @@ Spec absorbs former Define phase (opens with clarify/refine step).
 Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
 classifies the approved Plan task and delegates the complete build to
 `punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
-(k6 + TS bundle); engineers (or the Builder directly) may invoke bounded cavecrew
-workers — nested. `punch-test` (TDD/Prove-It)
+(k6 + TS bundle) — neither Builder nor either engineer ever invokes cavecrew.
+`punch-test` (TDD/Prove-It)
 is the verification phase — done proven by `reports/state/punch-run.json`.
 
 **Orthogonal phases (both via `punch-ai-governance`, enforced):**
@@ -141,17 +142,17 @@ version, and sharing policy: [`docs/ai/graphify-install.md`](../docs/ai/graphify
   except the committed shared baseline (`graph.json`, `GRAPH_REPORT.md`,
   `.graphifyignore`) after passing the leakage validation checklist.
 
-## Caveman (concise comms — default `lite`)
+## Caveman (concise comms — default `lite`, optional)
 
-Caveman compresses assistant **prose only**; repo default **`lite`**, every
-Copilot session. Per-phase voice: Spec **`lite`** · Plan **`full`** · Build (to
-humans) **`ultra`** · Review/Ship **`full`** · Document **`lite`** persisted
-(**`full`** working comms) · Test
-**`ultra`**. Sub-agent briefs: `punch-builder`→engineer **`wenyan-lite`**; the two
-engineers→**cavecrew** **`wenyan-full`**; any other sub-agent nesting→cavecrew
-**`wenyan-ultra`**; cavecrew worker reports are **non-guarded (lazy)**. Wenyan
-stays mainly in sub-agent reports — **avoid it in committed docs/registries**. Drop to
-normal prose for security/irreversible/ambiguous/architecture content. Caveman =
-output style only;
-never changes tools, access, or delegation. Critical Rules above take precedence.
-Canon: [`punch-build-caveman`](skills/punch-build-caveman/SKILL.md).
+Caveman compresses assistant **prose only** — a fully **optional**, user-invoked
+convenience; normal prose is the complete fallback when it is absent or
+inactive. Repo default **`lite`** for phases that opt in. Per-phase voice: Spec
+**`lite`** · Plan **`full`** · Review/Ship **`full`** · Document **`lite`**
+persisted (**`full`** working comms) · Test **`ultra`**. **Build never uses
+Caveman or cavecrew** — it is fully decoupled. Review/Test/Security coordinators
+may optionally brief a cavecrew worker in **`wenyan-ultra`**; cavecrew worker
+reports are **non-guarded (lazy)**. Wenyan stays only in sub-agent reports —
+**avoid it in committed docs/registries**. Drop to normal prose for
+security/irreversible/ambiguous/architecture content. Caveman = output style
+only; never changes tools, access, or delegation. Critical Rules above take
+precedence. Canon: [`punch-comms-policy`](skills/punch-comms-policy/SKILL.md).

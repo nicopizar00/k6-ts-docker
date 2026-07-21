@@ -20,8 +20,10 @@ Add **project-scoped Claude Code `guard` skill** plus thin per-command wraps tha
 - **`.claude/skills/guard/SKILL.md`** — bridge policy. On any lifecycle /
   governance / doc request in Claude Code, resolve to matching
   `.github/prompts/punch-*.prompt.md`, adopt that prompt's declared
-  `.github/agents/*.agent.md` persona + scope + guards, apply Caveman canon
-  (`punch-build-caveman`), obey it. Golden rule: **reuse, never re-author.**
+  `.github/agents/*.agent.md` persona + scope + guards, apply the optional
+  Caveman comms canon (`punch-comms-policy`) only where that persona links it
+  — Build's canonical assets link nothing, so its Claude Code wrap must not
+  either — obey it. Golden rule: **reuse, never re-author.**
 - **`.claude/commands/{spec,plan,build,test,review,ship,document,init}.md`** —
   one-line delegations to canonical prompt + persona + Caveman level. No
   behavior of own; wiring map in `guard/SKILL.md` = contract.

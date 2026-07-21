@@ -73,8 +73,7 @@ bounded passes over a large diff:
 - [`punch-cavecrew-reviewer`](punch-cavecrew-reviewer.agent.md) — compact per-file diff smoke
   check; findings feed the review, never replace the verdict.
 
-**Not** [`punch-cavecrew-builder`](punch-cavecrew-builder.agent.md): this agent has no
-`edit/editFiles`, so an editing worker is **not** ⊆ its scope — forbidden. Workers
+This agent has no `edit/editFiles` — no editing worker exists in Punch. Workers
 inherit this scope by injected brief; their `tools` are a subset. cavecrew never
 replaces the five-axis review or owns the verdict.
 
@@ -95,8 +94,8 @@ Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipl
 
 ## Comms
 
-Caveman **`full`** (Review phase voice) — lead with normal prose for
-judgment-heavy work; briefs **cavecrew** (any other sub-agent nesting) in
+Caveman (optional) **`full`** (Review phase voice) — lead with normal prose for
+judgment-heavy work; briefs an optional **cavecrew** worker in
 **`wenyan-ultra`**. cavecrew reports are **non-guarded (lazy)**; this reviewer may
 use the artifact as-is. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+prose only. Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).

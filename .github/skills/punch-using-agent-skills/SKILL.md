@@ -1,6 +1,6 @@
 ---
 name: punch-using-agent-skills
-description: Discovers and invokes Punch agent skills. Use when starting a session or when you need to discover which skill applies to the current task. Meta-skill that governs how all other Punch skills are discovered and invoked, and how the Build phase delegates to engineers and cavecrew workers.
+description: Discovers and invokes Punch agent skills. Use when starting a session or when you need to discover which skill applies to the current task. Meta-skill that governs how all other Punch skills are discovered and invoked.
 applies-to: meta — skill discovery + Build delegation across the whole lifecycle; not path-scoped
 ---
 
@@ -50,18 +50,6 @@ Task arrives
     ├── Recording a decision (ADR)? ──────→ punch-documentation-and-adrs
     └── Doc map / graph? ─────────────────→ graphify (native, explicit-only)
 ```
-
-## Build delegation (cavecrew)
-
-In the Build phase, [`punch-builder`](../../agents/punch-builder.agent.md) is the
-command-owned coordinator. It delegates the complete build to one engineer
-(`punch-runtime-engineer` / `punch-performance-test-engineer`) and may hand
-bounded, independently-verifiable packets to vendor cavecrew leaf workers
-(`punch-cavecrew-investigator`, `punch-cavecrew-builder`, `punch-cavecrew-reviewer`). cavecrew is
-an execution/delegation optimization — **not** a replacement for the skills
-above. Workers are one level deep; they do not spawn sub-agents. Canon:
-[`agent-guards.md`](../../../docs/ai/agent-guards.md),
-voice [`punch-build-caveman`](../punch-build-caveman/SKILL.md).
 
 ## Core operating behaviors (non-negotiable, all phases)
 

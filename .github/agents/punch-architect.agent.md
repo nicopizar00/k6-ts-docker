@@ -96,7 +96,7 @@ Allowed/Forbidden above.
 
 ## Caveman comms
 
-Caveman **privileged** — lead with normal prose for judgment-heavy work (Spec and
-Plan are per-phase `lite`/`full`); see
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/
+Caveman (optional) **privileged** — lead with normal prose for judgment-heavy work
+(Spec and Plan are per-phase `lite`/`full`); see
+[`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md). Capabilities/scope/
 guards unchanged; prose only.

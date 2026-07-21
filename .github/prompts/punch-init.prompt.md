@@ -1,6 +1,6 @@
 ---
 agent: punch-ai-governance
-description: Init — on-demand, read-only asset enablement sweep that certifies the Punch GitHub Copilot asset set (prompts, agents, skills, instructions + the AI-Ingest vendor skills Caveman/cavecrew) is present, punch-prefixed, and Copilot-compatible before the lifecycle runs. Re-runnable anytime. Reports PASS / WARN / BLOCKED. Never reconciles docs, never runs a runtime.
+description: Init — on-demand, read-only asset enablement sweep that certifies the Punch GitHub Copilot asset set (prompts, agents, skills, instructions) is present, punch-prefixed, and Copilot-compatible before the lifecycle runs, plus an informational capability check for the optional AI-Ingest vendor skills Caveman/cavecrew. Re-runnable anytime. Reports PASS / WARN / BLOCKED. Never reconciles docs, never runs a runtime.
 ---
 # Punch — Init (GitHub Copilot asset enablement sweep)
 
@@ -13,7 +13,7 @@ No runtime, no Python, no installer, no doctor.
 **Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (decision authority).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) — **enforced**.
 Init runs **only** under that agent. No other agent runs Init; Init introduces no agent.
-**Operating comms:** Caveman **`lite`**. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`lite`** (optional). Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
 
 ## When to use
 
@@ -36,10 +36,12 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    (`agent:` + `description:`). Required: `punch-spec`, `punch-plan`,
    `punch-build`, `punch-test`, `punch-review`, `punch-ship`, `punch-document`,
    `punch-init`. Missing / non-prefixed / no-frontmatter → **BLOCKED**.
-2. **Agents.** Every `.github/agents/*.agent.md` has `name:` + `description:`;
-   the `punch-cavecrew-*` workers are present. Init is
-   owned solely by `punch-ai-governance` (`disable-model-invocation: true`).
-   Any agent introduced **for Init** outside that ownership → **BLOCKED**.
+2. **Agents.** Every `.github/agents/*.agent.md` has `name:` + `description:`.
+   The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
+   personas support Review/Test/Security only — never Build; absence is not a
+   gap. Init is owned solely by `punch-ai-governance`
+   (`disable-model-invocation: true`). Any agent introduced **for Init**
+   outside that ownership → **BLOCKED**.
 3. **Skills.** Every `skill-registry.md` row maps to a `.github/skills/*/SKILL.md`
    (and vice versa) with `name:` / `description:` / `applies-to:`. Each skill
    adapted from canon carries the **`punch-` prefix**; native skills may stay
@@ -47,15 +49,20 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    `/punch-document`). Missing required skill → **BLOCKED**.
 4. **Instructions.** Every `.github/instructions/*.instructions.md` has
    `applyTo:` + `description:`. Missing required instruction or bad frontmatter → **BLOCKED**.
-5. **AI Skills (Caveman + cavecrew + graphify — vendor set, adopted as-is).**
-   Treat these as vendor AI Skills, checked as part of the Punch skill set:
-   - The Punch adaptation [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md)
-     exists and is the comms canon. Missing → **BLOCKED**.
+5. **AI Skills (Caveman + cavecrew — optional vendor capabilities; graphify — adopted upstream skill).**
+   Caveman/cavecrew presence is an **informational capability check only** —
+   never a Punch prerequisite:
+   - The optional Punch presentation adapter [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md),
+     if present, is the comms canon for phases that opt into Caveman. Missing →
+     **WARN** (every phase runs entirely in normal prose without it; not a gap).
    - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
      AI-Ingest path** ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)),
      scoped to `github-copilot`, at `.agents/skills/caveman/` + `.agents/skills/cavecrew/`,
-     with the `punch-cavecrew-*` Copilot personas in `.github/agents/`. Not installed →
-     **WARN** (user installs manually; Build still runs without the nested chain).
+     with the optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
+     Copilot personas in `.github/agents/`. Not installed →
+     **WARN** (user installs manually; purely optional — Build never depends on
+     cavecrew, and Review/Test/Security lose only the optional bounded-worker
+     assist).
    - The native upstream skill [`graphify`](../skills/graphify/SKILL.md) exists,
      adopted verbatim (only `user-invocable:` / `disable-model-invocation:` host
      metadata added — no Punch-authored fork; native skills stay agnostic per

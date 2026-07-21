@@ -61,7 +61,7 @@ Medium/Low = schedule. The verdict is this agent's own.
 May spawn the **read-only** [`punch-cavecrew-investigator`](punch-cavecrew-investigator.agent.md)
 to locate sensitive surfaces (query call sites, env reads, proxy targets, new
 deps). Read-only `tools` ⊆ this agent. cavecrew only *locates* — the security
-verdict is never delegated. **Not** `punch-cavecrew-builder` (no edit tool here).
+verdict is never delegated. No editing worker exists in Punch.
 
 ## Skill activation
 
@@ -79,8 +79,8 @@ tools by design — audit only.
 
 ## Comms
 
-Caveman **`full`** (Review security axis) — lead with normal prose for
-judgment-heavy work; briefs **cavecrew** (any other sub-agent nesting) in
+Caveman (optional) **`full`** (Review security axis) — lead with normal prose for
+judgment-heavy work; briefs an optional **cavecrew** worker in
 **`wenyan-ultra`**. cavecrew reports are **non-guarded (lazy)**; this auditor may
 use the artifact as-is. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+prose only. Canon: [`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).

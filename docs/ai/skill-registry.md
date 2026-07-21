@@ -110,7 +110,7 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`punch-performance-optimization`](../../.github/skills/punch-performance-optimization/SKILL.md) | Measure-first k6 perf work; threshold-RED → fix backend bottleneck → re-run → guard | Build/Test (on threshold regression) | `.github/skills/punch-performance-optimization/SKILL.md` |
 | [`punch-observability-and-instrumentation`](../../.github/skills/punch-observability-and-instrumentation/SKILL.md) | Structured service logs + RED read from k6 run; feeds `reports/logs/**` (pairs with `punch-data-harvest`) | Build (adding service/route/query) | `.github/skills/punch-observability-and-instrumentation/SKILL.md` |
 | [`punch-browser-testing-with-devtools`](../../.github/skills/punch-browser-testing-with-devtools/SKILL.md) | Method for k6 Browser tests via `./bin/punch` (placeholder stays deferred until a Plan task) | Build/Test (k6 Browser task only) | `.github/skills/punch-browser-testing-with-devtools/SKILL.md` |
-| [`punch-using-agent-skills`](../../.github/skills/punch-using-agent-skills/SKILL.md) | The *agents* canon: how a coordinator delegates to engineers + bounded `punch-cavecrew-*` workers (depth-1, tool-subset, lazy nesting) | [`punch-build`](../../.github/prompts/punch-build.prompt.md), `punch-builder` | `.github/skills/punch-using-agent-skills/SKILL.md` |
+| [`punch-using-agent-skills`](../../.github/skills/punch-using-agent-skills/SKILL.md) | Meta-skill: which Punch skill applies to the task at hand (skill-discovery decision tree). Delegation-depth/roster canon lives in `agent-guards.md` | [`punch-build`](../../.github/prompts/punch-build.prompt.md), `punch-builder` | `.github/skills/punch-using-agent-skills/SKILL.md` |
 
 Phase 3 of the absorption plan (Tier-A +
 P3 set) **complete** — every lifecycle skill above absorbed and registered.
@@ -132,8 +132,8 @@ applies). Each row states which.
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of any corpus (code, docs, media) into a queryable graph with community detection — explicit-only (`/graphify`), never auto-loaded. **Native upstream skill — adopted, not Punch-authored**; only `user-invocable`/`disable-model-invocation` frontmatter added | upstream [`Graphify-Labs/graphify`](https://github.com/Graphify-Labs/graphify), installed via `uv tool install graphifyy` — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; loaded by VS Code GitHub Copilot. Installed via official installer (`--only copilot`), trimmed to the core skill | upstream `caveman` — official installer | `.agents/skills/caveman/SKILL.md` |
-| `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; invoked by the Build engineers to spawn workers with caveman compression. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
-| [`punch-build-caveman`](../../.github/skills/punch-build-caveman/SKILL.md) | **Canonical Caveman policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Builder→engineer `wenyan-lite`; the two engineers→cavecrew `wenyan-full`; any other sub-agent nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). Wenyan avoided in committed docs. Prompts/agents/copilot-instructions link here; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-build-caveman/SKILL.md` |
+| `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; optional Review/Test/Security coordinators may invoke it to spawn read-only workers with caveman compression. Never invoked by Build. Vendor skill kept as-is | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
+| [`punch-comms-policy`](../../.github/skills/punch-comms-policy/SKILL.md) | **Optional Caveman voice policy (single source).** Repo default `lite`; per-phase voice — Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Test `ultra`. Output style only — normal prose is the full fallback when absent/inactive. Build never links here. Wenyan avoided in committed docs; never compresses evidence | upstream `caveman` — provenance (local staging) [`.ai-upstream/caveman/`](../../.ai-upstream/caveman/UPSTREAM.md) | `.github/skills/punch-comms-policy/SKILL.md` |
 
 `graphify` is explicit-only (`/graphify`), never auto-loaded for unrelated
 work; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -145,28 +145,29 @@ drift comparison stays in `.ai-upstream/graphify/`; the committed skill is
 like `.agents/skills/caveman/`.
 Canonical `.agents/skills/caveman/` install upstream-maintained (adopted —
 exempt from authored-canon checks). **`cavecrew` retained** alongside `caveman`:
-the Build engineers invoke it to spawn workers with caveman compression. Other
+an optional non-Build coordinator (Review/Test/Security) may invoke it to spawn
+read-only workers with caveman compression — Build never does. Other
 auxiliary upstream packs (`caveman-compress` with host Python scripts,
 `caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep the install
 Copilot-scoped and Docker-First-minimal.
 
-### `punch-build-caveman` — governance metadata
+### `punch-comms-policy` — governance metadata
 
 | Field | Value |
 |---|---|
-| Classification | `punch-build-caveman` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
-| Status | **repo default `lite`** · per-phase voice · never compresses evidence · Wenyan forbidden in persistent artifacts |
-| Scope | Per-phase voice: Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Build/Test `ultra`. Delegation: Builder→humans `ultra`, Builder→engineer `wenyan-lite`, the two engineers→cavecrew `wenyan-full`, any other nesting→cavecrew `wenyan-ultra`; cavecrew reports non-guarded (lazy). All sub-agent reports keep evidence verbatim. Caveman is output style only |
+| Classification | `punch-comms-policy` = **authored Punch adapter** (checked); `.agents/skills/caveman` = **adopted upstream** (exempt) |
+| Status | **repo default `lite`** · per-phase voice · never compresses evidence · Wenyan forbidden in persistent artifacts · **optional, output-only** |
+| Scope | Per-phase voice: Spec `lite`; Document `lite` persisted, `full` working comms; Plan/Review/Ship `full`; Test `ultra`. Caveman is output style only — never required, never touches tools/scope/delegation/verdicts. Delegation-roster and worker-tier detail live in each agent's own definition and `agent-guards.md`, not here. **Build never links this skill** |
 | Role | communication / token-efficiency utility — **not core runtime behavior, not required for Punch execution** |
-| Default mode | repo **`lite`**; per-phase overrides (Plan/Review/Ship `full`, Build/Test `ultra`); delegation tiers `wenyan-lite` / `wenyan-full` / `wenyan-ultra` (allowed: `lite` / `full` / `ultra` / `wenyan-lite` / `wenyan-full` / `wenyan-ultra`; `stop caveman` reverts) |
+| Default mode | repo **`lite`**; per-phase overrides (Plan/Review/Ship `full`, Test `ultra`); optional worker briefs use `wenyan-lite` / `wenyan-full` / `wenyan-ultra` per the spawning agent's own choice; `stop caveman` reverts |
 | Governed by | `punch-ai-governance` (refresh + drift) |
-| Decision | live policy = this skill + the Build chain (`punch-build` → `punch-builder` → engineer → cavecrew); no standalone ADR |
-| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · required-asset manifest [`.github/.ai-upstream/README.md`](../../.github/.ai-upstream/README.md) |
-| Install method | **manual, Copilot-scoped** (see manifest): `npx -y skills add JuliusBrussee/caveman --skill caveman\|cavecrew --agent github-copilot --yes`. Do **not** run `install.sh --with-init` (appends always-on rules + parallel rule files) |
+| Decision | live policy = this skill alone, optional and presentation-only; no standalone ADR; Build's contract is independent and comms-free |
+| Provenance | upstream repo https://github.com/JuliusBrussee/caveman · optional-asset manifest [`.github/.ai-upstream/README.md`](../../.github/.ai-upstream/README.md) |
+| Install method | **manual, Copilot-scoped, optional** (see manifest): `npx -y skills add JuliusBrussee/caveman --skill caveman\|cavecrew --agent github-copilot --yes`. Do **not** run `install.sh --with-init` (appends always-on rules + parallel rule files) |
 | Files changed by installer | added `.agents/skills/caveman/` + `.agents/skills/cavecrew/` (both kept); appended to `.github/copilot-instructions.md` + `AGENTS.md` (both reconciled by hand); created `.cursor`/`.windsurf`/`.clinerules`/`.opencode` + other skill packs + `skills-lock.json` (all **removed**) |
 | Copilot instruction file edited manually | yes — two duplicated caveman blocks merged into one canonical Copilot-scoped section *below* Critical Rules (no Critical Rule altered) |
 
-`punch-build-caveman` **adapter** Punch-authored, therefore **subject** to
+`punch-comms-policy` **adapter** Punch-authored, therefore **subject** to
 frontmatter / naming / duplication checks. Upstream `.agents/skills/caveman/`
 install and pristine `.ai-upstream/caveman/` snapshot upstream-maintained,
 **exempt** from those checks (refresh from upstream, never hand-edit).

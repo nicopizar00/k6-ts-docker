@@ -67,4 +67,4 @@ Caveman **`ultra`** for Test; engine briefs `punch-cavecrew-investigator` (any o
 sub-agent nesting) in **`wenyan-ultra`**. The worker reports **non-guarded
 (lazy)** — the engine may use the artifact as-is. Evidence (RED/GREEN output,
 commands, `reports/state/punch-run.json`) stays verbatim. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+[`punch-comms-policy`](../skills/punch-comms-policy/SKILL.md).
