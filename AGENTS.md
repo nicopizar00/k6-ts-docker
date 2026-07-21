@@ -51,7 +51,7 @@ AI Operating Model
 
 Punch uses a six-phase lifecycle for AI-assisted changes:
 
-    Spec → Plan → Build → Verify → Review → Ship
+    Spec → Plan → Build → Test → Review → Ship
 
 Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates (depth-1) to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`). The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
 
@@ -66,7 +66,7 @@ Available agents
 | punch-test-engineer | Test verdict owner — runs `./bin/punch` | Test |
 | punch-code-reviewer | Review verdict owner — five-axis | Review |
 | punch-security-auditor | Security audit — on-demand specialist | Review security axis |
-| release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
+| punch-release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
 | punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Init, Document |
 | cavecrew-investigator, cavecrew-reviewer | Optional leaf workers — locate / diff pre-scan (not user-facing) | Test, Review, Security (never Build) |
 
@@ -74,7 +74,7 @@ Definitions live in .github/agents/*.agent.md.
 
 **Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists only its
 two engineers — no cavecrew; `punch-code-reviewer` / `punch-test-engineer`
-/ `punch-security-auditor` list optional read-only cavecrew; `release-captain` (Ship) fans
+/ `punch-security-auditor` list optional read-only cavecrew; `punch-release-captain` (Ship) fans
 out to the three specialists as report-only leaves. Engineers + cavecrew carry
 `agents: []` — non-spawning leaves. `punch-ai-governance` is user-direct
 (`disable-model-invocation: true`), in no `agents:` allowlist.
@@ -82,18 +82,20 @@ out to the three specialists as report-only leaves. Engineers + cavecrew carry
 **Vendor agent-skills personas, adopted-adapted to Punch** (Punch-named, own their
 verdict, may use cavecrew): `punch-code-reviewer` (← `code-reviewer`),
 `punch-security-auditor` (← `security-auditor`), `punch-test-engineer` (←
-`test-engineer`); `release-captain` (← `release-captain`). `web-performance-auditor`
-excluded (no frontend).
+`test-engineer`). `punch-release-captain` is **not** a direct persona port — it's a
+Punch-native wrapper around the vendor `/ship` fan-out *pattern* (full provenance:
+[`docs/ai/agent-skills-provenance.md`](docs/ai/agent-skills-provenance.md)).
+`web-performance-auditor` excluded (no frontend).
 
 Available skills
 
-Skills come in two kinds: **domain skills** (one per Punch subsystem — context, orchestration, compose, k6-performance, data-harvest, governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review, simplification, git-workflow, docs/ADRs, security, doubt-driven, source-driven, idea-refine).
+Skills come in two kinds: **domain skills** (one per Punch subsystem — context-engineering, python-orchestration, compose-runtime, k6-testing, data-harvest, ai-governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review-and-quality, git-workflow, docs/ADRs, security, doubt-driven, source-driven, performance-optimization, browser-testing). Code simplification, idea refinement, observability, and skill-discovery meta-routing were absorbed into their phase owners and retired as standalone skills — see [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md).
 
 The authoritative register (all 19, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
 
 Lifecycle entry points
 
-The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (9 prompts: spec, plan, build, test, verify, review, ship, document, init). `punch-init` (bootstrap/adoption guard) and `punch-document` (doc reconciliation) are orthogonal phases, both enforced to `punch-ai-governance`.
+The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (8 prompts: spec, plan, build, test, review, ship, document, init — no separate verify prompt; `punch-test` is the Test/verification phase). `punch-init` (bootstrap/adoption guard) and `punch-document` (doc reconciliation) are orthogonal phases, both enforced to `punch-ai-governance`.
 
 Rules for AI assistants
 

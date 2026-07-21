@@ -43,6 +43,14 @@ Forbidden:  src/tests/*.ts edits, docker/k6.Dockerfile, package.json, tsconfig.j
 
 The Plan may **narrow** these; it may not widen them past Forbidden without re-planning.
 
+**Service-change route (Plan-gated, not a default widening).** `src/services/**` stays
+Read-only by default. A Plan task may move a *named* `src/services/**` path from
+Read-only to Allowed for this agent only when the task is driven by an approved
+performance, observability, or security finding and the Plan task explicitly lists
+that path under its own Allowed edit paths. Absent that explicit Plan grant, this
+agent's default (Read-only) governs — no task may treat `src/services/**` as
+implicitly in scope.
+
 ## Behavior
 
 - Read any file for context; edit only the task's **allowed** paths.
@@ -61,12 +69,14 @@ writes; stop after 2 consecutive failures.
 
 ## Skills
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Domain: [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
+Method (always, no trigger needed): [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md).
+Domain (always, task-relevant): [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
 [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md),
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md).
-Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
-proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
+Trigger-only: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — new
+session, task switch, or cross-file reasoning only, not every task;
+[`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — behavioral
+change or bug-reproduction proof only.
 
 ## Evidence
 

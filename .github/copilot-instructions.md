@@ -35,9 +35,12 @@ Custom agents bounded at runtime by shared
 phases, approval-before-write). Build delegates via the Punch Builder → **one of
 its two engineers only** — Build never spawns cavecrew. Review/Test/Security
 coordinators may optionally spawn bounded, read-only cavecrew leaf workers
-directly (`chat.subagents.allowInvocationsFromSubagents: true`, lazy default) on
-GitHub Copilot's default sub-agent behavior. Depth is roster-bounded: cavecrew
-workers carry no `agents:`.
+directly — a single hop, permitted by GitHub Copilot's default sub-agent
+behavior without any special setting.
+`chat.subagents.allowInvocationsFromSubagents` **stays at its default (`false`)** —
+VS Code's own default disables a subagent spawning further subagents; Punch
+relies on that default rather than overriding it, so no cavecrew worker can ever
+nest deeper. Depth is roster-bounded too: cavecrew workers carry no `agents:`.
 
 - **Never broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
@@ -76,6 +79,25 @@ workers carry no `agents:`.
 8. **No duplication of AI guidance.** New instructions, prompts,
    skills, or agents must not restate content already in `docs/ai/` or
    another instruction file. Link instead.
+9. **Surface assumptions before non-trivial work.** State them; don't silently
+   fill ambiguous requirements — cheaper to correct now than after the diff.
+10. **Manage confusion actively.** Inconsistency, conflicting spec/code, or an
+    unclear requirement → stop, name the confusion, ask — don't guess and
+    proceed.
+11. **Push back when warranted.** Not a yes-machine — flag a flawed approach
+    with a quantified downside and propose an alternative; accept an informed
+    override.
+12. **Enforce simplicity and scope discipline.** Fewer lines, earned
+    abstractions, boring over clever; touch only what the task's allowed paths
+    cover — no drive-by cleanup of orthogonal code.
+13. **Verify, don't assume.** "Seems right" isn't done — every change needs
+    evidence (`reports/state/punch-run.json`, build/lint output), per Rule 3.
+
+(Absorbed from the retired `punch-using-agent-skills` meta-skill — its
+skill-discovery decision tree lives in
+[`docs/ai/skill-registry.md`](../docs/ai/skill-registry.md)'s "Skill
+discovery" table; delegation-depth/roster canon lives in
+[`agent-guards.md`](../docs/ai/agent-guards.md).)
 
 ## Lifecycle entry points
 

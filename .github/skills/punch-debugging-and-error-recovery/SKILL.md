@@ -1,5 +1,5 @@
 ---
-name: debugging-and-error-recovery
+name: punch-debugging-and-error-recovery
 description: Guides systematic root-cause debugging. Use when a ./bin/punch run fails, a build breaks, behavior doesn't match expectations, or any unexpected error appears. The triage method is stack-neutral; Punch's failure classification and commands apply.
 applies-to: lifecycle/Test (+ Build) — the method behind punch-test failure handling; not path-scoped
 ---

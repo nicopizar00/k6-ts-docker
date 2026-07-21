@@ -6,9 +6,9 @@ description: Spec — clarify and refine the request, then convert it into goals
 
 **Lifecycle phase:** Spec (entry phase — absorbs former Define clarify step)
 **Mode:** Code read-only; may write spec doc when persisted (per agent definition)
-**Owner skill:** [`punch-spec-driven-development`](../skills/punch-spec-driven-development/SKILL.md) (method)
+**Owner skill:** [`punch-spec-driven-development`](../skills/punch-spec-driven-development/SKILL.md) (method,
+with its clarify step — absorbed from the retired `punch-idea-refine` — activating when the idea is still vague)
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-+ [`punch-idea-refine`](../skills/punch-idea-refine/SKILL.md) (clarify step, when idea vague)
 + matching domain skill (orchestration / compose / k6 / data-harvest)
 **Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.
 **Operating comms:** Caveman **`lite`** (per-phase, optional). Spec docs persistent — no Wenyan.
@@ -28,8 +28,8 @@ then crystallizes into contract Plan evaluated against.
 
 **Clarify first (former Define step).** Trace execution chain
 (source → bundle → image → run → reports) for request. If idea still vague,
-run [`punch-idea-refine`](../skills/punch-idea-refine/SKILL.md) skill to sharpen into clean
-problem statement. Then specify:
+run `punch-spec-driven-development`'s clarify step (absorbed from the retired
+`punch-idea-refine`) to sharpen into a clean problem statement. Then specify:
 
 1. Re-state goal in one sentence — concrete, testable.
 2. Enumerate non-goals — what this work explicitly won't do.

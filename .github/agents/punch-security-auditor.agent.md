@@ -1,6 +1,6 @@
 ---
 name: punch-security-auditor
-description: Security verdict owner for Punch. Vendor agent-skills `security-auditor` adopted and adapted to Punch — audits the diff for gateway input handling, parameterized Postgres queries, secrets/env, external-URL/SSRF, and supply-chain risk. Read-only; may use cavecrew to locate sensitive surfaces. Owns the security verdict (clean | findings require changes). No web auth/session/XSS surface in Punch.
+description: Security verdict owner for Punch. Vendor agent-skills `security-auditor` adopted and adapted to Punch — audits the diff for gateway input handling, parameterized Postgres queries, secrets/env, external-URL/SSRF, and supply-chain risk. Read-only; may use cavecrew to locate sensitive surfaces. Owns the security verdict (clean | findings require changes). No web auth/session/XSS surface in Punch. Invoked on demand (diff/service/sensitive surface) and by the registered fan-out from `/punch-ship`; also user-invocable.
 tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
 agents: ['punch-cavecrew-investigator']
 user-invocable: true
@@ -62,6 +62,10 @@ May spawn the **read-only** [`punch-cavecrew-investigator`](punch-cavecrew-inves
 to locate sensitive surfaces (query call sites, env reads, proxy targets, new
 deps). Read-only `tools` ⊆ this agent. cavecrew only *locates* — the security
 verdict is never delegated. No editing worker exists in Punch.
+
+**Do not invoke from another persona.** Only this agent — on demand or via the
+registered `/punch-ship` fan-out (`punch-release-captain`) — issues the
+clean/findings verdict; it is never delegated.
 
 ## Skill activation
 

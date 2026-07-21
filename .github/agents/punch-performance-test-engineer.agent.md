@@ -62,11 +62,13 @@ approval before product-code writes; stop after 2 consecutive failures.
 
 ## Skills
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Domain: [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
+Method (always, no trigger needed): [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md).
+Domain (always, task-relevant): [`punch-k6-testing`](../skills/punch-k6-testing/SKILL.md)
 (+ [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md), read-only, when wiring `handleSummary`).
-Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
-proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
+Trigger-only: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — new
+session, task switch, or cross-file reasoning only, not every task;
+[`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — behavioral
+change or bug-reproduction proof only.
 
 ## Evidence
 

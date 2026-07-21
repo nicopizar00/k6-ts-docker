@@ -22,19 +22,22 @@ Missing either → **stop**, return to Plan.
 
 ## Agent Skills (workflow canon — drive the build)
 
-Always:
+Always (the one default Build method, no trigger needed):
 
 - [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md) — one verifiable slice at a time.
-- [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — RED → GREEN → REFACTOR for behavior changes.
-- [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — verify against actual source / runtime behavior, never assumptions.
-- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — load repo / cross-file context before editing.
 
-When the task needs it:
+Trigger-only — load only when the named condition is actually present, not by default:
 
+- [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — only for a
+  behavioral change or a bug-reproduction proof (RED → GREEN → REFACTOR); not for pure docs/config edits.
+- [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — only for
+  version-sensitive k6/Docker/Postgres API work; not every Build.
+- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — only at the start of a
+  new session, a task switch, or when the task needs cross-file/repository reasoning; not re-loaded
+  mid-task once oriented.
 - [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
-- [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
-- [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
-- [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers.
+- [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — only after a test or build actually fails.
+- [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — only for a high-risk or ambiguous decision.
 - [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface (native, explicit-only; never invoked automatically).
 
 ## Modes
