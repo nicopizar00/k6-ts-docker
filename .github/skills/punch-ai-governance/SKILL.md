@@ -29,8 +29,9 @@ It owns:
   / `punch-security-auditor`) lists sub-agents; engineers and `punch-cavecrew-*` workers
   carry empty / absent
   `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
-  coordinator that lists it (so `punch-cavecrew-builder`'s `edit/editFiles` keeps it
-  Build-only). Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
+  coordinator that lists it (both remaining workers are read-only, dispatched
+  only by read-only Review/Test/Security coordinators — never by Build). Canon:
+  [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
@@ -101,17 +102,15 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and `.agents/skills/**` (the canonical Copilot Caveman install) and
-> `.github/skills/graphify/**` (the native Graphify skill) as adopted-upstream
-> skills: these are **excluded** from the frontmatter-completeness,
-> cross-reference, naming, duplication, and stale-asset checks below.
-> `.agents/skills/caveman` and `.github/skills/graphify` are still
-> **registered** (parity) in `skill-registry.md` but are upstream-maintained —
-> refresh from upstream, never hand-edit; only `user-invocable`/
-> `disable-model-invocation` frontmatter fields are Punch additions to
-> `graphify`'s `SKILL.md`.
-> `.github/skills/punch-build-caveman/**` remains an **authored adaptation,
-> subject to all checks**. These record point-in-time / external state.
+> fresh clone), and `.agents/skills/cavecrew/**`, `.github/skills/caveman/**`,
+> and `.github/skills/graphify/**` (adopted-upstream skills) as **excluded**
+> from the frontmatter-completeness, cross-reference, naming, duplication, and
+> stale-asset checks below. `.agents/skills/cavecrew`, `.github/skills/caveman`,
+> and `.github/skills/graphify` are still **registered** (parity) in
+> `skill-registry.md` but are upstream-maintained — refresh from upstream,
+> never hand-edit; only `user-invocable`/`disable-model-invocation` frontmatter
+> fields are Punch additions to `caveman`'s and `graphify`'s `SKILL.md`. These
+> record point-in-time / external state.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.

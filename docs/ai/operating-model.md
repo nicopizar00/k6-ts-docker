@@ -109,7 +109,7 @@ enforced by *function*, not *count*:
   orchestration, runtime, performance, artifacts, governance). Six is
   full domain set; adding more should require killing one.
 - **Lifecycle skills** separate axis — engineering methods adapted from
-  upstream `agent-skills` set (punch-idea-refine, punch-spec-driven-development, …).
+  upstream `agent-skills` set (punch-spec-driven-development, punch-incremental-implementation, …).
   Not subject to domain cap, but each must name unique method, avoid
   duplicating domain skill or path-instruction, and be registered when added.
   Phase prompt *activates* lifecycle skill; phase does not become one.

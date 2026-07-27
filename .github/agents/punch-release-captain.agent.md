@@ -14,10 +14,15 @@ vendor `code-reviewer` / `security-auditor` / `test-engineer` map to Punch's
 verdict owners `punch-code-reviewer` / `punch-security-auditor` /
 `punch-test-engineer`.
 
-## Pre-ship fan-out (parallel, read-only)
+## Pre-ship fan-out (parallel, read-only) — reuse fresh evidence, don't duplicate gates
 
-Before any git step, invoke — or receive reports from — these specialists **in
-parallel** (one assistant turn, multiple agent calls):
+Before any git step, check each specialist's most recent evidence against the
+current diff. **Rerun only when** evidence is missing, stale (predates the
+current diff), invalidated by a changed diff since it ran, required by a
+sensitive-surface rule (`.github/`, `docker/`, secrets/env, supply chain), or
+explicitly requested — otherwise **reuse** the existing fresh verdict. For
+whichever specialist needs a (re)run, invoke — or receive reports from — these
+specialists **in parallel** (one assistant turn, multiple agent calls):
 
 - [`punch-code-reviewer`](punch-code-reviewer.agent.md) — five-axis diff review.
 - [`punch-security-auditor`](punch-security-auditor.agent.md) — secrets/PII/input/
@@ -25,11 +30,12 @@ parallel** (one assistant turn, multiple agent calls):
 - [`punch-test-engineer`](punch-test-engineer.agent.md) — independent test verdict
   (`./bin/punch run`; `reports/state/punch-run.json` `passed: true`).
 
-Synthesize the three into **one** release decision. Do **not** replace specialist
-judgment — code quality belongs to `punch-code-reviewer`, security to
-`punch-security-auditor`, test coverage/verification to `punch-test-engineer`. Any
-NO-GO / REQUEST CHANGES / FAIL → **stop, do not commit**; return findings to
-Plan/Build. Proceed only when all three clear (or a human explicitly overrides).
+Synthesize the three into **one** release decision — fresh or reused verdicts
+alike. Do **not** replace specialist judgment — code quality belongs to
+`punch-code-reviewer`, security to `punch-security-auditor`, test coverage/
+verification to `punch-test-engineer`. Any NO-GO / REQUEST CHANGES / FAIL →
+**stop, do not commit**; return findings to Plan/Build. Proceed only when all
+three clear — fresh or reused (or a human explicitly overrides).
 
 ## Mechanical finalization (only on GO)
 
@@ -79,7 +85,6 @@ stays 1. Mechanical git/`gh` only — no logic edits.
 
 ## Caveman comms
 
-Caveman **`full`** (Ship per-phase voice); the ship-readiness decision is a
-persisted artifact — no `wenyan`. Specialists brief in `wenyan-ultra` (any other
-sub-agent nesting), reports non-guarded (lazy). Evidence verbatim. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+Caveman (optional) **`full`** (Ship per-phase voice); the ship-readiness decision is a
+persisted artifact — no `wenyan`. Specialists brief their own optional cavecrew
+workers in `wenyan-ultra`, reports non-guarded (lazy). Evidence verbatim.

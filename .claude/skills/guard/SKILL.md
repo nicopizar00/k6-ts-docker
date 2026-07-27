@@ -28,8 +28,7 @@ When a lifecycle / governance / documentation request arrives in Claude Code:
 2. **Load + obey** that `.github/prompts/punch-*.prompt.md`, adopting the persona,
    scope, and guards of its declared `.github/agents/*.agent.md`, and activating
    the skills that prompt names.
-3. **Apply the Caveman canon** (`.github/skills/punch-build-caveman/SKILL.md`) and
-   the runtime guards (`docs/ai/agent-guards.md`) exactly as Copilot would.
+3. **Apply the runtime guards** (`docs/ai/agent-guards.md`) exactly as Copilot would.
 4. **Report** back; for delegated work, sub-agent reports stay `wenyan`-compatible
    with evidence verbatim.
 
@@ -37,16 +36,16 @@ When a lifecycle / governance / documentation request arrives in Claude Code:
 
 The `.claude/commands/*` wraps are **thin pointers**; this table is the contract.
 
-| Claude command | Canonical prompt | Persona (agent) | Caveman level |
-|---|---|---|---|
-| `/spec`     | `.github/prompts/punch-spec.prompt.md`     | `punch-architect-readonly` | `lite` |
-| `/plan`     | `.github/prompts/punch-plan.prompt.md`     | `punch-planner`            | `full` |
-| `/build`    | `.github/prompts/punch-build.prompt.md`    | `punch-builder` → engineer | `full` (sub: `wenyan-lite`) |
-| `/test`     | `.github/prompts/punch-test.prompt.md`     | `punch-test-engineer`      | `ultra` (sub: `wenyan`) |
-| `/review`   | `.github/prompts/punch-review.prompt.md`   | `punch-reviewer`           | `full` |
-| `/ship`     | `.github/prompts/punch-ship.prompt.md`     | `punch-reviewer`           | `full` |
-| `/document` | `.github/prompts/punch-document.prompt.md` | `punch-ai-governance`      | `lite` persisted (`full` working) |
-| `/init`     | `.github/prompts/punch-init.prompt.md`     | `punch-ai-governance` (enforced) | `lite` |
+| Claude command | Canonical prompt | Persona (agent) |
+|---|---|---|
+| `/spec`     | `.github/prompts/punch-spec.prompt.md`     | `punch-architect-readonly` |
+| `/plan`     | `.github/prompts/punch-plan.prompt.md`     | `punch-planner`            |
+| `/build`    | `.github/prompts/punch-build.prompt.md`    | `punch-builder` → engineer |
+| `/test`     | `.github/prompts/punch-test.prompt.md`     | `punch-test-engineer`      |
+| `/review`   | `.github/prompts/punch-review.prompt.md`   | `punch-reviewer`           |
+| `/ship`     | `.github/prompts/punch-ship.prompt.md`     | `punch-reviewer`           |
+| `/document` | `.github/prompts/punch-document.prompt.md` | `punch-ai-governance`      |
+| `/init`     | `.github/prompts/punch-init.prompt.md`     | `punch-ai-governance` (enforced) |
 
 `@punch-ai-governance` audits are reachable the same way — load the prompt/agent
 and obey it; a dedicated command wrap is optional.
@@ -61,8 +60,6 @@ exactly two cases:
 - **B — human-facing output would be in `wenyan`** (wenyan is sub-agent-only;
   leaking it to a human is a violation — stop, don't emit it).
 
-Do not hard-overwrite the global caveman config to handle either case.
-
 ## No-break rules (preserve Copilot First)
 
 - **`.github/` is read-authoritative.** Guard and the `.claude/commands/*` wraps
@@ -76,7 +73,6 @@ Do not hard-overwrite the global caveman config to handle either case.
   Claude Code here.
 - **Respect agent boundaries.** Adopt the target agent's allowed/read-only/
   forbidden scope, tool surface, depth-1 delegation, and approval-before-write.
-  Caveman is output style only — it never widens tools or access.
 - **Governance owns this bridge.** `punch-ai-governance` (which holds admin over
   `.github/` and `docs/`) maintains the wiring map; changes to it are a governance
   edit. Claude Code never edits `.github/` to "make reuse work" without that.

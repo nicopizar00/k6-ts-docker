@@ -66,5 +66,4 @@ Clean RED→GREEN transition with `reports/state/punch-run.json` recording the p
 Caveman **`ultra`** for Test; engine briefs `punch-cavecrew-investigator` (any other
 sub-agent nesting) in **`wenyan-ultra`**. The worker reports **non-guarded
 (lazy)** — the engine may use the artifact as-is. Evidence (RED/GREEN output,
-commands, `reports/state/punch-run.json`) stays verbatim. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+commands, `reports/state/punch-run.json`) stays verbatim.

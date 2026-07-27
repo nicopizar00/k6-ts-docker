@@ -40,11 +40,26 @@ if imperfect. Don't block because it isn't how you'd have written it.
 - Any off-by-one, race, or state inconsistency (esp. in the orchestrator's
   subprocess/exit-code handling)?
 
-### 2. Readability & simplicity
+### 2. Readability & simplicity (absorbed from the retired `punch-code-simplification`)
 - Names clear and consistent with project conventions?
 - **Could this be fewer lines?** Are abstractions earning their complexity?
   (repo convention: three similar lines beat a premature helper.)
 - Dead code, no-op shims, `// removed` comments?
+- **Chesterton's Fence first.** Before flagging something as over-complex, confirm
+  you understand why it exists (responsibility, callers, edge cases, the checks
+  that define its behavior) — a fix suggestion that misses the reason is a
+  Critical finding waiting to happen.
+- **Concrete signals worth flagging:** deep nesting (3+ levels, wants guard
+  clauses); long functions (50+ lines, multiple responsibilities); nested
+  ternaries; generic names (`data`/`tmp`/`res`); duplicated logic (5+ lines,
+  extract only after the 3rd use); wrappers adding no value; comments that
+  restate the code instead of explaining *why*.
+- **Verify behavior is unchanged** by any simplification the diff makes —
+  `reports/state/punch-run.json` stays `passed: true` with no check/threshold
+  edits; a "simplification" that required editing a check to pass changed
+  behavior, it didn't simplify.
+- **Red flag:** a "simplified" version that's longer or harder to follow than
+  the original, or a drive-by refactor outside the task's allowed paths.
 
 ### 3. Architecture
 - Respects layer ownership? (k6 doesn't start containers or shell out; bash stays a

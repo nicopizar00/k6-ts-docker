@@ -10,7 +10,7 @@ description: Phase 7 — Ship. punch-release-captain fans out the specialists, d
 + [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
 + [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
 **Agent:** [`punch-release-captain`](../agents/punch-release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
-**Operating comms:** Caveman **`full`** (per-phase canon). Release decision is a persistent artifact — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase, optional). Release decision is a persistent artifact — no Wenyan.
 
 ## When to use
 
@@ -22,17 +22,25 @@ Review approved change. Ship handles mechanical steps: commit, push, open PR, **
 - Branch + target base branch (default `main`).
 - Test evidence path.
 
-## Pre-ship fan-out (parallel, read-only)
+## Pre-ship fan-out (parallel, read-only) — reuse fresh evidence, don't duplicate gates
 
-Before any git step, fan out **in parallel** to the trio for a final gate:
+Before any git step, check each specialist's most recent evidence for this diff.
+**Rerun a specialist only when** its evidence is missing, stale (predates the
+current diff), invalidated by a changed diff since it ran, required by a
+sensitive-surface rule (e.g. `.github/`, `docker/`, secrets/env, supply chain),
+or explicitly requested. Otherwise **reuse** its fresh, unchanged verdict — do
+not re-invoke a specialist just because Ship is running.
+
+For whichever of the trio needs a (re)run, fan out **in parallel**:
 
 - [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — 5-dimension diff review.
 - [`punch-security-auditor`](../agents/punch-security-auditor.agent.md) — secrets/PII/input/supply-chain pass.
 - [`punch-test-engineer`](../agents/punch-test-engineer.agent.md) — independent test verdict (`./bin/punch run`).
 
 Each returns its own verdict. **Any REQUEST CHANGES / FAIL → stop, do not commit**,
-return findings (→ Plan/Build). Ship proceeds only when all three clear (or a human
-explicitly overrides). The trio are leaves here — they report, they don't act.
+return findings (→ Plan/Build). Ship proceeds only when all three clear — fresh or
+reused (or a human explicitly overrides). The trio are leaves here — they report,
+they don't act. GO/NO-GO and the rollback plan stay mandatory regardless of reuse.
 
 ## What to do
 
@@ -63,7 +71,7 @@ Completed tasks:
 Validation status:
   - reports/state/punch-run.json: passed: <bool>
   - Tests run: <list>
-  - Pre-ship fan-out: punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
+  - Pre-ship fan-out (fresh|reused): punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
 
 Known risks:
   - <one-liner or "none">

@@ -6,12 +6,12 @@ description: Phase 6 — Review. Read-only five-axis critique of the diff agains
 
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
-**Owner skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five-axis method, with [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md) for simplicity axis);
+**Owner skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five-axis method — readability/simplicity axis absorbed in-file);
 [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
 diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
 **Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
-**Operating comms:** Caveman **`full`** (per-phase canon). Lead normal prose for risk/architecture judgment. Brief cavecrew (any other sub-agent nesting) in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase, optional). Lead normal prose for risk/architecture judgment. Brief an optional cavecrew worker in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is.
 
 ## When to use
 
@@ -71,8 +71,8 @@ spawn **read-only** cavecrew leaf workers (depth-1) over a large diff:
 [`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) (locate the
 diff's touched defs / tests) and
 [`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) (compact per-file
-diff smoke check). **Not** `punch-cavecrew-builder` — reviewer has no edit tool, so an
-editing worker is not ⊆ its scope. Workers inherit the coordinator's read-only
+diff smoke check). Both are read-only, optional — no editing worker exists in
+Punch. Workers inherit the coordinator's read-only
 scope by injected brief (`wenyan-ultra`) and report **non-guarded (lazy)**; the
 coordinator may use their findings as-is. Findings feed the review — the
 Approve / Request Changes **verdict stays punch-code-reviewer's own**.

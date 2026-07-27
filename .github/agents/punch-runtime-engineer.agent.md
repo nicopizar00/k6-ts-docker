@@ -2,7 +2,7 @@
 name: punch-runtime-engineer
 description: Build/Test engineer for Punch runtime — Python orchestration (bin/punch, src/punch), Docker Compose build & run as the execution boundary, and runtime data harvest (logs, state, JSON/CSV artifacts). Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
 tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
-agents: ['punch-cavecrew-investigator', 'punch-cavecrew-builder', 'punch-cavecrew-reviewer']
+agents: []
 user-invocable: true
 ---
 
@@ -43,6 +43,14 @@ Forbidden:  src/tests/*.ts edits, docker/k6.Dockerfile, package.json, tsconfig.j
 
 The Plan may **narrow** these; it may not widen them past Forbidden without re-planning.
 
+**Service-change route (Plan-gated, not a default widening).** `src/services/**` stays
+Read-only by default. A Plan task may move a *named* `src/services/**` path from
+Read-only to Allowed for this agent only when the task is driven by an approved
+performance, observability, or security finding and the Plan task explicitly lists
+that path under its own Allowed edit paths. Absent that explicit Plan grant, this
+agent's default (Read-only) governs — no task may treat `src/services/**` as
+implicitly in scope.
+
 ## Behavior
 
 - Read any file for context; edit only the task's **allowed** paths.
@@ -61,30 +69,17 @@ writes; stop after 2 consecutive failures.
 
 ## Skills
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Domain: [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
+Method (always, no trigger needed): [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md).
+Domain (always, task-relevant): [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md),
 [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md),
 [`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md).
-Method: [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md);
-proof via [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md).
-Delegation: may invoke bounded **cavecrew** leaf workers
-(`punch-cavecrew-investigator` / `punch-cavecrew-builder` / `punch-cavecrew-reviewer`) directly —
-**nested** sub-agents (needs `chat.subagents.allowInvocationsFromSubagents: true`,
-lazy default). They inherit this engineer's loaded skills + scope by **lineage**;
-their `tools` are a subset of this engineer. Workers are leaves (`agents:` empty)
-— they do not spawn further, so depth is roster-bounded. Canon:
-[`agent-guards.md`](../../docs/ai/agent-guards.md).
+Trigger-only: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — new
+session, task switch, or cross-file reasoning only, not every task;
+[`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — behavioral
+change or bug-reproduction proof only.
 
 ## Evidence
 
 `docker compose config`, `./bin/punch doctor`, `./bin/punch run …` →
 `reports/state/punch-run.json` (`passed: true`) + artifact paths.
 Return actionable changes/findings to `punch-builder`.
-
-## Comms
-
-Caveman **`full`** to humans (default); receives **`wenyan-lite`** briefs from
-`punch-builder`. Briefs **cavecrew** in **`wenyan-full`**; cavecrew worker reports
-are **non-guarded (lazy)** — any `wenyan` tier — and the engineer may use the
-artifact as-is. Evidence verbatim. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).

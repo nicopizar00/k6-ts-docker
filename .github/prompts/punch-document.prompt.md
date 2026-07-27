@@ -10,12 +10,11 @@ description: Documentate — documentation-debt remediation + AI-artifact lifecy
 (decision authority). Delegates — not competitors:
 [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
 (project primer) · [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
-(writing method) · [`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md)
-(on demand — compacting script-/code-bearing assets). Legacy retirement / migration follows
+(writing method). Legacy retirement / migration follows
 `punch-documentation-and-adrs` + `punch-git-workflow-and-versioning` (upstream
 `deprecation-and-migration` stays deferred — [skill registry](../../docs/ai/skill-registry.md)).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
-**Operating comms:** Caveman **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman (optional) **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts.
 
 ## When to use
 

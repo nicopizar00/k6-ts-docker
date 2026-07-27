@@ -8,7 +8,6 @@ the canonical Copilot asset — do not re-author or paraphrase it:
 - Prompt: `.github/prompts/punch-init.prompt.md`
 - Persona + scope: `.github/agents/punch-ai-governance.agent.md` (**enforced** —
   complete admin over `.github/` + `docs/`; only this agent runs Init)
-- Caveman: `lite` (canon: `.github/skills/punch-build-caveman/SKILL.md`)
 
 Runs a read-only sweep of the GitHub Copilot asset set (prompts, agents, skills,
 instructions + the AI-Ingest Caveman/cavecrew vendor skills), reports

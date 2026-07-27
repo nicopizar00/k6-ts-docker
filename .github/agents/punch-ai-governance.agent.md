@@ -132,4 +132,4 @@ method).
 
 ## Caveman comms
 
-Caveman default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`full`** for wave working comms (diagnosis / classification / planning), **`lite`** for every persisted artifact (docs, prompt text, instructions, reports — no AI-narrative filler), **Wenyan forbidden** in docs/maps/registries/handoffs. See [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md). Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman (optional, VS Code GitHub Copilot Chat only) default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`full`** for wave working comms (diagnosis / classification / planning), **`lite`** for every persisted artifact (docs, prompt text, instructions, reports — no AI-narrative filler), **Wenyan forbidden** in docs/maps/registries/handoffs. Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

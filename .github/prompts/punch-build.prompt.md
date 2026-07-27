@@ -22,23 +22,23 @@ Missing either → **stop**, return to Plan.
 
 ## Agent Skills (workflow canon — drive the build)
 
-Always:
+Always (the one default Build method, no trigger needed):
 
 - [`punch-incremental-implementation`](../skills/punch-incremental-implementation/SKILL.md) — one verifiable slice at a time.
-- [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — RED → GREEN → REFACTOR for behavior changes.
-- [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — verify against actual source / runtime behavior, never assumptions.
-- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — load repo / cross-file context before editing.
 
-When the task needs it:
+Trigger-only — load only when the named condition is actually present, not by default:
 
+- [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) — only for a
+  behavioral change or a bug-reproduction proof (RED → GREEN → REFACTOR); not for pure docs/config edits.
+- [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — only for
+  version-sensitive k6/Docker/Postgres API work; not every Build.
+- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — only at the start of a
+  new session, a task switch, or when the task needs cross-file/repository reasoning; not re-loaded
+  mid-task once oriented.
 - [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
-- [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — when a test or build fails.
-- [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — high-risk or ambiguous decisions.
-- [`punch-using-agent-skills`](../skills/punch-using-agent-skills/SKILL.md) — the *agents* canon: how `punch-builder` delegates to engineers + bounded cavecrew workers (depth-1, tool-subset).
+- [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — only after a test or build actually fails.
+- [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — only for a high-risk or ambiguous decision.
 - [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface (native, explicit-only; never invoked automatically).
-
-cavecrew (vendor) is the **execution/delegation optimization** layer, not a
-replacement for these skills.
 
 ## Modes
 
@@ -56,33 +56,15 @@ replacement for these skills.
 - The change must be minimal, verifiable, and aligned with Punch architecture.
 - Any edit outside the task's allowed paths → **stop**, return to Plan.
 
-## Delegation (bounded workers only)
+## Delegation
 
 `punch-builder` is the command-owned coordinator for this `/build` phase — not a
-lifecycle router. It delegates the complete build to one engineer, and may hand
-**bounded, independently verifiable** packets to vendor cavecrew leaf workers:
-
-- [`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) — read-only
-  locate / call-site map. Not for architecture recommendations.
-- [`punch-cavecrew-builder`](../agents/punch-cavecrew-builder.agent.md) — known-location 1-2
-  file edit. Not for 3+ files or cross-cutting refactors.
-- [`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) — compact in-build
-  diff review. **Not** the `/review` gate.
+lifecycle router. It delegates the complete build to exactly one engineer agent.
 
 Do **not** delegate: product direction, architecture, the `/test` verdict, the
 `/review` verdict, `/ship` readiness, or destructive/irreversible operations.
-Workers are one level deep — they do not spawn further sub-agents. Builder may run
-tests during build but never replaces the final `/test` or `/ship` verdict. cavecrew's
-terse style must not strip required verification evidence.
-
-## Comms
-
-Builder → humans: caveman **`ultra`** (Build phase voice); briefs the engineer in
-**`wenyan-lite`**. The two engineers brief **cavecrew** in **`wenyan-full`**; any
-other sub-agent nesting → cavecrew uses **`wenyan-ultra`**. cavecrew reports are
-**non-guarded (lazy)** — use the artifact as-is. Evidence stays verbatim
-regardless of level. Canon:
-[`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+Builder may run tests during build but never replaces the final `/test` or
+`/ship` verdict.
 
 ## Validation gate
 
@@ -92,7 +74,7 @@ Change is done only when `reports/state/punch-run.json` records `passed: true`
 ## Required final report
 
 - **Result** — DONE | BLOCKED, + task ID/title
-- **Agent used** — engineer + any cavecrew worker → packet → result
+- **Agent used** — the engineer that executed the build
 - **Agent Skills used** — which skills the build invoked
 - **Files changed** — and why
 - **Evidence run** — each command → pass/fail + output, or omitted with the

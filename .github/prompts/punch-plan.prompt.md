@@ -10,7 +10,7 @@ description: Plan — convert a Spec into scoped tasks with explicit allowed/rea
 + [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + matching domain skill(s);
 on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
 **Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.
-**Operating comms:** Caveman **`full`** (per-phase canon). Plan docs persistent — no Wenyan. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+**Operating comms:** Caveman **`full`** (per-phase, optional). Plan docs persistent — no Wenyan.
 
 ## When to use
 

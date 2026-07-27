@@ -126,6 +126,19 @@ Forbidden:
 
 Reporting changes = *contract* changes. Plan must spell out artifact path, schema, downstream consumers (see [`punch-data-harvest` skill](../../.github/skills/punch-data-harvest/SKILL.md) and [`docs/ai/maintenance-matrix.md`](maintenance-matrix.md)).
 
+## Service-change route (narrow exception)
+
+`src/services/**` defaults to **read-only** for every Build task above — no
+domain example lists it as Allowed. A future Plan may route a `src/services/**`
+change to `punch-runtime-engineer` when the task is driven by an approved
+performance, observability, or security finding, by naming the exact service
+path in that task's own Allowed edit paths (see
+[`punch-runtime-engineer.agent.md`](../../.github/agents/punch-runtime-engineer.agent.md)'s
+"Service-change route" note). This is a per-task grant, not a standing widening
+— every other task's default stays read-only, and no Plan may add a second
+engineer for this route (prefer narrowing `punch-runtime-engineer`'s existing
+boundary over a new persona, per the approved Spec).
+
 ## Cross-layer tasks
 
 Some real tasks legit cross layers (e.g. "add new test, wire into compose, expose via `bin/punch run X`"). These = **integration tasks**, require:

@@ -19,8 +19,8 @@ conflict with Punch, **Punch wins**:
   Use that shape; the six-area template below is the generic equivalent.
 - **Acceptance = evidence:** acceptance criteria must name the run record
   `reports/state/punch-run.json`, not "tests pass".
-- **Clarify first:** when the request is still a vague idea, run
-  [`punch-idea-refine`](../punch-idea-refine/SKILL.md) before specifying.
+- **Clarify first:** when the request is still a vague idea, run the clarify
+  step below (absorbed from the retired `punch-idea-refine`) before specifying.
 - **Graph & doc boundary:** Spec may query existing docs/graph evidence via
   [`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
   (read-only); it never cleans, regenerates, or updates docs/graph. A
@@ -62,6 +62,33 @@ and IMPLEMENT hands off to the Build prompts + `punch-incremental-implementation
 `punch-test-driven-development` (absorbed later in Phase 3).
 
 ### Stage 1: Specify
+
+**Clarify first, when the idea is still vague (absorbed from the retired
+`punch-idea-refine`).** Not every request needs this — skip straight to
+"Surface assumptions" below when the ask is already concrete. Run this only
+when the request is a raw, unformed idea:
+
+1. **Understand & expand.** Restate the idea as a crisp "How Might We"
+   problem statement. Ask 3-5 sharpening questions, no more (who is this for;
+   what does success look like; real constraints; what's been tried; why
+   now). Ground it in the actual repo — `Glob`/`Grep`/`Read` for existing
+   architecture and prior art, not generic product ideation.
+2. **Evaluate & converge.** Cluster what resonated into 2-3 genuinely
+   different directions. Stress-test each: user value, feasibility against
+   Punch's stack (Docker-first, Python stdlib, k6 — never host
+   `npm`/`k6`/`pip`), and differentiation. Surface hidden assumptions
+   explicitly — what you're betting is true, what could kill it, what you're
+   choosing to ignore.
+3. **Sharpen.** Produce the problem statement, recommended direction, key
+   assumptions, MVP scope, and an explicit **"Not Doing" list** — the most
+   valuable part; it makes trade-offs visible. This produces *intent*, not
+   the spec doc itself; acceptance criteria still land in Stage 1 below once
+   the idea is sharp.
+
+Be honest, not supportive — push back on a weak idea with specificity. Don't
+generate 20+ shallow variations; 5-8 considered ones beat that. Don't skip
+"who is this for" or the assumption-surfacing step. This clarify pass is
+conversational, not a template to fill mechanically.
 
 **Surface assumptions immediately.** Before writing any spec content, list what
 you're assuming — for Punch that means architecture and runtime, not browsers:

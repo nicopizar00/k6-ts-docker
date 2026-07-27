@@ -85,20 +85,40 @@ A focused diff under `src/tests/support/` and/or `src/punch/`. Report:
 - **State files are canonical.** `passed: true|false` in
   `reports/state/punch-run.json` is the verification gate.
 
-## Observability discipline (folded from upstream `punch-observability-and-instrumentation`)
+## Observability discipline (absorbed from the retired `punch-observability-and-instrumentation`)
 
 Punch's reference services are a didactic demo, not a production system with
-on-call — so RED metrics, OpenTelemetry tracing, and symptom-based alerting are
-**out of scope**. The transferable discipline that *is* in scope:
+on-call — so OpenTelemetry tracing, a separate metrics backend, and symptom-based
+alerting are **out of scope** and stay deferred until a real recurring service
+use case is approved. The transferable discipline that *is* in scope:
 
-- **Instrument with a question in mind.** Before adding an artifact or log line,
-  name what question it answers (e.g. "did the gate's p95 hold?"). Telemetry
-  without a question is noise.
-- **Structured over prose where it helps.** Aggregates in the JSON summary, not
-  per-iteration dumps; a stable schema beats interpolated log strings.
-- **Never log secrets/tokens/URLs** into any artifact (the hard rule above).
+- **Instrument with a question in mind.** Before adding a log line, write 2–4
+  on-call-style questions it answers (e.g. "what fraction of create-order
+  requests fail, and why?"). Telemetry without a question is noise.
+- **Structured logs, not prose.** One JSON object per line, stable event name +
+  machine fields (`{ event: 'order_create_failed', orderId, cause, ms }`), not
+  string interpolation — so it survives into `reports/logs/` and stays
+  greppable next to the k6 evidence. Levels: `error` (invariant broken) ·
+  `warn` (degraded) · `info` (business event) · `debug` (off by default).
+- **Carry a correlation id** from the gateway through catalog/orders so one
+  request can be reconstructed from interleaved logs — an orphan log line
+  (no correlation id) is a red flag.
+- **RED, read from the k6 run.** Rate/Errors/Duration come from the k6 summary
+  (`http_req_duration` p95/p99, `errorRate`, `totalRequests`), never a separate
+  metrics backend. **Percentiles, never averages.**
+- **Never log secrets/tokens/URLs/PII** into any artifact (the hard rule
+  above) — allowlist fields, don't dump whole request bodies.
+- **Verify the telemetry itself before "done."** Force a failure (e.g. a bad
+  order payload), find the structured `*_failed` event in `reports/logs/` by
+  correlation id, confirm fields are real JSON (not `[object Object]`); run
+  `./bin/punch run journey --collect-logs` and confirm logs line up with
+  `reports/state/punch-run.json`.
 - **The run evidence is the telemetry.** `reports/state/punch-run.json` answers
   "did it pass?"; `reports/logs/<service>.log` answers "why not?" — keep the split.
+
+**Red flags:** a service path with retries/queries/external hops and zero new
+log events; log lines built by string interpolation; no correlation id;
+latency reported as an average; secrets/full bodies/PII in any log line.
 
 For diagnosing a live failure, use [`punch-debugging-and-error-recovery`](../punch-debugging-and-error-recovery/SKILL.md).
 

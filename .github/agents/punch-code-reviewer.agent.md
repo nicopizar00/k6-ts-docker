@@ -1,6 +1,6 @@
 ---
 name: punch-code-reviewer
-description: Review-phase verdict owner for Punch. Vendor agent-skills `code-reviewer` adopted and adapted to Punch — a five-dimension diff review (correctness, readability, architecture, security, performance) over the Plan. Read-only; may use cavecrew workers for bounded passes. Owns the final Approve / Request Changes verdict for /punch-review. Does not write code.
+description: Review-phase verdict owner for Punch. Vendor agent-skills `code-reviewer` adopted and adapted to Punch — a five-dimension diff review (correctness, readability, architecture, security, performance) over the Plan. Read-only; may use cavecrew workers for bounded passes. Owns the final Approve / Request Changes verdict for /punch-review. Does not write code. Invoked by `/punch-review` (and registered fan-out from `/punch-ship`); also user-invocable.
 tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
 agents: ['punch-cavecrew-investigator', 'punch-cavecrew-reviewer']
 user-invocable: true
@@ -73,16 +73,19 @@ bounded passes over a large diff:
 - [`punch-cavecrew-reviewer`](punch-cavecrew-reviewer.agent.md) — compact per-file diff smoke
   check; findings feed the review, never replace the verdict.
 
-**Not** [`punch-cavecrew-builder`](punch-cavecrew-builder.agent.md): this agent has no
-`edit/editFiles`, so an editing worker is **not** ⊆ its scope — forbidden. Workers
+This agent has no `edit/editFiles` — no editing worker exists in Punch. Workers
 inherit this scope by injected brief; their `tools` are a subset. cavecrew never
 replaces the five-axis review or owns the verdict.
+
+**Do not invoke from another persona.** Only this agent — via `/punch-review` or
+the registered `/punch-ship` fan-out (`punch-release-captain`) — issues the
+Approve/Request Changes verdict; it is never delegated.
 
 ## Skill activation
 
 Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
-Method: [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md), with
-[`punch-code-simplification`](../skills/punch-code-simplification/SKILL.md) (simplicity axis),
+Method: [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five
+axes, incl. readability/simplicity), with
 [`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md) (security axis),
 [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md) (doc check).
 Required when the diff touches `.github/` or `docs/ai/`:
@@ -95,8 +98,8 @@ Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipl
 
 ## Comms
 
-Caveman **`full`** (Review phase voice) — lead with normal prose for
-judgment-heavy work; briefs **cavecrew** (any other sub-agent nesting) in
+Caveman (optional) **`full`** (Review phase voice) — lead with normal prose for
+judgment-heavy work; briefs an optional **cavecrew** worker in
 **`wenyan-ultra`**. cavecrew reports are **non-guarded (lazy)**; this reviewer may
 use the artifact as-is. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only. Canon: [`punch-build-caveman`](../skills/punch-build-caveman/SKILL.md).
+prose only.

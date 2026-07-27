@@ -20,12 +20,13 @@ Add **project-scoped Claude Code `guard` skill** plus thin per-command wraps tha
 - **`.claude/skills/guard/SKILL.md`** — bridge policy. On any lifecycle /
   governance / doc request in Claude Code, resolve to matching
   `.github/prompts/punch-*.prompt.md`, adopt that prompt's declared
-  `.github/agents/*.agent.md` persona + scope + guards, apply Caveman canon
-  (`punch-build-caveman`), obey it. Golden rule: **reuse, never re-author.**
+  `.github/agents/*.agent.md` persona + scope + guards, obey it. Caveman is a
+  VS Code GitHub Copilot Chat-only convenience — the Claude Code wrap does not
+  activate or reference it. Golden rule: **reuse, never re-author.**
 - **`.claude/commands/{spec,plan,build,test,review,ship,document,init}.md`** —
-  one-line delegations to canonical prompt + persona + Caveman level. No
-  behavior of own; wiring map in `guard/SKILL.md` = contract.
-  `/verify` + `@punch-ai-governance` audits reachable same way.
+  one-line delegations to canonical prompt + persona. No behavior of own;
+  wiring map in `guard/SKILL.md` = contract. `/verify` + `@punch-ai-governance`
+  audits reachable same way.
 
 ## No-break invariants (Copilot First preserved)
 
@@ -34,7 +35,6 @@ Add **project-scoped Claude Code `guard` skill** plus thin per-command wraps tha
   no-duplication-of-AI-guidance rule).
 - Same Critical Rules bind both hosts: Docker-First, stdlib-only, depth-1
   delegation, approval-before-write, evidence never compressed.
-- Caveman = output style only — never widens tools, access, delegation.
 - `punch-ai-governance` (admin over `.github/` + `docs/`) owns wiring map; any
   change to reuse behavior = governance edit in `.github/`, never Claude-only
   patch.

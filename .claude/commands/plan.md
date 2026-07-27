@@ -8,6 +8,5 @@ the canonical Copilot asset — do not re-author or paraphrase it:
 
 - Prompt: `.github/prompts/punch-plan.prompt.md`
 - Persona + scope: `.github/agents/punch-planner.agent.md`
-- Caveman: `full` (canon: `.github/skills/punch-build-caveman/SKILL.md`)
 
 Follow that prompt exactly. Input: $ARGUMENTS
