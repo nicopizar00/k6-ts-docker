@@ -1,6 +1,6 @@
 ---
 agent: punch-code-reviewer
-description: Phase 6 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict; cavecrew allowed only as a bounded pre-scan.
+description: Phase 5 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict; cavecrew allowed only as a bounded pre-scan.
 ---
 # Punch — Review
 

@@ -32,7 +32,7 @@ Guards = **runtime discipline** Punch custom agents inherit. *Adapted per agent 
 | `punch-release-captain` (Ship coordinator) | **yes** — git/gh (commit/push/PR) | n/a (no logic edits) | n/a | fan-out **report-only leaves**: `punch-code-reviewer` + `punch-security-auditor` + `punch-test-engineer` (parallel; they don't nest further here); GO/NO-GO never delegated |
 | `punch-cavecrew-investigator` (worker, optional) | no — read-only | n/a | bounded locate packet | leaf — no `agents:` |
 | `punch-cavecrew-reviewer` (worker, optional) | no — read-only | n/a | bounded diff check | leaf — no `agents:` |
-| `punch-ai-governance` (maintainer) | **scoped** — `./bin/punch init` (read-only scan); never the Punch runtime | **mandatory** before any `.github`/`docs` write | yes | spawns no sub-agent |
+| `punch-ai-governance` (maintainer) | **scoped** — `./bin/punch init` (read-only scan); never the Punch runtime | **mandatory** before any `.github`/`docs`/`.vscode/settings.json` write | yes | spawns no sub-agent |
 
 ## Depth-1 / no recursion
 

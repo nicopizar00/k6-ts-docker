@@ -1,7 +1,7 @@
 ---
 name: punch-ai-governance
 description: Audits AI configuration — instructions, prompts, skills, agents, lifecycle docs — for boundary compliance, scope discipline, handoff hygiene, frontmatter contracts, and cross-reference drift.
-applies-to: .github/**, docs/**, README.md
+applies-to: .github/**, docs/**, README.md, .vscode/settings.json
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -102,15 +102,16 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
 
 > **Frozen / adopted scope.** Treat `docs/ai/history/**` as frozen provenance,
 > `.ai-upstream/**` as **gitignored local upstream staging** (may be absent on a
-> fresh clone), and `.agents/skills/cavecrew/**`, `.github/skills/caveman/**`,
-> and `.github/skills/graphify/**` (adopted-upstream skills) as **excluded**
-> from the frontmatter-completeness, cross-reference, naming, duplication, and
-> stale-asset checks below. `.agents/skills/cavecrew`, `.github/skills/caveman`,
-> and `.github/skills/graphify` are still **registered** (parity) in
-> `skill-registry.md` but are upstream-maintained — refresh from upstream,
-> never hand-edit; only `user-invocable`/`disable-model-invocation` frontmatter
-> fields are Punch additions to `caveman`'s and `graphify`'s `SKILL.md`. These
-> record point-in-time / external state.
+> fresh clone), and `.github/skills/caveman/**` and `.github/skills/graphify/**`
+> (adopted-upstream skills) as **excluded** from the frontmatter-completeness,
+> cross-reference, naming, duplication, and stale-asset checks below.
+> `.github/skills/caveman` and `.github/skills/graphify` are still
+> **registered** (parity) in `skill-registry.md` but are upstream-maintained —
+> refresh from upstream, never hand-edit; only
+> `user-invocable`/`disable-model-invocation` frontmatter fields are Punch
+> additions to their `SKILL.md`. These record point-in-time / external state.
+> This audit does not certify, mirror, or require any asset outside
+> `.github/**` — no non-Copilot-native host surface is in scope.
 
 1. **Frontmatter completeness.**
    - Every `*.instructions.md` has `applyTo:` + `description:`.

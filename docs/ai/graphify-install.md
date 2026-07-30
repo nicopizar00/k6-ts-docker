@@ -8,7 +8,7 @@ never gated behind another Punch prompt.
 ## Install (mandatory manual step)
 
 ```bash
-uv tool install graphifyy==0.8.41
+uv tool install graphifyy==0.9.30
 ```
 
 Pinned version tracked in
@@ -42,7 +42,7 @@ behavior; it runs entirely locally (no cloud call), the venv is
 self-gitignored (Python's `venv` module writes its own `.gitignore` inside
 itself), and it still stopped and asked before using any cloud semantic
 backend (Gemini/Google API key) for doc/paper/image extraction. Running
-`uv tool install graphifyy==0.8.41` (above) first remains the recommended,
+`uv tool install graphifyy==0.9.30` (above) first remains the recommended,
 pinned, explicit install — it avoids the unpinned ad-hoc venv fallback.
 
 ## Security policy

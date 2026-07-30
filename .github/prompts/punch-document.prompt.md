@@ -33,7 +33,8 @@ This prompt (via `punch-ai-governance`, holds complete admin over `.github/`
 and `docs/`) owns and reconciles **entire** documentation surface:
 
 - **All human docs** — `README.md`, `docs/**` (incl. `docs/architecture/**`,
-  `docs/workflows/**`, `docs/validation/**`, top-level `docs/*.md`), ADRs.
+  `docs/workflows/**` [covers `docs/workflows/validation.md`], top-level
+  `docs/*.md`), ADRs.
 - **All AI-facing docs** — `docs/ai/**` and
   `.github/` instructions / prompts / skills / agents + registries.
 - **AI working artifacts** — `docs/architecture/specs/**` (prior specs / plans),

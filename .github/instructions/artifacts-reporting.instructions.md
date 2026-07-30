@@ -1,5 +1,5 @@
 ---
-applyTo: "src/tests/support/**,src/punch/**,reports/**,docs/validation/**"
+applyTo: "src/tests/support/**,src/punch/**,reports/**,docs/workflows/validation.md"
 description: Contract for artifacts, logs, summaries, and reports produced by Punch.
 ---
 # Artifacts & Reporting — Path Instructions
@@ -7,7 +7,7 @@ description: Contract for artifacts, logs, summaries, and reports produced by Pu
 Scope: producer side of every artifact Punch emit (`src/tests/support/`,
 reporting/state code in `src/punch/`), artifact dir
 (`reports/`), validation docs explain it
-(`docs/validation/`).
+(`docs/workflows/validation.md`).
 
 ## What counts as an artifact
 

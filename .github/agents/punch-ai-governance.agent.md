@@ -48,16 +48,21 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 ```
 Allowed:    .github/** (ALL configs — skills, prompts, agents, instructions,
             copilot-instructions; complete admin), docs/** (all documentation,
-            incl. docs/ai/**), README.md
+            incl. docs/ai/**), README.md, .vscode/settings.json (VS Code
+            GitHub Copilot Chat discovery boundary only — narrowly this one
+            file, not broader .vscode/**)
 Read-only:  source / runtime, for context only — src/**, docker/**,
             docker-compose.yml, reports/**, graphify-out/** (read, never edit)
-Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit)
+Forbidden:  .ai-upstream/** (frozen upstream provenance — never edit);
+            .agents/**, .claude/**, and their workspace-root markdown
+            counterparts (dismissed external-host config — never touched,
+            never canon)
 Handle with care (admin allowed; convention, not an access block):
-            .agents/skills/** and .github/skills/graphify/** (adopted
-            upstream — prefer refresh from upstream over hand-edit; only
-            `user-invocable`/`disable-model-invocation` frontmatter fields
-            are Punch additions to `graphify`); docs/ai/history/** (frozen
-            record — append, don't rewrite).
+            .github/skills/caveman/** and .github/skills/graphify/**
+            (adopted upstream — prefer refresh from upstream over
+            hand-edit; only `user-invocable`/`disable-model-invocation`
+            frontmatter fields are Punch additions); docs/ai/history/**
+            (frozen record — append, don't rewrite).
 ```
 
 Complete admin over **all configs under `.github/`** and **all docs under

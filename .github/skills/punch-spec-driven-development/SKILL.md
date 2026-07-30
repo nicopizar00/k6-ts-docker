@@ -22,7 +22,7 @@ conflict with Punch, **Punch wins**:
 - **Clarify first:** when the request is still a vague idea, run the clarify
   step below (absorbed from the retired `punch-idea-refine`) before specifying.
 - **Graph & doc boundary:** Spec may query existing docs/graph evidence via
-  [`punch-context-engineering`](../punch-context-engineering/SKILL.md#graphify-gate)
+  [`punch-context-engineering`](../punch-context-engineering/SKILL.md)
   (read-only); it never cleans, regenerates, or updates docs/graph. A
   documentation or graph gap found during Spec goes into the spec's
   Non-goals/Constraints as a queued item for `/punch-document` — not fixed inline.
@@ -138,8 +138,9 @@ prompt). It produces scoped tasks with allowed/read-only/forbidden paths.
 
 ### Stage 4: Implement
 
-Hand off to Build: the matching `punch-build-*` prompt + builder agent, driven by
-`punch-incremental-implementation` and `punch-test-driven-development`.
+Hand off to Build: the `punch-build` prompt, dispatched by `punch-builder` to the
+matching engineer, driven by `punch-incremental-implementation` and
+`punch-test-driven-development`.
 
 ## Keeping the Spec Alive
 

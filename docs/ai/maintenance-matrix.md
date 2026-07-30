@@ -6,7 +6,7 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
    - Test added/removed/renamed:
      - Update Docker build expectations (dist/* bundling) — ensure new test bundled during image build.
      - Update `.github/workflows/k6.yml` if test should join CI (add run step + artifact expectations).
-     - Update `AGENTS.md` & `CONTRIBUTING.md` for new test semantics if public-facing.
+     - Update `.github/copilot-instructions.md` & `CONTRIBUTING.md` for new test semantics if public-facing.
      - Update `reports/` expected filenames and `validate-artifacts` job list if output names differ.
      - Update artifact contract entries in `.github/skills/punch-data-harvest/artifact-contract.md`.
 
@@ -18,9 +18,9 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
 
 3) docker/*.Dockerfile, docker-compose.yml
    - Images, exposed ports, or service names change:
-     - Update `.mcp.json` service entries and AGENTS.md ports.
+     - Update `.mcp.json` service entries and port references in `.github/copilot-instructions.md`.
      - Update `.github/workflows/k6.yml` job steps (service names in docker compose commands + log collection loop).
-     - Update CONTRIBUTING.md run examples and docs/how-to-run.md.
+     - Update CONTRIBUTING.md run examples and README.md quick-start commands.
      - Update compose contract in `.github/skills/punch-compose-runtime/compose-contract.md`.
 
 4) src/services/* (gateway, catalog, orders)
@@ -31,7 +31,7 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
 
 5) src/services/orders/db schema (docker/postgres/init.sql)
    - Schema change:
-     - Bump migration notes in AGENTS.md and CHANGELOG.md.
+     - Bump migration notes in CHANGELOG.md.
      - Update seed/init SQL; ensure CI uses fresh volume or includes migration step.
      - Verify order-journey test still validates created entity fields.
 
@@ -44,7 +44,8 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
 7) reports/ shape and filenames
    - Report names or content change:
      - Update `validate-artifacts` list in `.github/workflows/k6.yml` and job summary table.
-     - Update AGENTS.md and docs/validation/README.md with new artifact mapping.
+     - Update `.github/instructions/artifacts-reporting.instructions.md` and
+       `docs/workflows/validation.md` with new artifact mapping.
      - Update artifact contract entries in `.github/skills/punch-data-harvest/artifact-contract.md` — this contract change.
 
 8) package.json (root and src/services/orders)
@@ -55,18 +56,17 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
 
 9) .github/workflows/* and action usage
    - Workflow triggers, job names, or upload artifact paths change:
-     - Update AGENTS.md and README docs that reference workflow semantics.
+     - Update README docs that reference workflow semantics.
      - Keep CI workflow names stable — agents and dashboards look up by name.
 
 10) docs/ and README.md
     - Doc pages move or rename:
-      - Update cross-references in AGENTS.md, CONTRIBUTING.md, and .github/copilot-setup-steps.yml.
+      - Update cross-references in CONTRIBUTING.md and .github/copilot-setup-steps.yml.
 
 11) .github/prompts/* (prompts)
     - Prompts added, removed, or renamed:
       - Update `docs/ai/prompt-registry.md` in same PR.
       - Update `.github/copilot-instructions.md` lifecycle table if phase prompt name changes.
-      - Update `AGENTS.md` if phase-to-prompt mapping changes.
       - Run `punch-ai-governance` to confirm frontmatter and registry sync.
 
 12) .github/skills/* (skills)
@@ -77,7 +77,7 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
 
 13) .github/agents/* (agents) — new in redesigned lifecycle
     - Agents added, removed, or renamed:
-      - Update `AGENTS.md` in same PR.
+      - Update `.github/copilot-instructions.md` lifecycle table (Agent column) in same PR.
       - Update every prompt file naming the agent in its "Agent" line.
       - Update `docs/ai/copilot-mode-mapping.md` if phase-to-agent mapping changes.
       - Run `punch-ai-governance` to confirm references resolve.

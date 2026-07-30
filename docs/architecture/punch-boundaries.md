@@ -66,8 +66,8 @@ Most "why did this go wrong?" answers map to a boundary crossing.
 
 ## Common anti-patterns
 
-The redesigned lifecycle (Define → Spec → Plan → Build → Test → Review →
-Ship) is designed to catch these before merge.
+The six-phase lifecycle (Spec → Plan → Build → Test → Review → Ship — Spec
+absorbs the former Define step) is designed to catch these before merge.
 
 1. **k6 owning orchestration.** A test file that starts containers, polls
    compose state, or writes outside `/reports/`. k6 must remain a pure load
@@ -95,7 +95,7 @@ Ship) is designed to catch these before merge.
 
 ## When to consult this file
 
-- Define phase: confirm the requested change names a single owning layer.
+- Spec phase: confirm the requested change names a single owning layer.
 - Plan phase: every allowed/forbidden path in the plan should map to a layer
   here.
 - Review phase: any diff that touches more than one layer must reference the

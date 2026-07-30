@@ -12,8 +12,9 @@ This is the **method** the [`punch-plan`](../../prompts/punch-plan.prompt.md) pr
 activates (agent `punch-architect`). Punch overrides the generic format below:
 
 - **Task contract:** every Punch task declares **allowed / read-only / forbidden
-  paths**, validation commands, rollback notes, a human checkpoint, and which
-  `punch-build-*` prompt handles it. That contract is defined in
+  paths**, validation commands, rollback notes, a human checkpoint, and the
+  `punch-build` prompt (dispatched by `punch-builder` to the matching engineer)
+  that handles it. That contract is defined in
   [`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md) and the
   `punch-architect` agent — use it, don't restate it here.
 - **Verification = Punch commands:** tasks verify via `./bin/punch run <test>` and
@@ -92,7 +93,7 @@ Each task follows the `punch-architect` output contract. Minimum fields:
 **Rollback:** how to undo if Verify fails (usually: revert the single commit)
 **Expected diff size:** rough line count
 **Human checkpoint:** approval required before Build
-**Build via:** which punch-build-* prompt + builder agent
+**Build via:** `punch-build`, dispatched by `punch-builder` to the matching engineer
 ```
 
 ### Step 5: Order and checkpoint
