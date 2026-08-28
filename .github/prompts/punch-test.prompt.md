@@ -43,14 +43,12 @@ Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-p
 - Handoff: Review on PASS · Plan/Build if product code must change · human on
   environment/pre-existing failure.
 
-## Delegation (bounded worker)
+## Delegation
 
-`punch-test-engineer` is the Test coordinator. It may spawn one **read-only**
-cavecrew leaf worker (depth-1),
-[`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md), to locate
-the change's `src/tests/*.ts` checks/thresholds and coverage gaps. It only
-*locates*: the **PASS | FAIL | BLOCKED verdict stays this gate's own**, never
-delegated.
+`punch-test-engineer` is the Test coordinator and spawns no sub-agents
+(`agents: []`). Locating the change's `src/tests/*.ts` checks/thresholds and
+coverage gaps happens inline. The **PASS | FAIL | BLOCKED verdict stays this
+gate's own**, never delegated.
 
 ## Validation gate
 
@@ -63,7 +61,5 @@ Clean RED→GREEN transition with `reports/state/punch-run.json` recording the p
 
 ## Operating comms
 
-Caveman **`ultra`** for Test; engine briefs `punch-cavecrew-investigator` (any other
-sub-agent nesting) in **`wenyan-ultra`**. The worker reports **non-guarded
-(lazy)** — the engine may use the artifact as-is. Evidence (RED/GREEN output,
+Caveman **`ultra`** for Test. Evidence (RED/GREEN output,
 commands, `reports/state/punch-run.json`) stays verbatim.

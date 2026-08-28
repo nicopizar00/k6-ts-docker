@@ -2,7 +2,7 @@
 
 > **Template.** Build report (`punch-builder` evidence contract).
 > Pattern source: `.github/prompts/punch-build.prompt.md` (Caveman `ultra`;
-> engineers `wenyan-lite`, cavecrew `wenyan-full`, workers `wenyan-ultra`;
+> engineers `wenyan-lite`;
 > **evidence never compressed**).
 
 - **Result** — <what done; or "verification-only task — no product code change">

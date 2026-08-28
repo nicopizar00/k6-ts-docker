@@ -68,19 +68,19 @@ Available agents
 | punch-security-auditor | Security audit — on-demand specialist | Review security axis |
 | punch-release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
 | punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Init, Document |
-| cavecrew-investigator, cavecrew-reviewer | Optional leaf workers — locate / diff pre-scan (not user-facing) | Test, Review, Security (never Build) |
 
 Definitions live in .github/agents/*.agent.md.
 
 **Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists only its
-two engineers — no cavecrew; `punch-code-reviewer` / `punch-test-engineer`
-/ `punch-security-auditor` list optional read-only cavecrew; `punch-release-captain` (Ship) fans
-out to the three specialists as report-only leaves. Engineers + cavecrew carry
+two engineers; `punch-release-captain` (Ship) fans out to the three specialists
+as report-only leaves. `punch-code-reviewer` / `punch-test-engineer` /
+`punch-security-auditor` carry `agents: []` too — reference search and diff
+pre-scan happen inline, not via a spawned worker. Engineers carry
 `agents: []` — non-spawning leaves. `punch-ai-governance` is user-direct
 (`disable-model-invocation: true`), in no `agents:` allowlist.
 
 **Vendor agent-skills personas, adopted-adapted to Punch** (Punch-named, own their
-verdict, may use cavecrew): `punch-code-reviewer` (← `code-reviewer`),
+verdict): `punch-code-reviewer` (← `code-reviewer`),
 `punch-security-auditor` (← `security-auditor`), `punch-test-engineer` (←
 `test-engineer`). `punch-release-captain` is **not** a direct persona port — it's a
 Punch-native wrapper around the vendor `/ship` fan-out *pattern* (full provenance:

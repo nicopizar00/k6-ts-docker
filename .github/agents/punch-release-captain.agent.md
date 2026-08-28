@@ -86,5 +86,4 @@ stays 1. Mechanical git/`gh` only — no logic edits.
 ## Caveman comms
 
 Caveman (optional) **`full`** (Ship per-phase voice); the ship-readiness decision is a
-persisted artifact — no `wenyan`. Specialists brief their own optional cavecrew
-workers in `wenyan-ultra`, reports non-guarded (lazy). Evidence verbatim.
+persisted artifact — no `wenyan`. Evidence verbatim.

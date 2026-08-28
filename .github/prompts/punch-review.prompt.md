@@ -1,6 +1,6 @@
 ---
 agent: punch-code-reviewer
-description: Phase 5 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict; cavecrew allowed only as a bounded pre-scan.
+description: Phase 5 — Review. Read-only five-axis critique of the diff against the Plan before Ship. Owner punch-code-reviewer holds the verdict.
 ---
 # Punch — Review
 
@@ -11,7 +11,7 @@ description: Phase 5 — Review. Read-only five-axis critique of the diff agains
 diff touches `.github/` or `docs/ai/`; else matching domain skill
 **Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
 **Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
-**Operating comms:** Caveman **`full`** (per-phase, optional). Lead normal prose for risk/architecture judgment. Brief an optional cavecrew worker in `wenyan-ultra`; cavecrew reports **non-guarded (lazy)** — use the artifact as-is.
+**Operating comms:** Caveman **`full`** (per-phase, optional). Normal prose for risk/architecture judgment.
 
 ## When to use
 
@@ -63,18 +63,10 @@ Review report with:
 - **Missing docs** — none, or specifics.
 - **Required follow-ups** — none, or numbered list.
 
-## Delegation (bounded workers only)
+## Delegation
 
-`punch-code-reviewer` is the Review coordinator. cavecrew is allowed **only as a
-bounded, optional pre-scan** — it never replaces the five-axis review. It may
-spawn **read-only** cavecrew leaf workers (depth-1) over a large diff:
-[`punch-cavecrew-investigator`](../agents/punch-cavecrew-investigator.agent.md) (locate the
-diff's touched defs / tests) and
-[`punch-cavecrew-reviewer`](../agents/punch-cavecrew-reviewer.agent.md) (compact per-file
-diff smoke check). Both are read-only, optional — no editing worker exists in
-Punch. Workers inherit the coordinator's read-only
-scope by injected brief (`wenyan-ultra`) and report **non-guarded (lazy)**; the
-coordinator may use their findings as-is. Findings feed the review — the
+`punch-code-reviewer` is the Review coordinator and spawns no sub-agents
+(`agents: []`). Reference search and diff pre-scan happen inline. The
 Approve / Request Changes **verdict stays punch-code-reviewer's own**.
 
 ## Validation gate

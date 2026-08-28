@@ -37,9 +37,7 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    `punch-build`, `punch-test`, `punch-review`, `punch-ship`, `punch-document`,
    `punch-init`. Missing / non-prefixed / no-frontmatter → **BLOCKED**.
 2. **Agents.** Every `.github/agents/*.agent.md` has `name:` + `description:`.
-   The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
-   personas support Review/Test/Security only — never Build; absence is not a
-   gap. Init is owned solely by `punch-ai-governance`
+   Init is owned solely by `punch-ai-governance`
    (`disable-model-invocation: true`). Any agent introduced **for Init**
    outside that ownership → **BLOCKED**.
 3. **Skills.** Every `skill-registry.md` row maps to a `.github/skills/*/SKILL.md`
@@ -61,11 +59,7 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
      `github-copilot`, relocated once to `.github/skills/caveman/` (the Copilot
      project-skill location — installer default `.agents/skills/caveman/` must
      not remain populated). Not installed → **WARN** (user installs manually;
-     purely optional — Build never depends on it).
-   - The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
-     Copilot custom agents in `.github/agents/` (see check 2) are
-     self-contained and certified on their own frontmatter — they require no
-     `.agents/**` vendor skill to be present. `.agents/**` is outside this
+     purely optional — Build never depends on it). `.agents/**` is outside this
      workspace's VS Code Chat discovery boundary and is never a Punch
      capability, prerequisite, resolver target, or canon.
    - The native upstream skill [`graphify`](../skills/graphify/SKILL.md) exists,
@@ -146,9 +140,8 @@ one-line reason — then:
   not embed or edit Python, shell, `setup.py`, or launchers.
 - **Copilot-first.** Checks only the assets Punch needs to operate through VS Code
   GitHub Copilot. Vendor tools (graphify, Caveman) are in scope **only** via the
-  accepted AI-Ingest path; `.agents/**` vendor skills (e.g. `cavecrew`) and
-  non-Copilot agent runtimes (Claude Code, Cloud Code) are out of scope
-  entirely.
+  accepted AI-Ingest path; `.agents/**` vendor skills and non-Copilot agent
+  runtimes (Claude Code, Cloud Code) are out of scope entirely.
 - **Lifecycle preserved.** Init certifies; it does not alter the Spec → Plan →
   Build → Test → Review → Ship → Document lifecycle it gates.
 

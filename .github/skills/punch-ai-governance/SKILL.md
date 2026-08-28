@@ -24,13 +24,12 @@ It owns:
 - Cross-reference health: every link in `prompt-registry.md`,
   `skill-registry.md`, and `copilot-instructions.md`
   resolves; every asset referenced exists.
-- Delegation-depth integrity: every `agents:` roster stays depth-1 — only a
-  phase coordinator (`punch-builder` / `punch-code-reviewer` / `punch-test-engineer`
-  / `punch-security-auditor`) lists sub-agents; engineers and `punch-cavecrew-*` workers
-  carry empty / absent
-  `agents:`. Each cavecrew worker's `tools` must be a **subset** of every
-  coordinator that lists it (both remaining workers are read-only, dispatched
-  only by read-only Review/Test/Security coordinators — never by Build). Canon:
+- Delegation-depth integrity: every `agents:` roster stays depth-1 — only
+  `punch-builder` (its two engineers) and `punch-release-captain` (the three
+  Ship fan-out specialists, report-only leaves) list sub-agents. Every other
+  agent — including `punch-code-reviewer`, `punch-test-engineer`, and
+  `punch-security-auditor` — carries `agents: []`; reference search and diff
+  pre-scan happen inline, not via a spawned worker. Canon:
   [`agent-guards.md`](../../../docs/ai/agent-guards.md).
 - The duplication-detection pass — no rule restated across files.
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
@@ -125,8 +124,8 @@ agent — [`punch-ai-governance.agent.md`](../../agents/punch-ai-governance.agen
      `docs/ai/prompt-registry.md`, and vice versa.
    - Every file in `.github/agents/*.agent.md` is referenced in the
      `copilot-instructions.md` lifecycle table, `docs/ai/prompt-registry.md`,
-     or a phase coordinator's `agents:` roster (sub-agents: cavecrew workers,
-     on-demand specialists). Referenced nowhere → orphan agent, flag it.
+     or a phase coordinator's `agents:` roster (on-demand specialists).
+     Referenced nowhere → orphan agent, flag it.
 3. **Boundary declarations.**
    - Every Build prompt
      (`.github/prompts/punch-build.prompt.md`) lists allowed,

@@ -118,9 +118,9 @@ enforced by *function*, not *count*:
   `punch-test-engineer` Test, `punch-code-reviewer` Review, `punch-release-captain`
   Ship), **`punch-builder` dispatcher** or one of its two **engineers**
   (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
-  domain), an on-demand **specialist persona** (`punch-security-auditor`,
-  `punch-ai-governance`), or a bounded **`punch-cavecrew-*` leaf worker**. New core
-  persona should require killing one; specialists each name unique on-demand lens.
+  domain), or an on-demand **specialist persona** (`punch-security-auditor`,
+  `punch-ai-governance`). New core persona should require killing one;
+  specialists each name unique on-demand lens.
 - Each **prompt** is single lifecycle phase (Build's per-domain scope lives in
   engineers, not extra prompts). New prompts must show why existing one
   cannot stretch.

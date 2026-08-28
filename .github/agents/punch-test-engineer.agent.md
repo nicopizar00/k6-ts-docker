@@ -2,7 +2,7 @@
 name: punch-test-engineer
 description: Independent Test-phase QA gate for Punch. Runs the official Punch test contract (`./bin/punch doctor`, `./bin/punch run …`), judges k6 checks/thresholds RED→GREEN, analyzes coverage gaps, and returns a final PASS | FAIL | BLOCKED verdict. Does not fix product code — failures hand back to Build/Plan. Adapts upstream agent-skills `test-engineer`. Invoked by `/punch-test` (and fan-out from `/punch-ship`); also user-invocable.
 tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'execute/runInTerminal', 'execute/getTerminalOutput', 'read/terminalLastCommand', 'read/terminalSelection', 'agent']
-agents: ['punch-cavecrew-investigator']
+agents: []
 user-invocable: true
 ---
 
@@ -62,17 +62,11 @@ Handoff: <Review on PASS · Plan/Build on implementation FAIL · human on env/pr
   while building, but only this agent (via `/punch-test` or `/punch-ship` fan-out)
   issues the final PASS/FAIL gate.
 
-## Bounded workers (cavecrew, Test)
+## Locate coverage gaps
 
-As the Test coordinator, this gate may spawn one **read-only** cavecrew leaf
-worker (depth-1):
-[`punch-cavecrew-investigator`](punch-cavecrew-investigator.agent.md) — locate the change's
-`src/tests/*.ts` checks/thresholds and coverage gaps. It inherits this gate's
-read-only scope by injected brief; its `tools` are a subset of this persona's.
-This gate has no `edit/editFiles` and judges evidence, not diffs — no editing
-worker exists in Punch. **Caution:** the worker only
-*locates* — the **PASS | FAIL | BLOCKED verdict stays this gate's own**, never
-delegated.
+Locating the change's `src/tests/*.ts` checks/thresholds and coverage gaps
+happens **inline** — this gate has no `edit/editFiles` and spawns no
+sub-agents (`agents: []`).
 
 ## Skills
 
@@ -93,7 +87,5 @@ session, task switch, or cross-file reasoning only, not every task.
 
 ## Comms
 
-Caveman (optional) **`ultra`** to humans (Test phase voice); briefs the optional
-**cavecrew** worker in **`wenyan-ultra`**. `punch-cavecrew-investigator` reports are
-**non-guarded (lazy)** — this engine may use the artifact as-is. Evidence
+Caveman (optional) **`ultra`** to humans (Test phase voice). Evidence
 (RED/GREEN output, commands, `reports/state/punch-run.json`) verbatim.

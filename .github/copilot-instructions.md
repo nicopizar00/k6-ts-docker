@@ -42,14 +42,11 @@ CI/CD **external** to Punch — does not own GitHub Actions workflows.
 Custom agents bounded at runtime by shared
 [`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
 phases, approval-before-write). Build delegates via the Punch Builder → **one of
-its two engineers only** — Build never spawns cavecrew. Review/Test/Security
-coordinators may optionally spawn bounded, read-only cavecrew leaf workers
-directly — a single hop, permitted by GitHub Copilot's default sub-agent
-behavior without any special setting.
+its two engineers only**. Review/Test/Security coordinators spawn no sub-agents
+either (`agents: []`) — reference search and diff pre-scan happen inline.
 `chat.subagents.allowInvocationsFromSubagents` **stays at its default (`false`)** —
 VS Code's own default disables a subagent spawning further subagents; Punch
-relies on that default rather than overriding it, so no cavecrew worker can ever
-nest deeper. Depth is roster-bounded too: cavecrew workers carry no `agents:`.
+relies on that default rather than overriding it.
 
 - **Never broad edits during Build.** Each Build prompt declares
   allowed / read-only / forbidden paths. Edit only allowed paths.
@@ -123,7 +120,7 @@ Spec absorbs former Define phase (opens with clarify/refine step).
 Build = single `punch-build` prompt bound to the `punch-builder` dispatcher, which
 classifies the approved Plan task and delegates the complete build to
 `punch-runtime-engineer` (Python/Compose/harvest) or `punch-performance-test-engineer`
-(k6 + TS bundle) — neither Builder nor either engineer ever invokes cavecrew.
+(k6 + TS bundle).
 `punch-test` (TDD/Prove-It)
 is the verification phase — done proven by `reports/state/punch-run.json`.
 

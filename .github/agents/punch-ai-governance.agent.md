@@ -27,7 +27,7 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 - `/punch-init` — on-demand, read-only **asset enablement sweep** (first at
   adoption, re-runnable anytime): certify the
   GitHub Copilot asset set (prompts, agents, skills, instructions + the AI-Ingest
-  Caveman/cavecrew vendor skills) is present, `punch-`prefixed, and
+  Caveman vendor skill) is present, `punch-`prefixed, and
   Copilot-compatible; report PASS / WARN / BLOCKED; hand reconciliation to
   `/punch-document`. No runtime, no Python. **This phase is enforced to this
   agent** — no other agent runs Init.

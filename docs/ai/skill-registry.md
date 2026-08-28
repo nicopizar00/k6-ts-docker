@@ -154,16 +154,13 @@ add the two frontmatter fields) immediately after install; the pinned upstream
 body otherwise stays byte-identical. Its default-`lite` voice rule for VS Code
 GitHub Copilot Chat lives directly in `copilot-instructions.md` — no separate
 Punch presentation-adapter skill.
-The vendor `cavecrew` skill is **not** a registered Punch project skill —
-`.agents/skills/**` sits outside this workspace's VS Code Chat discovery
-boundary (`.vscode/settings.json`) and is never certified by `/punch-init`.
-The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
-Copilot custom agents (`.github/agents/`) are self-contained and depend on no
-vendor skill — an optional non-Build coordinator (Review/Test/Security) may
-spawn them directly; Build never does. Other auxiliary upstream packs
-(`caveman-compress` with host Python scripts,
+Other auxiliary upstream packs (`caveman-compress` with host Python scripts,
 `caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep the install
-Copilot-scoped and Docker-First-minimal.
+Copilot-scoped and Docker-First-minimal. The vendor `cavecrew` skill was
+evaluated and **retired** — its worker pattern added coordination overhead
+without a demonstrated benefit at this repo's scale; Review/Test/Security
+coordinators perform reference search and diff pre-scan inline instead
+(`agents: []`).
 
 ## Why these are still deferred (not created)
 

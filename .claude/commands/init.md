@@ -10,6 +10,6 @@ the canonical Copilot asset — do not re-author or paraphrase it:
   complete admin over `.github/` + `docs/`; only this agent runs Init)
 
 Runs a read-only sweep of the GitHub Copilot asset set (prompts, agents, skills,
-instructions + the AI-Ingest Caveman/cavecrew vendor skills), reports
+instructions + the AI-Ingest Caveman vendor skill), reports
 PASS / WARN / BLOCKED, and hands reconciliation to `/document`. Non-destructive;
 no runtime, no Python. Follow that prompt exactly. Input: $ARGUMENTS
