@@ -17,10 +17,9 @@ convenience scaffolds** (no rule restated, only output shape).
 - **Filled, real worked example** (health-smoke golden path) lives at
   [`../../golden-lifecycle/`](../../golden-lifecycle/README.md).
 - These templates + golden example = **canon doc-output patterns** maintained
-  by `/punch-document`, detected by `/punch-init` (readiness:
-  `lifecycle_templates`).
+  by `/punch-document`.
 - Caveman: persisted artifacts use `lite`/`full`, **never Wenyan**; emojis/ASCII
-  emoticons allowed in docs (the `/document` carve-out).
+  emoticons allowed in docs (the `/punch-document` carve-out).
 - **Provenance.** Lifecycle shapes are **adapted** (not hard-forked) from upstream
   [agent-skills](https://github.com/addyosmani/agent-skills) to fit Punch; the
   `.github/prompts/` files remain the behavior source of truth.

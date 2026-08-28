@@ -9,9 +9,9 @@ Rules apply **every** Copilot session this repo. Deliberately short. Detail in
 Violate = break reproducibility, safety, or trust. Stop and ask
 before bending.
 
-1. **Docker First execution** — Docker is the only host requirement (plus stdlib Python 3). Never propose host-side `npm`, `k6`, or `pip` commands. Always-on contract: [`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md).
-2. **Python orchestration façade** — `bin/punch` stdlib-only Python (same source as #1). No host-side Node, npm, k6, or pip-installed package.
-3. **Validation evidence mandatory** — a change is not "done" until `reports/state/punch-run.json` records the run. Artifact + evidence contract: [`artifacts-reporting.instructions.md`](instructions/artifacts-reporting.instructions.md).
+1. **Docker First execution** — Docker is the only host requirement (plus stdlib Python 3). Never propose host-side `npm`, `k6`, or `pip` commands, **except** the narrow `punch-performance-test-engineer` authoring exception — host `npm`/`pnpm`/esbuild/lint, and host `k6` only for the `npm run smoke:local` pre-check, while authoring the k6 TS toolchain; off the evidence path, shipped chain unchanged ([ADR 0001](../docs/ai/decisions/0001-perf-engineer-host-npm.md)). Always-on contract: [`punch-architecture.instructions.md`](instructions/punch-architecture.instructions.md).
+2. **Python orchestration façade** — `bin/punch` stdlib-only Python (same source as #1). No host-side Node, npm, k6, or pip-installed package for the orchestrator itself — the sole exception is Rule 1's scoped `punch-performance-test-engineer` authoring carve-out, not a general allowance.
+3. **Validation evidence mandatory** — a change is not "done" until it meets its class's evidence bar. Runtime-affecting → `reports/state/punch-run.json` (`passed: true`). Documentation/Copilot-only → diff review + governance parity, no runtime run expected. Canonical evidence matrix: [`docs/workflows/validation.md`](../docs/workflows/validation.md). Artifact contract: [`artifacts-reporting.instructions.md`](instructions/artifacts-reporting.instructions.md).
 4. **Human approves Ship.** Agent Mode MUST stop after opening PR. Merge, release, push tags = human-only.
    *WHY:* irreversible + externally visible. PR boundary = where human judgment enters.
 5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use env vars for any external base URL.
@@ -42,8 +42,8 @@ CI/CD **external** to Punch — does not own GitHub Actions workflows.
 Custom agents bounded at runtime by shared
 [`agent-guards.md`](../docs/ai/agent-guards.md) discipline (tool surface, serial
 phases, approval-before-write). Build delegates via the Punch Builder → **one of
-its two engineers only**. Review/Test/Security coordinators spawn no sub-agents
-either (`agents: []`) — reference search and diff pre-scan happen inline.
+its two engineers only**. Review/Test/Security coordinators carry no `agent`
+tool either — reference search and diff pre-scan happen inline.
 `chat.subagents.allowInvocationsFromSubagents` **stays at its default (`false`)** —
 VS Code's own default disables a subagent spawning further subagents; Punch
 relies on that default rather than overriding it.
@@ -76,7 +76,9 @@ relies on that default rather than overriding it.
 
 6. **Lifecycle-driven work.** Every change goes Spec → Plan →
    Build → Test → Review → Ship (Spec absorbs former Define step).
-   Use matching prompt in `.github/prompts/`.
+   Use matching prompt in `.github/prompts/`. Doc-only changes with no
+   runtime-contract impact skip Build (straight Plan → PR) — scoped
+   exception, see [`documentation.instructions.md`](instructions/documentation.instructions.md#build-prompt).
 7. **Mode discipline.** Read-only requests (audits, reviews,
    explanations) stay **Ask Mode**. Planning stays **Ask Mode**
    with Plan discipline. Edits only in **Agent Mode** within
@@ -97,7 +99,8 @@ relies on that default rather than overriding it.
     abstractions, boring over clever; touch only what the task's allowed paths
     cover — no drive-by cleanup of orthogonal code.
 13. **Verify, don't assume.** "Seems right" isn't done — every change needs
-    evidence (`reports/state/punch-run.json`, build/lint output), per Rule 3.
+    its class's evidence (`reports/state/punch-run.json`, build/lint output,
+    or a clean `punch-ai-governance` pass), per Rule 3.
 
 (Absorbed from the retired `punch-using-agent-skills` meta-skill — its
 skill-discovery decision tree lives in
@@ -124,11 +127,9 @@ classifies the approved Plan task and delegates the complete build to
 `punch-test` (TDD/Prove-It)
 is the verification phase — done proven by `reports/state/punch-run.json`.
 
-**Orthogonal phases (both via `punch-ai-governance`, enforced):**
-[`punch-init`](prompts/punch-init.prompt.md) — read-only GitHub Copilot asset
-enablement sweep (on-demand) gating repo into lifecycle; and
+**Orthogonal maintenance phase (via `punch-ai-governance`, enforced):**
 [`punch-document`](prompts/punch-document.prompt.md) — recurring documentation
-reconciliation. Init prepares; Document reconciles.
+reconciliation.
 
 ## Change cascade (when X changes, update Y)
 
@@ -154,38 +155,24 @@ in PR description.
 
 Native, upstream Graphify Agent Skill ([`.github/skills/graphify/`](skills/graphify/SKILL.md))
 — adopted as-is, no Punch fork (scoped Rule-1 host-tool exception —
-[ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md)). Install, security,
-version, and sharing policy: [`docs/ai/graphify-install.md`](../docs/ai/graphify-install.md).
+[ADR 0002](../docs/ai/decisions/0002-graphify-host-tool.md)).
+**Explicit-only** — `/graphify` never auto-loads and no Punch prompt builds,
+updates, gates, or owns it; terminal stays approval-gated like every other
+command. Full install/security/local-vs-committed-baseline policy:
+[`docs/ai/graphify-install.md`](../docs/ai/graphify-install.md).
 
-- **Explicit-only.** `/graphify` never auto-loads for unrelated work — invoke
-  it directly when a repo/corpus map or query is wanted. No Punch prompt
-  builds, updates, gates, or owns it.
-- **Local-first by default.** No hooks, watchers, MCP server, URL ingestion,
-  cloud semantic backends, or external graph-database push run
-  automatically — each is a separate, explicit user decision.
-- **Terminal stays approval-gated**, same as every other command — no
-  standing shell pre-approval for `graphify` (the skill does not declare
-  `allowed-tools: shell`/`bash`).
-- Outputs under `graphify-out/` are throwaway evidence, never canonical,
-  except the committed shared baseline (`graph.json`, `GRAPH_REPORT.md`,
-  `.graphifyignore`) after passing the leakage validation checklist.
-
-## Caveman (concise comms — default `lite`, VS Code GitHub Copilot Chat only)
+## Caveman (concise comms — explicit-only, VS Code GitHub Copilot Chat only)
 
 Caveman compresses assistant **prose only**, in **VS Code GitHub Copilot Chat**
-— a fully **optional**, user-invoked convenience; normal prose is the complete
-fallback when it is absent or inactive. Default **`lite`** for every Copilot
-Chat response; this default applies without loading the full
-[`caveman`](skills/caveman/SKILL.md) skill. Explicit `/caveman
-lite|full|ultra|wenyan-*` loads the skill and overrides the level for the
-conversation; `stop caveman` / `normal mode` disables it for the conversation.
-**Build never uses Caveman** — it is fully decoupled, always normal prose.
-Caveman never compresses code, commands, paths, logs, errors, exit codes,
-thresholds, JSON/YAML/CSV, acceptance criteria, blockers, next actions, or
-`reports/state/punch-run.json` — those stay verbatim at every level. Drop to
-normal prose for security warnings, irreversible-action confirmations,
-architecture tradeoffs, or any ambiguous content. Caveman is output style
-only — it never changes tools, access, evidence, or delegation. Critical Rules
-above take precedence. Not activated for any other host or config surface
-(Claude Code, Codex, Cursor, Windsurf, Copilot CLI, Copilot coding agent) —
-see [`caveman`](skills/caveman/SKILL.md) for full mode semantics.
+— **explicit-only**: normal prose is the default and complete fallback until
+the user invokes `/caveman lite|full|ultra|wenyan-*`, which loads the
+[`caveman`](skills/caveman/SKILL.md) skill and sets the level for the
+conversation; `stop caveman` / `normal mode` disables it again. **Build never
+uses Caveman.** Never compresses code, commands, paths, logs, errors, exit
+codes, thresholds, JSON/YAML/CSV, or `reports/state/punch-run.json` — those
+stay verbatim at every level; drop to normal prose for security warnings,
+irreversible-action confirmations, or ambiguous content. Output style only —
+never changes tools, access, evidence, or delegation; Critical Rules above
+take precedence. Not active for any other host (Claude Code, Codex, Cursor,
+Windsurf, Copilot CLI, Copilot coding agent). Full mode semantics:
+[`caveman`](skills/caveman/SKILL.md).

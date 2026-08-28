@@ -1,8 +1,7 @@
 ---
 name: punch-code-reviewer
 description: Review-phase verdict owner for Punch. Vendor agent-skills `code-reviewer` adopted and adapted to Punch — a five-dimension diff review (correctness, readability, architecture, security, performance) over the Plan. Read-only. Owns the final Approve / Request Changes verdict for /punch-review. Does not write code. Invoked by `/punch-review` (and registered fan-out from `/punch-ship`); also user-invocable.
-tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
-agents: []
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes']
 user-invocable: true
 ---
 
@@ -66,8 +65,8 @@ code. The Approve / Request Changes verdict is **its own** and is never delegate
 ## Locate + pre-scan
 
 Reference search and diff pre-scan (touched defs/call sites/tests, per-file
-smoke check) happen **inline** — this agent has no `edit/editFiles` and spawns
-no sub-agents (`agents: []`).
+smoke check) happen **inline** — this agent has no `edit/editFiles` tool and
+no `agent` tool, so it spawns no sub-agents.
 
 **Do not invoke from another persona.** Only this agent — via `/punch-review` or
 the registered `/punch-ship` fan-out (`punch-release-captain`) — issues the

@@ -12,41 +12,52 @@ description: Test phase — the canonical, independent test gate for the current
 
 ## When to use
 
-*Prove* change with test before+after build — upstream `test` command, applied to Punch k6 + evidence model:
+*Prove* an already-Built change — upstream `test` command, applied to Punch k6 +
+evidence model. Test **follows** Build, it never wraps it: Build (lazy-loading
+`punch-test-driven-development` while it works) records RED before implementing
+and GREEN after; this gate inspects that evidence, then independently reruns to
+confirm GREEN itself.
 
-- Bug report → confirm failing check/threshold reproduces it (RED) before Build fixes, then confirm pass (GREEN).
-- New behavior → confirm new check/threshold fails vs current code, then passes once Build implements.
+- Bug report → Build's handoff must include a failing check/threshold (RED)
+  predating the fix. Missing/unconvincing RED evidence → **BLOCKED**, back to
+  Build — this gate does not author it.
+- New behavior → Build's new check/threshold must have failed before
+  implementation, pass after. Same BLOCKED rule if that evidence is absent.
 
 Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-performance-test-engineer`); this prompt **runs and judges** test, no write.
 
 ## Inputs
 
-- Check/threshold (or test) expressing expected behavior.
+- Build's handoff: diff, check/threshold touched, RED evidence (if a
+  behavioral change).
 - Plan task or change under test.
 
 ## What to do
 
-1. Find smallest test capturing behavior (k6 `check` or threshold in relevant `src/tests/*.ts`).
-2. Run via `./bin/punch run <test>`, confirm **fails for right reason** (RED) — failing threshold/check, not setup error.
-3. Hand to Build to implement (no authoring here).
-4. After Build, run `./bin/punch run <test>` again, confirm **GREEN**.
-5. Confirm `reports/state/punch-run.json` records run.
-6. If no clean fail-then-pass, **stop**, return to Plan.
+1. Read Build's handoff — diff, check/threshold, and any recorded RED evidence.
+2. Behavioral change (bug fix / new behavior) with no RED evidence, or RED
+   evidence that fails for the wrong reason (setup/connection error, not the
+   behavior) → **stop, BLOCKED**, return to Build.
+3. Independently rerun `./bin/punch run <test>` — never take Build's
+   self-report as proof. Confirm **GREEN**, for the right reason.
+4. Confirm `reports/state/punch-run.json` records the run (`passed: true`).
+5. Classify any failure: implementation-related / environment-related / pre-existing.
+6. No clean RED→GREEN story for a behavioral change → **stop, BLOCKED**, return to Build (not Plan — the task was already approved; Build's evidence is what's missing).
 
 ## Expected output
 
 - **Verdict: PASS | FAIL | BLOCKED.**
 - Test (check/threshold) used; commands run with exit codes.
-- RED evidence (command + failing result) and, after Build, GREEN evidence;
-  `reports/state/punch-run.json` `passed:` value.
+- RED evidence (from Build's handoff) and this gate's own independently
+  reproduced GREEN evidence; `reports/state/punch-run.json` `passed:` value.
 - Failures with file/check/threshold references; missing coverage (or "none").
-- Handoff: Review on PASS · Plan/Build if product code must change · human on
-  environment/pre-existing failure.
+- Handoff: Review on PASS · Build on FAIL/BLOCKED (missing RED evidence or
+  implementation failure) · human on environment/pre-existing failure.
 
 ## Delegation
 
-`punch-test-engineer` is the Test coordinator and spawns no sub-agents
-(`agents: []`). Locating the change's `src/tests/*.ts` checks/thresholds and
+`punch-test-engineer` is the Test coordinator and has no `agent` tool, so it
+spawns no sub-agents. Locating the change's `src/tests/*.ts` checks/thresholds and
 coverage gaps happens inline. The **PASS | FAIL | BLOCKED verdict stays this
 gate's own**, never delegated.
 

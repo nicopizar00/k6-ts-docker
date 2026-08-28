@@ -28,9 +28,12 @@ It owns:
   `punch-builder` (its two engineers) and `punch-release-captain` (the three
   Ship fan-out specialists, report-only leaves) list sub-agents. Every other
   agent — including `punch-code-reviewer`, `punch-test-engineer`, and
-  `punch-security-auditor` — carries `agents: []`; reference search and diff
-  pre-scan happen inline, not via a spawned worker. Canon:
-  [`agent-guards.md`](../../../docs/ai/agent-guards.md).
+  `punch-security-auditor` — carries no `agent` tool and no `agents:` key;
+  reference search and diff pre-scan happen inline, not via a spawned worker.
+  Canon: [`agent-guards.md`](../../../docs/ai/agent-guards.md).
+- Frontmatter validity: if `agents:` is present, `agent` must be in `tools:`
+  — an agent with no `agent` tool must omit the `agents:` key entirely
+  rather than declare it empty.
 - The duplication-detection pass — no rule restated across files.
 - The **canon adopt-adapt parity** report: which `.ai-upstream` canon skills
   are adopted untouched, adapted-in-place, or unadopted — and which adaptations
@@ -165,9 +168,7 @@ the `.ai-upstream/agent-skills/skills/` canon and recommends prefixing; it
 **never renames, edits, or deletes**. The mechanical comparison runs read-only
 under the AI Governance agent's terminal
 (`git diff --no-index <canon> <adapted>` / `diff -rq`); decision authority is
-this skill. Surfaced as the optional canon-parity sub-check of the AI-Skills
-step in [`/punch-init`](../../prompts/punch-init.prompt.md) (canon absent →
-`canon-unavailable`, never a block).
+this skill (canon absent → `canon-unavailable`, never a block).
 
 **Precondition (user-required).** `.ai-upstream/**` is gitignored local upstream
 staging and may be absent. This report **does not** fetch or refresh it —

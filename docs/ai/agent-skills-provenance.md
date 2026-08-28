@@ -29,7 +29,7 @@ or writes this file.**
 | Skill (upstream slug) | Mapped Punch asset | Disposition |
 |---|---|---|
 | `api-and-interface-design` | — | unadopted (deferred — no recurring interface-design decision yet) |
-| `browser-testing-with-devtools` | `punch-browser-testing-with-devtools` | adopted (deferred until a Plan enables a browser-capable image/service/test/evidence path) |
+| `browser-testing-with-devtools` | *(none — retired 2026-08-28)* | **retired** — was adopted, then stayed permanently dormant (zero `.github/` activation reference; its sole target `browser-smoke.ts.example` stays a deferred placeholder per CLAUDE.md). Deleted rather than kept as dead weight; see `skill-registry.md`. |
 | `ci-cd-and-automation` | — | unadopted (irrelevant-to-Punch — CI/CD external to Punch by design) |
 | `code-review-and-quality` | `punch-code-review-and-quality` | adopted |
 | `code-simplification` | `punch-code-review-and-quality` (readability/simplicity axis) | superseded-by-Punch — absorbed, standalone skill retired (Plan G-08) |

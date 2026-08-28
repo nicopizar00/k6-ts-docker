@@ -9,13 +9,14 @@ Describe the change and why it is needed.
 
 ## How to verify
 
-- Commands to run locally: `./bin/punch run smoke`
-- Files to check: reports/* and reports/state/punch-run.json (the canonical run evidence — `passed: true` gates the change)
+Per the [evidence matrix](../docs/workflows/validation.md):
+
+- **Runtime-affecting change** — commands to run locally: `./bin/punch run smoke`. Files to check: reports/* and reports/state/punch-run.json (`passed: true` gates the change).
+- **Documentation/Copilot-only change** — no runtime run expected; verify via diff review + a clean `punch-ai-governance` pass.
 
 ## Checklist
 
-- [ ] Ran `./bin/punch run smoke` inside Docker (no host `npm`/`k6`/`pip` required)
-- [ ] Artifacts produced in `reports/`, with `reports/state/punch-run.json` recording `passed: true`
+- [ ] Runtime-affecting: ran `./bin/punch run smoke` inside Docker (no host `npm`/`k6`/`pip` required), artifacts produced in `reports/`, `reports/state/punch-run.json` shows `passed: true` — **or** Documentation/Copilot-only: no Build step needed, `punch-ai-governance` ran clean
 - [ ] If `src/tests/` changed: dist bundles and CI steps updated
 - [ ] If schema or DB changed: migration/seed steps included
 - [ ] Docs updated (README / CHANGELOG.md) when behavior or public interfaces change

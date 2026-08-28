@@ -1,9 +1,9 @@
 # Prompt Registry
 
-Punch have **eight** prompts — one per lifecycle phase (Spec, Plan, Build, Test,
+Punch have **seven** prompts — one per lifecycle phase (Spec, Plan, Build, Test,
 Review, Ship; `punch-test` is the Test/verification phase, addyosmani `/test`),
 plus `punch-document` (recurring doc-reconciliation phase, orthogonal to linear
-lifecycle), and `punch-init` (one-time bootstrap/adoption guard before lifecycle).
+lifecycle).
 Spec absorb former Define phase. Each prompt have single, well-defined entry point.
 See `.github/prompts/` for prompt bodies.
 
@@ -18,7 +18,6 @@ See `.github/prompts/` for prompt bodies.
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-code-reviewer` | Test passed; audit diff before Ship. |
 | [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-release-captain` | Review approved; commit, push, open PR. **Never merges.** |
 | [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Remediate doc debt + AI-artifact lifecycle in waves: verify inherited artifacts (untrusted by default), then keep / merge / compact / convert / promote / archive / delete / review. Native `/graphify` (if run) is optional supplementary evidence only — never built, updated, or owned here. |
-| [`punch-init`](../../.github/prompts/punch-init.prompt.md) | Init (bootstrap, on-demand) | Ask (read-only asset sweep) | `punch-ai-governance` (enforced) | Certify the GitHub Copilot asset set (prompts, agents, skills, instructions) is present, `punch-`prefixed, and Copilot-compatible, plus an informational capability check for the optional AI-Ingest Caveman vendor skill. Reports PASS/WARN/BLOCKED; hands reconciliation to `/punch-document`. No runtime, no Python. |
 
 ## One prompt per phase
 
@@ -74,7 +73,7 @@ skill check phase / domain not already covered and file follow this contract.
 
 ## Why not more prompts
 
-Eight prompts cover whole lifecycle. Each extra prompt one more interface to
+Seven prompts cover whole lifecycle. Each extra prompt one more interface to
 maintain, one more place for guidance to drift. Add new prompt only when:
 
 - Real recurring task fit no existing phase, **and**

@@ -19,7 +19,6 @@ VS Code GitHub Copilot Chat template. Export = copy-paste `.github/` +
 |------|------------------|
 | `copilot-instructions.md` | `.github/copilot-instructions.md` (the hub) |
 | `instructions/governance.instructions.md` | `.github/instructions/` (spoke, `applyTo: '**'`) |
-| `prompts/punch-init.prompt.md` | `.github/prompts/` (AI governance agent) |
 
 ### `resolve/` — snapshot mirrors of out-of-bundle repo docs (self-resolutive)
 
@@ -27,9 +26,9 @@ On export, repo docs referenced from outside `.github/` + `docs/ai/` break.
 `resolve/` mirrors those paths so the bundle stays **self-resolutive and
 resilient**: the bundle needs only `.github/` · `docs/ai/` · `.ai-upstream/` ·
 `resolve/`, nothing external. Mirrors are **minimal caveman-wenyan snapshots**
-(not real content; humans fill / replace on adopt). `/punch-init` certifies this
-mirror set covers every out-of-bundle link (see the resolve gate in
-`prompts/punch-init.prompt.md`).
+(not real content; humans fill / replace on adopt). Coverage of the
+`resolve/` table against every out-of-bundle link is a **manual check on
+export** — human confirms the table below before adopting the bundle.
 
 | Out-of-bundle target (ref count) | resolve/ snapshot |
 |--------------------|------------------------|
@@ -44,8 +43,7 @@ carry detail. Change the spoke, never restate.
 ## Out of scope (not in template · not certified)
 
 Template covers only **VS Code GitHub Copilot** assets in settled state. These
-classes are **excluded from the template, not counted by `/punch-init`, not
-certified**:
+classes are **excluded from the template, not certified**:
 
 - **WIP / draft docs** — unsettled plans and drafts. Not mirrored, not
   resolved, not fixed.
@@ -54,5 +52,5 @@ certified**:
   external, official guides apply, humans install locally.
 
 > ⚠ Broken links in these classes stay unresolved on export **by design** — not
-> a template defect. The `/punch-init` resolve gate certifies only the
-> out-of-bundle links in the `resolve/` table above.
+> a template defect. Coverage of the `resolve/` table above is a manual human
+> check on export, not automated.

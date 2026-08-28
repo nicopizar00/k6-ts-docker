@@ -45,7 +45,6 @@ Each artifact ends with **gate** — don't advance until met.
 - **Canon.** These + `../templates/lifecycle/` = canonical output *shapes*;
   `.github/prompts/` files stay behavior source of truth.
 - **`/punch-document`** maintains them as canon (lean; `lite`/`full`, never Wenyan).
-- **`/punch-init`** detects them as `lifecycle_templates` readiness signal.
 
 Evidence = real output, host paths → `<repo-root>`; no secrets
 (`gateway-api:3000` = in-network Compose service). Regenerate via

@@ -68,9 +68,9 @@ Completed tasks:
   - <task ID — one-line goal>
   - ...
 
-Validation status:
-  - reports/state/punch-run.json: passed: <bool>
-  - Tests run: <list>
+Validation status (per the [evidence matrix](../../docs/workflows/validation.md)):
+  - Runtime-affecting: reports/state/punch-run.json: passed: <bool>; tests run: <list>
+  - Documentation/Copilot-only: punch-ai-governance pass: <clean|findings> (no punch-run.json expected)
   - Pre-ship fan-out (fresh|reused): punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
 
 Known risks:

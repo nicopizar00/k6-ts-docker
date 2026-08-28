@@ -8,15 +8,22 @@ applies-to: src/tests/**, lifecycle/Test+Build — backs punch-test and the punc
 
 ## In Punch
 
-This is the **method** behind [`punch-test`](../../prompts/punch-test.prompt.md)
-(the RED→GREEN Test/verification phase, agent `punch-test-engineer`) and the `punch-build`
-prompt (k6 tasks → `punch-performance-test-engineer`). Punch redefines "test":
+This is the **method** behind the `punch-build` prompt (k6 tasks →
+`punch-performance-test-engineer`) and [`punch-test`](../../prompts/punch-test.prompt.md)
+(the independent Test/verification gate, agent `punch-test-engineer`). **Test
+follows Build, it never wraps it:** Build lazy-loads this skill and produces
+the RED-then-GREEN cycle itself while implementing; `punch-test` runs
+strictly after, inspecting Build's recorded RED evidence and independently
+rerunning to confirm GREEN — it returns **BLOCKED** if a behavioral change
+lacks convincing RED evidence, rather than authoring that evidence itself.
+Punch redefines "test":
 
 - A **test = a k6 `check()` or a threshold** in `src/tests/*.ts`, run via
   `./bin/punch run <test>`; **proof = `reports/state/punch-run.json`
-  (`passed: true`)** — never `npm test`. Authoring the check is a Build task;
-  running and judging it is the `punch-test` gate (`punch-test-engineer`); the
-  builder may lazy-load this skill while building but is not the final authority.
+  (`passed: true`)** — never `npm test`. Authoring the check *and* the RED→GREEN
+  cycle is a Build task (this skill, lazy-loaded); `punch-test`
+  (`punch-test-engineer`) is the final, independent authority that verifies it
+  after the fact — it does not run alongside or inside Build.
 - **Test levels** are Punch's k6 categories: **smoke** (health), **gate** (perf
   threshold), **journey** (create→read→validate). Unit tests are a *complement,
   not a replacement* for runtime-contract validation (`copilot-instructions.md`).
@@ -83,13 +90,14 @@ change to confirm nothing broke.
 
 ## The Prove-It Pattern (bug fixes)
 
-Don't start by fixing. Start by reproducing with a failing check — this is exactly
-what `punch-test` drives:
+Don't start by fixing. Build starts by reproducing with a failing check;
+`punch-test` then inspects and independently reconfirms both ends:
 
 ```
-Bug report ─► write a check/threshold that FAILS (bug confirmed)
+Bug report ─► Build writes a check/threshold that FAILS (bug confirmed, RED recorded)
            ─► Build implements the fix
-           ─► ./bin/punch run shows passed: true (fix proven, regression guarded)
+           ─► Build's ./bin/punch run shows passed: true
+           ─► punch-test inspects the RED evidence, independently reruns ─► GREEN confirmed
 ```
 
 ## Writing Good Checks (general principles, applied to k6)
@@ -138,4 +146,7 @@ After completing any test-driven change:
 - [ ] Every new behavior has a k6 check or threshold that **failed before** the change.
 - [ ] `./bin/punch run <test>` produced `reports/state/punch-run.json` with `passed: true`.
 - [ ] Bug fixes include a RED→GREEN reproduction (via `punch-test`).
-- [ ] Checks/thresholds are deterministic; no host `k6`/`npm` was used.
+- [ ] Checks/thresholds are deterministic; no host `k6`/`npm` was used —
+  except `punch-performance-test-engineer`'s documented authoring exception
+  ([ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)),
+  which is never the evidence path.

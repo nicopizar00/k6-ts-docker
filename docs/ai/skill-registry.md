@@ -37,7 +37,6 @@ for method. Multiple apply (k6 change uses `punch-k6-testing` +
 | coding against a k6/Docker/Postgres API | `punch-source-driven-development` |
 | a gate/journey threshold regressed | `punch-performance-optimization` (+ `punch-k6-testing`) |
 | instrumenting a service (logs/events) | `punch-data-harvest` (Observability discipline section) |
-| writing a k6 Browser test (Plan task) | `punch-browser-testing-with-devtools` (+ `punch-k6-testing`) |
 | auditing AI config | `punch-ai-governance` |
 
 ## Domain skills (six — capped)
@@ -106,15 +105,17 @@ win on stack specifics; lifecycle skill supplies method, not stack rules.
 | [`punch-doubt-driven-development`](../../.github/skills/punch-doubt-driven-development/SKILL.md) | Fresh-context adversarial review of non-trivial/high-stakes decisions | Plan + Build (on-demand) | `.github/skills/punch-doubt-driven-development/SKILL.md` |
 | [`punch-source-driven-development`](../../.github/skills/punch-source-driven-development/SKILL.md) | Ground framework code (k6/Docker/Postgres) in official docs + cite | Build (on-demand) | `.github/skills/punch-source-driven-development/SKILL.md` |
 | [`punch-performance-optimization`](../../.github/skills/punch-performance-optimization/SKILL.md) | Measure-first k6 perf work; threshold-RED → fix backend bottleneck → re-run → guard | Build/Test (on threshold regression) | `.github/skills/punch-performance-optimization/SKILL.md` |
-| [`punch-browser-testing-with-devtools`](../../.github/skills/punch-browser-testing-with-devtools/SKILL.md) | Method for k6 Browser tests via `./bin/punch` (placeholder stays deferred until a Plan task) | Build/Test (k6 Browser task only) | `.github/skills/punch-browser-testing-with-devtools/SKILL.md` |
 
 Phase 3 of the absorption plan (Tier-A +
 P3 set) **complete** — every lifecycle skill above absorbed and registered.
 **Phase 6 originally folded** `context-engineering`→`punch-context-engineering`
 (still folded); `punch-performance-optimization` and `punch-observability-and-instrumentation`
 were folded then **promoted back to standalone** lifecycle skills (per owner
-direction), and `punch-browser-testing-with-devtools` **adopted** — adapted to
-Punch (k6/Docker, no frontend). `punch-observability-and-instrumentation` was
+direction). `punch-browser-testing-with-devtools` was adopted, adapted to
+Punch (k6/Docker, no frontend), then **retired** (2026-08-28) — zero `.github/`
+activation reference was ever wired in, and its sole target
+(`browser-smoke.ts.example`) stays a deferred placeholder per CLAUDE.md, so
+there was nothing left for it to gate. `punch-observability-and-instrumentation` was
 **re-folded and retired** (Spec `spec-agent-skills-adopt-adapt-optimization.md`,
 Plan task G-07) — its guidance now lives entirely in `punch-data-harvest`'s
 "Observability discipline" section; one canonical owner instead of two
@@ -136,7 +137,7 @@ applies). Each row states which.
 | Skill | What it provides | Reused from | Defined in |
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of any corpus (code, docs, media) into a queryable graph with community detection — explicit-only (`/graphify`), never auto-loaded. **Native upstream skill — adopted, not Punch-authored**; only `user-invocable`/`disable-model-invocation` frontmatter added | upstream [`Graphify-Labs/graphify`](https://github.com/Graphify-Labs/graphify), installed via `uv tool install graphifyy` — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
-| `caveman` (canonical install, Copilot project-skill location) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; default `lite` for VS Code GitHub Copilot Chat prose (rule in `copilot-instructions.md`). Installer drops it at `.agents/skills/caveman/`; Punch relocates it once to `.github/skills/caveman/` (only `user-invocable`/`disable-model-invocation` frontmatter added — no other change) | upstream `caveman` — official installer, relocated | `.github/skills/caveman/SKILL.md` |
+| `caveman` (canonical install, Copilot project-skill location) | Upstream Caveman skill, explicit-only — invoked as `/caveman lite\|full\|ultra\|wenyan-*` for VS Code GitHub Copilot Chat prose, normal prose otherwise (rule in `copilot-instructions.md`). Installer drops it at `.agents/skills/caveman/`; Punch relocates it once to `.github/skills/caveman/` (only `user-invocable`/`disable-model-invocation` frontmatter added — no other change) | upstream `caveman` — official installer, relocated | `.github/skills/caveman/SKILL.md` |
 
 `graphify` is explicit-only (`/graphify`), never auto-loaded for unrelated
 work; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -151,16 +152,17 @@ authored-canon checks), same pattern as `graphify`: the upstream installer has
 no notion of `.github/skills/`, so it still drops `caveman` at
 `.agents/skills/caveman/` — Punch performs one manual relocate step (move +
 add the two frontmatter fields) immediately after install; the pinned upstream
-body otherwise stays byte-identical. Its default-`lite` voice rule for VS Code
-GitHub Copilot Chat lives directly in `copilot-instructions.md` — no separate
-Punch presentation-adapter skill.
+body otherwise stays byte-identical. Its explicit-only activation rule
+(defaults to `lite` once invoked) for VS Code GitHub Copilot Chat lives
+directly in `copilot-instructions.md` — no separate Punch presentation-adapter
+skill.
 Other auxiliary upstream packs (`caveman-compress` with host Python scripts,
 `caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep the install
 Copilot-scoped and Docker-First-minimal. The vendor `cavecrew` skill was
 evaluated and **retired** — its worker pattern added coordination overhead
 without a demonstrated benefit at this repo's scale; Review/Test/Security
-coordinators perform reference search and diff pre-scan inline instead
-(`agents: []`).
+coordinators perform reference search and diff pre-scan inline instead —
+none of the three carry an `agent` tool.
 
 ## Why these are still deferred (not created)
 
@@ -172,7 +174,8 @@ coordinators perform reference search and diff pre-scan inline instead
 | `punch-(define\|spec\|plan\|build\|verify\|review\|ship)` | **Phases are prompts and agents, not skills** — never create `punch-<phase>` skill. Phase prompt may *activate* lifecycle method skill (e.g. `punch-spec` → `punch-spec-driven-development`); phase stays prompt+agent, method is skill. |
 | `context-engineering` (upstream) | **Folded** — transferable method lives in `punch-context-engineering`. (`punch-observability-and-instrumentation` + `punch-performance-optimization` were folded but are now **standalone** — see Lifecycle table.) |
 | `ci-cd-and-automation` (upstream) | **Excluded** — CI/CD external to Punch (`punch-architecture.instructions.md`); npm/Prisma/Playwright stack doesn't fit. |
-| `frontend-ui-engineering`, `webperf`, `web-performance-auditor` (upstream) | **Excluded** — Punch has no frontend. (`punch-browser-testing-with-devtools` is **adopted**, adapted to k6 Browser — see Lifecycle table.) |
+| `frontend-ui-engineering`, `webperf`, `web-performance-auditor` (upstream) | **Excluded** — Punch has no frontend. |
+| `browser-testing-with-devtools` (upstream) | **Deferred (retired 2026-08-28)** — adopted once for future k6 Browser tests, but its only target (`browser-smoke.ts.example`) stays an explicitly deferred placeholder per CLAUDE.md and it never got a single `.github/` activation reference. Re-adopt if a Plan ever actually enables k6 Browser. |
 | `interview-me` (upstream) | **Deferred** — overlaps `punch-spec-driven-development`'s absorbed clarify step, which already owns pre-Spec intent extraction. Second "refine" skill would split one decision domain (absorption matrix §A, P3). |
 | `shipping-and-launch` (upstream) | **Deferred** — name and deploy/rollback model clash with Punch's deliberately mechanical, human-gated `punch-ship`; go/no-go decision lives in Review phase (`punch-code-review-and-quality`), not a skill. |
 | `api-and-interface-design` (upstream) | **Deferred** — Punch's only interface surface is gateway/orders HTTP contract, already governed by `punch-compose-runtime` + `punch-security-and-hardening`. No recurring interface-design decision yet (absorption matrix §A, P3). |

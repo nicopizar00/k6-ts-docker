@@ -14,7 +14,7 @@ repo. Operating-model details: [`docs/ai/operating-model.md`](../../docs/ai/oper
 | Spec     | Ask | spec doc only (if any) | broad |
 | Plan     | Ask (Plan discipline) | plan doc only (if any) | broad |
 | Build    | Agent (scoped) | allowed paths only | allowed + read-only |
-| Test     | Agent / Ask | only patches in scope | narrow |
+| Test     | Agent / Ask | none | narrow |
 | Review   | Ask | none | the diff + plan |
 | Ship     | Agent (mechanical only) | git + gh only | the diff |
 
@@ -27,8 +27,10 @@ Spec absorbs former Define phase (opens with clarify/refine step).
 - **Build is edit-limited.** Every Build prompt declares allowed /
   read-only / forbidden paths. Agent refuses touch anything
   outside `allowed`.
-- **Test runs project commands.** Prefer `./bin/punch` over ad-hoc
-  `docker run` or host `k6`. See
+- **Test follows Build, never wraps it, and never edits.** Prefer `./bin/punch`
+  over ad-hoc `docker run` or host `k6`; inspect Build's recorded RED
+  evidence and independently rerun for GREEN — BLOCKED, not authored, when
+  RED evidence is required but missing. See
   [`punch-test`](../prompts/punch-test.prompt.md).
 - **Review evaluates risk, correctness, boundary violations.**
   Read-only critique against Plan. Activates

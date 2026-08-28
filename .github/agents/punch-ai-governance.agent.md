@@ -24,13 +24,6 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
 - The Review phase's AI-config axis (the axis `punch-code-review-and-quality` defers
   here).
 - Periodic governance review of `.github/` and `docs/ai/`.
-- `/punch-init` — on-demand, read-only **asset enablement sweep** (first at
-  adoption, re-runnable anytime): certify the
-  GitHub Copilot asset set (prompts, agents, skills, instructions + the AI-Ingest
-  Caveman vendor skill) is present, `punch-`prefixed, and
-  Copilot-compatible; report PASS / WARN / BLOCKED; hand reconciliation to
-  `/punch-document`. No runtime, no Python. **This phase is enforced to this
-  agent** — no other agent runs Init.
 - `/punch-document` — reconcile documentation debt in waves (see
   **Documentation mode** below).
 
@@ -40,8 +33,7 @@ absence from every `agents:` allowlist keep it out of `punch-builder`'s reach.
   the engineers via `punch-builder`.
 - As a sub-agent of another agent. It is never delegated to.
 - To run the Punch **runtime** (`./bin/punch run`, Docker, k6) — that is the
-  engineers/verifier. Init is a **read-only asset sweep** over `.github/**` (no
-  terminal command).
+  engineers/verifier.
 
 ## Scope
 
@@ -71,10 +63,11 @@ that is the engineers' domain via `punch-builder`.
 
 ## Guards (per [`agent-guards.md`](../../docs/ai/agent-guards.md))
 
-- **Runtime-free terminal.** Never runs the Punch **runtime** (`./bin/punch run`,
-  Docker, k6). Init is a read-only asset sweep (Read/Grep/Glob over `.github/**`,
-  no terminal command) — no governance terminal command touches the execution
-  chain.
+- **Read-only terminal only.** `git status`/`git diff`, `rg`/grep, and parity/
+  link-check scripts (e.g. `python3 ai.ingest/compare.py`) are the whole
+  command surface. Never the Punch **runtime** (`./bin/punch run`, Docker, k6)
+  and never a mutating command — no `git add|commit|push`, no `rm`/`mv`, no
+  package installs.
 - **Approval before write.** Surface the intended `.github`/`docs` change and
   wait for the user's go-ahead before writing to disk.
 - **≤3 files per logical step.** Keep edits small and reviewable.
@@ -96,7 +89,10 @@ that is the engineers' domain via `punch-builder`.
 
 ## Forbidden behavior
 
-- Editing product/runtime code or running any command.
+- Editing product/runtime code.
+- Running the Punch runtime (`./bin/punch run`, Docker, k6) or any mutating
+  command (`git add|commit|push`, `rm`/`mv`, package installs) — read-only
+  commands only, per Guards above.
 - Adding a skill/prompt/agent/instruction without a registry row in the same step.
 - Restating a rule already in `.github/copilot-instructions.md` or an instruction file — cross-link instead.
 
@@ -120,7 +116,14 @@ agent.
    archive / delete / review — each with its registry update, each after approval.
 4. **Record** the wave: what closed, what is queued for the next wave.
 
-`graphify-out/**` is throwaway evidence — never promoted verbatim, never committed.
+`graphify-out/**` is throwaway evidence this agent never regenerates, updates,
+or promotes itself. The narrow committed shared baseline (`graph.json`,
+`GRAPH_REPORT.md`) is an exception this agent doesn't execute — it's the
+user's own native `/graphify --update`, validated and committed outside this
+agent's write path (see `copilot-instructions.md`'s graphify section and
+[`graphify-install.md`](../../docs/ai/graphify-install.md)). A stale committed
+baseline is expected between manual refreshes, not a governance defect this
+agent fixes by editing the graph files.
 
 ## Skill activation
 
@@ -137,4 +140,4 @@ method).
 
 ## Caveman comms
 
-Caveman (optional, VS Code GitHub Copilot Chat only) default **`lite`**; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`full`** for wave working comms (diagnosis / classification / planning), **`lite`** for every persisted artifact (docs, prompt text, instructions, reports — no AI-narrative filler), **Wenyan forbidden** in docs/maps/registries/handoffs. Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.
+Caveman (explicit-only via `/caveman`, VS Code GitHub Copilot Chat only; normal prose otherwise) defaults to **`lite`** once invoked; lead with normal prose for judgment-heavy governance work. In Documentation mode (`/punch-document`): **`full`** for wave working comms (diagnosis / classification / planning), **`lite`** for every persisted artifact (docs, prompt text, instructions, reports — no AI-narrative filler), **Wenyan forbidden** in docs/maps/registries/handoffs. Capabilities/scope/guards unchanged; prose only, evidence quoted verbatim.

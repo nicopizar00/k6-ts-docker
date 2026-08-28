@@ -25,7 +25,7 @@ Single sentence whole operating model shaped around.
 | Spec     | Clarify/refine request (former Define), then translate into goals, non-goals, constraints | Ask | Only spec doc, if requested |
 | Plan     | Produce scoped tasks with allowed / read-only / forbidden paths | Ask (Plan discipline) | Only plan doc, if requested |
 | Build    | Implement one approved task within declared scope | Agent (scoped) | Yes — only allowed paths |
-| Test     | Run official Punch commands, confirm evidence (`punch-test` RED→GREEN) | Agent / Ask | Only if patching change |
+| Test     | Follows Build (never wraps it); inspects recorded RED evidence, independently reruns for GREEN, `punch-test` verdict | Agent / Ask | None |
 | Review   | Read-only critique of diff against plan | Ask | No |
 | Ship     | Commit, push, open PR; **human merges** | Agent (mechanical only) | Yes (git/gh only) |
 
@@ -34,7 +34,6 @@ Single sentence whole operating model shaped around.
 | Prompt | Purpose | Owner |
 |---|---|---|
 | `punch-document` | Reconcile documentation debt and inherited AI artifacts in waves | `punch-ai-governance` |
-| `punch-init` | Read-only Copilot asset enablement sweep before lifecycle adoption | `punch-ai-governance` |
 
 Each phase and maintenance prompt has a matching entry under `.github/prompts/`.
 See [`prompt-registry.md`](prompt-registry.md) for the live inventory.
@@ -65,8 +64,11 @@ by shared [`agent-guards.md`](agent-guards.md) discipline.
   artifact. Build refuse to edit files outside plan's allowed list.
 - **Build is scoped.** Each Build prompt declares allowed / read-only /
   forbidden paths. Scope expansion → stop, return to Plan.
-- **Test uses official Punch commands.** No ad-hoc `docker run`. No host
-  `k6` or `npm`. See [`docs/architecture/punch-boundaries.md`](../architecture/punch-boundaries.md).
+- **Test uses official Punch commands (Test phase only).** No ad-hoc `docker
+  run`. No host `k6` or `npm` — this is the independent `punch-test-engineer`
+  gate; it does not narrow Build's separate, scoped
+  `punch-performance-test-engineer` authoring exception (Rule 1). See
+  [`docs/architecture/punch-boundaries.md`](../architecture/punch-boundaries.md).
 - **Ship is mechanical only.** Commits, push, `gh pr create`. No merges, no
   tags, no force pushes, no skipping hooks.
 

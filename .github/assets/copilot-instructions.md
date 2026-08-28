@@ -5,7 +5,6 @@
 此乃中樞（hub）。凡 GitHub Copilot VS Code session 皆讀。細則居輻（spoke），下連之：
 
 - 治理輻：[`instructions/governance.instructions.md`](instructions/governance.instructions.md)（`applyTo: '**'`）
-- 啟引：[`prompts/punch-init.prompt.md`](prompts/punch-init.prompt.md)
 
 ## 綱（核心戒律）
 

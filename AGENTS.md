@@ -67,16 +67,17 @@ Available agents
 | punch-code-reviewer | Review verdict owner — five-axis | Review |
 | punch-security-auditor | Security audit — on-demand specialist | Review security axis |
 | punch-release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
-| punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Init, Document |
+| punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Document |
 
 Definitions live in .github/agents/*.agent.md.
 
 **Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists only its
 two engineers; `punch-release-captain` (Ship) fans out to the three specialists
 as report-only leaves. `punch-code-reviewer` / `punch-test-engineer` /
-`punch-security-auditor` carry `agents: []` too — reference search and diff
-pre-scan happen inline, not via a spawned worker. Engineers carry
-`agents: []` — non-spawning leaves. `punch-ai-governance` is user-direct
+`punch-security-auditor` carry no `agent` tool either — reference search and diff
+pre-scan happen inline, not via a spawned worker. Engineers carry no `agent`
+tool — non-spawning leaves, and are `user-invocable: false` (Builder-routed
+only). `punch-ai-governance` is user-direct
 (`disable-model-invocation: true`), in no `agents:` allowlist.
 
 **Vendor agent-skills personas, adopted-adapted to Punch** (Punch-named, own their
@@ -91,11 +92,11 @@ Available skills
 
 Skills come in two kinds: **domain skills** (one per Punch subsystem — context-engineering, python-orchestration, compose-runtime, k6-testing, data-harvest, ai-governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review-and-quality, git-workflow, docs/ADRs, security, doubt-driven, source-driven, performance-optimization, browser-testing). Code simplification, idea refinement, observability, and skill-discovery meta-routing were absorbed into their phase owners and retired as standalone skills — see [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md).
 
-The authoritative register (all 19, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
+The authoritative register (all 20, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
 
 Lifecycle entry points
 
-The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (8 prompts: spec, plan, build, test, review, ship, document, init — no separate verify prompt; `punch-test` is the Test/verification phase). `punch-init` (bootstrap/adoption guard) and `punch-document` (doc reconciliation) are orthogonal phases, both enforced to `punch-ai-governance`.
+The phase → prompt → agent → mode mapping is tabled in .github/copilot-instructions.md and docs/ai/prompt-registry.md (7 prompts: spec, plan, build, test, review, ship, document — no separate verify prompt; `punch-test` is the Test/verification phase). `punch-document` (doc reconciliation) is the orthogonal phase, enforced to `punch-ai-governance`.
 
 Rules for AI assistants
 
@@ -125,7 +126,7 @@ for any other host. See [`.github/copilot-instructions.md`](.github/copilot-inst
 
 Claude Code reuse (Guard bridge)
 
-GitHub Copilot VS Code is the primary host; `.github/` is the single source of truth. When the repo is opened in Claude Code, the project-scoped `guard` skill (`.claude/skills/guard/SKILL.md`) and thin command wraps (`.claude/commands/{spec,plan,build,test,review,ship,document,init}.md`) **reuse** the canonical `.github/` prompts/agents/skills — they never fork, duplicate, or override them. Rules change in `.github/` (Copilot First), never only in `.claude/`. See ADR 0004.
+GitHub Copilot VS Code is the primary host; `.github/` is the single source of truth. When the repo is opened in Claude Code, the project-scoped `guard` skill (`.claude/skills/guard/SKILL.md`) and thin command wraps (`.claude/commands/{spec,plan,build,test,review,ship,document}.md`) **reuse** the canonical `.github/` prompts/agents/skills — they never fork, duplicate, or override them. Rules change in `.github/` (Copilot First), never only in `.claude/`. See ADR 0004.
 
 For deeper reading
 

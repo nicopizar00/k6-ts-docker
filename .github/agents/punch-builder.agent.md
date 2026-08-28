@@ -2,17 +2,8 @@
 name: punch-builder
 description: Primary Build router for the Punch repository. Classifies an approved Plan task, selects the right engineer sub-agent, delegates execution, and returns verifiable evidence. Use for implementing/verifying Punch changes across Python orchestration, Docker Compose runtime, k6 HTTP/Browser performance tests, and runtime data harvest.
 argument-hint: "<approved Plan task: goal, files, task ID>"
-tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/getTerminalOutput', 'execute/runTask', 'agent']
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
 agents: ['punch-runtime-engineer', 'punch-performance-test-engineer']
-handoffs:
-  - label: Runtime Engineering
-    agent: punch-runtime-engineer
-    prompt: Continue from the current Punch Builder context. Focus only on Python orchestration, Docker Compose runtime, subprocess execution, logs, artifacts, and runtime boundaries. Preserve Punch architecture rules and return evidence.
-    send: false
-  - label: Performance Test Engineering
-    agent: punch-performance-test-engineer
-    prompt: Continue from the current Punch Builder context. Focus only on k6 HTTP/Browser performance testing, thresholds, scenarios, the TS/esbuild bundle toolchain, runtime evidence, and data-harvest wiring. Preserve Punch architecture rules and return evidence.
-    send: false
 user-invocable: true
 ---
 
@@ -66,13 +57,15 @@ the final build handoff. It never invokes lifecycle gates (`/test`, `/review`,
 
 ## Guards
 
-Builder calls one engineer per task. Approval before writes; stop after 2
-consecutive failures and return to Plan. Records, per build: files changed,
-tests run, build/typecheck/lint command, failures, commits.
+Builder calls one engineer per task; Builder itself has no `edit`/terminal
+tool, so every write and every command runs through that engineer. Approval
+before writes; stop after 2 consecutive failures and return to Plan. Records,
+per build: files changed, tests run, build/typecheck/lint command, failures,
+commits.
 
 ## Testing (lazy — not the final authority)
 
-Builder (and its engineers) may lazy-load
+The delegated engineer (not Builder itself) may lazy-load
 [`punch-test-driven-development`](../skills/punch-test-driven-development/SKILL.md) while
 building. Testing obligations only:
 

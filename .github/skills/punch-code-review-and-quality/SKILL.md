@@ -23,8 +23,11 @@ This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt
   ([`punch-architecture.instructions.md`](../../instructions/punch-architecture.instructions.md))
   and [`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md) — a Build
   diff that left its allowed paths is a finding.
-- **Evidence:** the verification axis checks `reports/state/punch-run.json`
-  (`passed: true`), not "tests pass" in the abstract.
+- **Evidence:** the verification axis checks the diff's change class against
+  the canonical [evidence matrix](../../../docs/workflows/validation.md) —
+  Runtime-affecting needs `reports/state/punch-run.json` (`passed: true`);
+  Documentation/Copilot-only needs a clean `punch-ai-governance` pass instead,
+  not an absent test run treated as a gap.
 
 ## Overview
 
@@ -106,8 +109,9 @@ is an *integration task* = one Build call per layer (see `scoped-build-policy.md
 | **Optional:/Consider:** | Suggestion | Worth considering |
 | **FYI** | Informational | No action |
 
-5. **Verify the verification** — what `./bin/punch` commands ran; is
-   `reports/state/punch-run.json` present with `passed: true`?
+5. **Verify the verification** — per the [evidence matrix](../../../docs/workflows/validation.md):
+   Runtime-affecting diffs need `reports/state/punch-run.json` (`passed: true`);
+   Documentation/Copilot-only diffs need a clean `punch-ai-governance` pass instead.
 
 ## Dead Code Hygiene
 
@@ -152,6 +156,5 @@ After review:
 
 - [ ] All Critical/required issues resolved (or explicitly deferred with justification).
 - [ ] Boundary + scope compliance checked against the Plan and ownership map.
-- [ ] `reports/state/punch-run.json` shows `passed: true`.
-- [ ] If the diff touched `.github/`/`docs/ai/`, `punch-ai-governance` ran clean.
+- [ ] Change class's [evidence matrix](../../../docs/workflows/validation.md) bar met: Runtime-affecting → `reports/state/punch-run.json` shows `passed: true`; Documentation/Copilot-only → `punch-ai-governance` ran clean.
 - [ ] Verdict recorded: **Approve** or **Request changes**.

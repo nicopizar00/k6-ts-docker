@@ -90,29 +90,21 @@ the helper genuinely needs a third caller). Report:
 - **Browser is deferred.** Do not enable k6 Browser in built tests without
   a Plan that accepts the image-size / build-time / CI-cost trade.
 
-## Optimization method (folded from upstream `punch-performance-optimization`)
+## Optimization method
 
-Punch's performance surface is **k6 HTTP load against the reference services** —
-not Core Web Vitals, React re-renders, or bundle size (no frontend). The
-transferable method:
-
-- **Measure before optimizing.** The threshold + the run *is* the measurement;
-  don't guess. No premature optimization.
-- **Loop: measure → identify the bottleneck → fix → re-run → guard.** The guard is
-  a threshold/check that fails if the regression returns.
-- **Backend bottlenecks that apply here:** N+1 or unbounded queries in `orders` →
-  Postgres; missing pagination on list endpoints; synchronous heavy work in a hot
-  path. Profile the slow path — don't relax the threshold (see
-  [`punch-debugging-and-error-recovery`](../punch-debugging-and-error-recovery/SKILL.md)).
-- **The threshold is the performance budget** and the regression gate — keep it
-  visible at the top of the test and meaningful.
+When a gate/journey threshold regresses, the measure → identify → fix →
+re-run → guard method (and the backend-bottleneck playbook for this repo's
+services) lives in
+[`punch-performance-optimization`](../punch-performance-optimization/SKILL.md)
+— don't restate it here.
 
 ## Local-first smoke gate (host k6, via npm/pnpm)
 
 A quick **CI/CD-style gate** to confirm a k6 load test actually runs on the local
-machine **before** standing up the layered Docker orchestration. Primary consumer:
-[`punch-performance-test-engineer`](../../agents/punch-performance-test-engineer.agent.md);
-any agent may use it. Wired into the npm/pnpm lifecycle as a script:
+machine **before** standing up the layered Docker orchestration. Sole consumer:
+[`punch-performance-test-engineer`](../../agents/punch-performance-test-engineer.agent.md)
+— the one agent carrying [ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)'s
+host-`npm`/`k6` exception; no other agent runs this. Wired into the npm/pnpm lifecycle as a script:
 
 ```bash
 npm run smoke:local        # or: pnpm smoke:local

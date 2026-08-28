@@ -65,8 +65,8 @@ Review report with:
 
 ## Delegation
 
-`punch-code-reviewer` is the Review coordinator and spawns no sub-agents
-(`agents: []`). Reference search and diff pre-scan happen inline. The
+`punch-code-reviewer` is the Review coordinator and has no `agent` tool, so
+it spawns no sub-agents. Reference search and diff pre-scan happen inline. The
 Approve / Request Changes **verdict stays punch-code-reviewer's own**.
 
 ## Validation gate

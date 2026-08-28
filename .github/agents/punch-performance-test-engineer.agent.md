@@ -1,16 +1,15 @@
 ---
 name: punch-performance-test-engineer
-description: Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Routed by punch-builder with one approved Plan task, or invoked directly. Returns runtime evidence.
-tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput', 'agent']
-agents: []
-user-invocable: true
+description: Build/Test engineer for Punch performance testing — k6 HTTP and Browser scripts (thresholds, scenarios, checks) plus the TypeScript/esbuild bundle toolchain that produces the k6-ready scripts. Routed by punch-builder with one approved Plan task — never invoked directly. Returns runtime evidence.
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'edit/editFiles', 'execute/runInTerminal', 'execute/createAndRunTask', 'execute/runTask', 'read/getTaskOutput']
+user-invocable: false
 ---
 
 # Agent: punch-performance-test-engineer
 
 Build/Test engineer. Routed by
-[`punch-builder`](punch-builder.agent.md) with one approved Plan task, or
-invoked directly.
+[`punch-builder`](punch-builder.agent.md) with one approved Plan task —
+`user-invocable: false`, never invoked directly.
 
 ## Scope
 

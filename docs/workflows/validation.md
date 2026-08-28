@@ -3,7 +3,21 @@
 A change is not "done" until it has produced **validation evidence**. This
 file specifies what evidence looks like and how to produce it.
 
-## Evidence contract
+## Evidence matrix (canonical — link here, don't restate)
+
+Every change falls into exactly one class. This is the single source of
+truth Rules 3/13, Review, Ship, the review skill, and the PR template all
+point back to instead of each re-asserting "evidence mandatory."
+
+| Change class | Touches | Build? | Required evidence |
+|---|---|---|---|
+| **Runtime-affecting** | `src/**`, `docker/**`, `docker-compose.yml`, `bin/**`, `.github/workflows/**`, or anything with a runtime/artifact contract | Yes | `./bin/punch run <test>` → `reports/state/punch-run.json` (`passed: true`) |
+| **Documentation / Copilot-only** | `README.md`, `docs/**`, `.github/instructions/**`, `.github/prompts/**`, `.github/skills/**`, `.github/agents/**`, `copilot-instructions.md` — no runtime-contract impact | No (straight Plan → PR, per [`documentation.instructions.md`](../../.github/instructions/documentation.instructions.md#build-prompt)) | Diff review + frontmatter/registry parity (`punch-ai-governance` clean) + local link check. No `reports/state/punch-run.json` — none was produced, and none is expected. |
+
+A change that mixes both classes (e.g. a doc update that also changes a
+runtime contract) is Runtime-affecting for evidence purposes.
+
+## Evidence contract (Runtime-affecting class)
 
 Every Verify run writes a single canonical artifact:
 

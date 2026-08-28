@@ -1,8 +1,7 @@
 ---
 name: punch-security-auditor
 description: Security verdict owner for Punch. Vendor agent-skills `security-auditor` adopted and adapted to Punch — audits the diff for gateway input handling, parameterized Postgres queries, secrets/env, external-URL/SSRF, and supply-chain risk. Read-only. Owns the security verdict (clean | findings require changes). No web auth/session/XSS surface in Punch. Invoked on demand (diff/service/sensitive surface) and by the registered fan-out from `/punch-ship`; also user-invocable.
-tools: ['search/codebase', 'search', 'read/problems', 'search/changes', 'agent']
-agents: []
+tools: ['search/codebase', 'search', 'read/problems', 'search/changes']
 user-invocable: true
 ---
 
@@ -59,7 +58,8 @@ Medium/Low = schedule. The verdict is this agent's own.
 ## Locate sensitive surfaces
 
 Locating sensitive surfaces (query call sites, env reads, proxy targets, new
-deps) happens **inline** — this agent spawns no sub-agents (`agents: []`).
+deps) happens **inline** — this agent has no `agent` tool, so it spawns no
+sub-agents.
 
 **Do not invoke from another persona.** Only this agent — on demand or via the
 registered `/punch-ship` fan-out (`punch-release-captain`) — issues the

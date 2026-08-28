@@ -65,8 +65,7 @@ filled, real worked example is
 `docs/ai/golden-lifecycle/`. This phase
 **maintains those patterns as canon** — reconcile new specs/plans/reports toward
 them, keep lean, never let drift from `.github/prompts/` Expected-
-output shapes (prompts stay behavior source of truth). `/punch-init` reports
-their presence as `lifecycle_templates` readiness signal.
+output shapes (prompts stay behavior source of truth).
 
 ## Pre-conditions
 
@@ -89,10 +88,14 @@ before `keep` or `promote`; unverifiable → classify `review`, never silently k
 **`punch-ai-governance` makes every reconciliation decision.** Nothing under
 `docs/` or `.github/` is reconciled without this agent's classification and,
 where a write is involved, the user's approval. Native Graphify output (if
-present) is *evidence*, never canonical — `CLAUDE.md`, `docs/`, and the
-registries stay authoritative. This prompt does not build, update, install,
-or otherwise execute Graphify in any form; that is the native, user-invoked
-`/graphify` skill, entirely outside this prompt's ownership.
+present) is *evidence*, never canonical — `.github/**` and `docs/**` (plus the
+explicitly owned `README.md` / `.vscode/settings.json` surfaces) stay
+authoritative for VS Code GitHub Copilot Chat; `CLAUDE.md` is disabled Copilot
+canon in this workspace (see the Discovery boundary in
+`copilot-instructions.md`) and is never called authoritative here. This
+prompt does not build, update, install, or otherwise execute Graphify in any
+form; that is the native, user-invoked `/graphify` skill, entirely outside
+this prompt's ownership.
 
 ## Inputs
 

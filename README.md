@@ -78,9 +78,8 @@ GitHub Actions uploads all of these as the `performance-suite-reports` artifact.
 ## AI-assisted operating model
 
 This repo uses a linear lifecycle for AI-assisted changes — **Spec →
-Plan → Build → Test → Review → Ship** — plus two orthogonal maintenance
-prompts: **punch-document** for recurring documentation reconciliation and
-**punch-init** for one-time Copilot asset adoption checks. Each lifecycle
+Plan → Build → Test → Review → Ship** — plus one orthogonal maintenance
+prompt, **punch-document**, for recurring documentation reconciliation. Each lifecycle
 phase has one prompt; Build is a single `punch-build` prompt whose
 `punch-builder` dispatcher routes to one of two domain engineers. Domain +
 lifecycle skills and the agent personas support the lifecycle — see the
