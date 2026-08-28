@@ -12,8 +12,8 @@ This is the **method** behind [`punch-review`](../../prompts/punch-review.prompt
 (agent `punch-code-reviewer`, read-only). Punch routes the axes:
 
 - **AI-config axis:** when the diff touches `.github/` or `docs/ai/`, defer to
-  [`punch-ai-governance`](../punch-ai-governance/SKILL.md) (frontmatter,
-  registries, boundary/handoff hygiene).
+  the [`punch-ai-governance`](../../agents/punch-ai-governance.agent.md) agent
+  (frontmatter, registries, boundary/handoff hygiene).
 - **Security axis:** deeper guidance in [`punch-security-and-hardening`](../punch-security-and-hardening/SKILL.md).
   Punch surfaces: gateway input, secrets/env, parameterized Postgres queries in
   `orders` — there is **no web auth/XSS frontend**.

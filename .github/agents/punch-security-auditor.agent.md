@@ -62,16 +62,15 @@ deps) happens **inline** — this agent has no `agent` tool, so it spawns no
 sub-agents.
 
 **Do not invoke from another persona.** Only this agent — on demand or via the
-registered `/punch-ship` fan-out (`punch-release-captain`) — issues the
-clean/findings verdict; it is never delegated.
+`/punch-ship` prompt's own fan-out — issues the clean/findings verdict; it is
+never delegated.
 
 ## Skill activation
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Method: [`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md).
-On demand: [`punch-compose-runtime`](../skills/punch-compose-runtime/SKILL.md) /
-[`punch-data-harvest`](../skills/punch-data-harvest/SKILL.md) when auditing
-container or artifact surfaces.
+On demand: [`docker-compose.instructions.md`](../instructions/docker-compose.instructions.md) /
+[`artifacts-reporting.instructions.md`](../instructions/artifacts-reporting.instructions.md)
+when auditing container or artifact surfaces.
 
 ## Guards (per agent-guards.md)
 
@@ -81,6 +80,4 @@ tools by design — audit only.
 
 ## Comms
 
-Caveman (optional) **`full`** (Review security axis) — normal prose for
-judgment-heavy work. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only.
+Normal prose for judgment-heavy work. Verdict stays its own.

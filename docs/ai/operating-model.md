@@ -66,8 +66,8 @@ by shared [`agent-guards.md`](agent-guards.md) discipline.
   forbidden paths. Scope expansion → stop, return to Plan.
 - **Test uses official Punch commands (Test phase only).** No ad-hoc `docker
   run`. No host `k6` or `npm` — this is the independent `punch-test-engineer`
-  gate; it does not narrow Build's separate, scoped
-  `punch-performance-test-engineer` authoring exception (Rule 1). See
+  gate; it does not narrow `punch-builder`'s separate, scoped performance-test
+  subsystem authoring exception (Rule 1). See
   [`docs/architecture/punch-boundaries.md`](../architecture/punch-boundaries.md).
 - **Ship is mechanical only.** Commits, push, `gh pr create`. No merges, no
   tags, no force pushes, no skipping hooks.
@@ -92,8 +92,8 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 1. **Start with one phase.** Most teams under-do Plan, over-do Build.
    Begin by enforcing "no Build without Plan" for one sprint.
 2. **One persona per role, not one agent per ticket.** Agents in
-   `.github/agents/` (core personas, `punch-builder` dispatcher + its two
-   engineers, on-demand specialists like `punch-security-auditor`, `punch-code-reviewer` and
+   `.github/agents/` (core personas, `punch-builder` implementer, on-demand
+   specialists like `punch-security-auditor`, `punch-code-reviewer`, and the
    `punch-ai-governance` maintainer) reusable across all work. Resist adding
    new core persona without killing one.
 3. **Promote prompts, not prose.** When you paste same
@@ -103,31 +103,34 @@ Mechanical steps: see [`../workflows/validation.md`](../workflows/validation.md)
 
 ## Avoiding agent sprawl
 
-This redesign deliberately moved from 3-skill cap to six-domain-skill setup
-with small agent roster (core personas + `punch-builder` dispatcher and its
-two engineers + `punch-security-auditor` and `punch-ai-governance` specialists). Ceiling
+Small agent roster (core personas + `punch-builder` implementer +
+`punch-security-auditor` and `punch-ai-governance` specialists). Ceiling
 enforced by *function*, not *count*:
 
-- **Domain skills** must each name unique Punch subsystem (context,
-  orchestration, runtime, performance, artifacts, governance). Six is
-  full domain set; adding more should require killing one.
+- **Domain skills** each name a unique Punch subsystem that a path
+  instruction genuinely can't carry — today that's just `punch-k6-testing`
+  (performance semantics). No fixed count; a 2026-08-28 sweep retired five
+  domain skills whose content fit path instructions or the governance agent
+  just as well (rationale: [`skill-registry.md`](skill-registry.md)).
 - **Lifecycle skills** separate axis — engineering methods adapted from
   upstream `agent-skills` set (punch-spec-driven-development, punch-incremental-implementation, …).
-  Not subject to domain cap, but each must name unique method, avoid
+  Not subject to a domain-skill count, but each must name unique method, avoid
   duplicating domain skill or path-instruction, and be registered when added.
   Phase prompt *activates* lifecycle skill; phase does not become one.
-- Each **agent** is **core persona** (`punch-architect` Spec+Plan,
-  `punch-test-engineer` Test, `punch-code-reviewer` Review, `punch-release-captain`
-  Ship), **`punch-builder` dispatcher** or one of its two **engineers**
-  (`punch-runtime-engineer`, `punch-performance-test-engineer` — split by Build
-  domain), or an on-demand **specialist persona** (`punch-security-auditor`,
-  `punch-ai-governance`). New core persona should require killing one;
-  specialists each name unique on-demand lens.
-- Each **prompt** is single lifecycle phase (Build's per-domain scope lives in
-  engineers, not extra prompts). New prompts must show why existing one
-  cannot stretch.
+- Each **agent** is a **core persona** (`punch-architect` Spec+Plan,
+  `punch-builder` Build — implements directly, no dispatch,
+  `punch-test-engineer` Test, `punch-code-reviewer` Review), or an on-demand
+  **specialist persona** (`punch-security-auditor`, `punch-ai-governance`).
+  Ship (`punch-ship` prompt) carries no dedicated persona — its fan-out +
+  mechanical git/gh is the prompt's own procedure under generic Agent mode,
+  not a coordinator persona (avoids the "persona invoking personas"
+  anti-pattern). New core persona should require killing one; specialists
+  each name unique on-demand lens.
+- Each **prompt** is single lifecycle phase (Build's per-subsystem scope
+  lives in `punch-builder`, not extra prompts). New prompts must show why
+  existing one cannot stretch.
 
-`punch-ai-governance` skill checks new additions against this rule
+`punch-ai-governance` agent checks new additions against this rule
 during Review. Skill axes detailed in
 [`skill-registry.md`](skill-registry.md).
 

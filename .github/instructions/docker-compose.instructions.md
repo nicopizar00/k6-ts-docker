@@ -40,6 +40,47 @@ If `bin/punch` add new test target, this layer change too: add new
 bundle to `docker/k6.Dockerfile` COPY step, ensure compose
 `command:` accept script path. Coordinate via Plan.
 
+## Service contract template
+
+Every service in `docker-compose.yml` declares:
+
+```yaml
+services:
+  <service-name>:                       # stable, lowercase, kebab-case
+    image: <name>:<pinned-tag>          # never `:latest`
+    container_name: <service-name>      # log clarity
+    build:                              # only if local
+      context: .
+      dockerfile: docker/<service>.Dockerfile
+    ports:
+      - "<host>:<container>"            # only when host needs reachability
+    environment:
+      VAR_NAME: ${VAR_NAME:-default}    # every var is part of the surface
+    depends_on:
+      <other-service>:
+        condition: service_healthy      # never service_started for deps
+    healthcheck:                        # every service has one
+      test: ["CMD", "<lightweight-check>"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    volumes:
+      - ./<host-path>:<container-path>:ro   # read-only by default
+    networks:
+      - punch-net
+```
+
+**Contract changes** (need a Plan + dependents cascade, see
+[`maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md)): renaming a
+service, changing a host-exposed port, removing/weakening a healthcheck,
+adding a writable volume, a major-version image bump, removing/renaming an
+env var another service or `src/tests/` reads.
+
+**Within contract** (normal Build, no separate Plan beyond it): patch-level
+image bumps, tightening a healthcheck interval/timeout, adding an env var
+with a backwards-compatible default.
+
 ## Build prompt
 
-Use [`punch-build`](../prompts/punch-build.prompt.md) — dispatcher routes Compose tasks to `punch-runtime-engineer`.
+Use [`punch-build`](../prompts/punch-build.prompt.md) — `punch-builder` classifies Compose tasks into its runtime subsystem.

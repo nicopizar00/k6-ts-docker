@@ -1,16 +1,19 @@
 ---
-agent: punch-release-captain
-description: Phase 6 — Ship. punch-release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
+agent: agent
+description: Phase 6 — Ship. This prompt fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
 ---
 # Punch — Ship
 
 **Lifecycle phase:** Ship
-**Mode:** Agent (gate + mechanical finalization — no logic edits)
+**Mode:** Agent (generic — gate + mechanical finalization, no logic edits)
 **Owner skill:** [`punch-git-workflow-and-versioning`](../skills/punch-git-workflow-and-versioning/SKILL.md) (commit/branch discipline)
-+ [`punch-python-orchestration`](../skills/punch-python-orchestration/SKILL.md) (`git` + `gh` mechanics)
-+ [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) (readiness summary)
-**Agent:** [`punch-release-captain`](../agents/punch-release-captain.agent.md) — owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical commit/push/PR.
-**Operating comms:** Caveman **`full`** (per-phase, optional). Release decision is a persistent artifact — no Wenyan.
++ [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (readiness summary, when the diff touches `.github/`/`docs/ai/`)
+**Owner:** no dedicated persona — this prompt itself, run under generic Agent
+mode, owns the gate (fan-out → GO/NO-GO + rollback) **and** the mechanical
+commit/push/PR. It fans out to three specialist personas as report-only
+leaves (below); it does not wrap itself in a fourth coordinator persona, so
+the upstream "a persona does not invoke another persona" rule holds — the
+fan-out is the prompt's own procedure, not one persona delegating to others.
 
 ## When to use
 
@@ -22,14 +25,25 @@ Review approved change. Ship handles mechanical steps: commit, push, open PR, **
 - Branch + target base branch (default `main`).
 - Test evidence path.
 
+## Small-change exception
+
+A change may **skip the fan-out entirely** — not just reuse evidence, forgo
+invoking the trio at all — when **all** hold: single-file or near-single-file
+diff, doc-only or trivially-localized (no runtime-contract impact), does not
+touch `.github/**`, `docker/**`, secrets/env, or dependency manifests, and
+Review already approved it. State the skip and why in the ship-readiness
+summary's Pre-ship fan-out line (`skipped — <reason>`) instead of a verdict.
+Any doubt about whether a change qualifies → don't skip, run the fan-out.
+
 ## Pre-ship fan-out (parallel, read-only) — reuse fresh evidence, don't duplicate gates
 
-Before any git step, check each specialist's most recent evidence for this diff.
-**Rerun a specialist only when** its evidence is missing, stale (predates the
-current diff), invalidated by a changed diff since it ran, required by a
-sensitive-surface rule (e.g. `.github/`, `docker/`, secrets/env, supply chain),
-or explicitly requested. Otherwise **reuse** its fresh, unchanged verdict — do
-not re-invoke a specialist just because Ship is running.
+For everything else: before any git step, check each specialist's most recent
+evidence for this diff. **Rerun a specialist only when** its evidence is
+missing, stale (predates the current diff), invalidated by a changed diff
+since it ran, required by a sensitive-surface rule (e.g. `.github/`, `docker/`,
+secrets/env, supply chain), or explicitly requested. Otherwise **reuse** its
+fresh, unchanged verdict — do not re-invoke a specialist just because Ship is
+running.
 
 For whichever of the trio needs a (re)run, fan out **in parallel**:
 
@@ -71,7 +85,7 @@ Completed tasks:
 Validation status (per the [evidence matrix](../../docs/workflows/validation.md)):
   - Runtime-affecting: reports/state/punch-run.json: passed: <bool>; tests run: <list>
   - Documentation/Copilot-only: punch-ai-governance pass: <clean|findings> (no punch-run.json expected)
-  - Pre-ship fan-out (fresh|reused): punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
+  - Pre-ship fan-out (fresh|reused|skipped — <reason> if skipped): punch-code-reviewer <APPROVE|CHANGES> · punch-security-auditor <PASS|FAIL> · punch-test-engineer <PASS|FAIL|BLOCKED>
 
 Known risks:
   - <one-liner or "none">

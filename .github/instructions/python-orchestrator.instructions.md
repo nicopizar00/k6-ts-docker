@@ -44,6 +44,48 @@ Scope: `bin/punch` and all under `src/punch/`.
 `python3 -m punch --help` and dry `doctor` = smoke tests. Heavier
 tests deferred till CLI grow beyond small command set.
 
+## Streaming subprocess pattern
+
+The canonical implementation lives in `src/punch/__main__.py`; read it before
+extending. The shape:
+
+```python
+import subprocess
+from pathlib import Path
+
+def stream(cmd: list[str], cwd: Path, log_path: Path | None = None) -> int:
+    """Run `cmd`, stream stdout+stderr to terminal and (optionally) a log.
+    Returns the child exit code. Never buffers. Never swallows non-zero."""
+    log_fp = log_path.open("w") if log_path else None
+    try:
+        with subprocess.Popen(
+            cmd, cwd=str(cwd), stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, bufsize=1, text=True,
+        ) as proc:
+            for line in proc.stdout:
+                print(line, end="")
+                if log_fp:
+                    log_fp.write(line)
+            return proc.wait()
+    finally:
+        if log_fp:
+            log_fp.close()
+```
+
+- `stderr=subprocess.STDOUT` keeps line order matching what a human running
+  the command directly would see.
+- `bufsize=1` + `text=True` is the line-buffered contract; raw byte streams
+  break Unicode in k6 output.
+- `for line in proc.stdout` is the only correct streaming loop —
+  `proc.communicate()` buffers, `proc.stdout.read()` blocks until EOF.
+- Extending: a `--quiet` mode makes the `print()` conditional but the log
+  write stays unconditional; `--collect-logs` always sets `log_path`.
+  Parallel runs are **not** a within-contract extension — sequential is the
+  contract; parallel breaks exit-code propagation semantics, needs a Plan.
+- Does not parse output for control flow, does not retry (retries belong in
+  `doctor`, not `run`), never `docker run`s directly (`docker compose run
+  --rm` is the contract).
+
 ## Build prompt
 
-Use [`punch-build`](../prompts/punch-build.prompt.md) — dispatcher route orchestrator tasks to `punch-runtime-engineer`.
+Use [`punch-build`](../prompts/punch-build.prompt.md) — `punch-builder` classifies orchestrator tasks into its runtime subsystem.

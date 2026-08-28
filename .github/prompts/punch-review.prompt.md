@@ -7,11 +7,10 @@ description: Phase 5 — Review. Read-only five-axis critique of the diff agains
 **Lifecycle phase:** Review
 **Mode:** Read-only — no product edits (enforced by agent definition)
 **Owner skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five-axis method — readability/simplicity axis absorbed in-file);
-[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md) when
-diff touches `.github/` or `docs/ai/`; else matching domain skill
+[`punch-ai-governance`](../agents/punch-ai-governance.agent.md) when
+diff touches `.github/` or `docs/ai/`; else matching domain skill/instructions
 **Agent:** [`punch-code-reviewer`](../agents/punch-code-reviewer.agent.md) — the Review verdict owner (five-axis, adapted from vendor `code-reviewer`).
 **Required skill:** [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md).
-**Operating comms:** Caveman **`full`** (per-phase, optional). Normal prose for risk/architecture judgment.
 
 ## When to use
 
@@ -44,7 +43,7 @@ lifecycle hygiene. Dedicated security pass on diffs touching
    unneeded dependencies, or speculative config?
 7. **Ownership check.** Change respects each layer's domain?
 8. **Governance check** (when `.github/` or `docs/ai/` touched).
-   Activate [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md):
+   Activate [`punch-ai-governance`](../agents/punch-ai-governance.agent.md):
    frontmatter complete, registries match files, agents and skills
    referenced consistently.
 9. **Doc check.** Docs and maintenance matrix updated for any

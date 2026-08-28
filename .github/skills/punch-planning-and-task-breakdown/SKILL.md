@@ -71,9 +71,9 @@ layer, in order (see `scoped-build-policy.md` § Cross-layer tasks):
 
 **Good (Punch integration slice — "add a new `cart` gate test"):**
 ```
-Task K-01: add src/tests/cart-gate.ts with thresholds + handleSummary   (punch-build → performance-test-engineer)
-Task C-01: expose the cart route in compose if a new service is needed   (punch-build → runtime-engineer)
-Task O-01: wire `./bin/punch run cart` into the CLI                      (punch-build → runtime-engineer)
+Task K-01: add src/tests/cart-gate.ts with thresholds + handleSummary   (punch-build → performance-test subsystem)
+Task C-01: expose the cart route in compose if a new service is needed   (punch-build → runtime subsystem)
+Task O-01: wire `./bin/punch run cart` into the CLI                      (punch-build → runtime subsystem)
 ```
 Each task respects its own allowed/read-only/forbidden scope; Verify runs the
 whole suite, not just the new test.
@@ -123,7 +123,7 @@ you're writing "and" in the title (a sign it's two tasks).
 - **Must be sequential:** Compose service renames, shared-state/reporting-contract
   changes, dependency chains.
 - **Needs coordination:** anything that shares an artifact contract — define the
-  contract first (see `punch-data-harvest`), then parallelize.
+  contract first (see `artifacts-reporting.instructions.md`), then parallelize.
 
 ## Common Rationalizations
 

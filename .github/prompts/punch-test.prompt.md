@@ -18,13 +18,15 @@ evidence model. Test **follows** Build, it never wraps it: Build (lazy-loading
 and GREEN after; this gate inspects that evidence, then independently reruns to
 confirm GREEN itself.
 
-- Bug report → Build's handoff must include a failing check/threshold (RED)
-  predating the fix. Missing/unconvincing RED evidence → **BLOCKED**, back to
-  Build — this gate does not author it.
-- New behavior → Build's new check/threshold must have failed before
-  implementation, pass after. Same BLOCKED rule if that evidence is absent.
+- Bug report → Build's handoff should include a failing check/threshold (RED)
+  predating the fix. Missing/unconvincing RED evidence is a coverage-gap
+  observation for Review, not an automatic block — this gate does not author
+  it, but still independently judges the current result.
+- New behavior → Build's new check/threshold ideally failed before
+  implementation, passes after. Same observation-not-block treatment when
+  that history is absent.
 
-Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-performance-test-engineer`); this prompt **runs and judges** test, no write.
+Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-builder`'s performance-test subsystem); this prompt **runs and judges** test, no write.
 
 ## Inputs
 
@@ -37,12 +39,16 @@ Authoring test = Build task ([`punch-build`](punch-build.prompt.md) → `punch-p
 1. Read Build's handoff — diff, check/threshold, and any recorded RED evidence.
 2. Behavioral change (bug fix / new behavior) with no RED evidence, or RED
    evidence that fails for the wrong reason (setup/connection error, not the
-   behavior) → **stop, BLOCKED**, return to Build.
+   behavior) → note it as a coverage gap, but continue to independently judge
+   the current result rather than stopping.
 3. Independently rerun `./bin/punch run <test>` — never take Build's
    self-report as proof. Confirm **GREEN**, for the right reason.
 4. Confirm `reports/state/punch-run.json` records the run (`passed: true`).
 5. Classify any failure: implementation-related / environment-related / pre-existing.
-6. No clean RED→GREEN story for a behavioral change → **stop, BLOCKED**, return to Build (not Plan — the task was already approved; Build's evidence is what's missing).
+6. No clean RED→GREEN story for a behavioral change → **PASS or FAIL on the
+   current result**, with the missing history recorded under Missing coverage
+   for Review. Reserve **BLOCKED** for when this gate itself cannot execute
+   or independently confirm a result at all.
 
 ## Expected output
 
@@ -72,5 +78,4 @@ Clean RED→GREEN transition with `reports/state/punch-run.json` recording the p
 
 ## Operating comms
 
-Caveman **`ultra`** for Test. Evidence (RED/GREEN output,
-commands, `reports/state/punch-run.json`) stays verbatim.
+Evidence (RED/GREEN output, commands, `reports/state/punch-run.json`) stays verbatim.

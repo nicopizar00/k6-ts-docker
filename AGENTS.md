@@ -53,46 +53,61 @@ Punch uses a six-phase lifecycle for AI-assisted changes:
 
     Spec → Plan → Build → Test → Review → Ship
 
-Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/; Build is driven by a single `punch-build` prompt and the `punch-builder` dispatcher, which delegates (depth-1) to two domain engineers (`punch-runtime-engineer`, `punch-performance-test-engineer`). The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
+Spec absorbs the former Define phase (it opens with a clarify/refine step). Each phase maps to one prompt under .github/prompts/ and one agent persona under .github/agents/ (Ship is the exception — no dedicated persona, see below); Build is driven by a single `punch-build` prompt bound to `punch-builder`, which classifies the approved task into a subsystem (runtime, or performance-test) and implements it directly — no delegation. The lifecycle is the operating system; the agents and skills are behavioral specializations within it.
 
 Available agents
 
 | Agent | Persona | Phase |
 |---|---|---|
 | punch-architect | Spec + Plan owner — investigator; writes spec/plan docs only | Spec, Plan |
-| punch-builder | Build dispatcher — routes to one engineer | Build |
-| punch-runtime-engineer | Runtime engineer (Python / Compose / data harvest) | Build |
-| punch-performance-test-engineer | Performance engineer (k6 + TS bundle/lint) | Build |
+| punch-builder | Implements Build directly — classifies task into runtime or performance-test subsystem, applies that subsystem's scope | Build |
 | punch-test-engineer | Test verdict owner — runs `./bin/punch` | Test |
 | punch-code-reviewer | Review verdict owner — five-axis | Review |
 | punch-security-auditor | Security audit — on-demand specialist | Review security axis |
-| punch-release-captain | Ship — fan-out → GO/NO-GO + rollback, then commit/push/PR | Ship |
 | punch-ai-governance | AI-config maintainer (user-direct; never a sub-agent) | `@mention`, Document |
+
+Ship has no dedicated persona — `punch-ship.prompt.md` itself, run under
+generic Agent mode, owns the fan-out (→ GO/NO-GO + rollback) and the
+mechanical commit/push/PR. This avoids a fourth coordinator persona invoking
+the three Review/Test/Security specialists, which would violate the
+upstream "a persona does not invoke another persona" rule.
 
 Definitions live in .github/agents/*.agent.md.
 
-**Delegation (depth-1).** Coordinators: `punch-builder` (Build) lists only its
-two engineers; `punch-release-captain` (Ship) fans out to the three specialists
-as report-only leaves. `punch-code-reviewer` / `punch-test-engineer` /
-`punch-security-auditor` carry no `agent` tool either — reference search and diff
-pre-scan happen inline, not via a spawned worker. Engineers carry no `agent`
-tool — non-spawning leaves, and are `user-invocable: false` (Builder-routed
-only). `punch-ai-governance` is user-direct
-(`disable-model-invocation: true`), in no `agents:` allowlist.
+**Delegation (depth-1).** No Punch agent currently lists sub-agents —
+`punch-builder` implements directly, and Ship's fan-out lives in the
+`punch-ship` prompt, not a coordinator persona. `punch-code-reviewer` /
+`punch-test-engineer` / `punch-security-auditor` carry no `agent` tool
+either — reference search and diff pre-scan happen inline, not via a
+spawned worker. `punch-ai-governance` is user-direct
+(`disable-model-invocation: true`), in no `agents:` allowlist. This is
+today's least-privilege configuration, not a categorical ban on ever adding
+delegation for a scoped need.
 
 **Vendor agent-skills personas, adopted-adapted to Punch** (Punch-named, own their
 verdict): `punch-code-reviewer` (← `code-reviewer`),
 `punch-security-auditor` (← `security-auditor`), `punch-test-engineer` (←
-`test-engineer`). `punch-release-captain` is **not** a direct persona port — it's a
-Punch-native wrapper around the vendor `/ship` fan-out *pattern* (full provenance:
-[`docs/ai/agent-skills-provenance.md`](docs/ai/agent-skills-provenance.md)).
+`test-engineer`). Full provenance:
+[`docs/ai/agent-skills-provenance.md`](docs/ai/agent-skills-provenance.md).
 `web-performance-auditor` excluded (no frontend).
 
 Available skills
 
-Skills come in two kinds: **domain skills** (one per Punch subsystem — context-engineering, python-orchestration, compose-runtime, k6-testing, data-harvest, ai-governance) and **lifecycle skills** (engineering methods adapted from upstream — spec-driven-development, planning, incremental-implementation, test-driven-development, debugging, code-review-and-quality, git-workflow, docs/ADRs, security, doubt-driven, source-driven, performance-optimization, browser-testing). Code simplification, idea refinement, observability, and skill-discovery meta-routing were absorbed into their phase owners and retired as standalone skills — see [`docs/ai/skill-registry.md`](docs/ai/skill-registry.md).
+Skills come in two kinds: **domain skills** (one per Punch subsystem that a
+path instruction genuinely can't carry — today just `punch-k6-testing`) and
+**lifecycle skills** (engineering methods adapted from upstream —
+spec-driven-development, planning, incremental-implementation,
+test-driven-development, debugging, code-review-and-quality, git-workflow,
+docs/ADRs, security, doubt-driven, source-driven, performance-optimization).
+A 2026-08-28 governance sweep retired five domain skills whose content
+turned out to be always-on context or a thin wrapper a path instruction (or
+the `punch-ai-governance` agent) could carry just as well — see
+[`docs/ai/skill-registry.md`](docs/ai/skill-registry.md) for what moved
+where. Code simplification, idea refinement, observability, and
+skill-discovery meta-routing were absorbed into their phase owners and
+retired as standalone skills earlier — same registry.
 
-The authoritative register (all 20, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
+The authoritative register (13 skills, with a "which skill when" discovery index) is **docs/ai/skill-registry.md**; definitions live in .github/skills/<skill>/SKILL.md.
 
 Lifecycle entry points
 
@@ -118,11 +133,6 @@ Common Pitfalls
 
 - Editing dist/ directly: dist/ is generated by the build stage inside Docker — don't commit built bundles unless intentional
 - Host-side tooling: avoid adding host-side npm/k6/pip assumptions. Use ./bin/punch which shells out to docker compose
-
-Caveman comms
-
-Caveman is a VS Code GitHub Copilot Chat-only convenience — not active here or
-for any other host. See [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
 Claude Code reuse (Guard bridge)
 

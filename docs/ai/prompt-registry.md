@@ -13,11 +13,11 @@ See `.github/prompts/` for prompt bodies.
 |---|---|---|---|---|
 | [`punch-spec`](../../.github/prompts/punch-spec.prompt.md) | Spec | Ask (writes spec doc) | `punch-architect` | Request need clarifying (former Define) then specifying into goals / non-goals / acceptance criteria. |
 | [`punch-plan`](../../.github/prompts/punch-plan.prompt.md) | Plan | Ask (Plan discipline) | `punch-architect` | Have Spec, need scoped tasks with allowed/read-only/forbidden paths. |
-| [`punch-build`](../../.github/prompts/punch-build.prompt.md) | Build | Agent (scoped, via dispatch) | `punch-builder` | Approved Plan task need implementing; dispatcher routes to runtime or performance-test engineer. |
+| [`punch-build`](../../.github/prompts/punch-build.prompt.md) | Build | Agent (scoped) | `punch-builder` | Approved Plan task need implementing; classifies into a subsystem (runtime or performance-test) and implements directly. |
 | [`punch-test`](../../.github/prompts/punch-test.prompt.md) | Test | Agent / Ask | `punch-test-engineer` | Prove change RED→GREEN at k6 check/threshold level via `./bin/punch`; produce `reports/state/punch-run.json` evidence; final PASS/FAIL gate. |
 | [`punch-review`](../../.github/prompts/punch-review.prompt.md) | Review | Ask | `punch-code-reviewer` | Test passed; audit diff before Ship. |
-| [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | `punch-release-captain` | Review approved; commit, push, open PR. **Never merges.** |
-| [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Remediate doc debt + AI-artifact lifecycle in waves: verify inherited artifacts (untrusted by default), then keep / merge / compact / convert / promote / archive / delete / review. Native `/graphify` (if run) is optional supplementary evidence only — never built, updated, or owned here. |
+| [`punch-ship`](../../.github/prompts/punch-ship.prompt.md) | Ship | Agent (mechanical only) | no dedicated persona | Review approved; commit, push, open PR. **Never merges.** |
+| [`punch-document`](../../.github/prompts/punch-document.prompt.md) | Documentate (recurring maintenance) | Ask / Agent | `punch-ai-governance` | Remediate doc debt + AI-artifact lifecycle in waves: verify inherited artifacts (untrusted by default), then keep / merge / compact / convert / promote / archive / delete / review. |
 
 ## One prompt per phase
 
@@ -25,10 +25,11 @@ Every lifecycle phase — including Build — have single prompt. Splitting by t
 type multiply maintenance, add no value. (`punch-test` is the Test/verification
 phase — addyosmani `/test`; no separate Verify prompt.)
 
-Build's per-domain scope discipline moved **from prompts into agents**: one
-`punch-build` prompt activate `punch-builder` dispatcher, which routes to domain
-engineer carrying that domain's allowed / read-only / forbidden scope. Keeps
-single Build entry point while preserving tight, reviewable scope.
+Build's per-subsystem scope discipline moved **from prompts into the agent**:
+one `punch-build` prompt activates `punch-builder`, which classifies the task
+into a subsystem (runtime or performance-test) and applies that subsystem's
+allowed / read-only / forbidden scope directly — no dispatch. Keeps single
+Build entry point while preserving tight, reviewable scope.
 
 `punch-document` **not** lifecycle phase — recurring maintenance workflow running
 orthogonal to Spec → Ship, reconciling doc debt in waves. Earns own prompt because
@@ -56,7 +57,7 @@ And cover, this order:
    Ship this serves (Spec absorb former Define).
 2. **Mode** — Ask, Agent (scoped), or Agent (mechanical only).
 3. **Owner skill(s)** — which skill(s) this prompt activates (domain + lifecycle).
-4. **Agent** — which agent persona runs this prompt (core personas + `punch-builder` dispatcher + its two engineers).
+4. **Agent** — which agent persona runs this prompt (core personas, `punch-builder`, or "no dedicated persona" for Ship's prompt-level fan-out).
 5. **When to use** — concrete trigger.
 6. **Pre-conditions** (Build prompts only) — Plan + task ID + human
    approval.
@@ -68,8 +69,8 @@ And cover, this order:
 11. **Validation gate** — what advances change to next phase.
 
 If new prompt proposed,
-[`punch-ai-governance`](../../.github/skills/punch-ai-governance/SKILL.md)
-skill check phase / domain not already covered and file follow this contract.
+[`punch-ai-governance`](../../.github/agents/punch-ai-governance.agent.md)
+agent checks phase / domain not already covered and file follows this contract.
 
 ## Why not more prompts
 

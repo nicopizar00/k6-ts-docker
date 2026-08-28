@@ -38,7 +38,7 @@ the **contract** every Build call is bound to. For each task:
 | Validation commands | the official Punch commands Test will run |
 | Rollback notes | how to undo if Test fails |
 | Human checkpoint | "human approval required before Build" |
-| Engineer | `punch-runtime-engineer` or `punch-performance-test-engineer` |
+| Subsystem | runtime or performance-test (both handled by `punch-builder`) |
 
 A task that crosses layers is an **integration task** — split into sub-tasks, one
 per layer, each with its own scope and a named layer order.
@@ -57,17 +57,14 @@ per layer, each with its own scope and a named layer order.
   `docs/ai/` config (governance is itself a Spec→Plan→Build cycle); any
   side-effect command (no `runCommands` tool by design).
 
-## Graph & documentation boundary
+## Documentation boundary
 
 Patterns off `punch-ai-governance`'s existing admin-rights model (sole
 `.github/`+`docs/` admin) — without inheriting that write scope:
 
-- May read native `/graphify` evidence (`graphify-out/graph.json`,
-  `GRAPH_REPORT.md`), if present, during Spec or Plan — query-only, never
-  invoked, built, or written by this agent.
 - May recommend `/punch-document` when a spec/plan surfaces a documentation
-  or graph gap or maintenance need — recorded as a queued item, not executed.
-- Never invokes a Document or Graphify action itself — see Forbidden above.
+  gap or maintenance need — recorded as a queued item, not executed.
+- Never invokes a Document action itself — see Forbidden above.
 - A Document recommendation is a suggestion, not an instruction Build
   executes — same human-checkpoint discipline as every other Plan task.
 
@@ -81,23 +78,21 @@ Patterns off `punch-ai-governance`'s existing admin-rights model (sole
 
 ## Skill activation
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Spec method: [`punch-spec-driven-development`](../skills/punch-spec-driven-development/SKILL.md) —
 its clarify step (absorbed from the retired `punch-idea-refine`) activates when
 the idea is still vague.
 Plan method: [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md).
-On demand (matched by topic): `punch-python-orchestration` · `punch-compose-runtime`
-· `punch-k6-testing` · `punch-data-harvest` · `punch-ai-governance` (when the
+On demand (matched by topic): `punch-k6-testing` · the relevant path
+instructions under `.github/instructions/` (`python-orchestrator`,
+`docker-compose`, `artifacts-reporting`) · `punch-ai-governance` (when the
 spec/plan touches `.github/` or `docs/ai/`).
 
 ## Guards (per agent-guards.md)
 
 Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipline
-(tool surface, serial phases, approval-before-write, depth-1 delegation) plus the
+(tool surface, serial phases, scoped write approval, depth-1 delegation) plus the
 Allowed/Forbidden above.
 
-## Caveman comms
+## Comms
 
-Caveman (optional, VS Code GitHub Copilot Chat only) **privileged** — lead with
-normal prose for judgment-heavy work (Spec and Plan are per-phase `lite`/`full`).
-Capabilities/scope/guards unchanged; prose only.
+Normal prose for judgment-heavy work — Spec and Plan decisions warrant it.

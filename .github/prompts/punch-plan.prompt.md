@@ -7,10 +7,9 @@ description: Plan — convert a Spec into scoped tasks with explicit allowed/rea
 **Lifecycle phase:** Plan
 **Mode:** Plan discipline — output is plan, no product edits (enforced by agent definition)
 **Owner skill:** [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) (method)
-+ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) + matching domain skill(s);
-on `.github/` changes, [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
++ matching domain skill(s)/path instructions; on `.github/` changes,
+[`punch-ai-governance`](../agents/punch-ai-governance.agent.md)
 **Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.
-**Operating comms:** Caveman **`full`** (per-phase, optional). Plan docs persistent — no Wenyan.
 
 ## When to use
 
@@ -36,7 +35,7 @@ Have approved Spec, need partition into tasks Build executes one at a time. Plan
    - **Validation commands** — official Punch commands Test runs.
    - **Rollback notes** — how to undo if Test fails.
    - **Human checkpoint** — "human approval required before Build".
-   - **Build prompt** — `punch-build`, dispatched by `punch-builder` to the matching engineer.
+   - **Build prompt** — `punch-build`, run by `punch-builder` in the matching subsystem.
 
 4. Task crosses layers naturally → flag as **integration task**, split into per-layer sub-tasks with fixed execution order.
 5. List risks and rollback path for whole change.

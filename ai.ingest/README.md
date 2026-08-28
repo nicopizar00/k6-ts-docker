@@ -28,9 +28,11 @@ auto-apply are deferred.
   core consumes: install method, version probe, which paths are upstream vs adapted vs generated/cache, and
   which divergences from upstream are *intentional* (so they are not reported as drift).
 - `compare.py` — the read-only drift reporter (stdlib only). See **Using `compare`** below.
-- `validate_graphify_share.py` — the read-only shared-graph guard (stdlib only). It enforces the ADR 0002
-  allowlist and leakage checks for committed `graphify-out/` artifacts.
 - `tests/` — stdlib `unittest` regression suite for `ai.ingest` host tooling.
+
+`validate_graphify_share.py` (and its CI workflow) were **removed 2026-08-28** —
+ADR 0002 is superseded, graphify is no longer vendored or governed by Punch,
+so there is nothing left for the shared-graph guard to enforce.
 
 Both are **strict JSON** (no comments) so any stdlib `json.load` consumer works with zero special-casing.
 Field meanings are documented here rather than inline.
@@ -111,16 +113,3 @@ Prints the three axes above, each with a per-asset verdict, then a one-line summ
   report `baseline-not-recorded`.
 
 Run the regression suite with: `python3 -m unittest discover -s ai.ingest/tests`.
-
-## Using `validate_graphify_share`
-
-Read-only validation for committed Graphify shared artifacts. This is also wired into
-`.github/workflows/graphify-share.yml`.
-
-```sh
-python3 ai.ingest/validate_graphify_share.py
-```
-
-It fails if any tracked file under a nested or renamed Graphify output directory is present, or if the
-canonical shared files contain local paths, interpreter paths, hostnames, invalid JSON, absolute node IDs,
-or raw cost/token keys.

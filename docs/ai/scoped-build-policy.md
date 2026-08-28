@@ -1,6 +1,6 @@
 # Scoped Build Policy
 
-Build only phase that edit product code. Keep Build safe inside multi-layer system (Python orchestrator + Compose + k6 + reporting): every Build task declare scope as **three path lists**, carried by engineer agent the `punch-builder` dispatcher route it to.
+Build only phase that edit product code. Keep Build safe inside multi-layer system (Python orchestrator + Compose + k6 + reporting): every Build task declare scope as **three path lists**, applied by `punch-builder` per the subsystem (runtime vs. performance-test) it classifies the task into.
 
 ## The three lists
 
@@ -8,7 +8,10 @@ Build only phase that edit product code. Keep Build safe inside multi-layer syst
 2. **Read-only context paths** — Build may read for context, must not edit.
 3. **Forbidden paths** — Build must refuse to touch. Touching one = *scope expansion*, triggers [stop-and-replan rule](#scope-expansion-process).
 
-Each **engineer agent** (`punch-runtime-engineer`, `punch-performance-test-engineer`) ship defaults for these lists; single `punch-build` prompt + `punch-builder` dispatcher route task to right one. Approved Plan can narrow or widen, never beyond engineer's *forbidden* set.
+`punch-builder` ships defaults for these lists per subsystem (see
+[`punch-builder.agent.md`](../../.github/agents/punch-builder.agent.md)'s
+"Paths by subsystem"). Approved Plan can narrow or widen, never beyond the
+subsystem's *forbidden* set.
 
 ## Human checkpoint
 
@@ -32,11 +35,11 @@ Most-violated rule in agentic coding. Stopping cheap. Unauthorized cross-layer e
 
 ## Examples by build domain
 
-Each domain below routed by `punch-builder` to named engineer, which carry scope table.
+Each domain below is classified by `punch-builder` into a subsystem, which carries the scope table.
 
 ### Python orchestration task
 
-Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
+Runtime subsystem.
 
 ```
 Allowed:
@@ -54,7 +57,7 @@ Forbidden:
 
 ### Docker Compose / runtime task
 
-Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
+Runtime subsystem.
 
 ```
 Allowed:
@@ -71,7 +74,7 @@ Forbidden:
 
 ### k6 HTTP test task
 
-Routed to [`punch-performance-test-engineer`](../../.github/agents/punch-performance-test-engineer.agent.md).
+Performance-test subsystem.
 
 ```
 Allowed:
@@ -88,7 +91,7 @@ Forbidden:
 
 ### k6 Browser test task
 
-Routed to [`punch-performance-test-engineer`](../../.github/agents/punch-performance-test-engineer.agent.md).
+Performance-test subsystem.
 
 ```
 Allowed:
@@ -108,7 +111,7 @@ Forbidden:
 
 ### Data harvest / reporting task
 
-Routed to [`punch-runtime-engineer`](../../.github/agents/punch-runtime-engineer.agent.md).
+Runtime subsystem.
 
 ```
 Allowed:
@@ -124,27 +127,25 @@ Forbidden:
   .github/workflows/**
 ```
 
-Reporting changes = *contract* changes. Plan must spell out artifact path, schema, downstream consumers (see [`punch-data-harvest` skill](../../.github/skills/punch-data-harvest/SKILL.md) and [`docs/ai/maintenance-matrix.md`](maintenance-matrix.md)).
+Reporting changes = *contract* changes. Plan must spell out artifact path, schema, downstream consumers (see [`artifacts-reporting.instructions.md`](../../.github/instructions/artifacts-reporting.instructions.md) and [`docs/ai/maintenance-matrix.md`](maintenance-matrix.md)).
 
 ## Service-change route (narrow exception)
 
 `src/services/**` defaults to **read-only** for every Build task above — no
 domain example lists it as Allowed. A future Plan may route a `src/services/**`
-change to `punch-runtime-engineer` when the task is driven by an approved
+change to the runtime subsystem when the task is driven by an approved
 performance, observability, or security finding, by naming the exact service
 path in that task's own Allowed edit paths (see
-[`punch-runtime-engineer.agent.md`](../../.github/agents/punch-runtime-engineer.agent.md)'s
+[`punch-builder.agent.md`](../../.github/agents/punch-builder.agent.md)'s
 "Service-change route" note). This is a per-task grant, not a standing widening
-— every other task's default stays read-only, and no Plan may add a second
-engineer for this route (prefer narrowing `punch-runtime-engineer`'s existing
-boundary over a new persona, per the approved Spec).
+— every other task's default stays read-only.
 
 ## Cross-layer tasks
 
 Some real tasks legit cross layers (e.g. "add new test, wire into compose, expose via `bin/punch run X`"). These = **integration tasks**, require:
 
 - Single Plan that explicitly authorize cross-layer edit.
-- One `punch-build` invocation per layer, fixed order (k6 → compose → orchestrator typically) — dispatcher route each to its engineer, each respecting own scope.
-- Verify runs full suite, not just new test.
+- One `punch-build` invocation per subsystem, fixed order (k6 → compose → orchestrator typically) — `punch-builder` works each subsystem's paths in turn, respecting each one's own scope before moving to the next.
+- Verify runs full suite, not just the new test.
 
-Never collapse integration task into single broad Build. Point of per-domain engineers = keep each layer's reviewer focused.
+Never collapse an integration task into one undifferentiated edit across both subsystems' paths at once — the split exists to keep each layer's diff reviewable.

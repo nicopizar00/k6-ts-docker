@@ -8,7 +8,7 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
      - Update `.github/workflows/k6.yml` if test should join CI (add run step + artifact expectations).
      - Update `.github/copilot-instructions.md` & `CONTRIBUTING.md` for new test semantics if public-facing.
      - Update `reports/` expected filenames and `validate-artifacts` job list if output names differ.
-     - Update artifact contract entries in `.github/skills/punch-data-harvest/artifact-contract.md`.
+     - Update artifact contract entries in `.github/instructions/artifacts-reporting.instructions.md`.
 
 2) dist/* and build pipeline (esbuild outputs)
    - Bundle shape or output file names change:
@@ -21,7 +21,7 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
      - Update `.mcp.json` service entries and port references in `.github/copilot-instructions.md`.
      - Update `.github/workflows/k6.yml` job steps (service names in docker compose commands + log collection loop).
      - Update CONTRIBUTING.md run examples and README.md quick-start commands.
-     - Update compose contract in `.github/skills/punch-compose-runtime/compose-contract.md`.
+     - Update compose contract in `.github/instructions/docker-compose.instructions.md`.
 
 4) src/services/* (gateway, catalog, orders)
    - API surface (paths, ports) or behavior change:
@@ -39,14 +39,14 @@ Matrix map change in one area to places reviewers and agents must check/adjust. 
    - CLI flags, subcommands, or behavior change:
      - Update README quick-start commands, CONTRIBUTING.md, and .github/workflows/copilot-setup-steps.yml for new usage.
      - Keep changes stdlib-only; flag accidental pip/npm additions in review.
-     - Update streaming pattern example in `.github/skills/punch-python-orchestration/examples/` if streaming contract evolves.
+     - Update streaming pattern example in `.github/instructions/python-orchestrator.instructions.md` if streaming contract evolves.
 
 7) reports/ shape and filenames
    - Report names or content change:
      - Update `validate-artifacts` list in `.github/workflows/k6.yml` and job summary table.
      - Update `.github/instructions/artifacts-reporting.instructions.md` and
        `docs/workflows/validation.md` with new artifact mapping.
-     - Update artifact contract entries in `.github/skills/punch-data-harvest/artifact-contract.md` — this contract change.
+     - Update artifact contract entries in `.github/instructions/artifacts-reporting.instructions.md` — this contract change.
 
 8) package.json (root and src/services/orders)
    - Dependencies change or new scripts added:

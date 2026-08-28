@@ -11,11 +11,12 @@ applies-to: lifecycle/Plan + Build — invoked on non-trivial/high-stakes decisi
 An in-flight posture (distinct from the Review phase, which is a verdict on a
 finished diff): non-trivial decisions get cross-examined while course-correction is
 still cheap. It reinforces Punch's existing **"stop and return to Plan"** rule on
-scope expansion and high-stakes work. The "fresh-context reviewer" in Punch is a
-**separate review pass**, not a programmatic subagent:
+scope expansion and high-stakes work. The "fresh-context reviewer" in Punch can
+be any of:
 
 - a new Copilot Chat session given only ARTIFACT + CONTRACT (no prior reasoning), or
-- the `@punch-code-reviewer` / `@punch-security-auditor` custom agent invoked on the artifact, or
+- the `@punch-code-reviewer` / `@punch-security-auditor` custom agent, invoked as a
+  subagent on the artifact — VS Code natively supports this pattern, or
 - a **user-authorized** cross-model review (paste elsewhere / a CLI the user runs).
 
 High-stakes in Punch: Postgres schema or `init.sql` changes, reporting-contract

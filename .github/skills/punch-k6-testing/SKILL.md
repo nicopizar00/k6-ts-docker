@@ -29,9 +29,9 @@ It owns:
 
 It does **not** own:
 
-- How the test is launched (see `punch-python-orchestration`).
-- Docker Compose service wiring (see `punch-compose-runtime`).
-- The HTML/JSON report's storage contract (see `punch-data-harvest`).
+- How the test is launched (see `python-orchestrator.instructions.md`).
+- Docker Compose service wiring (see `docker-compose.instructions.md`).
+- The HTML/JSON report's storage contract (see `artifacts-reporting.instructions.md`).
 - Whether AI assets are well-formed (see `punch-ai-governance`).
 
 ## When to use
@@ -42,7 +42,7 @@ It does **not** own:
 - Bumping the `grafana/k6` pin.
 - Considering whether to revive the Browser placeholder.
 
-**Not for:** launching tests (`punch-python-orchestration`), report paths/schemas (`punch-data-harvest`), or compose wiring (`punch-compose-runtime`).
+**Not for:** launching tests (`python-orchestrator.instructions.md`), report paths/schemas (`artifacts-reporting.instructions.md`), or compose wiring (`docker-compose.instructions.md`).
 
 ## Inputs expected
 
@@ -102,9 +102,9 @@ services) lives in
 
 A quick **CI/CD-style gate** to confirm a k6 load test actually runs on the local
 machine **before** standing up the layered Docker orchestration. Sole consumer:
-[`punch-performance-test-engineer`](../../agents/punch-performance-test-engineer.agent.md)
-— the one agent carrying [ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)'s
-host-`npm`/`k6` exception; no other agent runs this. Wired into the npm/pnpm lifecycle as a script:
+[`punch-builder`](../../agents/punch-builder.agent.md)'s performance-test
+subsystem — the one carrying [ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)'s
+host-`npm`/`k6` exception; no other subsystem or agent runs this. Wired into the npm/pnpm lifecycle as a script:
 
 ```bash
 npm run smoke:local        # or: pnpm smoke:local

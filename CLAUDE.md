@@ -91,7 +91,7 @@ If a proposed change does not fit this chain, stop and discuss before adding it.
         ├── instructions/                 # path-specific behavior rules
         ├── prompts/                      # 8 lifecycle prompts (Spec→Ship + punch-test + punch-document)
         ├── skills/                       # domain + lifecycle skills (docs/ai/skill-registry.md)
-        ├── agents/                       # agent personas (lifecycle + punch-builder dispatcher + 2 engineers + specialists)
+        ├── agents/                       # agent personas (lifecycle + punch-builder implementer + specialists)
         └── workflows/
             └── k6.yml
 
@@ -106,16 +106,14 @@ Anything not listed here needs justification before being added.
    implementation details, not user-facing commands. The Python orchestrator
    is a thin façade that shells out to `docker compose`; it adds no execution
    semantics of its own.
-   **One scoped exception:** the `punch-performance-test-engineer` agent may
+   **One scoped exception:** `punch-builder`'s performance-test subsystem may
    run host `npm`/`pnpm`/esbuild/lint — and host `k6` for the `npm run smoke:local`
    smoke pre-check — while *authoring* the k6 TS test toolchain
    ([ADR 0001](docs/ai/decisions/0001-perf-engineer-host-npm.md)). This is an
    *authoring/maintenance* convenience off the evidence path; the shipped
    chain still bundles in `docker/k6.Dockerfile`, and `smoke:local` is not the
-   evidence path. Native `/graphify` ([ADR 0002](docs/ai/decisions/0002-graphify-host-tool.md))
-   is a manually-installed, user-invoked Copilot skill, not a Punch-agent
-   host-tool exception — no Punch agent runs it on the user's behalf, and
-   `graphify-out/` is not the evidence path either.
+   evidence path. It does not apply while `punch-builder` is working the
+   runtime subsystem, which stays Docker-only + stdlib Python.
 2. **Small, reviewable steps.** Each change must be understandable in one
    sitting. Prefer multiple small PRs over one large one.
 3. **No unnecessary dependencies.** Every dependency must earn its place. If
@@ -162,12 +160,12 @@ Python CLI reaches feature parity):
 - The operating model is **Spec → Plan → Build → Test → Review →
   Ship** (Spec absorbs the former Define clarify step). Use the matching
   prompt in `.github/prompts/` and stay in the declared mode (Ask vs
-  Agent). Build is a single `punch-build` prompt; the `punch-builder`
-  dispatcher routes the approved task to `punch-runtime-engineer` or
-  `punch-performance-test-engineer` — see
+  Agent). Build is a single `punch-build` prompt; `punch-builder` classifies
+  the approved task into a subsystem (runtime or performance-test) and
+  implements it directly — see
   `docs/ai/scoped-build-policy.md`. Each phase activates a lifecycle
-  method skill + a domain skill; the *which skill when* index is in
-  `docs/ai/skill-registry.md`.
+  method skill + relevant domain skill/path instructions; the *which skill
+  when* index is in `docs/ai/skill-registry.md`.
 - Before adding files, dependencies, or abstractions, confirm they fit the
   execution chain and the structure above.
 - `src/services/` contains Node.js services for the reference application.

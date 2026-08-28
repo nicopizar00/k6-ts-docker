@@ -6,15 +6,14 @@ description: Documentate — documentation-debt remediation + AI-artifact lifecy
 
 **Lifecycle phase:** Documentate (recurring maintenance; orthogonal to Spec → Ship)
 **Mode:** Ask / Agent — reconciliation edits via `punch-ai-governance`
-**Owner skill:** [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
-(decision authority). Delegates — not competitors:
-[`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-(project primer) · [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
+**Owner skill:** `punch-ai-governance` agent (decision authority; audit
+procedure folded in). Delegates — not competitor:
+[`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md)
 (writing method). Legacy retirement / migration follows
 `punch-documentation-and-adrs` + `punch-git-workflow-and-versioning` (upstream
 `deprecation-and-migration` stays deferred — [skill registry](../../docs/ai/skill-registry.md)).
 **Agent:** [`punch-ai-governance`](../agents/punch-ai-governance.agent.md) (Documentation mode)
-**Operating comms:** Caveman (optional) **`full`** for wave working comms — diagnosis, classification, planning; **`lite`** for every persisted artifact (docs, prompt text, instructions, reports) — no verbose AI narrative in persistent assets. **Wenyan forbidden** in docs, ADRs, context maps, skills, prompts, registries, handoffs — these source-of-truth artifacts.
+**Operating comms:** No verbose AI narrative in persistent assets (docs, prompt text, instructions, reports) — these are source-of-truth artifacts.
 
 ## When to use
 
@@ -54,8 +53,7 @@ Every doc this phase writes or rewrites is:
   (front-loaded summaries, tables, stable headings) so agents resolve fast.
 - **Minimal human-readable** — short, skimmable prose for humans; no filler.
 - **Emojis / ASCII emoticons allowed** — when aid scannability or signal
-  status (✅ ⚠️ ❌ `:)`); explicit carve-out from Caveman's no-decorative-
-  emoji rule, for **persisted docs only**. Evidence stays verbatim regardless.
+  status (✅ ⚠️ ❌ `:)`), for **persisted docs only**. Evidence stays verbatim regardless.
 
 ## Canon output patterns
 
@@ -72,12 +70,6 @@ output shapes (prompts stay behavior source of truth).
 - **Adopt Adapt drift (optional, read-only).** Available directly via
   `python3 ai.ingest/compare.py`. Surface any `drift detected` / `baseline
   incomplete` as a governance finding for the wave — never a hard block.
-- **Native `/graphify` (optional, evidence only).** If the user has already
-  run `/graphify` and `graphify-out/graph.json` is present (committed or
-  local), it may be queried (`graphify query|path|explain`, explicit-only,
-  native skill) as supplementary evidence for duplication/orphan/stale
-  signals. This prompt never installs, builds, updates, or regenerates it —
-  that is entirely the user's own, separate, manual use of the native skill.
 
 ## How it works (boundary)
 
@@ -87,15 +79,11 @@ before `keep` or `promote`; unverifiable → classify `review`, never silently k
 
 **`punch-ai-governance` makes every reconciliation decision.** Nothing under
 `docs/` or `.github/` is reconciled without this agent's classification and,
-where a write is involved, the user's approval. Native Graphify output (if
-present) is *evidence*, never canonical — `.github/**` and `docs/**` (plus the
-explicitly owned `README.md` / `.vscode/settings.json` surfaces) stay
-authoritative for VS Code GitHub Copilot Chat; `CLAUDE.md` is disabled Copilot
-canon in this workspace (see the Discovery boundary in
-`copilot-instructions.md`) and is never called authoritative here. This
-prompt does not build, update, install, or otherwise execute Graphify in any
-form; that is the native, user-invoked `/graphify` skill, entirely outside
-this prompt's ownership.
+where a write is involved, the user's approval. `.github/**` and `docs/**`
+(plus the explicitly owned `README.md` / `.vscode/settings.json` surfaces)
+stay authoritative for VS Code GitHub Copilot Chat; `CLAUDE.md` is disabled
+Copilot canon in this workspace (see the Discovery boundary in
+`copilot-instructions.md`) and is never called authoritative here.
 
 ## Inputs
 
@@ -111,18 +99,14 @@ this prompt's ownership.
 
 ## What to do
 
-1. **Map & gather.** Read the wave's target files/docs directly (Read/Grep/
-   Glob). If a committed `graphify-out/graph.json` / `GRAPH_REPORT.md`
-   exists, consult it via `graphify query|path|explain` as optional
-   supplementary evidence for duplication/orphan/stale signals — this
-   prompt never builds, updates, or regenerates it.
+1. **Map & gather.** Read the wave's target files/docs directly (Read/Grep/Glob).
 2. **Classify** each finding: duplicate · stale · partial · orphaned ·
    unverified · canonical-candidate. Inherited / AI-generated artifacts start
    untrusted — verify before any `keep` / `promote`.
-3. **Reconcile** in ≤3-file steps — keep / merge / compact / convert / promote /
-   archive / delete / review (unverified → human decision). Update matching
-   registry row in same step. Surface each intended change and wait for approval
-   before writing.
+3. **Reconcile** in small, reviewable steps — keep / merge / compact / convert /
+   promote / archive / delete / review (unverified → human decision). Update
+   matching registry row in same step. Surface each intended change and wait
+   for approval before writing.
 4. **Record** wave outcome: findings closed, and what queued for next
    wave.
 

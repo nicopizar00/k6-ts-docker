@@ -18,10 +18,10 @@ Punch use **Ask** and **Agent** as primary modes. VS Code Copilot Chat's prompt-
 |---|---|---|---|
 | Spec   | Ask | `punch-architect` | Clarify (former Define) + write spec doc. |
 | Plan   | Ask (Plan discipline) | `punch-architect` | Output is plan, not product edits. |
-| Build  | Agent | `punch-builder` (dispatcher, routes to one engineer) | One scoped task, autonomous edit. |
+| Build  | Agent | `punch-builder` (classifies task into a subsystem, implements directly) | One scoped task, autonomous edit. |
 | Test   | Agent (run) or Ask (interpret) | `punch-test-engineer` | Run `./bin/punch` need Agent; read result is Ask. |
 | Review | Ask | `punch-code-reviewer` | Read-only five-axis critique. |
-| Ship   | Agent (gate + mechanical) | `punch-release-captain` | Fan-out → GO/NO-GO + rollback, then git + gh — no logic edits. |
+| Ship   | Agent (generic — gate + mechanical) | no dedicated persona | Fan-out → GO/NO-GO + rollback, then git + gh — no logic edits, all owned by the prompt itself. |
 
 ## Prompt → agent contract
 
@@ -34,7 +34,7 @@ description: ...
 ---
 ```
 
-Bound agent own `tools:` set is real guarantee: read-only personas (`punch-architect`, `punch-code-reviewer`) carry `search` + doc-`edit` only; `punch-builder` and its two engineers carry `edit` **and** terminal (`execute/runInTerminal`) — they may run scoped implementation checks, never the final verdict; `punch-test-engineer` carries `runCommands` as the independent verifier. Read-only persona cannot edit product code regardless how prompt invoked.
+Bound agent own `tools:` set is real guarantee: read-only personas (`punch-architect`, `punch-code-reviewer`) carry `search` + doc-`edit` only; `punch-builder` carries `edit` **and** terminal (`execute/runInTerminal`) — it may run scoped implementation checks, never the final verdict; `punch-test-engineer` carries `runCommands` as the independent verifier. Read-only persona cannot edit product code regardless how prompt invoked.
 
 ## Mode discipline rules
 

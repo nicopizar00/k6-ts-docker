@@ -40,6 +40,6 @@ Scope: `README.md`, everything under `docs/`.
 ## Build prompt
 
 Doc-only changes typically use [`punch-build`](../prompts/punch-build.prompt.md)
-(routed to `punch-runtime-engineer`) when they change artifact contract.
+(`punch-builder`'s runtime subsystem) when they change artifact contract.
 Otherwise no Build prompt needed — doc edit go straight Plan to PR if no runtime
 behavior change.

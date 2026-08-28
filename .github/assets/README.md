@@ -25,7 +25,7 @@ VS Code GitHub Copilot Chat template. Export = copy-paste `.github/` +
 On export, repo docs referenced from outside `.github/` + `docs/ai/` break.
 `resolve/` mirrors those paths so the bundle stays **self-resolutive and
 resilient**: the bundle needs only `.github/` · `docs/ai/` · `.ai-upstream/` ·
-`resolve/`, nothing external. Mirrors are **minimal caveman-wenyan snapshots**
+`resolve/`, nothing external. Mirrors are **minimal terse snapshots**
 (not real content; humans fill / replace on adopt). Coverage of the
 `resolve/` table against every out-of-bundle link is a **manual check on
 export** — human confirms the table below before adopting the bundle.
@@ -48,7 +48,7 @@ classes are **excluded from the template, not certified**:
 - **WIP / draft docs** — unsettled plans and drafts. Not mirrored, not
   resolved, not fixed.
 - **Other-tool docs** — LLM-specific files that are not Copilot-native.
-- **External-tool snapshots** — caveman / graphify under `.ai-upstream/`;
+- **External-tool snapshots** — upstream provenance under `.ai-upstream/`;
   external, official guides apply, humans install locally.
 
 > ⚠ Broken links in these classes stay unresolved on export **by design** — not

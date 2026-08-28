@@ -9,8 +9,6 @@ obeying the canonical Copilot asset — do not re-author or paraphrase it:
 - Prompt: `.github/prompts/punch-document.prompt.md`
 - Persona + scope: `.github/agents/punch-ai-governance.agent.md` (admin over
   `.github/` + all `docs/`)
-- Map with the **Global Graphify repository track** (`/graphify .` then
-  `--update`); evidence only, never canonical.
 
 Documentation-debt remediation + AI-artifact lifecycle — inherited docs and prior
 AI artifacts untrusted until verified. Maintain lean, AI-First,

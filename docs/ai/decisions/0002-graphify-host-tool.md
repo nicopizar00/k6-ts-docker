@@ -1,6 +1,19 @@
 # ADR 0002 — graphify as a scoped host-tool for documentation mapping
 
-**Status:** Accepted (2026-06-18)
+**Status:** Superseded (2026-08-28) — the vendored `.github/skills/graphify/`
+skill, its `punch-ai-governance`/`punch-document`/`punch-architect`
+integration points, and its ADR-sanctioned Rule-1 host-tool exception were
+all retired. Rationale: graphify is a general-purpose external visualization
+utility, not a Punch-specific capability, and now ships its own official
+VS Code installer — Punch no longer vendors a copy or governs its use. A
+user who wants it installs it independently, entirely outside Punch's
+`.github/` config and this ADR's original exception. The body below is kept
+verbatim as the historical record of the original decision — including
+links to `docs/ai/graphify-install.md`, which was deleted as part of this
+retirement and is now a dead link within the historical text; do not
+recreate it.
+
+**Status (original):** Accepted (2026-06-18)
 **Deciders:** repository owner + Punch AI Governance work
 
 ## Context

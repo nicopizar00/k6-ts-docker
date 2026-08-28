@@ -1,6 +1,6 @@
 ---
 name: punch-performance-optimization
-description: Measure-first performance work for Punch's k6 perf model. Use when a gate/journey threshold regresses, when adding behavior under load, or when service latency/error-rate drifts. Adapts upstream agent-skills `punch-performance-optimization` to k6 + Docker + Postgres; frontend/Web-Vitals guidance removed (Punch has no frontend).
+description: Measure-first performance work for Punch's k6 perf model. Use when a gate/journey threshold regresses, when adding behavior under load, or when service latency/error-rate drifts. Adapts upstream agent-skills `performance-optimization` to k6 + Docker + Postgres; frontend/Web-Vitals guidance removed (Punch has no frontend).
 applies-to: lifecycle/Build+Test — k6 perf bottlenecks in the reference services; not path-scoped
 ---
 
@@ -37,8 +37,8 @@ real bottleneck, fix it, re-run, guard with a threshold.
 | Throughput | `totalRequests`, RPS / VUs | did load actually apply? |
 | Check pass | `checkPassRate` | 1.0 expected on a healthy gate |
 
-Thresholds live at the top of each `src/tests/*.ts` (owned by
-`punch-performance-test-engineer`).
+Thresholds live at the top of each `src/tests/*.ts` (owned by `punch-builder`'s
+performance-test subsystem).
 
 ## Backend bottlenecks (the reference services)
 
@@ -50,7 +50,7 @@ Thresholds live at the top of each `src/tests/*.ts` (owned by
 
 Common fixes: collapse N+1 into one query; add the missing index; bound/ paginate
 list endpoints; cache rarely-changed reads; pin/raise the pool size. Keep the fix
-inside the owning layer (services = `punch-runtime-engineer` domain).
+inside the owning layer (services = `punch-builder`'s runtime-subsystem domain).
 
 ## Common rationalizations
 

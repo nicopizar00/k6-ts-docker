@@ -1,6 +1,6 @@
 ---
 agent: punch-builder
-description: Build — execute ONE approved Plan task. Invokes punch-builder, which delegates to a registered engineer within scope.
+description: Build — execute ONE approved Plan task. Invokes punch-builder, which classifies the task by subsystem and implements it within scope.
 ---
 # Punch — Build
 
@@ -32,9 +32,6 @@ Trigger-only — load only when the named condition is actually present, not by 
   behavioral change or a bug-reproduction proof (RED → GREEN → REFACTOR); not for pure docs/config edits.
 - [`punch-source-driven-development`](../skills/punch-source-driven-development/SKILL.md) — only for
   version-sensitive k6/Docker/Postgres API work; not every Build.
-- [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md) — only at the start of a
-  new session, a task switch, or when the task needs cross-file/repository reasoning; not re-loaded
-  mid-task once oriented.
 - [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — only after a test or build actually fails.
 - [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — only for a high-risk or ambiguous decision.
@@ -48,22 +45,21 @@ Trigger-only — load only when the named condition is actually present, not by 
 ## Rules
 
 - No free agent or skill selection. `punch-builder` is the only Build entry point.
-- `punch-builder` never builds itself. It delegates the complete build to one
-  registered engineer agent:
-  [`punch-runtime-engineer`](../agents/punch-runtime-engineer.agent.md) or
-  [`punch-performance-test-engineer`](../agents/punch-performance-test-engineer.agent.md).
+- `punch-builder` classifies the task into a subsystem (runtime or
+  performance-test — see [`punch-builder.agent.md`](../agents/punch-builder.agent.md))
+  and implements it directly within that subsystem's scope.
 - The change must be minimal, verifiable, and aligned with Punch architecture.
 - Any edit outside the task's allowed paths → **stop**, return to Plan.
 
-## Delegation
+## Scope
 
-`punch-builder` is the command-owned coordinator for this `/build` phase — not a
-lifecycle router. It delegates the complete build to exactly one engineer agent.
+`punch-builder` does not delegate the build — it is the implementer for
+whichever subsystem the task classifies into.
 
-Do **not** delegate: product direction, architecture, the `/test` verdict, the
-`/review` verdict, `/ship` readiness, or destructive/irreversible operations.
-Builder may run tests during build but never replaces the final `/test` or
-`/ship` verdict.
+Out of scope regardless of subsystem: product direction, architecture, the
+`/test` verdict, the `/review` verdict, `/ship` readiness, or
+destructive/irreversible operations. Builder may run tests during build but
+never replaces the final `/test` or `/ship` verdict.
 
 ## Validation gate
 
@@ -73,7 +69,7 @@ Change is done only when `reports/state/punch-run.json` records `passed: true`
 ## Required final report
 
 - **Result** — DONE | BLOCKED, + task ID/title
-- **Agent used** — the engineer that executed the build
+- **Subsystem** — runtime or performance-test
 - **Agent Skills used** — which skills the build invoked
 - **Files changed** — and why
 - **Evidence run** — each command → pass/fail + output, or omitted with the

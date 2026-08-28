@@ -9,13 +9,14 @@ applies-to: src/tests/**, lifecycle/Test+Build — backs punch-test and the punc
 ## In Punch
 
 This is the **method** behind the `punch-build` prompt (k6 tasks →
-`punch-performance-test-engineer`) and [`punch-test`](../../prompts/punch-test.prompt.md)
+`punch-builder`'s performance-test subsystem) and [`punch-test`](../../prompts/punch-test.prompt.md)
 (the independent Test/verification gate, agent `punch-test-engineer`). **Test
 follows Build, it never wraps it:** Build lazy-loads this skill and produces
 the RED-then-GREEN cycle itself while implementing; `punch-test` runs
 strictly after, inspecting Build's recorded RED evidence and independently
-rerunning to confirm GREEN — it returns **BLOCKED** if a behavioral change
-lacks convincing RED evidence, rather than authoring that evidence itself.
+rerunning to confirm GREEN against the *current* code — missing or
+unconvincing RED evidence becomes a coverage-gap observation for Review, not
+an automatic **BLOCKED**; `punch-test` never authors that evidence itself.
 Punch redefines "test":
 
 - A **test = a k6 `check()` or a threshold** in `src/tests/*.ts`, run via
@@ -27,8 +28,8 @@ Punch redefines "test":
 - **Test levels** are Punch's k6 categories: **smoke** (health), **gate** (perf
   threshold), **journey** (create→read→validate). Unit tests are a *complement,
   not a replacement* for runtime-contract validation (`copilot-instructions.md`).
-- Browser / Core-Web-Vitals testing is **deferred** (the `punch-performance-test-engineer`
-  Browser path) — out of scope here.
+- Browser / Core-Web-Vitals testing is **deferred** (`punch-builder`'s
+  performance-test-subsystem Browser path) — out of scope here.
 
 ## Overview
 
@@ -147,6 +148,6 @@ After completing any test-driven change:
 - [ ] `./bin/punch run <test>` produced `reports/state/punch-run.json` with `passed: true`.
 - [ ] Bug fixes include a RED→GREEN reproduction (via `punch-test`).
 - [ ] Checks/thresholds are deterministic; no host `k6`/`npm` was used —
-  except `punch-performance-test-engineer`'s documented authoring exception
-  ([ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)),
+  except `punch-builder`'s performance-test-subsystem documented authoring
+  exception ([ADR 0001](../../../docs/ai/decisions/0001-perf-engineer-host-npm.md)),
   which is never the evidence path.

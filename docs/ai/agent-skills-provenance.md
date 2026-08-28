@@ -33,7 +33,7 @@ or writes this file.**
 | `ci-cd-and-automation` | — | unadopted (irrelevant-to-Punch — CI/CD external to Punch by design) |
 | `code-review-and-quality` | `punch-code-review-and-quality` | adopted |
 | `code-simplification` | `punch-code-review-and-quality` (readability/simplicity axis) | superseded-by-Punch — absorbed, standalone skill retired (Plan G-08) |
-| `context-engineering` | `punch-context-engineering` | adopted |
+| `context-engineering` | *(none — retired 2026-08-28)* | **retired** — was adopted as a project-primer skill, but audited as always-on pointer content that belongs in the always-on hub (`copilot-instructions.md`), not an on-demand skill. Deleted; agents/prompts that referenced it now rely on the always-on discovery boundary instead. |
 | `debugging-and-error-recovery` | `punch-debugging-and-error-recovery` | adopted (frontmatter `name` mismatch fixed, Plan G-01) |
 | `deprecation-and-migration` | — | unadopted (deferred — infrequent; handled by `punch-documentation-and-adrs` + `punch-git-workflow-and-versioning`) |
 | `documentation-and-adrs` | `punch-documentation-and-adrs` | adopted |
@@ -43,7 +43,7 @@ or writes this file.**
 | `idea-refine` | `punch-spec-driven-development` (clarify step) | superseded-by-Punch — absorbed, standalone skill retired (Plan G-08) |
 | `incremental-implementation` | `punch-incremental-implementation` | adopted (the one default Build method) |
 | `interview-me` | — | unadopted (deferred — overlaps the absorbed idea-refine clarify step) |
-| `observability-and-instrumentation` | `punch-data-harvest` (Observability discipline section) | superseded-by-Punch — absorbed, standalone skill retired (Plan G-07) |
+| `observability-and-instrumentation` | `artifacts-reporting.instructions.md` (Observability discipline section) | superseded-by-Punch — absorbed, standalone skill retired (Plan G-07); its host skill `punch-data-harvest` was itself retired 2026-08-28, content carried forward into the path instruction |
 | `performance-optimization` | `punch-performance-optimization` | adopted (trigger-only: threshold regression) |
 | `planning-and-task-breakdown` | `punch-planning-and-task-breakdown` | adopted |
 | `security-and-hardening` | `punch-security-and-hardening` | adopted |
@@ -53,8 +53,10 @@ or writes this file.**
 | `test-driven-development` | `punch-test-driven-development` | adopted (trigger-only: behavioral change/bug proof) |
 | `using-agent-skills` | `copilot-instructions.md` + `docs/ai/skill-registry.md` + `docs/ai/agent-guards.md` | superseded-by-Punch — absorbed across three canonical files, standalone meta-skill retired (Plan G-09) |
 
-Row count: 24 (all source skills accounted for — 10 unadopted/deferred, 10 adopted
-and retained standalone, 4 adopted-then-absorbed-and-retired).
+Row count: 24 (all source skills accounted for — 6 unadopted/deferred, 12 adopted
+and retained standalone, 4 adopted-then-absorbed-and-retired, 2 adopted-then-
+retired-outright [`browser-testing-with-devtools`, 2026-08-28; `context-engineering`,
+2026-08-28]).
 
 ## Changes since prior baseline (`a5f0b17` → `ff2df4c0`, verified 2026-07-30)
 
@@ -68,7 +70,7 @@ adopted↔unadopted as a result of this re-pin:
 |---|---|---|
 | `code-review-and-quality` | 53 lines | **Real, unabsorbed.** New "Structural Remedies" section, a dependency-upgrade review workflow, and a severity-label rename (Critical/Important/Suggestion → Critical/Required/Optional/Nit). Out of VC-09's allowed paths (`punch-code-review-and-quality` not editable here) — needs its own Plan task. |
 | `git-workflow-and-versioning` | 57 lines | **Real, unabsorbed.** New "Release & Versioning" section (semver, tag-as-source-of-truth, changelog discipline). Punch's Ship phase is human-gated with no release/tag concept today, so relevance needs a human call — needs its own Plan task, not auto-adopted. |
-| `security-and-hardening` | 36 lines | **Real, unabsorbed, relevant.** Package-manager-agnostic audit workflow, install-script blocking, registry-provenance checks — applicable to the documented host-`npm` exception for `punch-performance-test-engineer`. Needs its own Plan task. |
+| `security-and-hardening` | 36 lines | **Real, unabsorbed, relevant.** Package-manager-agnostic audit workflow, install-script blocking, registry-provenance checks — applicable to the documented host-`npm` exception, at the time held by `punch-performance-test-engineer` (retired 2026-08-28; the exception now binds to `punch-builder`'s performance-test subsystem, see ADR 0001). Needs its own Plan task. |
 | `deprecation-and-migration` | 41 lines | New expand/contract DB-schema-migration pattern. Stays **unadopted** — Punch has no live-migrating schema (Postgres seeded once via `docker/postgres/init.sql`). No action. |
 | `browser-testing-with-devtools` | 17 lines | New MCP profile-isolation guidance (`--isolated` vs `--autoConnect`, security boundaries). Real content, but this Punch adoption stays **dormant** (deferred until a Plan enables a browser-capable path — the k6 Browser placeholder is explicitly deferred). Refresh at activation time, not now. |
 | `documentation-and-adrs` | 12 lines | New "match the existing ADR convention first" guidance. Punch already has one fixed convention (`docs/ai/decisions/`) — low priority. Optional future review, no action taken here. |
@@ -102,23 +104,34 @@ manifest and `punch-performance-optimization`.
 | `security-auditor` | `punch-security-auditor` | adopted, adapted to Punch's surfaces (gateway input, Postgres, secrets/env, SSRF, supply chain — no web auth/XSS) |
 | `test-engineer` | `punch-test-engineer` | adopted, adapted to Punch's k6 + `reports/state/punch-run.json` evidence model |
 
-## Punch-native wrapper (not a direct persona adoption)
+## Retired native wrapper (not a direct persona adoption)
 
-| Punch agent | What it is | Disposition |
-|---|---|---|
-| `punch-release-captain` | Native wrapper around the vendor `/ship` **fan-out pattern** (parallel invoke → synthesize → gate) | native — adapts a *pattern*, not a 1:1 upstream `release-captain` persona. Its own description already states this ("Adapts the vendor agent-skills release-captain to Punch"); recorded here explicitly per Spec baseline evidence so no future reader mistakes it for a direct persona port. |
+`punch-release-captain` — a native wrapper around the vendor `/ship`
+**fan-out pattern** (parallel invoke → synthesize → gate) — was **retired
+2026-08-28**. It contradicted the upstream "a persona does not invoke
+another persona" rule (it fanned out to three specialist personas as a
+fourth coordinator persona). The fan-out pattern itself survives, now owned
+directly by the `punch-ship` prompt under generic Agent mode instead of a
+dedicated coordinator persona — see
+[`punch-ship.prompt.md`](../../.github/prompts/punch-ship.prompt.md).
 
-Row count: 3 persona rows + 1 release-captain row = 4.
+Row count: 3 persona rows (release-captain wrapper retired, not counted).
 
 ## Checksum / adaptation classification
 
 Per `punch-ai-governance`'s canon adopt-adapt procedure: every adopted-and-retained
 Punch skill above is **adapted-prefixed** (`punch-<name>` maps to a canon `<name>`,
 already correctly named — no rename owed). None are byte-identical to the local
-`.ai-upstream` snapshot; the aggregate reduction across the (now 14, post-G-07/08/09)
-retained adapted lifecycle skills plus domain skills was 2,384 Punch lines vs 5,065
-upstream-baseline lines at Spec approval (52.9% reduction) — re-verify this ratio
-if upstream is refreshed, don't assume it holds.
+`.ai-upstream` snapshot. The aggregate line-count reduction figure recorded at
+Spec approval (2,384 Punch lines vs 5,065 upstream-baseline, 52.9% reduction,
+against a then-14-skill retained set) predates the 2026-08-28 governance
+sweep that retired `punch-context-engineering` and folded
+`punch-python-orchestration` / `punch-compose-runtime` / `punch-data-harvest`
+/ `punch-ai-governance` (the skill; the agent survives) into path
+instructions and the agent layer — the retained-skill set today is
+`punch-k6-testing` (domain) plus the 12 lifecycle skills in
+[`skill-registry.md`](skill-registry.md). Re-derive the ratio from current
+files if it's needed again; don't assume the old figure holds.
 
 ## Refresh discipline
 

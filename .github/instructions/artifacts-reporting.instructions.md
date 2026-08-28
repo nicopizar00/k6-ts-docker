@@ -53,6 +53,56 @@ reporting/state code in `src/punch/`), artifact dir
 - Touch `src/tests/support/report.ts` or reporting parts of
   `src/punch/`.
 
+## Current artifact schemas
+
+| Artifact | Schema |
+|---|---|
+| `reports/state/punch-run.json` | `{ "tests": [{"name": str, "exit_code": int}], "passed": bool, "started_at": iso8601, "finished_at": iso8601 }` |
+| `reports/state/test-context.json` | `{ "created_order_ids": [str], "created_at": iso8601 }` (see `order-journey.ts` for current shape) |
+| `reports/<test>.html` | Free-form self-contained HTML; structure stable enough to grep for thresholds |
+| `reports/<test>.json` | k6's summary JSON, **filtered** to aggregates (counts, thresholds, durations) — never raw per-iteration data |
+| `reports/logs/<service>.log` | Raw container stdout+stderr, line-ordered |
+
+A change adding, splitting, or moving an artifact fills in a row here (Path /
+Format / Producer / Produced-when / Schema / Read by / Stability /
+Sensitivity, as needed) in the same PR — see
+[`maintenance-matrix.md`](../../docs/ai/maintenance-matrix.md).
+
+## Observability discipline
+
+Punch's reference services are a didactic demo, not a production system with
+on-call — so OpenTelemetry tracing, a separate metrics backend, and
+symptom-based alerting are **out of scope**, deferred until a real recurring
+service use case is approved. The transferable discipline that *is* in scope:
+
+- **Instrument with a question in mind.** Before adding a log line, write 2–4
+  on-call-style questions it answers (e.g. "what fraction of create-order
+  requests fail, and why?"). Telemetry without a question is noise.
+- **Structured logs, not prose.** One JSON object per line, stable event name +
+  machine fields (`{ event: 'order_create_failed', orderId, cause, ms }`), not
+  string interpolation — so it survives into `reports/logs/` and stays
+  greppable next to the k6 evidence. Levels: `error` (invariant broken) ·
+  `warn` (degraded) · `info` (business event) · `debug` (off by default).
+- **Carry a correlation id** from the gateway through catalog/orders so one
+  request can be reconstructed from interleaved logs — an orphan log line
+  (no correlation id) is a red flag.
+- **RED, read from the k6 run.** Rate/Errors/Duration come from the k6 summary
+  (`http_req_duration` p95/p99, `errorRate`, `totalRequests`), never a separate
+  metrics backend. **Percentiles, never averages.**
+- **Never log secrets/tokens/URLs/PII** into any artifact — allowlist fields,
+  don't dump whole request bodies.
+- **Verify the telemetry itself before "done."** Force a failure (e.g. a bad
+  order payload), find the structured `*_failed` event in `reports/logs/` by
+  correlation id, confirm fields are real JSON (not `[object Object]`); run
+  `./bin/punch run journey --collect-logs` and confirm logs line up with
+  `reports/state/punch-run.json`.
+- **The run evidence is the telemetry.** `reports/state/punch-run.json` answers
+  "did it pass?"; `reports/logs/<service>.log` answers "why not?" — keep the split.
+
+**Red flags:** a service path with retries/queries/external hops and zero new
+log events; log lines built by string interpolation; no correlation id;
+latency reported as an average; secrets/full bodies/PII in any log line.
+
 ## Build prompt
 
-Use [`punch-build`](../prompts/punch-build.prompt.md) — dispatcher route data-harvest tasks to `punch-runtime-engineer`.
+Use [`punch-build`](../prompts/punch-build.prompt.md) — `punch-builder` classifies data-harvest tasks into its runtime subsystem.

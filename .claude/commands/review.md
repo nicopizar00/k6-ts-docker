@@ -7,6 +7,6 @@ Activate the `guard` skill, then run Punch's **Review** phase by loading and obe
 the canonical Copilot asset — do not re-author or paraphrase it:
 
 - Prompt: `.github/prompts/punch-review.prompt.md`
-- Persona + scope: `.github/agents/punch-reviewer.agent.md`
+- Persona + scope: `.github/agents/punch-code-reviewer.agent.md`
 
 Read-only critique; no product edits. Follow that prompt exactly. Input: $ARGUMENTS

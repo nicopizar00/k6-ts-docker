@@ -8,10 +8,8 @@ description: Spec — clarify and refine the request, then convert it into goals
 **Mode:** Code read-only; may write spec doc when persisted (per agent definition)
 **Owner skill:** [`punch-spec-driven-development`](../skills/punch-spec-driven-development/SKILL.md) (method,
 with its clarify step — absorbed from the retired `punch-idea-refine` — activating when the idea is still vague)
-+ [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md)
-+ matching domain skill (orchestration / compose / k6 / data-harvest)
++ matching domain skill/path instructions (k6 / orchestration / compose / artifacts)
 **Agent:** [`punch-architect`](../agents/punch-architect.agent.md) — Spec + Plan owner.
-**Operating comms:** Caveman **`lite`** (per-phase, optional). Spec docs persistent — no Wenyan.
 
 ## When to use
 

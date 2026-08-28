@@ -117,7 +117,7 @@ dependency or adversarial input can embed instruction-like text.
 
 ## Instrumentation Guidelines
 
-Follow the [`punch-data-harvest`](../punch-data-harvest/SKILL.md) discipline: extra
+Follow the [`artifacts-reporting`](../../instructions/artifacts-reporting.instructions.md) discipline: extra
 diagnostics go to **files** (`reports/logs/`), keep the terminal low-noise, and
 **never log secrets/tokens/URLs into artifacts**. Remove dev-only logging once the
 fix is guarded by a check.

@@ -29,12 +29,12 @@ Spec absorbs former Define phase (opens with clarify/refine step).
   outside `allowed`.
 - **Test follows Build, never wraps it, and never edits.** Prefer `./bin/punch`
   over ad-hoc `docker run` or host `k6`; inspect Build's recorded RED
-  evidence and independently rerun for GREEN — BLOCKED, not authored, when
-  RED evidence is required but missing. See
-  [`punch-test`](../prompts/punch-test.prompt.md).
+  evidence and independently rerun for GREEN — missing/unconvincing RED
+  evidence is a coverage-gap observation for Review, not an automatic
+  BLOCKED. See [`punch-test`](../prompts/punch-test.prompt.md).
 - **Review evaluates risk, correctness, boundary violations.**
   Read-only critique against Plan. Activates
-  [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
+  [`punch-ai-governance`](../agents/punch-ai-governance.agent.md)
   when diff touches `.github/` or `docs/ai/`.
 - **Ship summarizes state, finalizes mechanically.** Commits, push,
   PR. Humans merge. Ship never expands scope.
@@ -54,8 +54,8 @@ Every artifact in `.github/` declares frontmatter:
 - **Agents** (`*.agent.md`): `name:`, `description:`, `tools:` (capability
   scope). `model:` optional.
 
-[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md)
-skill verifies this every time `.github/` or `docs/ai/` touched.
+[`punch-ai-governance`](../agents/punch-ai-governance.agent.md)
+agent verifies this every time `.github/` or `docs/ai/` touched.
 
 ## When adding a new AI asset
 

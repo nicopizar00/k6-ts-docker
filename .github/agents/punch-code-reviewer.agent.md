@@ -32,7 +32,7 @@ code. The Approve / Request Changes verdict is **its own** and is never delegate
 
 - **Evidence** — `reports/state/punch-run.json` exists and shows `passed: true`.
 - **Governance** — when the diff touches `.github/` or `docs/ai/`, activate
-  [`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md): frontmatter
+  [`punch-ai-governance`](punch-ai-governance.agent.md): frontmatter
   complete, registries match files, agents/skills referenced consistently.
 
 ## Output
@@ -69,18 +69,17 @@ smoke check) happen **inline** — this agent has no `edit/editFiles` tool and
 no `agent` tool, so it spawns no sub-agents.
 
 **Do not invoke from another persona.** Only this agent — via `/punch-review` or
-the registered `/punch-ship` fan-out (`punch-release-captain`) — issues the
-Approve/Request Changes verdict; it is never delegated.
+the `/punch-ship` prompt's own fan-out — issues the Approve/Request Changes
+verdict; it is never delegated.
 
 ## Skill activation
 
-Always: [`punch-context-engineering`](../skills/punch-context-engineering/SKILL.md).
 Method: [`punch-code-review-and-quality`](../skills/punch-code-review-and-quality/SKILL.md) (five
 axes, incl. readability/simplicity), with
 [`punch-security-and-hardening`](../skills/punch-security-and-hardening/SKILL.md) (security axis),
 [`punch-documentation-and-adrs`](../skills/punch-documentation-and-adrs/SKILL.md) (doc check).
 Required when the diff touches `.github/` or `docs/ai/`:
-[`punch-ai-governance`](../skills/punch-ai-governance/SKILL.md).
+[`punch-ai-governance`](punch-ai-governance.agent.md).
 
 ## Guards (per agent-guards.md)
 
@@ -89,6 +88,4 @@ Bounded by the shared [`agent-guards.md`](../../docs/ai/agent-guards.md) discipl
 
 ## Comms
 
-Caveman (optional) **`full`** (Review phase voice) — normal prose for
-judgment-heavy work. Verdict stays its own. Capabilities/scope/guards unchanged;
-prose only.
+Normal prose for judgment-heavy work. Verdict stays its own.
