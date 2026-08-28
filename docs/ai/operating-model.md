@@ -1,7 +1,8 @@
 # AI Operating Model
 
 This file define **how** AI changes flow through Punch.
-For **rules** about what code may look like, see `CLAUDE.md` and
+For **rules** about what code may look like, see
+[`.github/copilot-instructions.md`](../../.github/copilot-instructions.md) and
 path-specific instructions under `.github/instructions/`.
 
 (Was `operating-protocol.md`. Rename part of redesigned
@@ -45,7 +46,7 @@ interchangeable.
 
 | Kind | Lives in | Answers | Lifetime |
 |---|---|---|---|
-| **Instructions** | `.github/instructions/` (path-scoped) and `CLAUDE.md` (global) | "What rules apply when I touch this code?" | Long — change rarely. |
+| **Instructions** | `.github/instructions/` (path-scoped) and `.github/copilot-instructions.md` (global, always-on hub) | "What rules apply when I touch this code?" | Long — change rarely. |
 | **Prompts** | `.github/prompts/` | "How do I run *this phase* of the lifecycle?" | Long — one per phase/domain. |
 | **Skills** | `.github/skills/<skill>/SKILL.md` | "What does an expert in *this domain or method* always do?" | Long — domain skills (one per subsystem) + lifecycle skills (one per method). |
 | **Agents** | `.github/agents/` | "Which behavioral profile fits *this phase*?" | Long — one per persona. |
@@ -143,5 +144,6 @@ during Review. Skill axes detailed in
   touching `.github/` or `docs/ai/`.
 - Update `skill-registry.md` and `prompt-registry.md` in same PR that
   adds or removes asset.
-- `CLAUDE.md` is constitution. If rule moves, moves there; this
-  file only describes lifecycle.
+- `.github/copilot-instructions.md` is the always-on hub. If rule moves,
+  moves there (or a linked path-specific instruction file); this file only
+  describes lifecycle.

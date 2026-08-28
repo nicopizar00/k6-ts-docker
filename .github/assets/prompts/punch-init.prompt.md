@@ -22,7 +22,7 @@ description: 'AI 治理代理 · 啟引：掃 .github/ 與倉碼、安掃,certif
 2. **安掃（security scan · 須過方續）**：掃步 1 之入,查秘鑰、私 URL、內務脈絡(中樞戒律五)。
    - **PASS** = 淨,方續。
    - **FAIL** = 見洩 → 阻 certify,先報洩處,人除方再掃。
-3. **解 gate（resolve · self-resolutive check）**：驗 bundle(`.github/` + `docs/ai/`)之出域文鏈皆有 `resolve/` 鏡照覆之,使 bundle 自解、不外伸(唯 `.github/` · `docs/ai/` · `.ai-upstream/` · `resolve/`)。對 `.github/assets/README.md` 之 resolve 表(`punch-boundaries`、`validation`、`CLAUDE.md`、`AGENTS.md`)逐一核：鏡照在否、覆全引處否。
+3. **解 gate（resolve · self-resolutive check）**：驗 bundle(`.github/` + `docs/ai/`)之出域文鏈皆有 `resolve/` 鏡照覆之,使 bundle 自解、不外伸(唯 `.github/` · `docs/ai/` · `.ai-upstream/` · `resolve/`)。對 `.github/assets/README.md` 之 resolve 表(`punch-boundaries`、`validation`)逐一核：鏡照在否、覆全引處否。
    - 鏡照**缺**某出域鏈(範圍外類除外) → 解軌 **WARN**,薦補 caveman-wenyan 鏡照 snapshot 於 `resolve/`。
 4. **繪備度（map）**：對範本 `.github/assets/**` 每檔 + 解軌,定備度閘(下)。
 5. **certify**：判本倉 + Copilot 配置是否 **document_ready**(可用 `/punch-document`)。

@@ -1,6 +1,6 @@
 ---
 agent: punch-ai-governance
-description: Init — on-demand, read-only asset enablement sweep that certifies the Punch GitHub Copilot asset set (prompts, agents, skills, instructions) is present, punch-prefixed, and Copilot-compatible before the lifecycle runs, plus an informational capability check for the optional AI-Ingest vendor skills Caveman/cavecrew. Re-runnable anytime. Reports PASS / WARN / BLOCKED. Never reconciles docs, never runs a runtime.
+description: Init — on-demand, read-only asset enablement sweep that certifies the Punch GitHub Copilot asset set (prompts, agents, skills, instructions) is present, punch-prefixed, and Copilot-compatible before the lifecycle runs, plus an informational capability check for the optional AI-Ingest vendor skill Caveman and the workspace's VS Code discovery boundary. Re-runnable anytime. Reports PASS / WARN / BLOCKED. Never reconciles docs, never runs a runtime.
 ---
 # Punch — Init (GitHub Copilot asset enablement sweep)
 
@@ -49,24 +49,25 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    `/punch-document`). Missing required skill → **BLOCKED**.
 4. **Instructions.** Every `.github/instructions/*.instructions.md` has
    `applyTo:` + `description:`. Missing required instruction or bad frontmatter → **BLOCKED**.
-5. **AI Skills (Caveman + cavecrew — optional vendor capabilities; graphify — adopted upstream skill).**
-   Caveman/cavecrew presence is an **informational capability check only** —
-   never a Punch prerequisite:
+5. **AI Skills (Caveman — optional vendor capability; graphify — adopted upstream skill).**
+   Caveman presence is an **informational capability check only** — never a
+   Punch prerequisite:
    - Caveman's default-`lite` rule for VS Code GitHub Copilot Chat lives directly
      in [`copilot-instructions.md`](../copilot-instructions.md) — no separate
      Punch presentation-adapter skill. Every phase runs entirely in normal
      prose when Caveman is absent or inactive; not a gap.
-   - The vendor skills `caveman` + `cavecrew` are installed via the **accepted
-     AI-Ingest path** ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)),
-     scoped to `github-copilot`. `caveman` is relocated once to
-     `.github/skills/caveman/` (the Copilot project-skill location — installer
-     default is `.agents/skills/caveman/`, which must not remain populated);
-     `cavecrew` stays at its installer-default `.agents/skills/cavecrew/`, with
-     the optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
-     Copilot personas in `.github/agents/`. Not installed →
-     **WARN** (user installs manually; purely optional — Build never depends on
-     cavecrew, and Review/Test/Security lose only the optional bounded-worker
-     assist).
+   - The vendor skill `caveman` is installed via the **accepted AI-Ingest path**
+     ([`.github/.ai-upstream/README.md`](../.ai-upstream/README.md)), scoped to
+     `github-copilot`, relocated once to `.github/skills/caveman/` (the Copilot
+     project-skill location — installer default `.agents/skills/caveman/` must
+     not remain populated). Not installed → **WARN** (user installs manually;
+     purely optional — Build never depends on it).
+   - The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
+     Copilot custom agents in `.github/agents/` (see check 2) are
+     self-contained and certified on their own frontmatter — they require no
+     `.agents/**` vendor skill to be present. `.agents/**` is outside this
+     workspace's VS Code Chat discovery boundary and is never a Punch
+     capability, prerequisite, resolver target, or canon.
    - The native upstream skill [`graphify`](../skills/graphify/SKILL.md) exists,
      adopted verbatim (only `user-invocable:` / `disable-model-invocation:` host
      metadata added — no Punch-authored fork; native skills stay agnostic per
@@ -98,6 +99,14 @@ registries ([`prompt-registry.md`](../../docs/ai/prompt-registry.md),
    must not misdirect Copilot away from Punch's GitHub-Copilot-first design (e.g.
    telling Copilot the runtime or an external tool is the entry point for Punch
    asset work). Misdirection → **WARN** (fix via `/punch-document`).
+10. **VS Code discovery boundary.** [`.vscode/settings.json`](../../.vscode/settings.json)
+    exists and is valid JSON; `chat.useAgentsMdFile`, `chat.useNestedAgentsMdFiles`,
+    and `chat.useClaudeMdFile` are `false`; `chat.instructionsFilesLocations`,
+    `chat.promptFilesLocations`, `chat.agentFilesLocations`, and
+    `chat.agentSkillsLocations` each enable their `.github/*` root
+    (`.github/instructions`, `.github/prompts`, `.github/agents`,
+    `.github/skills`). Missing file, invalid JSON, or a required key set to the
+    wrong value → **BLOCKED**.
 
 ## Grading
 
@@ -136,9 +145,10 @@ one-line reason — then:
   broad fixer. Scripts under the repo are **not** mutable Init assets — Init does
   not embed or edit Python, shell, `setup.py`, or launchers.
 - **Copilot-first.** Checks only the assets Punch needs to operate through VS Code
-  GitHub Copilot. Vendor tools (graphify, the Caveman/cavecrew pack) are in scope
-  **only** via the accepted AI-Ingest path; non-Copilot agent runtimes (Claude
-  Code, Cloud Code) are out of scope entirely.
+  GitHub Copilot. Vendor tools (graphify, Caveman) are in scope **only** via the
+  accepted AI-Ingest path; `.agents/**` vendor skills (e.g. `cavecrew`) and
+  non-Copilot agent runtimes (Claude Code, Cloud Code) are out of scope
+  entirely.
 - **Lifecycle preserved.** Init certifies; it does not alter the Spec → Plan →
   Build → Test → Review → Ship → Document lifecycle it gates.
 

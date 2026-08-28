@@ -137,7 +137,6 @@ applies). Each row states which.
 |---|---|---|---|
 | [`graphify`](../../.github/skills/graphify/SKILL.md) | Knowledge-graph mapping of any corpus (code, docs, media) into a queryable graph with community detection — explicit-only (`/graphify`), never auto-loaded. **Native upstream skill — adopted, not Punch-authored**; only `user-invocable`/`disable-model-invocation` frontmatter added | upstream [`Graphify-Labs/graphify`](https://github.com/Graphify-Labs/graphify), installed via `uv tool install graphifyy` — pristine snapshot (local staging) [`.ai-upstream/graphify/`](../../.ai-upstream/graphify/UPSTREAM.md) | `.github/skills/graphify/SKILL.md` |
 | `caveman` (canonical install, Copilot project-skill location) | Upstream Caveman skill invoked as `/caveman lite\|full\|ultra\|wenyan-*`; default `lite` for VS Code GitHub Copilot Chat prose (rule in `copilot-instructions.md`). Installer drops it at `.agents/skills/caveman/`; Punch relocates it once to `.github/skills/caveman/` (only `user-invocable`/`disable-model-invocation` frontmatter added — no other change) | upstream `caveman` — official installer, relocated | `.github/skills/caveman/SKILL.md` |
-| `cavecrew` (canonical install) | Upstream cavecrew sub-agent delegation skill; optional Review/Test/Security coordinators may invoke it to spawn read-only workers with caveman compression. Never invoked by Build. Vendor skill kept as-is, at its installer-default location | upstream `caveman` — official installer | `.agents/skills/cavecrew/SKILL.md` |
 
 `graphify` is explicit-only (`/graphify`), never auto-loaded for unrelated
 work; scoped Rule-1 host-tool exception ([ADR 0002](decisions/0002-graphify-host-tool.md)).
@@ -155,10 +154,13 @@ add the two frontmatter fields) immediately after install; the pinned upstream
 body otherwise stays byte-identical. Its default-`lite` voice rule for VS Code
 GitHub Copilot Chat lives directly in `copilot-instructions.md` — no separate
 Punch presentation-adapter skill.
-**`cavecrew` retained** alongside `caveman`, at its installer-default location
-`.agents/skills/cavecrew/`: an optional non-Build coordinator
-(Review/Test/Security) may invoke it to spawn read-only workers with caveman
-compression — Build never does. Other auxiliary upstream packs
+The vendor `cavecrew` skill is **not** a registered Punch project skill —
+`.agents/skills/**` sits outside this workspace's VS Code Chat discovery
+boundary (`.vscode/settings.json`) and is never certified by `/punch-init`.
+The optional `punch-cavecrew-investigator` / `punch-cavecrew-reviewer`
+Copilot custom agents (`.github/agents/`) are self-contained and depend on no
+vendor skill — an optional non-Build coordinator (Review/Test/Security) may
+spawn them directly; Build never does. Other auxiliary upstream packs
 (`caveman-compress` with host Python scripts,
 `caveman-commit`/`-help`/`-review`/`-stats`) **removed** to keep the install
 Copilot-scoped and Docker-First-minimal.

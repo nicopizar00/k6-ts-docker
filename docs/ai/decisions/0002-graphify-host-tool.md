@@ -74,7 +74,9 @@ would have blocked negation.
 6. No raw cost / token keys (`input_tokens`, `output_tokens`, `total_cost`) in either file (6a: `graph.json`; 6b: `GRAPH_REPORT.md`). `GRAPH_REPORT.md` may contain the human-readable summary line `Token cost: N input · N output` — accepted as non-sensitive (rounded totals only, no user data). Any raw JSON key in either file is a blocker.
 7. No tracked rogue Graphify output paths: only root `graphify-out/graph.json` and root `graphify-out/GRAPH_REPORT.md` may be committed. Nested `*/graphify-out/*` and renamed `graphify-out-*/*` / `graphify-out_*/*` outputs fail CI.
 
-Full checklist text (with commands) lives in `.github/skills/punch-graphify/SKILL.md` (Team Share section).
+Full checklist text (with commands) lived in `.github/skills/punch-graphify/SKILL.md`
+(Team Share section) — retired, see "Native Graphify skill supersedes the
+Punch-leaned adaptation" below; the six checks above remain the live gate.
 
 ### Forbidden by default
 
@@ -166,8 +168,10 @@ concrete evidence (destructive rewrite of hand-authored content) to the original
 ### Decision
 
 `/punch-document` (via `punch-ai-governance`) reads
-[`.github/skills/punch-graphify/SKILL.md`](../../../.github/skills/punch-graphify/SKILL.md)
-directly and executes its Steps 1-9 procedure inline, in its own turn, instead of
+`.github/skills/punch-graphify/SKILL.md` (retired — see "Native Graphify skill
+supersedes the Punch-leaned adaptation" below; link removed, the path no
+longer exists) directly and executes its Steps 1-9 procedure inline, in its
+own turn, instead of
 attempting to dispatch `/graphify` as a slash command (confirmed unreachable
 mid-turn, `fe1ada7`) or forking it as a subagent (never actually wireable — see
 correction above). A skill is a markdown instructions file; any agent with
@@ -292,7 +296,10 @@ pin `punch-graphify/SKILL.md` Step 1 already used, so nothing here changes
 which version is installed. The unpinned `uv tool install graphifyy` in this
 ADR's original Context (2026-06-18) and first Consequences section above
 predates the pin decision and is left as written — historical record, not
-current guidance. Consult `punch-graphify/SKILL.md` Step 1 for the live pin.
+current guidance. `punch-graphify/SKILL.md` no longer exists (retired, see
+"Native Graphify skill supersedes the Punch-leaned adaptation" below);
+consult [`docs/ai/graphify-install.md`](../graphify-install.md) for the live
+pin instead.
 
 ## Native Graphify skill supersedes the Punch-leaned adaptation (2026-07-17)
 
@@ -364,3 +371,20 @@ its full upstream body, including the previously-removed reference files
   native skill's manual-install/maintenance policy, not on any Punch-executed
   procedure; `punch-ai-governance` treats this section as the current
   sanctioned Graphify surface.
+
+## Graphify refreshed to v0.9.30 (2026-07-30)
+
+**Status:** Accepted — clarification, not a new decision. Supersedes only the
+version number in "Installation guidance corrected to the pinned version"
+above; the native-skill-only model from "Native Graphify skill supersedes..."
+is unchanged.
+
+The native Graphify Agent Skill under `.github/skills/graphify/` was refreshed
+from stable `v0.9.30` (commit `ecfcd160d56b420eb8241430fa7b5b1951c7829f`,
+verified against the GitHub API), replacing the prior `0.8.41` pin —
+`SKILL.md` plus all `references/**`, source-identical to the upstream VS Code
+variant except the two approved frontmatter fields. Current install guidance
+and the live version pin are documented in
+[`docs/ai/graphify-install.md`](../graphify-install.md), not here — this ADR
+records only the tooling decision, not the live version number. No behavior,
+scope, or governance change accompanies this refresh.

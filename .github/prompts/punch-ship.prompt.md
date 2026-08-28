@@ -1,6 +1,6 @@
 ---
 agent: punch-release-captain
-description: Phase 7 — Ship. punch-release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
+description: Phase 6 — Ship. punch-release-captain fans out the specialists, decides GO | NO-GO + rollback, then mechanically commits/pushes/opens the PR. Humans merge.
 ---
 # Punch — Ship
 

@@ -1,6 +1,6 @@
 ---
 name: punch-incremental-implementation
-description: Delivers changes in thin vertical slices. Use in the Punch Build phase for any task touching more than one file or more than ~100 lines. The method is stack-neutral; Punch's scope contract and phase split (Build edits, Verify runs, Ship commits) override the generic loop.
+description: Delivers changes in thin vertical slices. Use in the Punch Build phase for any task touching more than one file or more than ~100 lines. The method is stack-neutral; Punch's scope contract and phase split (Build edits + runs scoped checks, Verify owns the independent final verdict, Ship commits) override the generic loop.
 applies-to: lifecycle/Build — the method the punch-build prompt + builder agents activate; not path-scoped
 ---
 
@@ -11,10 +11,14 @@ applies-to: lifecycle/Build — the method the punch-build prompt + builder agen
 This is the **method** the `punch-build` prompt and its builder agents
 activate (Build phase). Punch reshapes the generic loop:
 
-- **Phase-distributed loop:** a builder **edits one scoped slice** (builders carry
-  no terminal tool); **Verify** runs `./bin/punch run …`; **Ship** commits
-  (human-gated). So the loop is *Implement → Verify → next slice*, with commits
-  deferred to Ship — builders do not run tests or commit.
+- **Phase-distributed loop:** a builder **edits one scoped slice** and may run
+  `./bin/punch run …` as a scoped implementation check before handoff (terminal
+  allowed — see [`agent-guards.md`](../../../docs/ai/agent-guards.md)); **Verify**
+  (`punch-test-engineer`) independently re-runs it and owns the final PASS/FAIL
+  verdict; **Ship** commits (human-gated). So the loop is *Implement → scoped
+  check → next slice*, with the final verdict and commits both deferred —
+  builders run implementation-scoped checks, never the final verdict, never a
+  commit.
 - **Scope is the contract:** each slice stays inside the task's allowed /
   read-only / forbidden paths
   ([`scoped-build-policy.md`](../../../docs/ai/scoped-build-policy.md)). Scope
@@ -47,8 +51,10 @@ Build one slice ──► Verify (./bin/punch run) ──► next slice ──�
 For each slice:
 
 1. **Implement** the smallest complete piece, inside the task's allowed paths.
-2. **Verify** runs `./bin/punch run <test>` and checks
-   `reports/state/punch-run.json` — the builder hands off; it does not run commands.
+2. **Implementation check.** Builder may run `./bin/punch run <test>` and inspect
+   `reports/state/punch-run.json` as scoped evidence before handoff — not the
+   final verdict. **Verify** (`punch-test-engineer`) independently re-runs it
+   and owns PASS/FAIL.
 3. **Carry forward** to the next slice — don't restart.
 
 Commits happen once, at Ship.

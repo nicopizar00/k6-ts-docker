@@ -36,7 +36,7 @@ Have approved Spec, need partition into tasks Build executes one at a time. Plan
    - **Validation commands** — official Punch commands Test runs.
    - **Rollback notes** — how to undo if Test fails.
    - **Human checkpoint** — "human approval required before Build".
-   - **Build prompt** — which of 5 build-* prompts handles it.
+   - **Build prompt** — `punch-build`, dispatched by `punch-builder` to the matching engineer.
 
 4. Task crosses layers naturally → flag as **integration task**, split into per-layer sub-tasks with fixed execution order.
 5. List risks and rollback path for whole change.

@@ -38,7 +38,6 @@ Trigger-only — load only when the named condition is actually present, not by 
 - [`punch-planning-and-task-breakdown`](../skills/punch-planning-and-task-breakdown/SKILL.md) — only on `/build auto` with no task list, to derive ordered tasks.
 - [`punch-debugging-and-error-recovery`](../skills/punch-debugging-and-error-recovery/SKILL.md) — only after a test or build actually fails.
 - [`punch-doubt-driven-development`](../skills/punch-doubt-driven-development/SKILL.md) — only for a high-risk or ambiguous decision.
-- [`graphify`](../skills/graphify/SKILL.md) — when a repo dependency map helps locate the change surface (native, explicit-only; never invoked automatically).
 
 ## Modes
 

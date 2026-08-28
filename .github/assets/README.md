@@ -35,8 +35,6 @@ mirror set covers every out-of-bundle link (see the resolve gate in
 |--------------------|------------------------|
 | `docs/architecture/punch-boundaries.md` (7) | `resolve/docs/architecture/punch-boundaries.md` |
 | `docs/workflows/validation.md` (2) | `resolve/docs/workflows/validation.md` |
-| `CLAUDE.md` (2 · repo-root rule source) | `resolve/CLAUDE.md` |
-| `AGENTS.md` (1 · AI agent guide) | `resolve/AGENTS.md` |
 
 ## Hub-Spoke
 

@@ -16,6 +16,15 @@ before bending.
    *WHY:* irreversible + externally visible. PR boundary = where human judgment enters.
 5. **No secrets, no private URLs, no internal business context** in source, docs, prompts, or test inputs. Use env vars for any external base URL.
 
+## Discovery boundary (this workspace)
+
+VS Code Copilot Chat discovers repository customizations from
+`.github/instructions`, `.github/prompts`, `.github/agents`, and
+`.github/skills` only — [`.vscode/settings.json`](../.vscode/settings.json) is
+the enforced guard. Root `AGENTS.md`, `CLAUDE.md`, `.agents/**`, and
+`.claude/**` are disabled for this workspace and are not Punch Chat canon;
+they may still serve other hosts untouched.
+
 ## Architecture ownership
 
 Each layer owns one decision domain; Build prompts refuse cross-layer without

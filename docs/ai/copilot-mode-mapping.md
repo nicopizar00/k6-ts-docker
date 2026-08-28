@@ -1,6 +1,6 @@
 # Copilot Mode Mapping
 
-How seven lifecycle phases map to GitHub Copilot three modes.
+How six lifecycle phases map to GitHub Copilot three modes.
 
 ## Reference
 
@@ -10,7 +10,7 @@ GitHub Copilot Chat expose three execution modes:
 - **Edit Mode** — targeted edits over small file set; less autonomous than Agent.
 - **Agent Mode** — autonomous task execution; read, edit, run commands.
 
-Punch use **Ask** and **Agent** as primary modes, treat **Plan** as Ask-Mode discipline (no `plan` mode in Copilot; "Plan" here mean "Ask Mode whose output is plan document").
+Punch use **Ask** and **Agent** as primary modes. VS Code Copilot Chat's prompt-file `agent:` field does support a built-in `plan` value alongside `ask`/`agent`/a named custom agent — Punch deliberately does not use it: `punch-plan.prompt.md` binds the custom, read-only `punch-architect` agent instead, so Plan output stays constrained to Punch's own task-contract shape (allowed/read-only/forbidden paths, validation commands, human checkpoint) rather than the built-in mode's generic plan format. Punch's Plan phase is therefore Ask-Mode discipline under a named custom agent, not the built-in `plan` value.
 
 ## Mapping
 
@@ -18,7 +18,7 @@ Punch use **Ask** and **Agent** as primary modes, treat **Plan** as Ask-Mode dis
 |---|---|---|---|
 | Spec   | Ask | `punch-architect` | Clarify (former Define) + write spec doc. |
 | Plan   | Ask (Plan discipline) | `punch-architect` | Output is plan, not product edits. |
-| Build  | Agent | matching `punch-builder-*` | One scoped task, autonomous edit. |
+| Build  | Agent | `punch-builder` (dispatcher, routes to one engineer) | One scoped task, autonomous edit. |
 | Test   | Agent (run) or Ask (interpret) | `punch-test-engineer` | Run `./bin/punch` need Agent; read result is Ask. |
 | Review | Ask | `punch-code-reviewer` | Read-only five-axis critique. |
 | Ship   | Agent (gate + mechanical) | `punch-release-captain` | Fan-out → GO/NO-GO + rollback, then git + gh — no logic edits. |
@@ -34,11 +34,11 @@ description: ...
 ---
 ```
 
-Bound agent own `tools:` set is real guarantee: read-only personas (`punch-architect`, `punch-architect`) carry `search` + doc-`edit` only; builders carry `edit`; verifier and reviewer carry `runCommands`. Read-only persona cannot edit product code regardless how prompt invoked.
+Bound agent own `tools:` set is real guarantee: read-only personas (`punch-architect`, `punch-code-reviewer`) carry `search` + doc-`edit` only; `punch-builder` and its two engineers carry `edit` **and** terminal (`execute/runInTerminal`) — they may run scoped implementation checks, never the final verdict; `punch-test-engineer` carries `runCommands` as the independent verifier. Read-only persona cannot edit product code regardless how prompt invoked.
 
 ## Mode discipline rules
 
-1. **Read-only personas stay read-only.** `punch-architect`, `punch-architect`, reviewer carry no code-`edit` tool, so cannot edit product code — preserve phase read-only guarantee.
+1. **Read-only personas stay read-only.** `punch-architect` (Spec + Plan) and `punch-code-reviewer` (Review) carry no code-`edit` tool, so cannot edit product code — preserve phase read-only guarantee.
 2. **Never run builder prompt without approved Plan task.** Plan is scope; without it, Build edits unbounded.
 3. **Build calls are one-task.** Each Build invocation execute **one** task ID from Plan. Bundle multiple tasks only when Plan explicitly authorize integration and Build is one of several layer-specific calls.
 4. **Ship is only Agent Mode prompt that may touch working tree without per-task allowed-paths list.** Scope strictly mechanical: git, gh, no logic edits.

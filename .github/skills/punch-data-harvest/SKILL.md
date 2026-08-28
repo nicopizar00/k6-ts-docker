@@ -1,7 +1,7 @@
 ---
 name: punch-data-harvest
 description: Owns artifacts, logs, summaries, and reporting — stable paths, low-noise console, complete logs to files, and the JSON/CSV contract with downstream consumers.
-applies-to: src/tests/support/**, src/punch/**, reports/**, docs/validation/**
+applies-to: src/tests/support/**, src/punch/**, reports/**, docs/workflows/validation.md
 ---
 
 # Skill: punch-data-harvest
